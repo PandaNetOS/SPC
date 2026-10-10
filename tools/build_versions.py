@@ -95,10 +95,10 @@ CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
     # path: (content_version, iteration, note)
     "memory/facts/FACTS.jsonl":            ("1.1", "r03", "18 条结论（F-0001~F-0018；F-0015 superseded）"),
     "memory/facts/INDEX.md":               ("1.1", "r03", "派生物，由 cli index 生成"),
-    "memory/lessons/LESSONS.md":           ("1.0", "r02", "L1–L9，只增不删（L10–L12 待确认）"),
+    "memory/lessons/LESSONS.md":           ("1.1", "r03", "L1–L12，只增不删（r03 新增 L10–L12）"),
     "memory/workbench/OPEN_QUESTIONS.md":  ("1.1", "r03", "10 问，3 answered（Q-001/Q-002/Q-004）"),
     "memory/workbench/HYPOTHESES.md":      ("1.0", "r02", "H-001~H-005"),
-    "memory/workbench/TODO.md":            ("1.1", "r03", "P0 已清空；新增 T-013/T-023/T-033/T-043"),
+    "memory/workbench/TODO.md":            ("1.2", "r03", "P0 已清空；T-043 已销账"),
     "memory/journal/round02.md":           ("1.0", "r02", "整理入库轮"),
     "memory/journal/round03.md":           ("1.0", "r03", "复核轮（含 1 次自我纠错）"),
     "memory/INDEX.md":                     ("1.0", "r02", "记忆层说明"),

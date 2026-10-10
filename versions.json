@@ -141,12 +141,114 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
+      "path": "games/dlt/iterations/round03/FINDINGS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "note": "复核轮发现（含自我纠错）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/HANDOFF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "note": "r03→r04 交接",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/iterations/round03/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
       "iteration": "r03",
       "note": "已交付",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/apply_r03_facts.py",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/apply_r03_strategy.py",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/b2_robust_estimators.json",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/b2_robust_estimators.py",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/b2_split_stability.json",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/b2_split_stability.py",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/cap_adjusted_uplift.json",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round04/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r04",
+      "note": "planned",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -211,12 +313,22 @@
       "status": "active"
     },
     {
+      "path": "memory/journal/round03.md",
+      "level": "A",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "note": "复核轮（含 1 次自我纠错）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "memory/lessons/LESSONS.md",
       "level": "A",
       "kind": "lesson_library",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "note": "L1–L9，只增不删（L10–L12 待确认）",
+      "content_version": "1.1",
+      "iteration": "r03",
+      "note": "L1–L12，只增不删（r03 新增 L10–L12）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -244,9 +356,9 @@
       "path": "memory/workbench/TODO.md",
       "level": "A",
       "kind": "workbench",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
-      "note": "P0 已清空；新增 T-013/T-023/T-033/T-043",
+      "note": "P0 已清空；T-043 已销账",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -745,6 +857,12 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round04/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/strategy/strategy.json",
       "level": "C",
       "kind": "strategy",
@@ -957,7 +1075,7 @@
       "version": "1.0",
       "date": "2026-10-11",
       "scope": "全仓库",
-      "change": "建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 111 个文件。"
+      "change": "建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 124 个文件。"
     },
     {
       "version": "1.0",

@@ -98,7 +98,7 @@ memory/
   facts/FACTS.jsonl    v1.1   ← 结论台账（权威源，JSONL 追加式）
   facts/INDEX.md       v1.1   ← 速览（派生物，CLI 生成，勿手改）
   journal/roundNN.md          ← 迭代日志
-  lessons/LESSONS.md   v1.0   ← 教训库 L1–L9（只增不删）
+  lessons/LESSONS.md   v1.1   ← 教训库 L1–L12（只增不删）
   workbench/                  ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
 games/
   _template/                  ← 新彩种骨架
