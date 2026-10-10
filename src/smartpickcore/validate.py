@@ -788,6 +788,7 @@ def validate_versions(repo_root: str | None = None,
 
     _check_consumes_freshness(root, rep)
     _check_summary_counts(root, rep)
+    _check_readme_tree_versions(root, rep)
     return rep
 
 
@@ -887,18 +888,141 @@ def _check_consumes_freshness(root: str, rep: ValidationReport) -> None:
         hits = sorted(set(consumes) & set(superseded))
         if not hits:
             continue
-        n_dirty += 1
         mapping = ", ".join(f"{f}→{superseded[f]}" for f in hits)
+        # 结构性声明：若条目明确标注为历史引用（正当沿革），则不告警，
+        # 反而确认已同步 —— 把『warning 可忽略』升级为可机器核对的声明。
+        if e.get("consumes_superseded") == "historical":
+            rep.ok(
+                f"下游新鲜度: {path} 声明为历史引用，已承认取代关系 [{mapping}]"
+                f"（正当沿革，cv={e.get('content_version')}，不告警）"
+            )
+            continue
+        n_dirty += 1
         rep.warn(
             f"下游新鲜度: {path} 引用了已被取代的结论 [{mapping}] "
             f"（cv={e.get('content_version')}, it={e.get('iteration')}）"
-            f" —— 请确认内容已同步；若属『历史沿革』式正当引用，可忽略"
+            f" —— 请确认内容已同步；若属『历史沿革』式正当引用，"
+            f"请在 versions.json 该条目加 consumes_superseded: historical"
         )
 
     if n_dirty == 0:
         rep.ok(
             f"下游新鲜度: {n_declared} 个条目声明了 consumes，"
             f"引用 superseded 结论的均已同步（0 项沉默）"
+        )
+
+
+def _check_readme_tree_versions(root: str, rep: "ValidationReport") -> None:
+    """★ 目录树手写版本标注 vs versions.json —— 堵住『目录树手写标注』盲区。
+
+    背景：README 的 `## 目录结构` 代码块里，嵌套文件（含 / 的路径）手写了
+    `vX.Y` 版本标注。此前这些标注没有任何校验，过期了也没人发现
+    （r03 就漏过一次：目录树写 v1.0，实际已是 v1.1）。
+
+    做法：用栈式解析目录树的连接线（├──/└──/│），重建每个条目的完整相对路径，
+    把行内**紧跟在文件名后**的 `vX.Y` 与 versions.json 中该路径的 content_version 比对。
+
+    只比对「含 / 的路径」（嵌套文件）；顶层文件已由文件头版本行机制覆盖。
+    要点：同名嵌套 README.md（如 framework/README.md）的版本号写在箭头说明里，
+    不是『文件名后紧跟 v』，本检查自然不会误匹配到顶层 README.md。
+    未在 versions.json 登记的路径（如未登记的 README.md）跳过，不误报。
+    """
+    import json as _json
+    import re as _re
+
+    rp = os.path.join(root, "README.md")
+    if not os.path.exists(rp):
+        return
+
+    # 版本索引的 by_path（只取有 content_version 的条目）
+    by_path: dict[str, str] = {}
+    vp = os.path.join(root, "versions.json")
+    if os.path.exists(vp):
+        try:
+            with open(vp, encoding="utf-8") as f:
+                vd = _json.load(f)
+            for e in vd.get("entries") or []:
+                p = e.get("path")
+                cv = e.get("content_version")
+                if p and cv:
+                    by_path[p] = cv
+        except Exception:  # noqa: BLE001
+            pass
+
+    # 定位代码块
+    try:
+        text = open(rp, encoding="utf-8").read()
+    except Exception:  # noqa: BLE001
+        return
+    lines = text.split("\n")
+    start = None
+    for i, ln in enumerate(lines):
+        if ln.strip() == "## 目录结构":
+            for j in range(i + 1, len(lines)):
+                if lines[j].strip() == "```":
+                    start = j
+                    break
+            break
+    if start is None:
+        return
+    end = None
+    for j in range(start + 1, len(lines)):
+        if lines[j].strip() == "```":
+            end = j
+            break
+    if end is None:
+        return
+
+    tree_chars = set("│├└─ ")
+    stack: list[tuple[int, str]] = []  # (depth, path_prefix_with_slash_or_empty)
+    checked = 0
+    mismatches = 0
+    for ln in lines[start + 1:end]:
+        if not ln.strip():
+            continue
+        width = 0
+        for ch in ln:
+            if ch in tree_chars:
+                width += 1
+            else:
+                break
+        depth = width // 4
+        content = ln[width:]
+        m = _re.match(r"\S+", content)
+        if not m:
+            continue
+        token = m.group(0)
+        rest = content[m.end():]
+        vm = _re.match(r"\s+v(\d+\.\d+)", rest)
+        is_dir = token.endswith("/")
+        name = token.rstrip("/")
+        while stack and stack[-1][0] >= depth:
+            stack.pop()
+        parent = stack[-1][1] if stack else ""
+        if is_dir:
+            stack.append((depth, parent + name + "/"))
+            continue
+        cur = parent + name
+        if "/" not in cur:
+            continue  # 顶层文件，已由文件头版本行机制覆盖
+        if vm is None:
+            continue  # 该嵌套文件在树里没写版本标注，不强制
+        declared = vm.group(1)
+        actual = by_path.get(cur)
+        if actual is None:
+            continue  # 未在 versions.json 登记，无法比对，跳过
+        checked += 1
+        if declared != actual:
+            mismatches += 1
+            rep.err(
+                f"目录树标注不一致: {cur} 树内写 v{declared}，"
+                f"versions.json 为 v{actual}"
+            )
+
+    if mismatches == 0:
+        suffix = "" if checked else "（树内嵌套文件均无版本标注，跳过）"
+        rep.ok(
+            f"目录树版本标注: {checked} 处嵌套文件标注均与 versions.json 一致{suffix}"
         )
 
 

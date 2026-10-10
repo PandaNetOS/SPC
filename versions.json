@@ -1,5 +1,5 @@
 {
-  "index_version": "1.1",
+  "index_version": "1.2",
   "repo": "PandaNetOS/smartpickcore",
   "generated_at": "2026-10-11",
   "current_iteration": "r03",
@@ -265,7 +265,8 @@
       "consumes": [
         "F-0014",
         "F-0015"
-      ]
+      ],
+      "consumes_superseded": "historical"
     },
     {
       "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
@@ -392,7 +393,7 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.10",
+      "content_version": "1.11",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"

@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.10` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.11` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -90,13 +90,13 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md          v1.3   ← 单一入口。AI 与人都从这里进
 ├── VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 ├── versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
-├── README.md              v1.10  ← 本文件
+├── README.md              v1.11  ← 本文件
 ├── spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
 │   ├── fact.schema.json            ← 结论契约（claim_type / source_sha256 / 红线）
 │   ├── game_config.schema.json     ← 彩种配置契约（sum_affects_numbers 红线）
 │   ├── strategy.schema.json        ← 策略契约（changes_win_probability 红线）
 │   ├── iteration.schema.json       ← 迭代契约
-│   ├── version_index.schema.json   ← 版本索引契约（index_version 1.1）
+│   ├── version_index.schema.json   ← 版本索引契约（index_version 1.2）
 │   ├── README.md
 │   └── VERSIONING.md               ← 版本规则 + config 2.0→2.1 迁移指南
 ├── framework/                    ← 框架层（framework_version = 1.1）

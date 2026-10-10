@@ -114,6 +114,12 @@
               "pattern": "^F-[0-9]{4}$"
             },
             "description": "★ 本条目**引用了哪些结论**（FACTS.jsonl 的 F-xxxx）。用于下游新鲜度检查：若被引用的结论被 superseded 而本条目 content_version 未随之提升，校验器报错（防止上游修正后下游继续传播旧结论）。省略或空数组 = 不声明。"
+          },
+          "consumes_superseded": {
+            "type": ["string", "null"],
+            "enum": ["active", "historical"],
+            "default": "active",
+            "description": "声明 consumes 中引用的 superseded 结论是否『历史沿革』式正当引用。active（默认）：命中 superseded 仍告警，提示确认同步。historical：本文档对 superseded 结论的引用已明确承认取代关系（如 rules_history 专门记录早期误判被取代），视为正当沿革，不告警。结构性声明优于『warning 可忽略』的口头约定。"
           }
         }
       }

@@ -522,18 +522,78 @@ def test_versions() -> None:
     for x in dangling[:5]:
         print(f"      ✗ 悬空引用: {x}")
 
-    # 机制自检：构造一个「引用了 superseded 结论」的假条目，必须被检出
-    from smartpickcore.validate import _check_consumes_freshness
-    from smartpickcore.validate import ValidationReport
+    # 机制自检：下游新鲜度检查必须能检出『引用 superseded 结论』的条目，
+    # 且对声明为 historical 的正当沿革引用不告警（避免噪音淹没真实问题）。
+    import json as _json
+    import tempfile, os as _os
+    from smartpickcore.validate import (
+        _check_consumes_freshness,
+        _check_readme_tree_versions,
+        ValidationReport,
+    )
 
     class _FakeReport(ValidationReport):
         pass
 
-    fake = _FakeReport()
-    _check_consumes_freshness(_ROOT, fake)
-    # rules_history.md 引用了 superseded 的 F-0015 → 应产生 warning（而非静默）
-    has_sup_warn = any("下游新鲜度" in w for w in fake.warnings)
-    check(has_sup_warn, "下游新鲜度检查能检出『引用 superseded 结论』的条目")
+    _tmp = tempfile.mkdtemp(prefix="sc_fresh_")
+    # 最小结论台账：F-0099 已被 F-0100 取代（必须放在 memory/facts/ 固定路径）
+    _os.makedirs(_os.path.join(_tmp, "memory", "facts"), exist_ok=True)
+    with open(_os.path.join(_tmp, "memory", "facts", "FACTS.jsonl"), "w", encoding="utf-8") as f:
+        f.write(_json.dumps({
+            "id": "F-0099", "status": "superseded", "superseded_by": "F-0100",
+            "category": "empirical", "claim": "测试", "confidence": "high",
+            "claim_type": "empirical",
+        }, ensure_ascii=False) + "\n")
+    # 两个条目：一个未声明 historical（应告警），一个声明 historical（不告警）
+    _vidx = {
+        "index_version": "1.2",
+        "entries": [
+            {"path": "stale.md", "level": "A", "kind": "doc",
+             "content_version": "1.0", "consumes": ["F-0099"]},
+            {"path": "history.md", "level": "A", "kind": "doc",
+             "content_version": "1.0", "consumes": ["F-0099"],
+             "consumes_superseded": "historical"},
+        ],
+    }
+    with open(_os.path.join(_tmp, "versions.json"), "w", encoding="utf-8") as f:
+        _json.dump(_vidx, f, ensure_ascii=False)
+
+    rep_a = _FakeReport()
+    _check_consumes_freshness(_tmp, rep_a)
+    check(any("下游新鲜度" in w for w in rep_a.warnings),
+          "下游新鲜度检查能检出『引用 superseded 结论』的未同步条目")
+    for w in rep_a.warnings:
+        if "下游新鲜度" in w:
+            print(f"      ✓ 触发告警: {w}")
+
+    rep_b = _FakeReport()
+    _check_consumes_freshness(_tmp, rep_b)
+    check(not any("history.md" in w for w in rep_b.warnings),
+          "声明 consumes_superseded=historical 的正当沿革引用不告警")
+    check(any("历史引用" in o for o in rep_b.checked),
+          "historical 声明被确认为正当沿革（ok 而非沉默）")
+
+    # 目录树标注检查自检：能检出『树内标注与 versions.json 不一致』，
+    # 且一致时不报错（证明此检查非『永远全绿』的假检查）。
+    _tmp2 = tempfile.mkdtemp(prefix="sc_tree_")
+    with open(_os.path.join(_tmp2, "versions.json"), "w", encoding="utf-8") as f:
+        _json.dump({"index_version": "1.2", "entries": [
+            {"path": "x/y.md", "level": "A", "kind": "doc",
+             "content_version": "2.0"},
+        ]}, f, ensure_ascii=False)
+    # 过期标注：树内写 v9.9，实际 2.0
+    with open(_os.path.join(_tmp2, "README.md"), "w", encoding="utf-8") as f:
+        f.write("## 目录结构\n\n```\n├── x/\n│   ├── y.md             v9.9\n```\n")
+    rep_tree_bad = ValidationReport()
+    _check_readme_tree_versions(_tmp2, rep_tree_bad)
+    check(any("目录树标注不一致" in e for e in rep_tree_bad.errors),
+          "目录树检查能检出『树内标注与 versions.json 不一致』")
+    # 一致标注：树内写 v2.0
+    with open(_os.path.join(_tmp2, "README.md"), "w", encoding="utf-8") as f:
+        f.write("## 目录结构\n\n```\n├── x/\n│   ├── y.md             v2.0\n```\n")
+    rep_tree_ok = ValidationReport()
+    _check_readme_tree_versions(_tmp2, rep_tree_ok)
+    check(not rep_tree_ok.errors, "目录树标注一致时不报错")
 
     # ★ 速览计数机制（r03 新增）：手工速览表的「N 条结论」必须等于台账条数
     from smartpickcore.validate import _check_summary_counts
