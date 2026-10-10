@@ -3,7 +3,7 @@
 > **本文件由 `cli/main.py index` 从 `FACTS.jsonl` 自动生成。请勿手工编辑。**
 > 权威源是 `FACTS.jsonl`（每行一条，受 `spec/fact.schema.json` 约束）。
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r03` ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 **当前状态**：18 条结论 | 16 established / 2 superseded | 生成日期 2026-10-11

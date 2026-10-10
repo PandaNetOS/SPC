@@ -92,7 +92,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.1` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版）；r03 同步封顶修正 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.3` | `r03` | 2026-10-11 | active | 18 条结论；★ 每条锚定 evidence.source_sha256（漂移即报错） |
-| `memory/facts/INDEX.md` | `1.2` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成；新增『按证据类型』段 + 表格 claim_type 列 |
+| `memory/facts/INDEX.md` | `1.3` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成；新增『按证据类型』段 + 表格 claim_type 列 |
 | `memory/journal/round02.md` | `1.0` | `r02` | 2026-10-11 | active | 整理入库轮 |
 | `memory/journal/round03.md` | `1.0` | `r03` | 2026-10-11 | active | 复核轮（含 1 次自我纠错） |
 | `memory/lessons/LESSONS.md` | `1.1` | `r03` | 2026-10-11 | active | L1–L12，只增不删（r03 新增 L10–L12） |
@@ -105,7 +105,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.3` | `r03` | active |  |
-| `README.md` | `1.6` | `r03` | active |  |
+| `README.md` | `1.7` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |

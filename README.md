@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.6` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.7` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -92,14 +92,14 @@ versions.json          v1.0   ← 版本权威源（所有版本字段的唯一�
 spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
 framework/                    ← 框架层（framework_version = 1.1）
   readme.md            v1.0   ← 框架层说明（框架/彩种分离判定标准）
-  INDEX.md             v1.0   ← 按需求找文件
+  INDEX.md             v1.1   ← 按需求找文件
   protocol/                   ← 迭代协议 + 记忆协议 + 3 个模板
   methodology/                ← 数学边界 + 统计纪律
   tools/memory.py      —      ← 记忆读写库（彩种无关，版本见索引）
   core/                       ← ★ 框架核心（已实现）：21 单注 + 5 跨注原语 / Ticket / Portfolio / 求值 / 判定 / 生成
 memory/
   facts/FACTS.jsonl    v1.3   ← 结论台账（权威源，JSONL 追加式；每条带 claim_type）
-  facts/INDEX.md       v1.2   ← 速览（派生物，CLI 生成，勿手改）
+  facts/INDEX.md       v1.3   ← 速览（派生物，CLI 生成，勿手改）
   journal/roundNN.md          ← 迭代日志
   lessons/LESSONS.md   v1.1   ← 教训库 L1–L12（只增不删）
   workbench/                  ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
@@ -108,8 +108,8 @@ games/
   dlt/                        ← 超级大乐透（数据 + 轮次 + 策略）
     strategy/                 ← strategy.json（机器）+ STRATEGY_GUIDE.md（人话版）
   INDEX.md             v1.1   ← 彩种索引
-src/smartpickcore/            ← 库代码（game / memory / validate / strategy / api / versions）
-cli/main.py            —      ← 命令行入口（13 个命令）
+src/smartpickcore/            ← 库代码（game / memory / validate / strategy / evidence / api / versions）
+cli/main.py            —      ← 命令行入口（14 个命令）
 tools/                        ← 版本索引生成/注入脚本（build / render / inject）
 docs/                         ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
 tests/                        ← 5 个测试文件（共 319 项，无需 pytest）
