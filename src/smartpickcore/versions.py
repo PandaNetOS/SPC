@@ -223,6 +223,51 @@ def verify_versions(repo_root: str) -> dict:
     if not fv:
         warnings.append("versions.json 缺 framework_version")
 
+    # ---- 4. README 目录树里的版本标注必须与 versions.json 一致
+    #        格式：`<短路径>   vX.Y   ← 说明`（见 README「目录结构」代码块）
+    #        目录树用短名（如 `facts/INDEX.md`），故按**后缀唯一匹配**解析；
+    #        歧义（如裸 `INDEX.md` 有 4 个候选）或多义时跳过，不误报。
+    n_readme_ok = 0
+    n_readme_bad = 0
+    n_readme_skip = 0
+    readme = os.path.join(repo_root, "README.md")
+    if os.path.exists(readme):
+        all_paths = [e.get("path") or "" for e in entries]
+        by_path = {e.get("path"): e for e in entries}
+        for lineno, line in enumerate(open(readme, encoding="utf-8"), 1):
+            m = re.match(r"^\s*(?P<path>[^\s/]+(?:/[^\s]+)*?)\s{2,}v(?P<ver>\d+\.\d+)\s", line)
+            if not m:
+                continue
+            raw = m.group("path").lstrip("./")
+            if raw in by_path:
+                cands = [raw]
+            else:
+                cands = [
+                    p for p in all_paths
+                    if p.endswith("/" + raw) or p.lower() == raw.lower()
+                    or p.lower().endswith("/" + raw.lower())
+                ]
+            if len(cands) != 1:
+                n_readme_skip += 1  # 歧义或未登记 —— 跳过，不当成错误
+                continue
+            cand = cands[0]
+            e = by_path.get(cand)
+            if e is None:
+                n_readme_skip += 1
+                continue
+            want = e.get("content_version")
+            got = m.group("ver")
+            if want is None:
+                n_readme_skip += 1  # 该文件不单独版本化
+            elif got != want:
+                errors.append(
+                    f"README.md:{lineno} 版本标注过期 —— "
+                    f"README 写 v{got}，索引是 v{want}（'{cand}'）"
+                )
+                n_readme_bad += 1
+            else:
+                n_readme_ok += 1
+
     stats = {
         "total": len(entries),
         "by_level": by_lvl,
@@ -230,6 +275,9 @@ def verify_versions(repo_root: str) -> dict:
         "file_version_lines_needed": n_verline_need,
         "c_level_checked_ok": n_c_ok,
         "c_level_mismatch": n_c_bad,
+        "readme_version_tags_ok": n_readme_ok,
+        "readme_version_tags_bad": n_readme_bad,
+        "readme_version_tags_skip": n_readme_skip,
         "missing_files": n_missing,
         "index_version": d.get("index_version"),
         "framework_version": fv,

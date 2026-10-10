@@ -101,7 +101,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `docs/ITERATION_GUIDE.md` | `1.0` | `r02` | active |  |
 | `docs/METHODOLOGY.md` | `1.0` | `r02` | active |  |
 | `docs/PROPOSAL_SINGLE_TICKET_CORE.md` | `1.0` | `r02` | active |  |
-| `docs/VERSIONING_DOCS.md` | `1.0` | `r02` | active |  |
+| `docs/VERSIONING_DOCS.md` | `1.1` | `r03` | active |  |
 | `framework/INDEX.md` | `1.0` | `r02` | active |  |
 | `framework/README.md` | `1.0` | `r02` | active |  |
 | `framework/core/README.md` | `1.0` | `r02` | active |  |

@@ -83,36 +83,43 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-AI_CONTEXT.md          ← 单一入口。AI 与人都从这里进
-VERSION_INDEX.md       ← 版本总索引（派生物，AI 先读这里）
-versions.json          ← 版本权威源（所有版本字段的唯一事实来源）
-spec/                  ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
-framework/
-  readme.md            ← 框架层说明（框架/彩种分离判定标准）
-  INDEX.md             ← 按需求找文件
-  protocol/            ← 迭代协议 + 记忆协议 + 3 个模板
-  methodology/         ← 数学边界 + 统计纪律
-  tools/memory.py      ← 记忆读写库（彩种无关）
-  core/                ← ★ 框架核心（已实现）：21 原语 / Ticket / 求值 / 判定 / 生成
+AI_CONTEXT.md          v1.0   ← 单一入口。AI 与人都从这里进
+VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
+versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
+spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
+framework/                    ← 框架层（framework_version = 1.0）
+  readme.md            v1.0   ← 框架层说明（框架/彩种分离判定标准）
+  INDEX.md             v1.0   ← 按需求找文件
+  protocol/                   ← 迭代协议 + 记忆协议 + 3 个模板
+  methodology/                ← 数学边界 + 统计纪律
+  tools/memory.py      —      ← 记忆读写库（彩种无关，版本见索引）
+  core/                       ← ★ 框架核心（已实现）：21 原语 / Ticket / 求值 / 判定 / 生成
 memory/
-  facts/FACTS.jsonl    ← 结论台账（权威源，JSONL 追加式）
-  facts/INDEX.md       ← 速览（派生物，CLI 生成，勿手改）
-  journal/roundNN.md   ← 迭代日志
-  lessons/LESSONS.md   ← 教训库 L1–L9（只增不删）
-  workbench/           ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
+  facts/FACTS.jsonl    v1.0   ← 结论台账（权威源，JSONL 追加式）
+  facts/INDEX.md       v1.0   ← 速览（派生物，CLI 生成，勿手改）
+  journal/roundNN.md          ← 迭代日志
+  lessons/LESSONS.md   v1.0   ← 教训库 L1–L9（只增不删）
+  workbench/                  ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
 games/
-  _template/           ← 新彩种骨架
-  dlt/                 ← 超级大乐透（数据 + 轮次 + 策略）
-    strategy/          ← strategy.json（机器）+ STRATEGY_GUIDE.md（人话版）
-  INDEX.md             ← 彩种索引
-src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api / versions）
-cli/main.py            ← 命令行入口（13 个命令）
-tools/                 ← 版本索引生成/注入脚本（build / render / inject）
-docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
-tests/                 ← test_core.py（105 项，无需 pytest）
+  _template/                  ← 新彩种骨架
+  dlt/                        ← 超级大乐透（数据 + 轮次 + 策略）
+    strategy/                 ← strategy.json（机器）+ STRATEGY_GUIDE.md（人话版）
+  INDEX.md             v1.0   ← 彩种索引
+src/smartpickcore/            ← 库代码（game / memory / validate / strategy / api / versions）
+cli/main.py            —      ← 命令行入口（13 个命令）
+tools/                        ← 版本索引生成/注入脚本（build / render / inject）
+docs/                         ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
+tests/                        ← test_core.py（105 项，无需 pytest）
 ```
 
-详见 `docs/ARCHITECTURE.md`。
+> **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
+> （B 级 `.py` 只登记索引；完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)）。
+>
+> **文件名本身不带版本号** —— 版本号在**文件头部版本行**与**本索引**里维护。
+> 原因：改名会让所有指向它的链接失效、`git log` 追不到历史。详见
+> [`docs/VERSIONING_DOCS.md`](docs/VERSIONING_DOCS.md) §2。
+
+详见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
 
 ## 四条红线
 

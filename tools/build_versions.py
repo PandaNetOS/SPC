@@ -145,7 +145,7 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
     "docs/ITERATION_GUIDE.md":                    ("1.0", "r02"),
     "docs/METHODOLOGY.md":                        ("1.0", "r02"),
     "docs/PROPOSAL_SINGLE_TICKET_CORE.md":        ("1.0", "r02"),
-    "docs/VERSIONING_DOCS.md":                    ("1.0", "r02"),
+    "docs/VERSIONING_DOCS.md":                    ("1.1", "r03"),
     "games/INDEX.md":                             ("1.0", "r02"),
     "tests/README.md":                            ("1.0", "r02"),
 }

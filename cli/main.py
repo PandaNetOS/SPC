@@ -127,6 +127,9 @@ def cmd_versions(args) -> int:
     print(f"文件内版本行 {s.get('file_version_lines_ok')}/{s.get('file_version_lines_needed')} 一致")
     print(f"C 级版本字段 {s.get('c_level_checked_ok')} 一致"
           + (f"，{s['c_level_mismatch']} 不一致" if s.get("c_level_mismatch") else ""))
+    print(f"README 版本标注 {s.get('readme_version_tags_ok')} 一致"
+          + (f"，{s['readme_version_tags_bad']} 不一致" if s.get("readme_version_tags_bad") else "")
+          + (f"（{s.get('readme_version_tags_skip')} 项歧义跳过）" if s.get("readme_version_tags_skip") else ""))
     print()
 
     if r["warnings"]:

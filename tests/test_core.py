@@ -493,6 +493,13 @@ def test_versions() -> None:
                   if e.get("kind") == "raw_data" and not e.get("sha256")]
     check(not raw_no_sha, f"raw 数据都带 SHA256（缺失 {len(raw_no_sha)} 个）")
 
+    # README 目录树里的版本标注不得过期（与 versions.json 比对）
+    check(
+        s.get("readme_version_tags_bad", 0) == 0,
+        f"README 版本标注无过期（一致 {s.get('readme_version_tags_ok', 0)} 项，"
+        f"过期 {s.get('readme_version_tags_bad', 0)} 项）",
+    )
+
 
 # ================================================================ 主流程
 
