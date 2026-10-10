@@ -1,6 +1,6 @@
 # TODO.md — 待办池（工作记忆）
 
-> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.4` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
@@ -64,9 +64,15 @@
 - [ ] **T-030** 明确"策略有效性"的三档标准并写入 schema（Q-008）
       影响对外表达的可信度，属伦理与质量双重要求
 
-- [ ] **T-031** 第二个彩种接入（验证框架的通用性）
+- [x] **T-031** 第二个彩种接入（验证框架的通用性）✅ **r03 框架迭代已落地（影子彩种实测）**
       目前只有 `games/dlt/`。**框架是否真通用，只有接入第二个彩种才知道**
       这是验证"框架/彩种分离"设计的唯一硬标准
+
+      **落地内容**：
+      - 新增 `tests/fixtures/shadow/`（与 dlt **处处不同**的第二彩种夹具：9选3+5选2 / 红区 `min_value=0` / T=840 / 5 单注+2 跨注特征，与 dlt 零交集）
+      - 新增 `tests/test_shadow_game.py`（**69 项**）：装载/校验/求值/判定/跨注/端到端/单区变体全链路在影子彩种跑通
+      - 铁律扫描断言 `framework/` 与 `src/` 无 dlt 痕迹（AST 剥 docstring 防误报），并含**扫描器自检**确认非"永远全绿"
+      - **结论：加入第二个彩种无需改 `framework/` 或 `src/` 任何一行 —— 硬标准首次通过**
 
 - [ ] **T-032** 摇奖设备数据的获取评估（H-003）
       唯一的"推翻 F-0001"路径。当前标 `unverifiable_with_current_data`
@@ -93,11 +99,13 @@
 - [ ] **T-040** 从本仓库实践中提炼的框架改进，回写 `framework/protocol/`
       r03 新增建议：**`evidence.effect` 应区分"观测事件"与"归因"两分**（F-0015 的教训）
 
-- [ ] **T-041** 自动化：`cli/main.py index` 从 `FACTS.jsonl` 重生成 `INDEX.md`
-      当前 `INDEX.md` 是手写的 → 会漂移。骨架已留命令位，实现待补
+- [x] **T-041** 自动化：`cli/main.py index` 从 `FACTS.jsonl` 重生成 `INDEX.md` ✅ **已实现（误报，命令位早已落地）**
+      `cli/main.py` 的 `index` 子命令（`cmd_index` → `mem.write_index()`）**已实现**，
+      `memory/facts/INDEX.md` 由 CLI 生成（`v1.2`，勿手改）。本条为误报，清账。
 
-- [ ] **T-042** 校验器增强：证据哈希
-      `FACTS.jsonl` 的 `source` 文件若被修改，应能检出结论可能失效
+- [x] **T-042** 校验器增强：证据哈希 ✅ **r03 框架迭代·提案 C 已落地**
+      `src/smartpickcore/evidence.py` 双锚定（事实级 `evidence.source_sha256` + 策略级 `provenance.evidence_hash`）；
+      `validate.py` 检出证据文件变更；新增 `cli/main.py rehash` 重基线。对应 commit 已推送。
 
 - [x] **T-043** 教训库补充 L10–L12 ✅ r03 已落地（`LESSONS.md` 1.0 → 1.1）
       L10 条款写了 ≠ 现实触发过（先做事件计数再谈影响）

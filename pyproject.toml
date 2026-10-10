@@ -44,8 +44,8 @@ package-dir = { "" = "src" }
 py-modules = []
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["smartpickcore*"]
+where = ["src", "framework"]
+include = ["smartpickcore*", "core*"]
 
 # 非 Python 资源随包分发：契约与彩种配置是运行期必需的
 [tool.setuptools.package-data]

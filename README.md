@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.5` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.6` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -112,7 +112,7 @@ src/smartpickcore/            ← 库代码（game / memory / validate / strateg
 cli/main.py            —      ← 命令行入口（13 个命令）
 tools/                        ← 版本索引生成/注入脚本（build / render / inject）
 docs/                         ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
-tests/                        ← test_core.py（105 项，无需 pytest）
+tests/                        ← 5 个测试文件（共 319 项，无需 pytest）
 ```
 
 > **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
@@ -179,8 +179,8 @@ python cli/main.py new-game <game_id>
 | 记忆层 | ✅ **18 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L12 / 11 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **48 项全绿** |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
-| `tests/` | ✅ `test_core.py` **113** + `test_cross_scope.py` **62** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** 全绿（无需 pytest） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**126 条**登记（A=34 B=54 C=13 D=25），版本行 43/43 一致 |
+| `tests/` | ✅ `test_core.py` **113** + `test_cross_scope.py` **62** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **319** 项） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**132 条**登记（A=34 B=58 C=13 D=27），版本行全部一致 |
 
 ### r03 复核要点（结论已修正）
 

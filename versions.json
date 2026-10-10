@@ -372,9 +372,9 @@
       "path": "memory/workbench/TODO.md",
       "level": "A",
       "kind": "workbench",
-      "content_version": "1.3",
+      "content_version": "1.4",
       "iteration": "r03",
-      "note": "P0 已清空；T-043 已销账；**T-033 已销账**（R-002 跨注层，选 ②）",
+      "note": "P0 已清空；T-043/T-033 已销账；**r03 框架迭代**：T-031(影子彩种实测) / T-041(cli index 已实现，误报) / T-042(证据哈希·提案C) 均已销账",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -391,7 +391,7 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.5",
+      "content_version": "1.6",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -787,7 +787,7 @@
       "path": "tests/README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.2",
+      "content_version": "1.3",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -1150,6 +1150,12 @@
       "path": "tests/fixtures/shadow/game.yaml",
       "level": "D",
       "kind": "test_fixture",
+      "status": "active"
+    },
+    {
+      "path": "tools/count_tests.py",
+      "level": "D",
+      "kind": "test_tool",
       "status": "active"
     }
   ],

@@ -46,9 +46,9 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 34 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 57 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 58 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 13 |
-| **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 25 |
+| **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 27 |
 
 **为什么 D 级（数据）不版本化**：`data/raw/` 已有 **SHA256**，
 那是**比版本号更强的完整性保证** —— 版本号只能告诉你「变了」，
@@ -98,14 +98,14 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `memory/lessons/LESSONS.md` | `1.1` | `r03` | 2026-10-11 | active | L1–L12，只增不删（r03 新增 L10–L12） |
 | `memory/workbench/HYPOTHESES.md` | `1.0` | `r02` | 2026-10-11 | active | H-001~H-005 |
 | `memory/workbench/OPEN_QUESTIONS.md` | `1.2` | `r03` | 2026-10-11 | active | 11 问，3 answered（Q-001/Q-002/Q-004）；r03 框架迭代新增 Q-012（跨注规则量化） |
-| `memory/workbench/TODO.md` | `1.3` | `r03` | 2026-10-11 | active | P0 已清空；T-043 已销账；**T-033 已销账**（R-002 跨注层，选 ②） |
+| `memory/workbench/TODO.md` | `1.4` | `r03` | 2026-10-11 | active | P0 已清空；T-043/T-033 已销账；**r03 框架迭代**：T-031(影子彩种实测) / T-041(cli index 已实现，误报) / T-042(证据哈希·提案C) 均已销账 |
 
 ### B 级 · 结构性文档 / 框架与库代码
 
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.3` | `r03` | active |  |
-| `README.md` | `1.5` | `r03` | active |  |
+| `README.md` | `1.6` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |
@@ -151,7 +151,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/smartpickcore/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/validate.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
-| `tests/README.md` | `1.2` | `r03` | active |  |
+| `tests/README.md` | `1.3` | `r03` | active |  |
 | `tests/test_core.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tests/test_cross_scope.py` | —（见备注） | `—` | active | ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需 pytest |
 | `tools/build_versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
@@ -161,6 +161,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `tests/test_claim_type.py` | —（见备注） | `r03` | active | ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest |
 | `src/smartpickcore/evidence.py` | —（见备注） | `r03` | active | ★ 证据锚定：sha256_file / fact_anchor / evidence_digest（结论与策略的哈希锚） |
 | `tests/test_evidence_anchor.py` | —（见备注） | `r03` | active | ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest |
+| `tests/test_shadow_game.py` | `1.0` | `r03` | active |  |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -209,6 +210,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/manifest_v4_source.json` | `source_manifest` | — |  |
 | `games/dlt/strategy/simulation_results.json` | `analysis_output` | — |  |
 | `games/dlt/strategy/strategy_simulation.py` | `analysis_script` | — |  |
+| `tests/fixtures/shadow/game.yaml` | `test_fixture` | — |  |
+| `tools/count_tests.py` | `test_tool` | — |  |
 
 ---
 
@@ -224,7 +227,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework_core` | 8 | B | `framework/core/__init__.py`<br>`framework/core/evaluate.py`<br>`framework/core/features.py`<br>`framework/core/game_util.py`<br>`framework/core/generate.py`<br>`framework/core/judge.py`<br>`framework/core/ticket.py`<br>`framework/core/portfolio.py` |
 | `template_game` | 6 | B | `games/_template/README.md`<br>`games/_template/data/build_scripts/README.md`<br>`games/_template/data/derived/README.md`<br>`games/_template/data/raw/README.md`<br>`games/_template/data/tools/README.md`<br>`games/_template/iterations/round01/TASK_BRIEF.md` |
 | `schema` | 5 | C | `spec/fact.schema.json`<br>`spec/game_config.schema.json`<br>`spec/iteration.schema.json`<br>`spec/strategy.schema.json`<br>`spec/version_index.schema.json` |
-| `test` | 4 | B | `tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_claim_type.py`<br>`tests/test_evidence_anchor.py` |
+| `test` | 5 | B | `tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_claim_type.py`<br>`tests/test_evidence_anchor.py`<br>`tests/test_shadow_game.py` |
 | `build_script` | 3 | D | `games/dlt/data/build_scripts/build_derived_v4.py`<br>`games/dlt/data/build_scripts/hash_and_list.py`<br>`games/dlt/data/build_scripts/validate_package_v4.py` |
 | `index` | 3 | A/B | `memory/INDEX.md`<br>`framework/INDEX.md`<br>`games/INDEX.md` |
 | `iteration_manifest` | 3 | C | `games/dlt/iterations/round02/manifest.json`<br>`games/dlt/iterations/round03/manifest.json`<br>`games/dlt/iterations/round04/manifest.json` |
@@ -249,6 +252,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `rules_history` | 1 | A | `games/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `games/dlt/manifest_v4_source.json` |
 | `strategy_guide` | 1 | A | `games/dlt/strategy/STRATEGY_GUIDE.md` |
+| `test_fixture` | 1 | D | `tests/fixtures/shadow/game.yaml` |
+| `test_tool` | 1 | D | `tools/count_tests.py` |
 | `version_index` | 1 | B | `versions.json` |
 | `version_index_doc` | 1 | B | `VERSION_INDEX.md` |
 
