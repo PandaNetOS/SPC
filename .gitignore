@@ -1,0 +1,39 @@
+# 编译产物 / 构建缓存
+target/
+build/
+dist/
+out/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.pdb
+
+# 依赖
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 编辑器 / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 运行期数据
+*.log
+*.tmp
+data/
+runs/
+scratch/
