@@ -161,6 +161,16 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
+      "level": "A",
+      "kind": "strategy_guide",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "note": "面向普通读者的策略说明书（人话版）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "memory/INDEX.md",
       "level": "A",
       "kind": "index",
@@ -947,7 +957,7 @@
       "version": "1.0",
       "date": "2026-10-11",
       "scope": "全仓库",
-      "change": "建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 110 个文件。"
+      "change": "建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 111 个文件。"
     },
     {
       "version": "1.0",

@@ -45,7 +45,7 @@
 
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
-| **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 21 |
+| **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 22 |
 | **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 52 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 12 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 25 |
@@ -78,6 +78,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt` | `1.0` | `r02` | 2026-10-11 | archived | 历史归档，设使用门槛（防锚定） |
 | `games/dlt/iterations/round03/TASK_BRIEF.md` | `1.0` | `r03` | 2026-10-11 | active | planned |
 | `games/dlt/rules_history.md` | `1.0` | `r02` | 2026-10-11 | active | E0~E6 共 7 段 |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.0` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版） |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.0` | `r02` | 2026-10-11 | active | 15 条结论（F-0001~F-0015） |
 | `memory/facts/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 派生物，由 cli index 生成 |
@@ -228,6 +229,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `package_manifest` | 1 | C | `pyproject.toml` |
 | `rules_history` | 1 | A | `games/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `games/dlt/manifest_v4_source.json` |
+| `strategy_guide` | 1 | A | `games/dlt/strategy/STRATEGY_GUIDE.md` |
 | `test` | 1 | B | `tests/test_core.py` |
 | `version_index` | 1 | B | `versions.json` |
 | `version_index_doc` | 1 | B | `VERSION_INDEX.md` |
@@ -240,7 +242,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 
 | 版本 | 日期 | 范围 | 变更 |
 |---|---|---|---|
-| `1.0` | 2026-10-11 | 全仓库 | 建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 110 个文件。 |
+| `1.0` | 2026-10-11 | 全仓库 | 建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 111 个文件。 |
 | `1.0` | 2026-10-10 | framework/ | 单注层通用架构落地（framework/core/ 6 模块 / 21 原语），记为 framework_version 1.0。 |
 
 ---

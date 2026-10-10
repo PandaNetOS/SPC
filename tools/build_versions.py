@@ -69,6 +69,7 @@ RULES: list[tuple[str, str, str]] = [
 
     (r"^games/.*/game\.yaml$",                        "C", "game_config"),
     (r"^games/.*/strategy/strategy\.json$",           "C", "strategy"),
+    (r"^games/.*/strategy/STRATEGY_GUIDE\.md$",       "A", "strategy_guide"),
     (r"^games/.*/strategy/simulation_results\.json$", "D", "analysis_output"),
     (r"^games/.*/strategy/.*\.py$",                   "D", "analysis_script"),
     (r"^games/.*/iterations/.*/manifest\.json$",      "C", "iteration_manifest"),
@@ -101,6 +102,7 @@ CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
     "memory/journal/round02.md":           ("1.0", "r02", "整理入库轮"),
     "memory/INDEX.md":                     ("1.0", "r02", "记忆层说明"),
     "games/dlt/rules_history.md":          ("1.0", "r02", "E0~E6 共 7 段"),
+    "games/dlt/strategy/STRATEGY_GUIDE.md": ("1.0", "r03", "面向普通读者的策略说明书（人话版）"),
     "games/dlt/iterations/round02/FINDINGS.md":     ("1.0", "r02", "整理入库轮发现"),
     "games/dlt/iterations/round02/HANDOFF.md":      ("1.0", "r02", "r02→r03 交接"),
     "games/dlt/iterations/round02/TASK_BRIEF.md":   ("1.0", "r02", "已交付"),
