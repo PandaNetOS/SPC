@@ -1,0 +1,571 @@
+{
+  "meta": {
+    "script": "games/dlt/iterations/round04/scripts/back_collision.py",
+    "task": "T-103",
+    "question": "Q-003",
+    "round": "round04",
+    "game": "dlt",
+    "data_path": "games/dlt/data/raw/dlt_full_2933.csv",
+    "data_version": "dlt_full_2933",
+    "n_periods": 2933,
+    "draw_num_min": "07001",
+    "draw_num_max": "26115",
+    "date_min": "2007-05-30",
+    "date_max": "2026-10-10",
+    "rng_seed": 20261011,
+    "rules_epoch": "E6",
+    "front_cut_date": "2013-08-28",
+    "n_bootstrap": 2000,
+    "n_mc": 10000,
+    "boundary_note": "本分析只涉及『被选中率』(人群购买密度)与中奖时的奖金份额;完全不涉及中奖概率。单注一等奖概率恒为 1/21,425,712。"
+  },
+  "identification": {
+    "separability": "p(F,B) ∝ u(F)·v(B) (前/后区偏好可分离) 使 w2/w1 与 n、前区偏好无关",
+    "independent_back": "v(a,b) ∝ s_a·s_b (后区号码独立偏好), 由 66 参数饱和模型检验",
+    "estimating_equation": "给定 m=w1+w2 与开出的后区对 B: w1|m ~ Binomial(m, p_B), p_B=v(B)/(v(B)+g(B)), g(B)=Σ_{c∈B,d∉B}v(c,d)",
+    "why_conditional_binomial": "直接对 w2/w1 回归会被小 w1 污染(中位数 2, 17.9% 为 0); 条件二项似然在 w1=0 时仍有效且是 Poisson 模型下的充分统计量",
+    "aggregation": "p_B 只依赖后区对 B, 故逐期数据聚合为 66 个二项观测 (mB,w1B), 是充分统计量, 不损信息"
+  },
+  "descriptive": {
+    "w1": {
+      "mean": 3.862257,
+      "median": 2.0,
+      "var": 32.685659,
+      "var_mean": 8.462839,
+      "max": 106.0,
+      "p90": 9.0
+    },
+    "w2": {
+      "mean": 79.002046,
+      "median": 64.0,
+      "var": 7539.339696,
+      "var_mean": 95.432208,
+      "max": 2251.0
+    },
+    "m": {
+      "mean": 82.864303,
+      "median": 67.0,
+      "var": 8193.478169,
+      "var_mean": 98.878261,
+      "max": 2357.0
+    },
+    "w1_zero_count": 525,
+    "w1_zero_frac": 0.178998,
+    "m_per_pair_min": 2307.0,
+    "m_per_pair_max": 6386.0
+  },
+  "open_rate": {
+    "note_L7": "本小节全部是『开出率』(号码被摇出的频率), 与『被选中率』无关, 不得混用 (L7)",
+    "back_combo_66": {
+      "expected": 44.439394,
+      "min": 31,
+      "max": 60,
+      "chi2": 64.093079,
+      "df": 65,
+      "n_mc": 10000,
+      "mc_p": 0.512,
+      "min_expected_cell": 44.439394,
+      "verdict": "开出率与均匀无显著差异(MC p≈0.51), 与 F-0011 一致; 最小期望频数 44.4>>5, 渐近卡方本已可用, 仍报 MC 精确检验"
+    },
+    "back_number_12": {
+      "expected": 488.833333,
+      "counts": [
+        467,
+        491,
+        471,
+        474,
+        511,
+        471,
+        523,
+        460,
+        490,
+        522,
+        485,
+        501
+      ],
+      "chi2": 10.415956,
+      "df": 11,
+      "n_mc": 10000,
+      "mc_p": 0.416,
+      "min_expected_cell": 488.833333,
+      "verdict": "12 个后区号码开出率与均匀无显著差异(MC p≈0.42)"
+    }
+  },
+  "picked_rate": {
+    "note_L7": "本小节是『被选中率』(彩民购买密度), 全部来自 prize1_winners/prize2_winners, 与开出率严格分开 (L7)",
+    "pooled_pair_test": {
+      "chi2": 567.099104,
+      "df": 65,
+      "overdispersion": 8.724602,
+      "n_mc": 10000,
+      "mc_p": 0.0,
+      "verdict": "强烈拒绝『66 个后区对人群密度相同』: 过散布 8.72x, MC p<1e-4"
+    },
+    "independent_s_model": {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "s": [
+        0.995267,
+        0.88947,
+        1.113026,
+        0.845679,
+        1.15182,
+        0.961349,
+        1.132127,
+        1.096721,
+        1.196972,
+        1.048576,
+        0.821867,
+        0.747126
+      ],
+      "s_ci95": [
+        [
+          0.806335,
+          1.23245
+        ],
+        [
+          0.764001,
+          1.036394
+        ],
+        [
+          0.905071,
+          1.362154
+        ],
+        [
+          0.730213,
+          0.98314
+        ],
+        [
+          0.989396,
+          1.339932
+        ],
+        [
+          0.815242,
+          1.164635
+        ],
+        [
+          0.961419,
+          1.33894
+        ],
+        [
+          0.901874,
+          1.333982
+        ],
+        [
+          1.012002,
+          1.408167
+        ],
+        [
+          0.872132,
+          1.284064
+        ],
+        [
+          0.703811,
+          0.968127
+        ],
+        [
+          0.636729,
+          0.877425
+        ]
+      ],
+      "nll": 45724.027164,
+      "nll_null": 45793.665485,
+      "lr_vs_uniform": 139.276642,
+      "lr_df": 11,
+      "lr_mc_p": 0.0075,
+      "n_mc_lr": 2000,
+      "best": {
+        "number": 9,
+        "value": 1.196972,
+        "ci95": [
+          1.012002,
+          1.408167
+        ]
+      },
+      "worst": {
+        "number": 12,
+        "value": 0.747126,
+        "ci95": [
+          0.636729,
+          0.877425
+        ]
+      },
+      "max_pair_density": 1.378697,
+      "min_pair_density": 0.614038,
+      "pair_density_ratio": 2.245296,
+      "top5_pairs": [
+        {
+          "pair": "5+9",
+          "density": 1.3787,
+          "picked_rate_share": 0.06591
+        },
+        {
+          "pair": "7+9",
+          "density": 1.3551,
+          "picked_rate_share": 0.04843
+        },
+        {
+          "pair": "3+9",
+          "density": 1.3323,
+          "picked_rate_share": 0.0564
+        },
+        {
+          "pair": "8+9",
+          "density": 1.3127,
+          "picked_rate_share": 0.05784
+        },
+        {
+          "pair": "5+7",
+          "density": 1.304,
+          "picked_rate_share": 0.05476
+        }
+      ],
+      "bottom5_pairs": [
+        {
+          "pair": "11+12",
+          "density": 0.614,
+          "picked_rate_share": 0.04595
+        },
+        {
+          "pair": "4+12",
+          "density": 0.6318,
+          "picked_rate_share": 0.0384
+        },
+        {
+          "pair": "2+12",
+          "density": 0.6645,
+          "picked_rate_share": 0.03483
+        },
+        {
+          "pair": "4+11",
+          "density": 0.695,
+          "picked_rate_share": 0.05572
+        },
+        {
+          "pair": "6+12",
+          "density": 0.7182,
+          "picked_rate_share": 0.04188
+        }
+      ],
+      "note": "s 为相对偏好, 12 个数均值归一到 1; LR=139.3(df=11) 拒绝均匀"
+    },
+    "saturated_model": {
+      "note": "66 参数饱和模型(仅假设可分离+计数结构)",
+      "lr_vs_uniform": 562.64356,
+      "lr_vs_uniform_df": 65,
+      "lr_vs_independent": 423.366918,
+      "lr_vs_independent_df": 54,
+      "verdict": "独立号码模型被饱和模型强烈拒绝(LR=423, df=54), 存在对特异偏好; 但该特异成分跨时期不稳定",
+      "top10_pairs": [
+        {
+          "pair": "3+10",
+          "density": 1.6154,
+          "picked_rate_share": 0.07451
+        },
+        {
+          "pair": "5+9",
+          "density": 1.6149,
+          "picked_rate_share": 0.06591
+        },
+        {
+          "pair": "5+8",
+          "density": 1.5574,
+          "picked_rate_share": 0.06661
+        },
+        {
+          "pair": "6+8",
+          "density": 1.5467,
+          "picked_rate_share": 0.07038
+        },
+        {
+          "pair": "3+8",
+          "density": 1.5088,
+          "picked_rate_share": 0.06674
+        },
+        {
+          "pair": "5+10",
+          "density": 1.4,
+          "picked_rate_share": 0.06143
+        },
+        {
+          "pair": "8+9",
+          "density": 1.3728,
+          "picked_rate_share": 0.05784
+        },
+        {
+          "pair": "3+9",
+          "density": 1.3535,
+          "picked_rate_share": 0.0564
+        },
+        {
+          "pair": "4+9",
+          "density": 1.3374,
+          "picked_rate_share": 0.06176
+        },
+        {
+          "pair": "5+7",
+          "density": 1.3131,
+          "picked_rate_share": 0.05476
+        }
+      ],
+      "bottom10_pairs": [
+        {
+          "pair": "2+4",
+          "density": 0.5777,
+          "picked_rate_share": 0.03009
+        },
+        {
+          "pair": "3+12",
+          "density": 0.6025,
+          "picked_rate_share": 0.03008
+        },
+        {
+          "pair": "2+12",
+          "density": 0.6268,
+          "picked_rate_share": 0.03483
+        },
+        {
+          "pair": "10+12",
+          "density": 0.6455,
+          "picked_rate_share": 0.0334
+        },
+        {
+          "pair": "4+8",
+          "density": 0.6636,
+          "picked_rate_share": 0.03137
+        },
+        {
+          "pair": "4+12",
+          "density": 0.68,
+          "picked_rate_share": 0.0384
+        },
+        {
+          "pair": "1+11",
+          "density": 0.6939,
+          "picked_rate_share": 0.03554
+        },
+        {
+          "pair": "8+11",
+          "density": 0.6981,
+          "picked_rate_share": 0.03364
+        },
+        {
+          "pair": "10+11",
+          "density": 0.7067,
+          "picked_rate_share": 0.03541
+        },
+        {
+          "pair": "1+12",
+          "density": 0.7325,
+          "picked_rate_share": 0.03928
+        }
+      ]
+    }
+  },
+  "falsification": {
+    "split_at_F0006": {
+      "cut_date": "2013-08-28",
+      "cut_index": 960,
+      "n_early": 960,
+      "n_late": 1973,
+      "s_early": [
+        1.30991,
+        0.74348,
+        1.362613,
+        0.745453,
+        0.927348,
+        0.910723,
+        1.513513,
+        1.004406,
+        1.059225,
+        0.940466,
+        0.800202,
+        0.682661
+      ],
+      "s_late": [
+        0.939058,
+        0.917488,
+        1.067237,
+        0.853772,
+        1.183897,
+        0.972265,
+        1.072856,
+        1.114582,
+        1.232391,
+        1.073039,
+        0.817582,
+        0.755833
+      ],
+      "s_corr": 0.492609,
+      "stable_sim_s_corr_median": 0.793586,
+      "stable_sim_s_corr_ci95": [
+        0.536712,
+        0.943565
+      ],
+      "saturated_v_corr": 0.181547,
+      "stable_sim_sat_corr_median": 0.717876,
+      "stable_sim_sat_corr_ci95": [
+        0.572262,
+        0.815095
+      ],
+      "verdict": "11 参数独立 s 模型: 观测跨段相关 0.493, 稳定零模型 95%CI [0.537,0.944] —— 接近/略低于下界, 属轻度不稳定; 66 参数饱和模型: 观测 0.182 vs 稳定零模型 95%CI [0.572,0.815] —— 偏好排名显著不稳定"
+    },
+    "odd_even_split": {
+      "s_corr": 0.576181
+    },
+    "noise_level": {
+      "w1_median": 2.0,
+      "w1_zero_frac": 0.178998,
+      "m_median": 67.0,
+      "note": "w1 是小计数且重尾; 聚合为 66 个二项观测, 每对约 3600 次试验, p 的相对标准误约 7.5%"
+    },
+    "e6_only": {
+      "n": 102,
+      "pooled_pair_X2": 128.164659,
+      "verdict": "现行 E6 仅 102 期仍显示过散布, 但不足以独立估计 66 个对密度"
+    }
+  },
+  "conditional_share": {
+    "method": "给定 v 时条件份额是有限集上的精确期望(无需 MC, L8): CF(strategy)=E_{B~strategy}[v(B)]; uplift=CF(random)/CF(avoid)-1。CI 来自对期数重采样并重拟合 s 的 bootstrap(2000)。",
+    "in_sample_independent_s": {
+      "K1": {
+        "rand_mean": 0.998204,
+        "avoid_mean": 0.992351,
+        "uplift": 0.005899,
+        "ci95": [
+          0.005135,
+          0.013103
+        ]
+      },
+      "K5": {
+        "rand_mean": 0.998204,
+        "avoid_mean": 0.97047,
+        "uplift": 0.028579,
+        "ci95": [
+          0.024564,
+          0.055735
+        ]
+      },
+      "K10": {
+        "rand_mean": 0.998204,
+        "avoid_mean": 0.944582,
+        "uplift": 0.056768,
+        "ci95": [
+          0.046973,
+          0.101738
+        ]
+      },
+      "note": "用全样本 s 选 Top-K, 含前视/过拟合, 是上界(L6)"
+    },
+    "in_sample_saturated": {
+      "K1": {
+        "rand_mean": 1.0,
+        "avoid_mean": 0.990533,
+        "uplift": 0.009558
+      },
+      "K5": {
+        "rand_mean": 1.0,
+        "avoid_mean": 0.95339,
+        "uplift": 0.048889
+      },
+      "K10": {
+        "rand_mean": 1.0,
+        "avoid_mean": 0.917501,
+        "uplift": 0.089917
+      },
+      "note": "过拟合更严重"
+    },
+    "cross_validated_independent_s": {
+      "K1": {
+        "early_to_late": 0.002268,
+        "late_to_early": -0.000183,
+        "mean": 0.001043,
+        "ci95": [
+          -0.003773,
+          0.009309
+        ]
+      },
+      "K5": {
+        "early_to_late": 0.011324,
+        "late_to_early": 0.010104,
+        "mean": 0.010714,
+        "ci95": [
+          -0.011146,
+          0.037597
+        ]
+      },
+      "K10": {
+        "early_to_late": 0.029997,
+        "late_to_early": 0.029278,
+        "mean": 0.029638,
+        "ci95": [
+          -0.018168,
+          0.068641
+        ]
+      },
+      "note": "前/后段互相预测, 无前视 —— 诚实口径; K=5/10 的 95%CI 含 0"
+    },
+    "front_reference": {
+      "alpha": 13.9405,
+      "birthday_mult": 1.25,
+      "uniform_mean_u": 2.470463,
+      "run0_mean_u": 1.118783,
+      "run_lt2_mean_u": 1.127573,
+      "uplift_run0_pct": 120.817062,
+      "uplift_run_lt2_pct": 119.095568,
+      "note": "F-0004 参数未改动; 未计封顶上界"
+    },
+    "magnitude_comparison": {
+      "front_uplift_pct": 119.095568,
+      "back_K5_in_sample_pct": 2.857855,
+      "back_K10_in_sample_pct": 5.676832,
+      "back_K10_cv_pct": 2.963783,
+      "ratio_front_over_backK10_in_sample": 20.979231,
+      "note": "后区避让效应比前区连号效应小 1-2 个数量级"
+    }
+  },
+  "conclusion": {
+    "back_collision_exists": "YES —— 后区对被选中率强烈非均匀(过散布 8.72x, MC p<1e-4); 开出率则均匀",
+    "magnitude": "独立 s 模型: 9 号(1.197) vs 12 号(0.747), 组合密度比 2.25x; 饱和模型 Top/Bottom 对密度比约 2.8x",
+    "stability": "单号码偏好(11 参数)仅轻度不稳定; 对特异偏好(额外 54 参数)排名显著不稳定",
+    "in_sample_uplift_pct": {
+      "1": 0.589885,
+      "5": 2.857855,
+      "10": 5.676832
+    },
+    "cross_validated_uplift_pct": {
+      "1": 0.104275,
+      "5": 1.071405,
+      "10": 2.963783
+    },
+    "merge_into_R001": false,
+    "recommendation": "不建议并入 R-001。理由: (1) 量级差 1-2 个数量级(前区~120%% vs 后区 K=5/10 交叉验证约 1-3%%); (2) 交叉验证的 95%%CI 含 0, 避开『历史热门后区对』的收益不可靠; (3) 对特异偏好排名不稳定, 硬排除会引入前视偏差(L6)。可选的弱做法: 仅对独立 s 模型下最热的 1-2 个后区号码(9、5)做软降权, 标注 ★★☆ 与不稳定 caveat; 当前证据不足以形成规则, 建议先记 F-0xxx 并留待 round05 用滚动窗口复核。",
+    "cap_relevance": "E6 一等奖单期总额封顶 1 亿元(F-0016: 样本内从未触发)。后区避让的收益是提高『中奖时的单注奖金』, 与封顶的关系同前区: 只有在高注数、接近单注 500 万上限或总额上限时才被稀释; 后区效应量级小, 几乎不改变封顶的触发概率。"
+  },
+  "caveats": [
+    "L7: 全篇严格区分『开出率』(66/12 频次, 均匀) 与『被选中率』(prize1/prize2 反推, 非均匀), 两者不可混用。",
+    "L5/L1: w1 中位数 2、17.9% 为 0、var/mean=8.46; 故不用逐期比值回归, 改用条件二项似然(聚合为 66 个二项观测量)。",
+    "L2: 66 组合开出率的期望频数 44.4(>5), 渐近卡方本已可用; 仍同时给出 MC 精确检验(B=10000)。被选中率检验同样用 MC。",
+    "L6: 『避开全样本 Top-K 后区对』含前视偏差, in-sample uplift 是上界; 诚实值为 early↔late 交叉验证值(CI 含 0)。",
+    "L8: 给定 v 的条件份额是有限集上的精确期望, 故不做 Monte-Carlo(模拟只会引入噪声); 仅用 bootstrap 传播模型不确定性。",
+    "L9: 一/二等奖注数含义(5+2/5+1)自 2007 未变, 故被选中率可跨全期合并; 所有金额类结论必须声明 rules_epoch='E6'。",
+    "L10: E6(>=26014) 仅 102 期, 未宣称任何封顶条款被触发; 结论限于『当前样本下的偏好结构』。",
+    "L11: s 是由 w1/w2 观测量估计的相对密度(均值归一), 不是由无关量反推; 量纲为无量纲相对密度。",
+    "L12: 独立 s 模型与饱和模型是不同参数化(11 vs 65), 饱和模型相对独立模型 LR=423(df=54); 但两者共享同一 (w1,w2) 数据源, 不是独立数据。",
+    "识别假设 p(F,B) ∝ u(F)v(B) 无法用现有数据直接检验(需按前区分层); 若彩民前后区选择相关, w2/w1 会混入前区成分。",
+    "s 的 Bootstrap CI 只覆盖抽样不确定性, 不含模型错设(独立号码假设被饱和模型拒绝)带来的偏差。",
+    "若未来把后区避让并入规则, 必须按 L6 做滚动窗口/样本外复核, 并声明适用 rules_epoch。"
+  ]
+}

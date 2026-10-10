@@ -1,0 +1,671 @@
+{
+  "seed": 20261011,
+  "cut": "2013-08-28",
+  "report": {
+    "S0_reproduce": {
+      "note": "同口径复现 r03 的分期均值比，用于确认后续分析可比。",
+      "cut": "2013-08-28",
+      "segments": {
+        "pre": {
+          "w1": {
+            "n_ge2": 99,
+            "n_lt2": 861,
+            "mean_ge2": 3.4141,
+            "mean_lt2": 1.6202,
+            "mean_ratio": 2.1072,
+            "mean_ratio_ci95": [
+              1.3045,
+              3.2397
+            ],
+            "median_ratio": 1.0,
+            "trimmed10_ratio": 2.0323,
+            "drop_top1": 1.7194,
+            "drop_top3": 1.4659,
+            "drop_top5": 1.3329,
+            "median_ge2": 1.0,
+            "median_lt2": 1.0
+          },
+          "w2": {
+            "n_ge2": 99,
+            "n_lt2": 861,
+            "mean_ge2": 71.2121,
+            "mean_lt2": 29.3659,
+            "mean_ratio": 2.425,
+            "mean_ratio_ci95": [
+              1.5968,
+              3.6442
+            ],
+            "median_ratio": 1.4,
+            "trimmed10_ratio": 1.6221,
+            "drop_top1": 2.0317,
+            "drop_top3": 1.6551,
+            "drop_top5": 1.4581,
+            "median_ge2": 31.0,
+            "median_lt2": 22.0
+          }
+        },
+        "post": {
+          "w1": {
+            "n_ge2": 193,
+            "n_lt2": 1780,
+            "mean_ge2": 5.9223,
+            "mean_lt2": 4.7483,
+            "mean_ratio": 1.2472,
+            "mean_ratio_ci95": [
+              1.036,
+              1.5075
+            ],
+            "median_ratio": 1.2857,
+            "trimmed10_ratio": 1.2053,
+            "drop_top1": 1.1737,
+            "drop_top3": 1.094,
+            "drop_top5": 1.0429,
+            "median_ge2": 4.0,
+            "median_lt2": 3.0
+          },
+          "w2": {
+            "n_ge2": 193,
+            "n_lt2": 1780,
+            "mean_ge2": 119.5959,
+            "mean_lt2": 99.0433,
+            "mean_ratio": 1.2075,
+            "mean_ratio_ci95": [
+              1.0434,
+              1.4073
+            ],
+            "median_ratio": 1.1677,
+            "trimmed10_ratio": 1.1695,
+            "drop_top1": 1.1389,
+            "drop_top3": 1.0783,
+            "drop_top5": 1.0586,
+            "median_ge2": 97.0,
+            "median_lt2": 83.0
+          }
+        }
+      },
+      "r03_reference": {
+        "pre_w1": 2.1072,
+        "post_w1": 1.2472,
+        "pre_w2": 2.425,
+        "post_w2": 1.2075
+      },
+      "match": true
+    },
+    "S1_data_consistency": {
+      "pre": {
+        "n_draws": 960,
+        "zeros": {
+          "w1": 390,
+          "w2": 0,
+          "sale": 0,
+          "pool": 10,
+          "amt1": 390
+        },
+        "zero_rate_w1": 0.4062,
+        "verified_pdf_rate": 0.0,
+        "verified_api_rate": 0.0,
+        "mean_sale_yuan": 67548156.9,
+        "implied_tickets_from_w1": 38677873.8,
+        "implied_tickets_from_w2": 36082238.1,
+        "feasible_ticket_band": [
+          22516052.3,
+          33774078.4
+        ],
+        "yuan_per_ticket_from_w1": 1.7464,
+        "yuan_per_ticket_from_w2": 1.8721,
+        "feasible": false
+      },
+      "post": {
+        "n_draws": 1973,
+        "zeros": {
+          "w1": 135,
+          "w2": 0,
+          "sale": 0,
+          "pool": 0,
+          "amt1": 135
+        },
+        "zero_rate_w1": 0.0684,
+        "verified_pdf_rate": 0.5073,
+        "verified_api_rate": 0.406,
+        "mean_sale_yuan": 252072736.3,
+        "implied_tickets_from_w1": 104196506.2,
+        "implied_tickets_from_w2": 108257400.7,
+        "feasible_ticket_band": [
+          84024245.4,
+          126036368.2
+        ],
+        "yuan_per_ticket_from_w1": 2.4192,
+        "yuan_per_ticket_from_w2": 2.3285,
+        "feasible": true
+      },
+      "composition_corrected": {
+        "pre": {
+          "draw_composition_weight_ratio": 1.0545,
+          "implied_tickets_corrected": 36679586.3,
+          "yuan_per_ticket_corrected": 1.8416
+        },
+        "post": {
+          "draw_composition_weight_ratio": 1.0549,
+          "implied_tickets_corrected": 98772414.3,
+          "yuan_per_ticket_corrected": 2.5521
+        }
+      },
+      "number_uniformity": {
+        "pre": {
+          "n": 960,
+          "expected_per_number": 137.14,
+          "chi2": 251.49,
+          "df": 34,
+          "min_expected": 137.14,
+          "p_max_le_31_obs": 0.3948
+        },
+        "post": {
+          "n": 1973,
+          "expected_per_number": 281.86,
+          "chi2": 32.08,
+          "df": 34,
+          "min_expected": 281.86,
+          "p_max_le_31_obs": 0.5347
+        },
+        "theory_p_max_le_31": 0.5234,
+        "z_pre": -7.98,
+        "z_post": 1.01
+      }
+    },
+    "S2_estimator_robustness": {
+      "pre": {
+        "w1": {
+          "n_ge2": 99,
+          "n_lt2": 861,
+          "mean_ge2": 3.4141,
+          "mean_lt2": 1.6202,
+          "mean_ratio": 2.1072,
+          "mean_ratio_ci95": [
+            1.3045,
+            3.2397
+          ],
+          "median_ratio": 1.0,
+          "trimmed10_ratio": 2.0323,
+          "drop_top1": 1.7194,
+          "drop_top3": 1.4659,
+          "drop_top5": 1.3329,
+          "median_ge2": 1.0,
+          "median_lt2": 1.0
+        },
+        "w2": {
+          "n_ge2": 99,
+          "n_lt2": 861,
+          "mean_ge2": 71.2121,
+          "mean_lt2": 29.3659,
+          "mean_ratio": 2.425,
+          "mean_ratio_ci95": [
+            1.5968,
+            3.6442
+          ],
+          "median_ratio": 1.4,
+          "trimmed10_ratio": 1.6221,
+          "drop_top1": 2.0317,
+          "drop_top3": 1.6551,
+          "drop_top5": 1.4581,
+          "median_ge2": 31.0,
+          "median_lt2": 22.0
+        }
+      },
+      "post": {
+        "w1": {
+          "n_ge2": 193,
+          "n_lt2": 1780,
+          "mean_ge2": 5.9223,
+          "mean_lt2": 4.7483,
+          "mean_ratio": 1.2472,
+          "mean_ratio_ci95": [
+            1.036,
+            1.5075
+          ],
+          "median_ratio": 1.2857,
+          "trimmed10_ratio": 1.2053,
+          "drop_top1": 1.1737,
+          "drop_top3": 1.094,
+          "drop_top5": 1.0429,
+          "median_ge2": 4.0,
+          "median_lt2": 3.0
+        },
+        "w2": {
+          "n_ge2": 193,
+          "n_lt2": 1780,
+          "mean_ge2": 119.5959,
+          "mean_lt2": 99.0433,
+          "mean_ratio": 1.2075,
+          "mean_ratio_ci95": [
+            1.0434,
+            1.4073
+          ],
+          "median_ratio": 1.1677,
+          "trimmed10_ratio": 1.1695,
+          "drop_top1": 1.1389,
+          "drop_top3": 1.0783,
+          "drop_top5": 1.0586,
+          "median_ge2": 97.0,
+          "median_lt2": 83.0
+        }
+      },
+      "decay": {
+        "w1": {
+          "mean": 0.5919,
+          "median": 1.2857,
+          "trimmed10": 0.5931,
+          "drop_top3": 0.7463
+        },
+        "w2": {
+          "mean": 0.4979,
+          "median": 0.8341,
+          "trimmed10": 0.721,
+          "drop_top3": 0.6515
+        }
+      }
+    },
+    "S3_scale_and_composition": {
+      "group_sale_ratio": {
+        "pre": 1.048,
+        "post": 1.0171
+      },
+      "nb2_glm": {
+        "w1": {
+          "irr_run_pre": 2.0636,
+          "irr_run_pre_ci95": [
+            1.6669,
+            2.5549
+          ],
+          "irr_run_post": 1.2299,
+          "irr_run_post_ci95": [
+            1.0696,
+            1.4142
+          ],
+          "irr_interaction": 0.596,
+          "irr_interaction_ci95": [
+            0.4618,
+            0.7692
+          ],
+          "z_interaction": -3.976,
+          "p_interaction": 7e-05,
+          "implied_per_ticket_win_rate": 4.720435701680683e-08,
+          "theoretical_p1": 4.6672894697735135e-08,
+          "implied_vs_theory": 1.0114
+        },
+        "w2": {
+          "irr_run_pre": 2.3087,
+          "irr_run_pre_ci95": [
+            2.0421,
+            2.6101
+          ],
+          "irr_run_post": 1.203,
+          "irr_run_post_ci95": [
+            1.1033,
+            1.3118
+          ],
+          "irr_interaction": 0.5211,
+          "irr_interaction_ci95": [
+            0.4484,
+            0.6055
+          ],
+          "z_interaction": -8.509,
+          "p_interaction": 0.0,
+          "implied_per_ticket_win_rate": 8.535748465530723e-07,
+          "theoretical_p1": 4.6672894697735135e-08,
+          "implied_vs_theory": 0.9144
+        }
+      },
+      "standardized_ratio": {
+        "pre": 2.0279,
+        "post": 1.2725
+      },
+      "standardized_decay": 0.6275,
+      "rolling": {
+        "window": 400,
+        "step": 50,
+        "n_windows": 51,
+        "w1": {
+          "trend_per_year": -0.0381,
+          "slope_per_window": -0.01236,
+          "p_trend_permutation": 0.0,
+          "best_breakpoint_index": 14,
+          "best_breakpoint_date": "2013-04-10",
+          "sse_step": 1.8618,
+          "sse_trend": 2.3437,
+          "step_better_than_trend": true,
+          "first": 1.526,
+          "last": 1.14,
+          "min": 0.777,
+          "max": 2.91
+        },
+        "w2": {
+          "trend_per_year": -0.0608,
+          "slope_per_window": -0.01971,
+          "p_trend_permutation": 0.0,
+          "best_breakpoint_index": 14,
+          "best_breakpoint_date": "2013-04-10",
+          "sse_step": 1.1127,
+          "sse_trend": 1.2214,
+          "step_better_than_trend": true,
+          "first": 1.887,
+          "last": 1.114,
+          "min": 0.903,
+          "max": 3.13
+        }
+      },
+      "per_year": {
+        "2007": {
+          "n": 93,
+          "n_ge2": 6,
+          "w1_ratio": 4.028,
+          "w2_ratio": 1.063,
+          "p_max_le_31": 0.398
+        },
+        "2008": {
+          "n": 154,
+          "n_ge2": 16,
+          "w1_ratio": 1.184,
+          "w2_ratio": 0.749,
+          "p_max_le_31": 0.409
+        },
+        "2009": {
+          "n": 153,
+          "n_ge2": 17,
+          "w1_ratio": 1.326,
+          "w2_ratio": 2.747,
+          "p_max_le_31": 0.34
+        },
+        "2010": {
+          "n": 153,
+          "n_ge2": 13,
+          "w1_ratio": 2.829,
+          "w2_ratio": 2.961,
+          "p_max_le_31": 0.392
+        },
+        "2011": {
+          "n": 154,
+          "n_ge2": 14,
+          "w1_ratio": 3.201,
+          "w2_ratio": 3.303,
+          "p_max_le_31": 0.435
+        },
+        "2012": {
+          "n": 154,
+          "n_ge2": 21,
+          "w1_ratio": 1.981,
+          "w2_ratio": 2.339,
+          "p_max_le_31": 0.422
+        },
+        "2013": {
+          "n": 153,
+          "n_ge2": 19,
+          "w1_ratio": 1.002,
+          "w2_ratio": 1.303,
+          "p_max_le_31": 0.451
+        },
+        "2014": {
+          "n": 154,
+          "n_ge2": 11,
+          "w1_ratio": 1.035,
+          "w2_ratio": 1.451,
+          "p_max_le_31": 0.461
+        },
+        "2015": {
+          "n": 153,
+          "n_ge2": 18,
+          "w1_ratio": 1.43,
+          "w2_ratio": 1.482,
+          "p_max_le_31": 0.556
+        },
+        "2016": {
+          "n": 154,
+          "n_ge2": 12,
+          "w1_ratio": 1.995,
+          "w2_ratio": 1.115,
+          "p_max_le_31": 0.513
+        },
+        "2017": {
+          "n": 153,
+          "n_ge2": 9,
+          "w1_ratio": 1.919,
+          "w2_ratio": 2.234,
+          "p_max_le_31": 0.497
+        },
+        "2018": {
+          "n": 154,
+          "n_ge2": 15,
+          "w1_ratio": 0.764,
+          "w2_ratio": 1.181,
+          "p_max_le_31": 0.558
+        },
+        "2019": {
+          "n": 150,
+          "n_ge2": 16,
+          "w1_ratio": 1.195,
+          "w2_ratio": 0.856,
+          "p_max_le_31": 0.6
+        },
+        "2020": {
+          "n": 134,
+          "n_ge2": 17,
+          "w1_ratio": 1.787,
+          "w2_ratio": 1.919,
+          "p_max_le_31": 0.515
+        },
+        "2021": {
+          "n": 150,
+          "n_ge2": 15,
+          "w1_ratio": 0.672,
+          "w2_ratio": 0.886,
+          "p_max_le_31": 0.46
+        },
+        "2022": {
+          "n": 150,
+          "n_ge2": 16,
+          "w1_ratio": 0.677,
+          "w2_ratio": 1.016,
+          "p_max_le_31": 0.527
+        },
+        "2023": {
+          "n": 150,
+          "n_ge2": 11,
+          "w1_ratio": 1.765,
+          "w2_ratio": 0.954,
+          "p_max_le_31": 0.527
+        },
+        "2024": {
+          "n": 152,
+          "n_ge2": 18,
+          "w1_ratio": 1.389,
+          "w2_ratio": 1.081,
+          "p_max_le_31": 0.579
+        },
+        "2025": {
+          "n": 150,
+          "n_ge2": 16,
+          "w1_ratio": 1.141,
+          "w2_ratio": 1.181,
+          "p_max_le_31": 0.58
+        },
+        "2026": {
+          "n": 115,
+          "n_ge2": 12,
+          "w1_ratio": 0.94,
+          "w2_ratio": 1.125,
+          "p_max_le_31": 0.548
+        }
+      },
+      "rolling_sensitivity": {
+        "W300_nonoverlap": {
+          "window": 300,
+          "step": 300,
+          "n_windows": 9,
+          "best_breakpoint_date": "2014-04-02",
+          "slope_per_window": -0.10717,
+          "first": 2.15,
+          "last": 1.064
+        },
+        "W300_step25": {
+          "window": 300,
+          "step": 25,
+          "n_windows": 106,
+          "best_breakpoint_date": "2013-06-08",
+          "slope_per_window": -0.00954,
+          "first": 2.15,
+          "last": 1.126
+        },
+        "W500_step100": {
+          "window": 500,
+          "step": 100,
+          "n_windows": 25,
+          "best_breakpoint_date": "2013-08-05",
+          "slope_per_window": -0.04109,
+          "first": 2.328,
+          "last": 1.084
+        }
+      }
+    },
+    "S4_attribution_and_calibration": {
+      "calibrations": {
+        "full_sample_1.3603(沿用 r03)": {
+          "alpha": 13.9405,
+          "collision_factor_rand": 0.9993,
+          "collision_factor_norun": 0.453,
+          "ratio_norun_vs_rand": 0.4533,
+          "ratio_ci95": [
+            0.4493,
+            0.4567
+          ],
+          "uplift_pct_nocap": 120.59,
+          "scenarios_with_cap": {
+            "anchor": {
+              "uplift_pct_with_cap": 41.02,
+              "cap_triggered": false
+            },
+            "anchor_lo": {
+              "uplift_pct_with_cap": 0.0,
+              "cap_triggered": false
+            },
+            "anchor_hi": {
+              "uplift_pct_with_cap": 111.52,
+              "cap_triggered": false
+            }
+          }
+        },
+        "post_segment_w1_mean_1.2472": {
+          "alpha": 12.7815,
+          "collision_factor_rand": 0.9967,
+          "collision_factor_norun": 0.476,
+          "ratio_norun_vs_rand": 0.4776,
+          "ratio_ci95": [
+            0.4725,
+            0.4795
+          ],
+          "uplift_pct_nocap": 109.39,
+          "scenarios_with_cap": {
+            "anchor": {
+              "uplift_pct_with_cap": 40.64,
+              "cap_triggered": false
+            },
+            "anchor_lo": {
+              "uplift_pct_with_cap": 0.0,
+              "cap_triggered": false
+            },
+            "anchor_hi": {
+              "uplift_pct_with_cap": 109.39,
+              "cap_triggered": false
+            }
+          }
+        },
+        "post_segment_w2_trimmed": {
+          "alpha": 11.9852,
+          "collision_factor_rand": 1.0014,
+          "collision_factor_norun": 0.4931,
+          "ratio_norun_vs_rand": 0.4924,
+          "ratio_ci95": [
+            0.4898,
+            0.4965
+          ],
+          "uplift_pct_nocap": 103.08,
+          "scenarios_with_cap": {
+            "anchor": {
+              "uplift_pct_with_cap": 41.3,
+              "cap_triggered": false
+            },
+            "anchor_lo": {
+              "uplift_pct_with_cap": 0.0,
+              "cap_triggered": false
+            },
+            "anchor_hi": {
+              "uplift_pct_with_cap": 103.08,
+              "cap_triggered": false
+            }
+          }
+        },
+        "post_segment_w2_median": {
+          "alpha": 11.9667,
+          "collision_factor_rand": 1.0019,
+          "collision_factor_norun": 0.4937,
+          "ratio_norun_vs_rand": 0.4928,
+          "ratio_ci95": [
+            0.4905,
+            0.4974
+          ],
+          "uplift_pct_nocap": 102.93,
+          "scenarios_with_cap": {
+            "anchor": {
+              "uplift_pct_with_cap": 41.38,
+              "cap_triggered": false
+            },
+            "anchor_lo": {
+              "uplift_pct_with_cap": 0.0,
+              "cap_triggered": false
+            },
+            "anchor_hi": {
+              "uplift_pct_with_cap": 102.93,
+              "cap_triggered": false
+            }
+          }
+        },
+        "full_sample_w2_trimmed": {
+          "alpha": 12.8605,
+          "collision_factor_rand": 0.9994,
+          "collision_factor_norun": 0.4741,
+          "ratio_norun_vs_rand": 0.4744,
+          "ratio_ci95": [
+            0.4707,
+            0.4779
+          ],
+          "uplift_pct_nocap": 110.79,
+          "scenarios_with_cap": {
+            "anchor": {
+              "uplift_pct_with_cap": 41.03,
+              "cap_triggered": false
+            },
+            "anchor_lo": {
+              "uplift_pct_with_cap": 0.0,
+              "cap_triggered": false
+            },
+            "anchor_hi": {
+              "uplift_pct_with_cap": 110.79,
+              "cap_triggered": false
+            }
+          }
+        }
+      },
+      "recommended": {
+        "ratio": 1.2472,
+        "reason": "后段（>=2013-08-28）与现行 E6 时段更接近；前段存在号码分布异常与注数/销售额不一致（S1），不宜作为校准基准。",
+        "alpha": 12.7815,
+        "uplift_pct_nocap": 109.39,
+        "uplift_pct_with_cap_anchor": 40.64
+      },
+      "attribution": {
+        "H-A 行为真实变化": "部分支持：控制销量与成分后，效应在后段仍显著低于前段（NB2 交互 IRR<1）；但幅度被均值比口径放大。",
+        "H-B 数据口径/质量变化": "不能排除：前段（<2013-08）存在两项硬证据 —— (i) 前区号码分布严重偏离均匀（29-35 号系统性超发，P(前区全部<=31)=0.395 vs 理论 0.523，z=-8.0）；(ii) 由中出注数反推的投注量超出售额允许上限（均价 1.75 元/注 < 最低票价 2 元），后段则为 2.42 元/注。",
+        "H-C 销量稀释": "基本排除为主因：NB2 以 log(销量/2) 为 offset 控制规模后，交互项仍显著（IRR=0.596, p=7.00e-05），说明不是「注数变多导致比值被摊平」。",
+        "verdict": "衰减是真实的，但「幅度衰减过半」是**均值比口径 + 前段重尾**的联合产物；前段效应量不可靠（w1 剔 top1 即由 2.107 降至 1.719，中位数比 = 1.00），稳健口径下的衰减比约 0.72~0.83。因此 F-0004 应改用**后段稳健口径**校准，而不是全样本 1.36、也不是前段的 2.11。"
+      }
+    }
+  }
+}

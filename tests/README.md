@@ -1,13 +1,13 @@
 # tests/ — 测试
 
-> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.4` ｜ 轮次 `r04` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 现状
 
 | 文件 | 项数 | 覆盖 |
 |---|---|---|
-| `test_core.py` | **113**（全绿） | 红线 / 原语 / Ticket / DSL / 作用域 / 数学 / 端到端 / 声明静态检查 |
+| `test_core.py` | **117**（全绿） | 红线 / 原语 / Ticket / DSL / 作用域 / 数学 / 端到端 / 声明静态检查 |
 | `test_cross_scope.py` | **62**（全绿） | ★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描 |
 | `test_claim_type.py` | **43**（全绿） | ★ 证据类型：五类约束**真的会拦** / schema 与 Python 双通道一致 / 分类自洽 |
 | `test_evidence_anchor.py` | **32**（全绿） | ★ 证据锚定：漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等 |
@@ -93,7 +93,7 @@ python tests/test_evidence_anchor.py
 ## 运行方式
 
 ```bash
-# 核心测试（113 项）
+# 核心测试（117 项）
 python tests/test_core.py
 
 # 跨注层测试（62 项）

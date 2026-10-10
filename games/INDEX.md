@@ -1,13 +1,13 @@
 # games/ —— 彩种索引
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r04` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 已接入彩种
 
 | id | 名称 | 号码空间 T | 一等奖概率 | 返奖率 | 结论数 | 轮次 | 策略 |
 |---|---|---|---|---|---|---|---|
-| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 18 | round03 ✅ / round04 计划中 | `dlt/strategy/strategy.json` |
+| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 25 | round04 ✅ / round05 计划中 | `dlt/strategy/strategy.json` |
 
 > 上表是**手工维护的速览**。权威数据源：
 > - 结论数 → `python cli/main.py info`
@@ -47,7 +47,8 @@ games/
     ├── iterations/       #   轮次
     │   ├── round02/      #     已完成：FINDINGS / HANDOFF / manifest / legacy_findings
     │   ├── round03/      #     已完成：复核轮（FINDINGS / HANDOFF / manifest）
-    │   └── round04/      #     计划中：TASK_BRIEF / manifest
+    │   ├── round04/      #     已完成：归因轮（FINDINGS / HANDOFF / manifest + 5 脚本 + 3 JSON）
+    │   └── round05/      #     计划中：TASK_BRIEF（前段数据取证 + R-002 量化）
     ├── strategy/         #   对外输出
     │   ├── strategy.json #     唯一稳定契约
     │   └── strategy_simulation.py + simulation_results.json

@@ -2,65 +2,150 @@
   "round": "round04",
   "game": "dlt",
   "title": "撞号效应衰减归因与策略维度扩展",
-  "status": "planned",
-  "started_at": null,
-  "finished_at": null,
-  "executor": null,
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（DeepSeek Harness；T-102/T-103 由隔离子代理独立实现，主执行者实跑复核）",
   "supersedes_round": null,
-
   "inputs": {
     "data_version": "dlt_full_2933",
-    "upstream_fact_ids": ["F-0003", "F-0004", "F-0006", "F-0011", "F-0012", "F-0016", "F-0017", "F-0018"],
+    "upstream_fact_ids": [
+      "F-0003",
+      "F-0004",
+      "F-0006",
+      "F-0011",
+      "F-0014",
+      "F-0016",
+      "F-0017",
+      "F-0018"
+    ],
     "previous_handoff": "games/dlt/iterations/round03/HANDOFF.md",
     "task_brief": "games/dlt/iterations/round04/TASK_BRIEF.md",
-    "forbidden_fact_ids": ["F-0007", "F-0015"],
-    "note": "本 manifest 由 round03 的 HANDOFF 预生成（status=planned）。执行时请填 started_at / executor，并在收轮时补 outputs 与 deliverables。"
+    "forbidden_fact_ids": [
+      "F-0007",
+      "F-0015"
+    ],
+    "note": "三条任务线（T-101 衰减归因 / T-102 择时 / T-103 后区撞号）全部闭合；本轮最重要的产出是『前段数据不自洽』与『衰减幅度是估计量依赖的』。"
   },
-
   "outputs": {
-    "new_fact_ids": [],
+    "new_fact_ids": [
+      "F-0019",
+      "F-0020",
+      "F-0021",
+      "F-0022",
+      "F-0023",
+      "F-0024",
+      "F-0025"
+    ],
     "superseded_fact_ids": [],
     "refuted_fact_ids": [],
-    "new_lesson_ids": [],
-    "new_question_ids": [],
-    "strategy_updated": false,
-    "planned_updates": [
-      "F-0003: 补衰减归因（若 T-101 结论明确）",
-      "F-0004: 口径可能从全样本 1.36 改为后段 1.25（取决于 T-101）",
-      "可能新增 R-00x（择时规则，若 T-102 找到高期望期）"
+    "new_lesson_ids": [
+      "L13",
+      "L14"
+    ],
+    "new_question_ids": [
+      "Q-013",
+      "Q-014",
+      "Q-015",
+      "Q-016"
+    ],
+    "strategy_updated": true,
+    "actual_updates": [
+      "F-0019 新增：前段（<2013-08）数据在号码分布—中出注数—销售额三者间不自洽",
+      "F-0020 新增：F-0003 的『衰减过半』是估计量依赖的（稳健口径 0.65~0.83）",
+      "F-0021 新增：弱化与 F-0006 的 2013-08 变点同期，且销量稀释已排除",
+      "F-0022 新增：后段口径下 F-0004 的上界 121.5%→109.4%、含封顶 41.0%→40.6%",
+      "F-0023 新增：不存在稳健的『高期望期』（择时）",
+      "F-0024 新增：r_t 与 er_t 背离 —— 用派发比衡量择时会误判（L12）",
+      "F-0025 新增：后区撞号存在但不可靠可利用",
+      "F-0003 更新：幅度口径修正（稳健区间 0.65~0.83；前段不可作行为基线）",
+      "F-0004 更新：校准口径改为后段 1.2472（上界 109.39% / 含封顶 40.64%）",
+      "F-0011 更新：L7 型口径混淆修正（开出率均匀 vs 被选中率非均匀）",
+      "strategy.json：R-001 幅度改后段口径；A-006 理由更正；新增 A-009（择时被驳回）；evidence_index 12 → 17",
+      "game.yaml：round03/round04 状态改 delivered；cap_rules.observed_trigger 按 F-0016 更正"
+    ],
+    "questions_closed": [
+      "Q-003",
+      "Q-007",
+      "Q-010"
     ]
   },
-
   "deliverables": [
-    {"path": "games/dlt/iterations/round04/TASK_BRIEF.md", "kind": "task_brief", "note": "由 round03/HANDOFF 转写"},
-    {"path": "games/dlt/iterations/round04/manifest.json", "kind": "manifest", "note": "本文件（planned）"}
-  ],
-
-  "open_questions": ["Q-010", "Q-003", "Q-007"],
-
-  "framework_revision": null,
-
-  "planned_tasks": [
     {
-      "id": "T-101",
-      "title": "撞号效应衰减归因（人群变化 / 数据口径 / 销量稀释）",
-      "priority": "P1",
-      "question": "Q-010",
-      "script": "games/dlt/iterations/round04/scripts/decay_cause.py"
+      "path": "games/dlt/iterations/round04/TASK_BRIEF.md",
+      "kind": "task_brief",
+      "note": "由 round03/HANDOFF 转写"
     },
     {
-      "id": "T-102",
-      "title": "奖金瓜分机制与『高期望期』是否存在（Tobit + epoch 分段）",
-      "priority": "P1",
-      "question": "Q-007",
-      "script": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py"
+      "path": "games/dlt/iterations/round04/manifest.json",
+      "kind": "manifest"
     },
     {
-      "id": "T-103",
-      "title": "后区撞号建模（66 组合人群密度 + 条件份额模拟）",
-      "priority": "P1",
-      "question": "Q-003",
-      "script": "games/dlt/iterations/round04/scripts/back_collision.py"
+      "path": "games/dlt/iterations/round04/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "games/dlt/iterations/round04/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/decay_cause.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/decay_cause.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/back_collision.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/back_collision.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round04/scripts/apply_r04_strategy.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round05/TASK_BRIEF.md",
+      "kind": "task_brief",
+      "note": "下一轮任务书（迭代链不断）"
     }
-  ]
+  ],
+  "open_questions": [
+    "Q-005",
+    "Q-006",
+    "Q-008",
+    "Q-011",
+    "Q-012",
+    "Q-013",
+    "Q-014",
+    "Q-015",
+    "Q-016"
+  ],
+  "framework_revision": {
+    "proposed": [
+      "R-7: fact.schema.json 增加『数据段可信度』声明（segment_validity）—— F-0019 的教训：同一 data_version 内部不同时段可信度不同",
+      "R-8: evidence 增加必填 estimator（估计量口径）与 robustness（稳健对照）—— F-0020 的教训",
+      "R-9: 负结论（不存在效应）应有表示（effect.verdict_direction: negative）—— F-0023/F-0025",
+      "R-5: strategy.schema.json 增加 validity_window（沿用 r02 建议，本轮 F-0020/F-0021 再次需要）",
+      "R-1 / R-2: verification_class 枚举、depends_on 依赖边（沿用 r02/r03 建议）"
+    ],
+    "accepted": [],
+    "rejected": []
+  }
 }

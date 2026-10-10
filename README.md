@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.11` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.12` ｜ 轮次 `r04` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.1`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.2`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.1`（轮次 `r03`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.2`（轮次 `r04`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -87,10 +87,10 @@ python cli/main.py new-game <game_id>
 
 ```
 ├── pyproject.toml          v0.1.0   ← 顶层版本（release）= smartpickcore 整体版本，源自 project.version
-├── AI_CONTEXT.md          v1.3   ← 单一入口。AI 与人都从这里进
+├── AI_CONTEXT.md          v1.4   ← 单一入口。AI 与人都从这里进
 ├── VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 ├── versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
-├── README.md              v1.11  ← 本文件
+├── README.md              v1.12  ← 本文件
 ├── spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
 │   ├── fact.schema.json            ← 结论契约（claim_type / source_sha256 / 红线）
 │   ├── game_config.schema.json     ← 彩种配置契约（sum_affects_numbers 红线）
@@ -138,17 +138,18 @@ python cli/main.py new-game <game_id>
 │   └── main.py              —      ← 命令行入口（14 个命令）
 ├── memory/                        ← 记忆层
 │   ├── facts/
-│   │   ├── FACTS.jsonl        v1.3   ← 结论台账（18 条，JSONL 追加式；每条带 claim_type + source_sha256）
-│   │   └── INDEX.md           v1.3   ← 速览（派生物，CLI 生成，勿手改）
+│   │   ├── FACTS.jsonl        v1.4   ← 结论台账（25 条，JSONL 追加式；每条带 claim_type + source_sha256）
+│   │   └── INDEX.md           v1.4   ← 速览（派生物，CLI 生成，勿手改）
 │   ├── journal/
 │   │   ├── round02.md
-│   │   └── round03.md
+│   │   ├── round03.md
+│   │   └── round04.md
 │   ├── lessons/
-│   │   └── LESSONS.md         v1.1   ← 教训库 L1–L12（只增不删）
+│   │   └── LESSONS.md         v1.2   ← 教训库 L1–L14（只增不删）
 │   ├── workbench/
-│   │   ├── TODO.md            v1.4   ← 任务台账（P0 已清空）
-│   │   ├── OPEN_QUESTIONS.md          ← 开放问题（11，3 answered）
-│   │   └── HYPOTHESES.md              ← 假设（5）
+│   │   ├── TODO.md            v1.5   ← 任务台账（P0 已清空）
+│   │   ├── OPEN_QUESTIONS.md  v1.3   ← 开放问题（15，6 answered）
+│   │   └── HYPOTHESES.md      v1.1   ← 假设（5；H-004 已推翻）
 │   └── INDEX.md
 ├── games/                         ← 彩种（数据 + 轮次 + 策略）
 │   ├── _template/                   ← 新彩种骨架
@@ -170,13 +171,14 @@ python cli/main.py new-game <game_id>
 │   │   │   ├── round01/                 ← 空占位
 │   │   │   ├── round02/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + legacy_findings/
 │   │   │   ├── round03/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + scripts/
-│   │   │   └── round04/                 ← TASK_BRIEF / manifest（待测）
+│   │   │   ├── round04/                 ← FINDINGS / HANDOFF / manifest + 5 个脚本 + 3 个 JSON
+│   │   │   └── round05/                 ← TASK_BRIEF（待做）
 │   │   └── strategy/
-│   │       ├── strategy.json            ← schema 1.1（2 规则 + 8 avoid_list）
-│   │       ├── STRATEGY_GUIDE.md        ← 人话版 v1.1
+│   │       ├── strategy.json            ← schema 1.1（2 规则 + 9 avoid_list）
+│   │       ├── STRATEGY_GUIDE.md        ← 人话版 v1.2
 │   │       ├── simulation_results.json
 │   │       └── strategy_simulation.py
-│   └── INDEX.md             v1.1   ← 彩种索引
+│   └── INDEX.md             v1.2   ← 彩种索引
 ├── tools/                         ← 版本索引生成 / 注入脚本
 │   ├── build_versions.py
 │   ├── render_version_index.py
@@ -189,9 +191,9 @@ python cli/main.py new-game <game_id>
 │   ├── METHODOLOGY.md
 │   ├── PROPOSAL_SINGLE_TICKET_CORE.md
 │   └── VERSIONING_DOCS.md
-└── tests/                         ← 5 个测试（共 319 项，无需 pytest）
+└── tests/                         ← 5 个测试（共 323 项，无需 pytest）
     ├── README.md                   ← 测试说明（v1.3，tests/README.md）
-    ├── test_core.py                 ← 113 项
+    ├── test_core.py                 ← 117 项
     ├── test_cross_scope.py          ← 62 项
     ├── test_claim_type.py           ← 43 项
     ├── test_evidence_anchor.py      ← 32 项
@@ -263,19 +265,30 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 5 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **18 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L12 / 11 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **48 项全绿** |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
-| `tests/` | ✅ `test_core.py` **113** + `test_cross_scope.py` **62** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **319** 项） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**132 条**登记（A=34 B=58 C=13 D=27），版本行全部一致 |
+| 记忆层 | ✅ **25 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L14 / 15 开放问题（6 answered）/ 5 假设（1 已推翻）/ 待办（P0 已清空） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **52 项全绿** |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round04 完成**（衰减归因 / 择时 / 后区）+ round05 任务书 |
+| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **62** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **323** 项） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**144 条**登记（A=46 B=58 C=13 D=27），版本行全部一致 |
 
-### r03 复核要点（结论已修正）
+### r04 归因要点（口径已复核）
+
+| 项 | 结果 |
+|---|---|
+| **前段数据能不能用？** | **不能当基线**：2013-08 之前那段在「号码分布—中出注数—销售额」三者间不自洽（`F-0019`） |
+| **"衰减过半"对不对？** | **口径依赖**：均值比口径 0.59/0.50；稳健口径（中位数/截尾/剔极端期）只有 **0.65~0.83**（`F-0020`） |
+| **衰减的成因** | 与 F-0006 的 2013-08 号码结构变点**同期**；**销量稀释已排除**（NB2 交互 IRR 0.596）（`F-0021`） |
+| **F-0004 该按哪个口径？** | **后段 1.2472**：未计封顶上界 **109.4%**、含封顶实测锚点 **40.6%**（`F-0022`） |
+| **高奖池期该不该加注？** | **不存在稳健高期望期** → 不新增规则，反而新增 `A-009` 驳回择时（`F-0023` / `F-0024`） |
+| **后区能不能用？** | 撞号结构**存在但不可靠可利用**（交叉验证 uplift 1~3%、CI 含 0）；F-0011 的口径混淆已修正（`F-0025`） |
+
+### r03 复核要点（历史留档）
 
 | 项 | 结果 |
 |---|---|
 | **封顶是否触发过？** | **从未**（E6 102 期一等奖总额最大 0.9788 亿）→ `F-0015` 被推翻，新增 `F-0016` |
-| **计入封顶后的收益** | 未计封顶上界 **121%** → 实测锚点净值 **41.4%**（`F-0017`） |
-| **撞号效应稳健性** | 仍成立但**幅度衰减过半**（前段 2.11 → 后段 1.25），`F-0003` 已更新 |
+| **计入封顶后的收益** | 未计封顶上界 **121%** → 实测锚点净值 **41.4%**（`F-0017`）；r04 按后段口径重算为 **109.4% / 40.6%**（`F-0022`） |
+| **撞号效应稳健性** | 仍成立；"幅度衰减过半"经 r04 复核为**口径依赖**（`F-0020`） |
 | **L5 技术债** | **已清偿**：中位数比 1.5 + 截尾检验仅变化 1.72%（`F-0018`） |
 
 ### 已知未闭合
@@ -285,8 +298,9 @@ python cli/main.py new-game <game_id>
 | `R-002` 跨注规则 | ✅ **执行层已闭合**（2.1）：已声明 `scope: cross` 特征 `has_duplicated_structure`，`judge_cross()` 可真正判定。⚠️ 但 `magnitude_pct` 仍为 **null** —— **可执行 ≠ 已量化** |
 | `spread_penalty` | 启发式，**未量化**（不是统计结论）。有跨注特征时应优先用跨注特征 |
 | L3 组合**优化** | **未实现**。跨注层只补齐了"执行"，"在候选集上求解最优组合"仍未做 |
-| 奖金封顶 | +121.48% 的计算**未纳入** 1 亿封顶（Q-004，P0） |
-| Q-009 | 组合分散度研究**尚未写入**开放问题清单 |
+| 奖金封顶 | ✅ **已闭合**（r03 T-003 + r04 F-0022）：封顶已纳入模拟，口径改为后段 109.4% / 含封顶 40.6% |
+| 前段数据可信度 | ⚠️ `F-0019`：2013-08 之前那段**不自洽**，含前段的全样本数字只是"历史口径"（`Q-013`/`Q-014`，r05 首推） |
+| Q-009 | 组合分散度研究**未获用户批准**，保持不动 |
 
 ## 免责声明
 

@@ -250,8 +250,11 @@ prize_model:
       type: single_period_total_cap
       amount_yuan: 100000000
       overflow: roll_into_pool
-      observed_trigger: "26113 (2026-10-05): 37 注一等奖 → 单注 2,390,000 元"
-      # ⚠️ 此封顶直接削弱 F-0004 的 +121% 上界（见 Q-004 / T-003）
+      # ⚠️ r03 更正（F-0016）：E6 全 102 期（>=26014）一等奖单期总额最大值仅 0.9788 亿
+      #    （26060 期），封顶**从未触发**；26113 期的 239 万/注是 37 注自然摊薄，不是封顶所致。
+      observed_trigger: "none (E6 102 期均未触发；最大总额 0.9788 亿 / 26060 期) —— F-0016"
+      # ⚠️ 该封顶把 F-0004 的收益上界由 121% 压到约 41%（F-0017）；r04 按后段口径重算为
+      #    上界 109% / 含封顶 40.6%（F-0022）。
     - epoch: E6
       scope: "prize1"
       type: single_ticket_cap
@@ -348,11 +351,17 @@ iterations:
     title: v4 素材结构化入库（建立记忆层与契约层）
     date: "2026-10-10"
   - round: round03
-    status: planned
+    status: delivered
     title: 撞号效应稳健性与封顶修正
-    date: null
+    date: "2026-10-11"
+    note: 复核轮：推翻 F-0015、新增 F-0016/F-0017/F-0018、清偿 L5 技术债
+  - round: round04
+    status: delivered
+    title: 撞号效应衰减归因与策略维度扩展
+    date: "2026-10-11"
+    note: 衰减归因（前段口径异常 + 估计量依赖）、后区撞号、奖金瓜分与择时
 
 strategy_output:
   schema: spec/strategy.schema.json
   path: games/dlt/strategy/strategy.json
-  version: "1.0"
+  version: "1.1"

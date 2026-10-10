@@ -154,12 +154,12 @@ def test_fact_anchor() -> None:
     )
 
 
-# ================================================================ 3. 18 条已锚定
+# ================================================================ 3. 25 条已锚定
 
 def test_real_facts_anchored() -> None:
-    section("3. 18 条真实结论：source 均已锚定且实算一致")
+    section("3. 25 条真实结论：source 均已锚定且实算一致")
 
-    check(len(FACTS) == 18, f"FACTS.jsonl 共 {len(FACTS)} 条")
+    check(len(FACTS) == 25, f"FACTS.jsonl 共 {len(FACTS)} 条")
 
     unanchored = [
         f["id"] for f in FACTS
@@ -206,7 +206,7 @@ def test_drift_detected() -> None:
         check(bool(_anchor_errs(base, fake_root)),
               f"source 内容真的被改 → 报错（{src_rel}）")
 
-    # 4c. 未锚定只给 warning，不报错（避免一次性把 18 条全打红）
+    # 4c. 未锚定只给 warning，不报错（避免一次性把 25 条全打红）
     nohash = copy.deepcopy(base)
     nohash["evidence"]["source_sha256"] = None
     check(not _anchor_errs(nohash), "未锚定不报错（只警告，避免误报风暴）")
