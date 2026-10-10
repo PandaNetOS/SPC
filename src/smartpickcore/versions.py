@@ -223,10 +223,12 @@ def verify_versions(repo_root: str) -> dict:
     if not fv:
         warnings.append("versions.json 缺 framework_version")
 
-    # ---- 4. README 目录树里的版本标注必须与 versions.json 一致
-    #        格式：`<短路径>   vX.Y   ← 说明`（见 README「目录结构」代码块）
-    #        目录树用短名（如 `facts/INDEX.md`），故按**后缀唯一匹配**解析；
-    #        歧义（如裸 `INDEX.md` 有 4 个候选）或多义时跳过，不误报。
+    # ---- 4. README 里的版本标注必须与 versions.json 一致
+    #        支持两种写法（同一行可同时命中）：
+    #          a) 目录树：  `<短路径>   vX.Y   ← 说明`
+    #          b) 链接标题：`[**名字**](路径) ... `vX.Y``  或  `路径 — vX.Y`
+    #        目录树/链接常用短名（如 `facts/INDEX.md`），按**后缀唯一匹配**解析；
+    #        歧义（裸 `INDEX.md` 有 4 个候选）或多义时跳过，不误报。
     n_readme_ok = 0
     n_readme_bad = 0
     n_readme_skip = 0
@@ -234,39 +236,56 @@ def verify_versions(repo_root: str) -> dict:
     if os.path.exists(readme):
         all_paths = [e.get("path") or "" for e in entries]
         by_path = {e.get("path"): e for e in entries}
-        for lineno, line in enumerate(open(readme, encoding="utf-8"), 1):
-            m = re.match(r"^\s*(?P<path>[^\s/]+(?:/[^\s]+)*?)\s{2,}v(?P<ver>\d+\.\d+)\s", line)
-            if not m:
-                continue
-            raw = m.group("path").lstrip("./")
+
+        # 形式 a：行首短路径 + 2 空格以上 + vX.Y
+        re_tree = re.compile(
+            r"^\s*(?P<path>[^\s/]+(?:/[^\s]+)*?)\s{2,}v(?P<ver>\d+\.\d+)\s")
+        # 形式 b：被 `(...)`（Markdown 链接）或 `` `...` `` 包裹的路径，
+        #         其后 30 字符内出现 vX.Y（版本可再被反引号包裹）
+        re_ref = re.compile(
+            r"(?:\(|`)(?P<path>[A-Za-z0-9_./\-]+\.(?:md|json|jsonl|ya?ml|py|toml))"
+            r"(?:\)|`)[^\n]{0,30}?`?v(?P<ver>\d+\.\d+)`?")
+
+        def _resolve(raw: str) -> tuple[str | None, int]:
+            """把短名/全路径解析成唯一条目。返回 (path|None, 状态)。
+
+            状态：1=唯一命中  0=歧义/未登记（跳过）
+            """
+            raw = raw.lstrip("./")
             if raw in by_path:
-                cands = [raw]
-            else:
-                cands = [
-                    p for p in all_paths
-                    if p.endswith("/" + raw) or p.lower() == raw.lower()
-                    or p.lower().endswith("/" + raw.lower())
-                ]
-            if len(cands) != 1:
-                n_readme_skip += 1  # 歧义或未登记 —— 跳过，不当成错误
-                continue
-            cand = cands[0]
-            e = by_path.get(cand)
-            if e is None:
-                n_readme_skip += 1
-                continue
-            want = e.get("content_version")
-            got = m.group("ver")
-            if want is None:
-                n_readme_skip += 1  # 该文件不单独版本化
-            elif got != want:
-                errors.append(
-                    f"README.md:{lineno} 版本标注过期 —— "
-                    f"README 写 v{got}，索引是 v{want}（'{cand}'）"
-                )
-                n_readme_bad += 1
-            else:
-                n_readme_ok += 1
+                return raw, 1
+            cands = [
+                p for p in all_paths
+                if p.endswith("/" + raw) or p.lower() == raw.lower()
+                or p.lower().endswith("/" + raw.lower())
+            ]
+            if len(cands) == 1:
+                return cands[0], 1
+            return None, 0
+
+        for lineno, line in enumerate(open(readme, encoding="utf-8"), 1):
+            hits: list[tuple[str, str]] = []          # (path, ver)
+            for m in re_tree.finditer(line):
+                hits.append((m.group("path"), m.group("ver")))
+            for m in re_ref.finditer(line):
+                hits.append((m.group("path"), m.group("ver")))
+            for raw, got in hits:
+                cand, st = _resolve(raw)
+                if st != 1 or cand is None:
+                    n_readme_skip += 1
+                    continue
+                e = by_path.get(cand)
+                want = (e or {}).get("content_version")
+                if want is None:
+                    n_readme_skip += 1  # 该文件不单独版本化
+                elif got != want:
+                    errors.append(
+                        f"README.md:{lineno} 版本标注过期 —— "
+                        f"README 写 v{got}，索引是 v{want}（'{cand}'）"
+                    )
+                    n_readme_bad += 1
+                else:
+                    n_readme_ok += 1
 
     stats = {
         "total": len(entries),
