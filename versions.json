@@ -1136,6 +1136,21 @@
       "iteration": "r03",
       "note": "★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest",
       "status": "active"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tests/fixtures/shadow/game.yaml",
+      "level": "D",
+      "kind": "test_fixture",
+      "status": "active"
     }
   ],
   "history": [

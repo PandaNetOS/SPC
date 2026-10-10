@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.1",
+  "game": "shadow",
+  "generated_at": "2026-10-11",
+  "generated_by": "smartpickcore-tests/fixtures（人工夹具，非 CLI 生成）",
+  "data_version": "shadow_fixture_3",
+  "rules_epoch": "S1",
+  "disclaimer": {
+    "is_negative_ev": true,
+    "changes_win_probability": false,
+    "text": "影子彩种是框架通用性测试夹具，不存在真实投注场景。这里仍完整保留与真实彩种一致的两条红线（负期望 / 不改中奖概率），是为了验证『红线结构』本身也是彩种无关的 —— 换个彩种，这两条恒值不许变。"
+  },
+  "boundary": {
+    "total_combinations": 840,
+    "first_prize_probability": 0.0011904761904761905,
+    "return_rate": 0.5,
+    "optimizable_target": "expected_bonus_given_win",
+    "note": "T = C(9,3) × C(5,2) = 84 × 10 = 840；p1 = 1/840。影子彩种号码池远小于大乐透，仅用于测试框架是否真的从配置读数。"
+  },
+  "rules": [
+    {
+      "id": "R-101",
+      "statement": "避开红区含相邻号对的形态（如 01-02）；单注层即可判定。",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "has_pair == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": ["F-0001"],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "bonus_given_win",
+        "direction": "increase",
+        "changes_win_probability": false,
+        "magnitude_pct": null
+      }
+    },
+    {
+      "id": "R-102",
+      "statement": "组内出现红区结构同构的注时降权；跨注层，必须拿到一整组号码才能判定。",
+      "kind": "portfolio_spread",
+      "scope": "cross",
+      "machine_rule": {
+        "predicate": "has_dup_struct == true",
+        "action": "penalize",
+        "weight": 0.5
+      },
+      "evidence_refs": ["F-0001"],
+      "confidence": 2,
+      "expected_value_impact": {
+        "metric": "variance",
+        "direction": "decrease",
+        "changes_win_probability": false,
+        "magnitude_pct": null
+      }
+    },
+    {
+      "id": "R-103",
+      "statement": "红区至少含一个奇数；机械约束，用于验证 require 分支在影子彩种上同样生效。",
+      "kind": "mechanical",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "red_odd >= 1",
+        "action": "require",
+        "weight": null
+      },
+      "evidence_refs": ["F-0001"],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "none",
+        "direction": "neutral",
+        "changes_win_probability": false,
+        "magnitude_pct": null
+      }
+    }
+  ],
+  "avoid_list": [
+    {
+      "id": "A-101",
+      "statement": "用历史频率选号（夹具示例条目）",
+      "refuted_by": ["F-0006"],
+      "reason": "夹具条目：只为验证 avoid_list 结构在影子彩种上同样合规。真实依据见 dlt 侧的同一条。"
+    }
+  ],
+  "evidence_index": [
+    {
+      "id": "F-0001",
+      "claim": "任何选号方式都不能改变单注的中奖概率",
+      "status": "established",
+      "confidence": 5
+    }
+  ],
+  "provenance": {
+    "iteration": "round03",
+    "generator": "tests/fixtures/shadow（人工夹具，非 CLI 生成）",
+    "evidence_hash": null,
+    "note": "夹具不参与证据锚定：validate_strategy() 只对真实彩种跑。evidence_hash 为 null 是刻意的 —— 影子彩种没有自己的结论台账。"
+  }
+}
