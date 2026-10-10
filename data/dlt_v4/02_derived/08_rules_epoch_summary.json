@@ -1,0 +1,124 @@
+{
+ "note": "按 06_RULES_HISTORY.md 的规则变更断点分段。跨断点的奖金金额不可直接比较。",
+ "epochs": [
+  {
+   "epoch": "E0 原始规则(8奖级)",
+   "from": "2007-05-30",
+   "to": "2009-10-17",
+   "prize_levels": 8,
+   "n_draws": 367,
+   "draw_num_range": [
+    "07001",
+    "09120"
+   ],
+   "sale_mean_yuan": 43102019.1,
+   "pool_mean_yuan": 80188625.9,
+   "prize1_winners_mean": 0.9946,
+   "prize1_winners_median": 0.0,
+   "prize1_amount_mean_yuan": 2668432.0,
+   "prize1_amount_cap500w_ratio": 0.4332
+  },
+  {
+   "epoch": "E1 奖池过亿1000万(8奖级)",
+   "from": "2009-10-17",
+   "to": "2013-12-09",
+   "prize_levels": 8,
+   "n_draws": 637,
+   "draw_num_range": [
+    "09121",
+    "13143"
+   ],
+   "sale_mean_yuan": 84344807.5,
+   "pool_mean_yuan": 152579523.3,
+   "prize1_winners_mean": 2.3124,
+   "prize1_winners_median": 1.0,
+   "prize1_amount_mean_yuan": 4987980.3,
+   "prize1_amount_cap500w_ratio": 0.6703
+  },
+  {
+   "epoch": "E2 资金51/14/35(8奖级)",
+   "from": "2013-12-09",
+   "to": "2014-05-05",
+   "prize_levels": 8,
+   "n_draws": 60,
+   "draw_num_range": [
+    "13144",
+    "14050"
+   ],
+   "sale_mean_yuan": 127668576.0,
+   "pool_mean_yuan": 293360094.8,
+   "prize1_winners_mean": 2.0667,
+   "prize1_winners_median": 2.0,
+   "prize1_amount_mean_yuan": 7515848.7,
+   "prize1_amount_cap500w_ratio": 0.8667
+  },
+  {
+   "epoch": "E3 奖级8→6",
+   "from": "2014-05-05",
+   "to": "2019-02-18",
+   "prize_levels": 6,
+   "n_draws": 735,
+   "draw_num_range": [
+    "14051",
+    "19017"
+   ],
+   "sale_mean_yuan": 194746605.9,
+   "pool_mean_yuan": 3270431798.3,
+   "prize1_winners_mean": 3.6531,
+   "prize1_winners_median": 2.0,
+   "prize1_amount_mean_yuan": 8052750.0,
+   "prize1_amount_cap500w_ratio": 0.8844
+  },
+  {
+   "epoch": "E4 奖级6→9/追加80%",
+   "from": "2019-02-18",
+   "to": "2023-01-01",
+   "prize_levels": 9,
+   "n_draws": 567,
+   "draw_num_range": [
+    "19018",
+    "22150"
+   ],
+   "sale_mean_yuan": 289403807.0,
+   "pool_mean_yuan": 1707751902.8,
+   "prize1_winners_mean": 5.6614,
+   "prize1_winners_median": 4.0,
+   "prize1_amount_mean_yuan": 8936457.3,
+   "prize1_amount_cap500w_ratio": 0.9683
+  },
+  {
+   "epoch": "E5 开奖时间21:25(9奖级)",
+   "from": "2023-01-01",
+   "to": "2026-02-02",
+   "prize_levels": 9,
+   "n_draws": 465,
+   "draw_num_range": [
+    "23001",
+    "26013"
+   ],
+   "sale_mean_yuan": 312477539.4,
+   "pool_mean_yuan": 1003216969.8,
+   "prize1_winners_mean": 6.0495,
+   "prize1_winners_median": 5.0,
+   "prize1_amount_mean_yuan": 8851094.0,
+   "prize1_amount_cap500w_ratio": 0.9699
+  },
+  {
+   "epoch": "E6 现行规则(7奖级/1亿封顶)",
+   "from": "2026-02-02",
+   "to": "2100-01-01",
+   "prize_levels": 7,
+   "n_draws": 102,
+   "draw_num_range": [
+    "26014",
+    "26115"
+   ],
+   "sale_mean_yuan": 318105604.5,
+   "pool_mean_yuan": 786893494.9,
+   "prize1_winners_mean": 6.451,
+   "prize1_winners_median": 6.0,
+   "prize1_amount_mean_yuan": 7900661.3,
+   "prize1_amount_cap500w_ratio": 0.9706
+  }
+ ]
+}

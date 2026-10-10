@@ -1,0 +1,182 @@
+{
+  "package": {
+    "name": "dlt_2933_package_v4",
+    "version": "4.0",
+    "created": "2026-10-10",
+    "supersedes": "dlt_2932_package_v3",
+    "purpose": "面向 AI 接续分析的大乐透历史数据包 v4：原始数据 + 规范化派生集 + 规则变更史 + 策略模拟验证 + 防污染任务书 + 已知错误清单",
+    "design_principle": "反锚定——任务书刻意不给结论，只给数据事实、检验清单与方法论陷阱；新增规则口径治理与策略模拟验证",
+    "v4_changes": [
+      "数据扩充至 2933 期（新增最新 26115 期，2026-10-10）",
+      "新增 06_RULES_HISTORY.md：6 次规则变更史与现行规则",
+      "新增 07_strategy_simulation/：策略主张的四层模拟验证框架",
+      "新增 02_derived/08_rules_epoch_summary.json：按规则断点分段统计",
+      "新增 05_build_scripts/：派生数据可复现重建脚本",
+      "已知错误清单扩充至 E1–E9（新增 E8 规则口径、E9 滥用模拟）",
+      "任务清单扩充至 T1–T8（新增 T7 模拟验证、T8 规则口径）",
+      "历史产出统一移入 03_findings/_legacy/，与当前数据隔离"
+    ],
+    "encoding": {
+      "csv": "UTF-8 with BOM (read with encoding='utf-8-sig')",
+      "json": "UTF-8 without BOM",
+      "md": "UTF-8"
+    },
+    "read_order": [
+      "README.md",
+      "00_TASK_BRIEF.md",
+      "01_data/README.md",
+      "02_derived/README.md",
+      "06_RULES_HISTORY.md",
+      "04_priority_tasks.md",
+      "05_known_errors.md",
+      "07_strategy_simulation/README.md",
+      "03_findings/ (仅在前述完成后阅读)"
+    ]
+  },
+  "lottery": {
+    "name": "超级大乐透",
+    "front_pool": 35,
+    "front_pick": 5,
+    "back_pool": 12,
+    "back_pick": 2,
+    "total_combinations": 21425712,
+    "first_prize_probability": 4.667e-08,
+    "current_return_rate": 0.51,
+    "draw_days": ["周一", "周三", "周六"],
+    "current_rules_since": "2026-02-02 (26014期)",
+    "current_prize_levels": 7
+  },
+  "data": {
+    "n_draws": 2933,
+    "date_range": ["2007-05-30", "2026-10-10"],
+    "draw_num_range": ["07001", "26115"],
+    "latest_draw": {
+      "draw_num": "26115",
+      "date": "2026-10-10",
+      "front": [12, 20, 32, 33, 35],
+      "back": [6, 7]
+    },
+    "null_cells": 0,
+    "date_monotonic": true,
+    "no_draw_num_gaps": true,
+    "front_duplicate_combos": 18,
+    "verified_pdf_draws": 1001,
+    "verified_api_draws": 801,
+    "sha256": {
+      "01_data/dlt_full_2933.csv": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
+      "01_data/dlt_full_2933.jsonl": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d"
+    },
+    "critical_caveats": [
+      "prize1_amount_yuan 是右删失数据：81.4% 期数封顶 5,000,000，建模须用 Tobit；且封顶规则多次变更",
+      "prize1_winners 是重尾分布：mean 3.86 / median 2 / max 106 / var/mean 8.46，禁止均值比较",
+      "18 组前区组合重复（涉及 36 期），随机碰撞期望约 13.25 对，量级正常",
+      "draw_num 是字符串，带前导零，读取必须 dtype={'draw_num': str}",
+      "CSV 必须用 encoding='utf-8-sig'，否则首列名变成 '\\ufeffdraw_num'",
+      "pool_yuan 是本期期末奖池（滚入下期），不是本期起始奖池",
+      "年度期数不均：2007=93, 2020=134, 2026=115（未完成）",
+      "跨规则断点的奖金金额不可直接比较（见 06_RULES_HISTORY.md）"
+    ]
+  },
+  "directories": {
+    "README.md": "包总览与快速开始",
+    "00_TASK_BRIEF.md": "任务书主入口：数据事实、数学底线、检验清单、陷阱摘要",
+    "01_data/": "原始数据（CSV + JSONL）+ 字段字典 + 使用警告",
+    "02_derived/": "规范化派生数据集（含精确枚举理论分布 + 规则分段统计）",
+    "03_findings/": "历史轮次产出归档（⚠️ 含已知错误，有使用门槛；统一在 _legacy/ 下）",
+    "03_tools/": "可复用检验脚本（自包含，可直接运行；_load.py 为统一装载器）",
+    "04_priority_tasks.md": "细化任务清单 T1-T8，含验收判据；T6/T7 为必须交付项",
+    "05_known_errors.md": "★ 已知错误结论清单 E1-E9（避坑手册）",
+    "06_RULES_HISTORY.md": "★ 规则变更史与现行规则（决定奖金类分析口径）",
+    "07_strategy_simulation/": "★ 策略模拟验证框架（四层，含可信度分级）",
+    "05_build_scripts/": "派生数据重建脚本（build_derived_v4.py）"
+  },
+  "derived_files": {
+    "02_derived/01_yearly_stats.csv": "逐年统计 20 年 × 17 指标（含卡方与 p）",
+    "02_derived/02_front_number_frequency.csv": "35 号频率，全期/2013-08 前后分段，含 z 值",
+    "02_derived/03_back_number_frequency.csv": "12 号频率与均匀性检验",
+    "02_derived/04_structure_distribution_exact.json": "★ 精确枚举理论分布：和值/跨度/连号/奇偶/大小/三区（观测 vs 理论）",
+    "02_derived/05_back_combo_66.csv": "66 种后区组合频次",
+    "02_derived/06_acf_lag1to60.csv": "5 个指标 × lag1-60 的 ACF 与朴素 p 值",
+    "02_derived/07_data_quality_report.json": "数据质量断言 + SHA256（2933 期）",
+    "02_derived/08_rules_epoch_summary.json": "★ 按规则变更断点分段的 7 个 epoch 统计"
+  },
+  "rules_history_summary": {
+    "doc": "06_RULES_HISTORY.md",
+    "n_changes": 6,
+    "timeline": [
+      {"date": "2007-05-30", "draw": "07001", "change": "上市首期；前区35选5+后区12选2；8奖级"},
+      {"date": "2009-10-17", "draw": "09121", "change": "奖池过亿单注最高1000万、追加最高1600万"},
+      {"date": "2013-12-09", "draw": "13145", "change": "资金构成50/15/35→51/14/35"},
+      {"date": "2014-05-05", "draw": "14052", "change": "奖级8→6"},
+      {"date": "2019-02-18", "draw": "19019", "change": "奖级6→9；追加60%→80%；追加仅参与1-2等奖"},
+      {"date": "2023-01-01", "draw": "23001", "change": "开奖时间20:25→21:25"},
+      {"date": "2026-02-02", "draw": "26014", "change": "现行规则：奖级9→7；一二等单期总额封顶1亿；返奖率51%"}
+    ],
+    "key_fact_for_analysis": "号码结构（35选5+12选2）自2007年至今从未改变；规则变更只影响奖级/奖金/追加，不影响号码分布"
+  },
+  "strategy_simulation_summary": {
+    "dir": "07_strategy_simulation/",
+    "framework": "四层 + 可信度分级",
+    "layers": {
+      "A_probability": {"claim": "选号不改变中奖概率", "method": "解析", "verdict": "不可能", "confidence": "★★★★★"},
+      "B1_run_open_rate": {"claim": "连号更易摇出", "method": "精确枚举", "verdict": "1.120（仅早期）", "confidence": "★★★★☆"},
+      "B2_collision": {"claim": "连号人群更密", "method": "观测+Bootstrap", "verdict": "一等奖比 1.360 [1.130,1.629]", "confidence": "★★★★☆"},
+      "C_economic": {"claim": "避开连号提高中奖时奖金", "method": "条件份额模拟", "verdict": "+121.48%（撞号系数 1.003→0.453）", "confidence": "★★★☆☆"},
+      "D_equivalence": {"claim": "技巧 vs 随机无差异", "method": "解析+功效分析", "verdict": "无差异；检出1%效应需~2.14e9期", "confidence": "★★★★★"}
+    },
+    "red_line": "C 层的 +121% 是『中奖时奖金』提升，不是中奖概率提升"
+  },
+  "tasks": {
+    "T1": "数据可信度与结构突变定位（含 T1.3 突变精确定位 ★）",
+    "T2": "序列依赖性（ACF 置换检验、非线性依赖、ML 公平基线 ★）",
+    "T3": "物理均匀性（精确均匀性检验 ★、球组漂移、后区独立性）",
+    "T4": "分奖结构（注数驱动因素 ★、连号二阶验证、奖金瓜分机制建模 ★）",
+    "T5": "销量外生性与时间序列因果",
+    "T6": "★必须交付★ 购买策略建议（数学边界/证据型建议/反向清单/组合优化/风险声明）",
+    "T7": "★必须交付★ 策略模拟验证（四层框架/撞号量化/经济价值/等价基线）",
+    "T8": "规则与数据口径治理（支撑性）",
+    "recommended_order": ["T8", "T1", "T3", "T4", "T2", "T5", "T7", "T6"]
+  },
+  "known_errors_summary": {
+    "doc": "05_known_errors.md",
+    "items": [
+      {"id": "E1", "error": "过度离散计数数据用 Poisson", "fix": "QuasiPoisson/NegBin + HAC"},
+      {"id": "E2", "error": "小期望格用渐近卡方", "fix": "蒙特卡洛精确检验"},
+      {"id": "E3", "error": "变点用自然年硬切", "fix": "全候选切点扫描 + ruptures"},
+      {"id": "E4", "error": "FDR 校正替代置换检验", "fix": "置换检验 + 样本外验证"},
+      {"id": "E5", "error": "重尾变量比较均值", "fix": "中位数/非参检验/GLM"},
+      {"id": "E6", "error": "前视偏差（全样本统计量做预测）", "fix": "只用历史数据滚动计算"},
+      {"id": "E7", "error": "混淆开出率与被选中率", "fix": "精确枚举组合空间"},
+      {"id": "E8", "error": "忽略规则变更跨断点比较奖金（v4新增）", "fix": "按 epoch 分段 + 声明规则口径"},
+      {"id": "E9", "error": "用模拟验证本可解析证明的事实（v4新增）", "fix": "解析给出概率；模拟仅用于必须估计的量"}
+    ]
+  },
+  "verified_findings_2933": {
+    "note": "以下为 v4 在 2933 期数据上复核确认的结论（非 ground truth，仅作对照基线）",
+    "changepoint": "2013-08（χ²=185.0，排名 1/234；后段 p=0.562 已均匀；Pelt 独立确认 2013-08-14）",
+    "heat": "HAC 下 p=0.071，不显著（伪显著）",
+    "acf": "lag 6/10/18/23 置换家族 p=0.0004，但样本外 R²=−0.083（真信号真无效）",
+    "odd_even": "MC 精确 p=0.126，不显著",
+    "consecutive_effect": "一等奖注数比 1.360 [1.130,1.629]；二等奖注数比 1.352 [1.168,1.579]（撞号效应稳健）",
+    "back_independence": "互信息 0.203 vs 置换基准 0.209 → 独立",
+    "sales_weekday": "销量星期效应 p=0.0004（周六>周一/周三）；号码无星期效应"
+  },
+  "contamination_control": {
+    "strategy": "任务书不给结论；错误结论集中到 05_known_errors.md；03_findings 设使用门槛并移入 _legacy/",
+    "rules": [
+      "完成独立分析前禁止阅读 03_findings/",
+      "已知错误以 05_known_errors.md 为准（E1-E9）",
+      "结论冲突时以自身可复现证据为准",
+      "必须报告本轮推翻/修正了哪些既有结论",
+      "涉及奖金分析必须声明规则口径（06_RULES_HISTORY.md）",
+      "模拟结论必须标注可信度，并区分解析可证与模拟估计"
+    ]
+  },
+  "environment": {
+    "python": "3.13",
+    "required": ["numpy", "pandas", "scipy", "statsmodels", "ruptures"],
+    "strategy_sim_required": ["numpy"],
+    "tools_self_contained": "03_tools/ 下脚本可直接在本目录运行，经 _load.py 从包内 01_data/ 装载数据",
+    "rebuild_derived": "05_build_scripts/build_derived_v4.py"
+  }
+}

@@ -1,0 +1,32 @@
+{
+ "n_draws": 2933,
+ "date_range": [
+  "2007-05-30",
+  "2026-10-10"
+ ],
+ "draw_num_range": [
+  "07001",
+  "26115"
+ ],
+ "null_cells": 0,
+ "date_monotonic": true,
+ "front_strictly_ascending": true,
+ "back_strictly_ascending": true,
+ "front_range_ok": true,
+ "back_range_ok": true,
+ "derived_column_mismatch": {
+  "sum": 0,
+  "odd": 0,
+  "big": 0,
+  "span": 0
+ },
+ "front_duplicate_combos": 18,
+ "back_duplicate_combos": 2867,
+ "verified_pdf_draws": 1001,
+ "verified_api_draws": 801,
+ "no_draw_num_gaps": true,
+ "sha256": {
+  "dlt_full_2933.csv": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
+  "dlt_full_2933.jsonl": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d"
+ }
+}

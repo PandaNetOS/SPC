@@ -31,9 +31,10 @@ __pycache__/
 Thumbs.db
 desktop.ini
 
-# 运行期数据
-*.log
-*.tmp
-data/
+# 运行期数据（保留 data/dlt_v4/ 数据包，见 README）
+data/*
+!data/dlt_v4/
 runs/
 scratch/
+*.log
+*.tmp

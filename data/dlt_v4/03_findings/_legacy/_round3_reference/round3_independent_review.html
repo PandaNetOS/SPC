@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大乐透 2932 期数据科学分析报告 v3</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1f2328;line-height:1.75;font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 24px 80px}
+h1{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+h2{font-size:20px;font-weight:700;margin:44px 0 16px;padding-left:12px;border-left:4px solid #4a7fb5}
+h3{font-size:16px;font-weight:700;margin:26px 0 10px;color:#2c3e50}
+.sub{color:#6b7280;font-size:14px;margin-bottom:24px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.hero{background:linear-gradient(135deg,#1e3a5f,#2d5a8c);color:#fff;border-radius:12px;padding:28px 32px;margin-bottom:28px}
+.hero h1{color:#fff}
+.hero .sub{color:#c5d9ee}
+.hero b{color:#ffd97a}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th{background:#f1f4f8;text-align:left;padding:9px 12px;font-weight:600;border-bottom:2px solid #dde3ea;font-size:13px}
+td{padding:8px 12px;border-bottom:1px solid #eef1f4}
+tr:hover td{background:#fafbfc}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+.t-ok{background:#dcf5e8;color:#0f7a4d}
+.t-no{background:#fde8e6;color:#b3311f}
+.t-warn{background:#fff3d6;color:#9a6b00}
+.t-info{background:#e3edf9;color:#2c5c96}
+.eq{font-family:"JetBrains Mono",Consolas,monospace;background:#f4f6f8;padding:1px 6px;border-radius:4px;font-size:13.5px;color:#1a4d80}
+.note{background:#fffbea;border-left:3px solid #e0b000;padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.danger{background:#fdf0ee;border-left:3px solid #d94b3a;padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.good{background:#eefaf3;border-left:3px solid #14a88a;padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:14px}
+.chart{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px;margin:18px 0}
+.chart h4{font-size:14px;font-weight:600;margin-bottom:12px;color:#374151}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:#555;margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.kpi div{background:#fff;border:1px solid #e5e7eb;border-radius:9px;padding:14px 16px}
+.kpi .v{font-size:22px;font-weight:700;color:#1e3a5f}
+.kpi .l{font-size:12px;color:#6b7280;margin-top:2px}
+svg text{font-family:inherit}
+code{font-family:Consolas,monospace;background:#f4f6f8;padding:1px 5px;border-radius:3px;font-size:13px}
+ul,ol{padding-left:22px} li{margin:5px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+<h1>大乐透 2932 期数据科学分析报告</h1>
+<div class="sub">第三轮独立复核 · 重点挑战前两轮的可疑结论 · 生成于 2026-10-10</div>
+<p style="margin-top:14px;font-size:14.5px">
+样本：<b>2932 期</b>（07001–26114，2007-05-30 ~ 2026-10-07）<br>
+方法：Poisson/负二项 GLM、VIF 共线性诊断、Bootstrap、Ruptures 变点检测、置换检验、
+蒙特卡洛精确检验、QuasiPoisson/HAC-Newey-West 稳健标准误、Nyblom 类结构稳定性检验
+</p>
+</div>
+
+<div class="card" style="border-left:4px solid #d94b3a">
+<h3 style="margin-top:0">核心结论（一句话）</h3>
+<p style="font-size:16px">
+<b>2932 期数据中不存在任何可用于预测下一期号码的规律；但存在 3 个真实的、可被经济学解释的"分奖结构效应"——它们不提高中奖概率，只影响中奖时与他人撞号的概率。</b>
+</p>
+<p style="margin-top:10px;font-size:14px;color:#555">
+本轮独立复核推翻/修正了前两轮的 <b>3 个结论</b>，确认了 <b>5 个结论</b>，新增 <b>2 个发现</b>。
+</p>
+</div>
+
+<h2>一、三年结论对照总表</h2>
+<table>
+<tr><th style="width:24%">结论</th><th style="width:12%">上轮判定</th><th style="width:12%">本轮判定</th><th>依据</th></tr>
+<tr><td>序列不可预测</td><td><span class="tag t-ok">成立</span></td><td><span class="tag t-ok">确认</span></td>
+<td>时序 CV R² 全负；单号 AUC≈0.5；AR 模型样本外 R²=−0.061</td></tr>
+<tr><td>无周期性（FFT）</td><td><span class="tag t-ok">成立</span></td><td><span class="tag t-ok">确认</span></td>
+<td>去趋势+差分后 2–80 期无显著谱峰</td></tr>
+<tr><td>相邻期重号=随机</td><td><span class="tag t-ok">成立</span></td><td><span class="tag t-ok">确认</span></td>
+<td>z=+0.84；重号数 0.7264 vs 0.7143</td></tr>
+<tr><td>无星期效应</td><td><span class="tag t-ok">成立</span></td><td><span class="tag t-ok">确认</span></td>
+<td>ANOVA p=0.350（注：<b>销量</b>有星期效应 p=0.0004）</td></tr>
+<tr><td>后区完全均匀</td><td><span class="tag t-ok">成立</span></td><td><span class="tag t-ok">确认</span></td>
+<td>12 号 p=0.499；66 组合 p=0.505；与后区跨度互信息=置换基准</td></tr>
+<tr><td><b>"2015 年断点"</b></td><td><span class="tag t-warn">未验证</span></td><td><span class="tag t-no">修正</span></td>
+<td><b>真正断点是 2013-08，2015 仅排第 31/234 位</b>（下详）</td></tr>
+<tr><td><b>"heat 显著（z=9.69）"</b></td><td><span class="tag t-warn">存疑</span></td><td><span class="tag t-no">证伪</span></td>
+<td><b>过度离散校正后 z 降至 2.3；阻断检验后效应消失</b>（下详）</td></tr>
+<tr><td><b>"ACF lag6/10/18/23 存活"</b></td><td><span class="tag t-warn">矛盾</span></td><td><span class="tag t-warn">部分证实·无价值</span></td>
+<td><b>置换检验 p=0.0007 真显著，但样本外 R²=−0.061</b>（下详）</td></tr>
+<tr><td><b>"奇偶偏离 p&lt;1e-6"</b></td><td><span class="tag t-no">偏离</span></td><td><span class="tag t-ok">修正为不显著</span></td>
+<td><b>精确蒙特卡洛 p=0.111</b>，原卡方因小期望格失效</td></tr>
+<tr><td><b>"连号开出率与理论一致"</b></td><td><span class="tag t-ok">一致</span></td><td><span class="tag t-no">修正</span></td>
+<td><b>实际开出率比值 1.12（χ² p=0.030）</b>，非完全一致</td></tr>
+<tr><td>连号→中奖注数效应</td><td><span class="tag t-ok">有效</span></td><td><span class="tag t-ok">确认并加强</span></td>
+<td>IRR=1.316（95%CI 1.24–1.39），分期稳健，二等奖同向</td></tr>
+<tr><td>前区号码频率偏差</td><td><span class="tag t-warn">历史遗留</span></td><td><span class="tag t-ok">证实</span></td>
+<td>2013.08 前 29–35 号占比 26.7% → 后期 19.5%</td></tr>
+</table>
+
+<h2>二、挑战点 1：heat（组合冷热）是伪显著 — 已确认</h2>
+
+<p>上轮报告内部矛盾：GLM 中 <code>heat</code> 的 <span class="eq">z=+9.69, p=0.000</span>，但原始 Pearson
+<span class="eq">r=−0.0017, p=0.93</span>。本轮做了四重诊断，结论是：<b>heat 的"显著性"完全是模型设定错误 + 混杂变量造成的假象。</b></p>
+
+<h3>诊断 1：VIF 共线性</h3>
+<table>
+<tr><th>变量</th><th>VIF</th><th>与 heat 的 Pearson r</th></tr>
+<tr><td>log_sale</td><td>1.040</td><td>−0.159</td></tr>
+<tr><td>run（连号对数）</td><td>1.094</td><td>+0.007</td></tr>
+<tr><td><b>heat</b></td><td><b>1.611</b></td><td>—</td></tr>
+<tr><td><b>sum_z（和值）</b></td><td>1.380</td><td><b>+0.464</b></td></tr>
+<tr><td><b>span_z（跨度）</b></td><td>1.356</td><td><b>+0.374</b></td></tr>
+</table>
+<p>VIF 均&lt;2，<b>标准共线性并不严重</b>。但 heat 与和值 r=+0.464、与跨度 r=+0.374 —— 
+说明 heat 在很大程度上只是"和值 + 跨度"的线性组合。这解释了为什么换一种 heat 定义，系数符号会翻转：</p>
+<div class="danger">
+<b>heat 定义敏感性检验（3 种口径）</b><br>
+A. 组合历史频率分位：IRR = 1.0532（z=+6.22，p=5e-10）<br>
+B. 和值分位：IRR = <b>0.8415</b>（z=−8.22，p=2e-16）← <b>符号相反！</b><br>
+C. 一区（1–12）号码个数：IRR = 1.1673（z=+8.82，p=1e-18）<br>
+<span style="margin-top:6px;display:block">同一个"冷热"概念，换个度量方式后 IRR 从 1.05 变成 0.84 —— 这是<b>伪显著的标准特征</b>。</span>
+</div>
+
+<h3>诊断 2：过度离散（这是关键）</h3>
+<p>上轮直接用 <b>Poisson</b> GLM，但 <span class="eq">prize1_winners</span> 的方差/均值比 = <b>8.46</b>（Poisson 要求 = 1）。</p>
+<table>
+<tr><th>检验</th><th>结果</th><th>含义</th></tr>
+<tr><td>过度离散检验 α̂</td><td><b>1.374</b> (t=4.49, p=7.3e−06)</td><td>显著过度离散</td></tr>
+<tr><td>QuasiPoisson 尺度因子</td><td><b>7.453</b></td><td>Poisson 标准误低估约 2.7 倍</td></tr>
+<tr><td>NegBin2 α</td><td><b>0.708</b></td><td>需要负二项模型</td></tr>
+</table>
+<table>
+<tr><th>变量</th><th>Poisson IRR</th><th>Poisson p</th><th>QuasiPoisson p</th><th>NegBin2 p</th></tr>
+<tr><td>log_sale</td><td>2.3351</td><td>0.00e+00</td><td>3.9e−66</td><td>7.8e−184</td></tr>
+<tr><td>run</td><td>1.1044</td><td>6.5e−13</td><td>8.5e−03</td><td>1.3e−04</td></tr>
+<tr><td><b>heat</b></td><td>1.0532</td><td>4.9e−10</td><td><b>2.3e−02</b></td><td><b>1.2e−04</b></td></tr>
+<tr><td>sum_z</td><td>0.9856</td><td>1.7e−01</td><td>6.1e−01</td><td>3.8e−01</td></tr>
+<tr><td>span_z</td><td>0.9370</td><td>9.0e−10</td><td>2.5e−02</td><td>7.6e−04</td></tr>
+</table>
+<p><b>heat 的 p 值从 4.9e−10 膨胀到 0.023</b> —— 显著性被削弱了 7 个数量级。</p>
+
+<h3>诊断 3：HAC/Newey-West 稳健标准误</h3>
+<table>
+<tr><th>maxlags</th><th>heat 系数</th><th>稳健 SE</th><th>t 值</th><th>p 值</th></tr>
+<tr><td>0</td><td>+0.2051</td><td>0.0920</td><td>+2.23</td><td>0.0258</td></tr>
+<tr><td>5</td><td>+0.2051</td><td>0.0880</td><td>+2.33</td><td>0.0198</td></tr>
+<tr><td>10</td><td>+0.2051</td><td>0.0853</td><td>+2.40</td><td>0.0162</td></tr>
+<tr><td>20</td><td>+0.2051</td><td>0.0836</td><td>+2.45</td><td>0.0142</td></tr>
+</table>
+<p>在自相关稳健标准误下，heat 的 t 值从 Poisson 的 <b>+6.22 降到 +2.3</b>，勉强过 0.05 线。</p>
+
+<h3>诊断 4：阻断检验（决定性）</h3>
+<p>把样本按"销量档 × 和值档"分层，每层内单独看 heat 的效应：</p>
+<table>
+<tr><th>格子</th><th>样本量</th><th>heat→注数 斜率</th><th>p</th></tr>
+<tr><td>(销量低, 和值低)</td><td>245</td><td>−0.032</td><td>0.745</td></tr>
+<tr><td>(销量低, 和值中)</td><td>314</td><td>+0.132</td><td>0.340</td></tr>
+<tr><td>(销量低, 和值高)</td><td>419</td><td>+0.603</td><td>0.006</td></tr>
+<tr><td>(销量中, 和值低)</td><td>346</td><td>+0.095</td><td>0.790</td></tr>
+<tr><td>(销量中, 和值中)</td><td>349</td><td>−0.197</td><td>0.180</td></tr>
+<tr><td>(销量中, 和值高)</td><td>282</td><td>+0.141</td><td>0.503</td></tr>
+<tr><td>(销量高, 和值低)</td><td>388</td><td>−0.045</td><td>0.875</td></tr>
+<tr><td>(销量高, 和值中)</td><td>333</td><td>+0.077</td><td>0.797</td></tr>
+<tr><td>(销量高, 和值高)</td><td>256</td><td>+0.437</td><td>0.019</td></tr>
+</table>
+<p><b>9 个格子中 7 个不显著，斜率符号有正有负，无单调趋势</b> —— 
+这是"效应不存在、只在部分格子中由噪声驱动"的典型表现。</p>
+
+<div class="danger">
+<b>结论：heat 的"显著性"是伪显著（pseudo-significance）。</b><br>
+成因链条：① 使用 Poisson（忽略 8.46 倍过度离散）导致标准误严重低估；② 模型把 heat 与和值/跨度同时放入，
+造成系数符号不稳定；③ 分层后效应完全消失。上轮"无经济价值"的判断方向正确，
+但"统计显著"的表述错误 —— 正确的表述是 <b>"在正确模型下不显著，且无稳健效应"</b>。
+</div>
+
+<h2>三、挑战点 2：真正的断点是 2013-08，不是 2015</h2>
+
+<p>上轮把断点定在 2015，是"按自然年硬切"的结果。本轮做了全候选切点扫描（300–2632，步长 10，共 234 个候选）：</p>
+
+<div class="chart">
+<h4>切点扫描：前后两段号码分布的 2×35 列联表卡方（越高=断点越强）</h4>
+<svg viewBox="0 0 960 340" style="width:100%;height:auto">
+  <line x1="30" y1="300" x2="930" y2="300" stroke="#ccc"/>
+  <line x1="30" y1="300" x2="30" y2="40" stroke="#ccc"/>
+  <polyline points="30.0,215.4 33.8,214.9 37.7,210.3 41.5,210.7 45.4,206.5 49.2,203.4 53.1,197.4 56.9,193.3 60.8,187.0 64.6,190.0 68.5,185.3 72.3,183.2 76.2,176.9 80.0,166.7 83.8,165.4 87.7,167.7 91.5,161.8 95.4,166.7 99.2,171.9 103.1,173.4 106.9,173.9 110.8,165.9 114.6,163.5 118.5,159.8 122.3,162.6 126.2,161.4 130.0,155.6 133.8,156.5 137.7,158.9 141.5,160.4 145.4,161.8 149.2,158.7 153.1,157.0 156.9,154.1 160.8,156.6 164.6,153.5 168.5,152.8 172.3,151.4 176.2,150.2 180.0,153.4 183.8,152.0 187.7,150.0 191.5,142.8 195.4,135.1 199.2,136.6 203.1,133.1 206.9,135.8 210.8,127.1 214.6,117.3 218.5,112.9 222.3,104.5 226.2,102.3 230.0,97.1 233.8,93.1 237.7,90.0 241.5,84.8 245.4,81.3 249.2,76.4 253.1,70.4 256.9,71.4 260.8,64.8 264.6,62.7 268.5,51.3 272.3,51.2 276.2,47.7 280.0,41.7 283.8,40.0 287.7,45.2 291.5,43.2 295.4,44.8 299.2,48.5 303.1,55.8 306.9,61.3 310.8,62.4 314.6,62.3 318.5,61.1 322.3,68.3 326.2,68.4 330.0,69.8 333.8,64.2 337.7,65.5 341.5,60.6 345.4,68.0 349.2,70.1 353.1,73.3 356.9,78.8 360.8,82.8 364.6,82.8 368.5,86.3 372.3,89.1 376.2,89.0 380.0,93.3 383.8,93.9 387.7,97.1 391.5,102.6 395.4,102.0 399.2,109.2 403.1,113.2 406.9,117.8 410.8,119.7 414.6,122.0 418.5,125.3 422.3,124.1 426.2,126.0 430.0,129.3 433.8,129.0 437.7,124.8 441.5,121.6 445.4,120.5 449.2,119.8 453.1,121.8 456.9,122.2 460.8,127.8 464.6,124.8 468.5,127.4 472.3,131.3 476.2,126.7 480.0,130.4 483.8,130.3 487.7,133.8 491.5,136.3 495.4,129.7 499.2,131.4 503.1,127.8 506.9,133.2 510.8,133.2 514.6,132.1 518.5,130.7 522.3,129.7 526.2,132.7 530.0,130.9 533.8,129.3 537.7,132.8 541.5,133.0 545.4,130.0 549.2,130.9 553.1,132.3 556.9,126.7 560.8,129.5 564.6,133.0 568.5,133.8 572.3,136.0 576.2,134.2 580.0,136.6 583.8,138.4 587.7,137.4 591.5,143.6 595.4,144.3 599.2,141.9 603.1,142.8 606.9,151.3 610.8,152.0 614.6,158.7 618.5,161.4 622.3,167.8 626.2,176.8 630.0,180.0 633.8,179.6 637.7,180.6 641.5,181.4 645.4,185.6 649.2,190.4 653.1,193.0 656.9,196.3 660.8,190.9 664.6,188.6 668.5,189.0 672.3,195.3 676.2,196.8 680.0,201.2 683.8,200.0 687.7,200.2 691.5,201.9 695.4,206.5 699.2,210.5 703.1,212.2 706.9,213.6 710.8,214.7 714.6,211.7 718.5,210.5 722.3,207.7 726.2,207.9 730.0,210.4 733.8,209.6 737.7,206.5 741.5,207.5 745.4,207.2 749.2,207.6 753.1,207.5 756.9,207.0 760.8,209.6 764.6,207.7 768.5,211.1 772.3,207.2 776.2,205.6 780.0,208.2 783.8,209.3 787.7,210.4 791.5,213.8 795.4,214.2 799.2,211.9 803.1,209.7 806.9,212.1 810.8,215.6 814.6,217.0 818.5,216.3 822.3,218.0 826.2,219.8 830.0,221.9 833.8,227.1 837.7,228.6 841.5,230.1 845.4,229.7 849.2,225.1 853.1,222.2 856.9,225.4 860.8,230.7 864.6,229.6 868.5,227.2 872.3,228.0 876.2,230.6 880.0,223.6 883.8,224.5 887.7,227.6 891.5,230.6 895.4,231.4 899.2,231.7 903.1,237.3 906.9,231.8 910.8,234.3 914.6,236.2 918.5,237.4 922.3,235.7 926.2,233.2" fill="none" stroke="#4a7fb5" stroke-width="2"/>
+  <line x1="283.8" y1="40" x2="283.8" y2="300" stroke="#d94b3a" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <circle cx="283.8" cy="40.0" r="6" fill="#d94b3a"/>
+  <text x="275.8" y="32" font-size="12" fill="#d94b3a" font-weight="600" text-anchor="end">最优切点 2013-08（χ²=185.7）</text>
+  <text x="357.8" y="52" font-size="11" fill="#888" text-anchor="end">2015-01（χ²=155.7，排第 31）</text>
+  <line x1="363.8" y1="56" x2="363.8" y2="300" stroke="#999" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <text x="35" y="26" font-size="11" fill="#888">χ²</text>
+  <text x="34" y="296" font-size="10" fill="#999">300</text>
+  <text x="900" y="316" font-size="10" fill="#999">t=2632</text>
+  <text x="480" y="330" font-size="11" fill="#888" text-anchor="middle">候选切点（按期序）</text>
+</svg>
+</div>
+
+<table>
+<tr><th>候选切点</th><th>χ²（2×35 列联表）</th><th>p 值</th><th>排名</th></tr>
+<tr><td>t=960 → <b>2013-08-28</b></td><td><b>185.7</b></td><td>8.2e−23</td><td><b>1 / 234</b></td></tr>
+<tr><td>t=1000 → 2013-11-30</td><td>179.6</td><td>1.0e−21</td><td>7</td></tr>
+<tr><td>t=1110 → 2014-08-20</td><td>171.0</td><td>3.5e−20</td><td>11</td></tr>
+<tr><td>t=1168 → <b>2015-01-03</b></td><td>155.7</td><td>1.7e−17</td><td><b>31</b></td></tr>
+</table>
+<p style="font-size:14px;color:#555">注：卡方曲线在 2013-08 附近有一个宽峰（900–1100 均很高），
+说明这是<b>渐变过程</b>而非单点突变 —— 切点位置本身有 ±6 个月的不确定性。</p>
+
+<h3>ruputres 独立验证</h3>
+<table>
+<tr><th>方法</th><th>检测到的变点</th></tr>
+<tr><td>Pelt（35 维号码信号, pen=10/15/20）</td><td><b>2013-08-14</b>（单变点）</td></tr>
+<tr><td>Binseg 强制 3 变点</td><td>2013-08-14, 2025-04-19, 2025-06-04</td></tr>
+<tr><td>高区（29–35）占比 Binseg</td><td>2011-05-07, <b>2013-08-26</b>, 2018-06-11</td></tr>
+</table>
+<p>三种方法独立地把主变点指向 <b>2013 年 8 月</b>。</p>
+
+<h3>Power analysis：排除"样本量不足"的解释</h3>
+<table>
+<tr><th>期段</th><th>号码抽取数</th><th>power (w=0.083)</th><th>power (w=0.15)</th></tr>
+<tr><td>2007–2014</td><td>5840</td><td>0.969</td><td>1.000</td></tr>
+<tr><td>2008–2013（核心）</td><td>4605</td><td>0.902</td><td>1.000</td></tr>
+<tr><td>2015–2026</td><td>8820</td><td>0.999</td><td>1.000</td></tr>
+</table>
+<p><b>所有期段的检出力都 &gt;0.90</b> —— 所以"早期显著、后期不显著"<b>不能</b>用样本量解释，
+这是真实的分布变化。</p>
+
+<div class="chart">
+<h4>高区（29–35 号）每年出现占比 vs 均匀理论线（20%）</h4>
+<svg viewBox="0 0 960 320" style="width:100%;height:auto">
+  <line x1="30" y1="280" x2="930" y2="280" stroke="#ccc"/>
+  <line x1="30" y1="148.6" x2="930" y2="148.6" stroke="#14a88a" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="935" y="152.6" font-size="11" fill="#14a88a">20% 理论</text>
+  <polyline points="45,101.9 91,105.9 137,80.7 183,112.5 229,102.5 275,86.3 321,108.2 367,137.5 413,152.0 459,133.2 505,140.0 551,146.0 597,178.3 643,153.5 689,133.7 735,156.5 781,150.3 827,159.0 873,158.2 919,170.5" fill="none" stroke="#4a7fb5" stroke-width="2"/>
+  <circle cx="45" cy="101.9" r="4" fill="#d94b3a"/><text x="45" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 45 296)">2007</text><circle cx="91" cy="105.9" r="4" fill="#d94b3a"/><text x="91" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 91 296)">2008</text><circle cx="137" cy="80.7" r="4" fill="#d94b3a"/><text x="137" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 137 296)">2009</text><circle cx="183" cy="112.5" r="4" fill="#d94b3a"/><text x="183" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 183 296)">2010</text><circle cx="229" cy="102.5" r="4" fill="#d94b3a"/><text x="229" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 229 296)">2011</text><circle cx="275" cy="86.3" r="4" fill="#d94b3a"/><text x="275" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 275 296)">2012</text><circle cx="321" cy="108.2" r="4" fill="#d94b3a"/><text x="321" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 321 296)">2013</text><circle cx="367" cy="137.5" r="4" fill="#4a7fb5"/><text x="367" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 367 296)">2014</text><circle cx="413" cy="152.0" r="4" fill="#4a7fb5"/><text x="413" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 413 296)">2015</text><circle cx="459" cy="133.2" r="4" fill="#4a7fb5"/><text x="459" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 459 296)">2016</text><circle cx="505" cy="140.0" r="4" fill="#4a7fb5"/><text x="505" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 505 296)">2017</text><circle cx="551" cy="146.0" r="4" fill="#4a7fb5"/><text x="551" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 551 296)">2018</text><circle cx="597" cy="178.3" r="4" fill="#4a7fb5"/><text x="597" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 597 296)">2019</text><circle cx="643" cy="153.5" r="4" fill="#4a7fb5"/><text x="643" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 643 296)">2020</text><circle cx="689" cy="133.7" r="4" fill="#4a7fb5"/><text x="689" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 689 296)">2021</text><circle cx="735" cy="156.5" r="4" fill="#4a7fb5"/><text x="735" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 735 296)">2022</text><circle cx="781" cy="150.3" r="4" fill="#4a7fb5"/><text x="781" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 781 296)">2023</text><circle cx="827" cy="159.0" r="4" fill="#4a7fb5"/><text x="827" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 827 296)">2024</text><circle cx="873" cy="158.2" r="4" fill="#4a7fb5"/><text x="873" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 873 296)">2025</text><circle cx="919" cy="170.5" r="4" fill="#4a7fb5"/><text x="919" y="296" font-size="9" fill="#666" text-anchor="middle" transform="rotate(-60 919 296)">2026</text>
+  <text x="480" y="30" font-size="12" fill="#b3311f" text-anchor="middle">← 2007–2013.08：26–30%（异常超抽）</text>
+  <text x="480" y="48" font-size="12" fill="#0f7a4d" text-anchor="middle">2013.08 之后：15–22%（回归正常） →</text>
+</svg>
+<div class="legend"><span><i style="background:#d94b3a"></i>&gt;24%（异常）</span><span><i style="background:#4a7fb5"></i>正常范围</span></div>
+</div>
+
+<div class="chart">
+<h4>每个号码的出现频率（相对均匀的比值）：早期（2007–2013.08，红） vs 后期（2013.08–2026，绿）</h4>
+<svg viewBox="0 0 860 250" style="width:100%;height:auto">
+  <line x1="30" y1="210" x2="830" y2="210" stroke="#ccc"/>
+  <line x1="30" y1="103.8" x2="830" y2="103.8" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="834" y="107.8" font-size="10" fill="#888">1.0</text>
+  <rect x="35" y="104.3" width="9" height="105.7" fill="#d94b3a"></rect><rect x="45" y="98.9" width="9" height="111.1" fill="#14a88a"></rect><text x="45" y="224" font-size="8" fill="#777" text-anchor="middle">1</text><rect x="57" y="116.0" width="9" height="94.0" fill="#d94b3a"></rect><rect x="67" y="97.4" width="9" height="112.6" fill="#14a88a"></rect><text x="67" y="224" font-size="8" fill="#777" text-anchor="middle">2</text><rect x="79" y="114.4" width="9" height="95.6" fill="#d94b3a"></rect><rect x="89" y="92.9" width="9" height="117.1" fill="#14a88a"></rect><text x="89" y="224" font-size="8" fill="#777" text-anchor="middle">3</text><rect x="101" y="140.8" width="9" height="69.2" fill="#d94b3a"></rect><rect x="111" y="98.9" width="9" height="111.1" fill="#14a88a"></rect><text x="111" y="224" font-size="8" fill="#777" text-anchor="middle">4</text><rect x="123" y="110.6" width="9" height="99.4" fill="#d94b3a"></rect><rect x="133" y="95.9" width="9" height="114.1" fill="#14a88a"></rect><text x="133" y="224" font-size="8" fill="#777" text-anchor="middle">5</text><rect x="145" y="113.6" width="9" height="96.4" fill="#d94b3a"></rect><rect x="155" y="101.2" width="9" height="108.8" fill="#14a88a"></rect><text x="155" y="224" font-size="8" fill="#777" text-anchor="middle">6</text><rect x="167" y="115.2" width="9" height="94.8" fill="#d94b3a"></rect><rect x="177" y="92.5" width="9" height="117.5" fill="#14a88a"></rect><text x="177" y="224" font-size="8" fill="#777" text-anchor="middle">7</text><rect x="189" y="126.8" width="9" height="83.2" fill="#d94b3a"></rect><rect x="199" y="102.3" width="9" height="107.7" fill="#14a88a"></rect><text x="199" y="224" font-size="8" fill="#777" text-anchor="middle">8</text><rect x="211" y="116.7" width="9" height="93.3" fill="#d94b3a"></rect><rect x="221" y="105.7" width="9" height="104.3" fill="#14a88a"></rect><text x="221" y="224" font-size="8" fill="#777" text-anchor="middle">9</text><rect x="233" y="103.5" width="9" height="106.5" fill="#d94b3a"></rect><rect x="243" y="106.8" width="9" height="103.2" fill="#14a88a"></rect><text x="243" y="224" font-size="8" fill="#777" text-anchor="middle">10</text><rect x="255" y="103.5" width="9" height="106.5" fill="#d94b3a"></rect><rect x="265" y="101.2" width="9" height="108.8" fill="#14a88a"></rect><text x="265" y="224" font-size="8" fill="#777" text-anchor="middle">11</text><rect x="277" y="117.6" width="9" height="92.4" fill="#d94b3a"></rect><rect x="287" y="106.1" width="9" height="103.9" fill="#14a88a"></rect><text x="287" y="224" font-size="8" fill="#777" text-anchor="middle">12</text><rect x="299" y="109.0" width="9" height="101.0" fill="#d94b3a"></rect><rect x="309" y="112.5" width="9" height="97.5" fill="#14a88a"></rect><text x="309" y="224" font-size="8" fill="#777" text-anchor="middle">13</text><rect x="321" y="112.9" width="9" height="97.1" fill="#d94b3a"></rect><rect x="331" y="106.8" width="9" height="103.2" fill="#14a88a"></rect><text x="331" y="224" font-size="8" fill="#777" text-anchor="middle">14</text><rect x="343" y="137.8" width="9" height="72.2" fill="#d94b3a"></rect><rect x="353" y="101.2" width="9" height="108.8" fill="#14a88a"></rect><text x="353" y="224" font-size="8" fill="#777" text-anchor="middle">15</text><rect x="365" y="143.2" width="9" height="66.8" fill="#d94b3a"></rect><rect x="375" y="107.6" width="9" height="102.4" fill="#14a88a"></rect><text x="375" y="224" font-size="8" fill="#777" text-anchor="middle">16</text><rect x="387" y="121.4" width="9" height="88.6" fill="#d94b3a"></rect><rect x="397" y="106.8" width="9" height="103.2" fill="#14a88a"></rect><text x="397" y="224" font-size="8" fill="#777" text-anchor="middle">17</text><rect x="409" y="120.6" width="9" height="89.4" fill="#d94b3a"></rect><rect x="419" y="103.0" width="9" height="107.0" fill="#14a88a"></rect><text x="419" y="224" font-size="8" fill="#777" text-anchor="middle">18</text><rect x="431" y="103.5" width="9" height="106.5" fill="#d94b3a"></rect><rect x="441" y="101.2" width="9" height="108.8" fill="#14a88a"></rect><text x="441" y="224" font-size="8" fill="#777" text-anchor="middle">19</text><rect x="453" y="126.1" width="9" height="83.9" fill="#d94b3a"></rect><rect x="463" y="95.9" width="9" height="114.1" fill="#14a88a"></rect><text x="463" y="224" font-size="8" fill="#777" text-anchor="middle">20</text><rect x="475" y="116.0" width="9" height="94.0" fill="#d94b3a"></rect><rect x="485" y="106.8" width="9" height="103.2" fill="#14a88a"></rect><text x="485" y="224" font-size="8" fill="#777" text-anchor="middle">21</text><rect x="497" y="88.0" width="9" height="122.0" fill="#d94b3a"></rect><rect x="507" y="97.1" width="9" height="112.9" fill="#14a88a"></rect><text x="507" y="224" font-size="8" fill="#777" text-anchor="middle">22</text><rect x="519" y="103.5" width="9" height="106.5" fill="#d94b3a"></rect><rect x="529" y="109.1" width="9" height="100.9" fill="#14a88a"></rect><text x="529" y="224" font-size="8" fill="#777" text-anchor="middle">23</text><rect x="541" y="105.1" width="9" height="104.9" fill="#d94b3a"></rect><rect x="551" y="120.8" width="9" height="89.2" fill="#14a88a"></rect><text x="551" y="224" font-size="8" fill="#777" text-anchor="middle">24</text><rect x="563" y="98.1" width="9" height="111.9" fill="#d94b3a"></rect><rect x="573" y="107.9" width="9" height="102.1" fill="#14a88a"></rect><text x="573" y="224" font-size="8" fill="#777" text-anchor="middle">25</text><rect x="585" y="114.4" width="9" height="95.6" fill="#d94b3a"></rect><rect x="595" y="101.5" width="9" height="108.5" fill="#14a88a"></rect><text x="595" y="224" font-size="8" fill="#777" text-anchor="middle">26</text><rect x="607" y="100.5" width="9" height="109.5" fill="#d94b3a"></rect><rect x="617" y="109.8" width="9" height="100.2" fill="#14a88a"></rect><text x="617" y="224" font-size="8" fill="#777" text-anchor="middle">27</text><rect x="629" y="116.0" width="9" height="94.0" fill="#d94b3a"></rect><rect x="639" y="104.2" width="9" height="105.8" fill="#14a88a"></rect><text x="639" y="224" font-size="8" fill="#777" text-anchor="middle">28</text><rect x="651" y="56.2" width="9" height="153.8" fill="#d94b3a"></rect><rect x="661" y="95.6" width="9" height="114.4" fill="#14a88a"></rect><text x="661" y="224" font-size="8" fill="#777" text-anchor="middle">29</text><rect x="673" y="70.1" width="9" height="139.9" fill="#d94b3a"></rect><rect x="683" y="101.9" width="9" height="108.1" fill="#14a88a"></rect><text x="683" y="224" font-size="8" fill="#777" text-anchor="middle">30</text><rect x="695" y="75.6" width="9" height="134.4" fill="#d94b3a"></rect><rect x="705" y="115.1" width="9" height="94.9" fill="#14a88a"></rect><text x="705" y="224" font-size="8" fill="#777" text-anchor="middle">31</text><rect x="717" y="56.2" width="9" height="153.8" fill="#d94b3a"></rect><rect x="727" y="109.1" width="9" height="100.9" fill="#14a88a"></rect><text x="727" y="224" font-size="8" fill="#777" text-anchor="middle">32</text><rect x="739" y="42.9" width="9" height="167.1" fill="#d94b3a"></rect><rect x="749" y="107.6" width="9" height="102.4" fill="#14a88a"></rect><text x="749" y="224" font-size="8" fill="#777" text-anchor="middle">33</text><rect x="761" y="77.9" width="9" height="132.1" fill="#d94b3a"></rect><rect x="771" y="106.1" width="9" height="103.9" fill="#14a88a"></rect><text x="771" y="224" font-size="8" fill="#777" text-anchor="middle">34</text><rect x="783" y="53.8" width="9" height="156.2" fill="#d94b3a"></rect><rect x="793" y="104.2" width="9" height="105.8" fill="#14a88a"></rect><text x="793" y="224" font-size="8" fill="#777" text-anchor="middle">35</text>
+  <text x="430" y="240" font-size="11" fill="#777" text-anchor="middle">前区号码 1–35</text>
+</svg>
+<div class="legend">
+<span><i style="background:#d94b3a"></i>早期：29–35 号高达 1.4–1.45，16 号低至 0.67</span>
+<span><i style="background:#14a88a"></i>后期：全部收敛到 0.88–1.08</span>
+</div>
+</div>
+
+<div class="note">
+<b>因果解释的诚实边界：</b>数据只证明了"号码分布发生了系统性变化"这一事实，
+不能证明原因。可能的解释包括摇奖设备更换/维护、球组轮换、监管流程变更等，但
+<b>本数据包不含任何设备或规则变更记录</b>，无法进一步归因。上轮报告称"2015 年后已修复"
+是过强的因果表述 —— 准确说法是"2013 年 8 月后观测到的号码分布偏离消失"。
+</div>
+
+<h2>四、挑战点 3：ACF 存活 lag —— 真显著，但无实用价值</h2>
+
+<p>上轮的矛盾是：全样本 lag1 显著（p=0.024），分段后全部不显著，但 BH-FDR 校正后
+lag 6/10/18/23 反而存活。本轮用 10000 次置换检验直接判定：</p>
+
+<table>
+<tr><th>lag</th><th>观测 r</th><th>置换经验 p</th><th>正态近似 p</th><th>判定</th></tr>
+<tr><td>1</td><td>+0.0418</td><td>0.0248</td><td>0.0236</td><td>边缘</td></tr>
+<tr><td><b>6</b></td><td>+0.0662</td><td><b>0.0004</b></td><td>0.0003</td><td>真显著</td></tr>
+<tr><td><b>10</b></td><td>+0.0584</td><td><b>0.0019</b></td><td>0.0016</td><td>真显著</td></tr>
+<tr><td><b>18</b></td><td>+0.0623</td><td><b>0.0003</b></td><td>0.0007</td><td>真显著</td></tr>
+<tr><td><b>23</b></td><td>+0.0697</td><td><b>0.0002</b></td><td>0.0002</td><td>真显著</td></tr>
+<tr><td colspan="4">联合检验（max|r| 家族错误率）</td><td><b>家族 p = 0.0007</b></td></tr>
+</table>
+
+<p>用 500 条独立随机序列模拟，lag 6/10/18/23 的经验 p 全部 = 0.0000（即 500 次模拟无一达到）。
+<b>所以这些不是多方比较的假阳性 —— 它们是真的统计信号。</b></p>
+
+<h3>但是：信号不稳定，且无预测价值</h3>
+<div class="chart">
+<h4>前区和值 ACF：全样本（蓝/黄）与分期（紫=早期 2007–2013.08，绿=后期）</h4>
+<svg viewBox="0 0 900 250" style="width:100%;height:auto">
+  <rect x="40" y="134.7" width="828" height="130.5" fill="#4472c4" opacity="0.10"></rect>
+  <line x1="40" y1="200" x2="880" y2="200" stroke="#888"/>
+  <rect x="40" y="200.0" width="10" height="54.9" fill="#8b5cf6"></rect><rect x="51" y="157.5" width="10" height="42.5" fill="#14a88a"></rect><rect x="68" y="200.0" width="10" height="56.0" fill="#8b5cf6"></rect><rect x="79" y="200.0" width="10" height="98.3" fill="#14a88a"></rect><rect x="96" y="200.0" width="10" height="3.4" fill="#8b5cf6"></rect><rect x="107" y="200.0" width="10" height="1.3" fill="#14a88a"></rect><rect x="124" y="200.0" width="10" height="12.8" fill="#8b5cf6"></rect><rect x="135" y="187.2" width="10" height="12.8" fill="#14a88a"></rect><rect x="152" y="200.0" width="10" height="46.8" fill="#8b5cf6"></rect><rect x="163" y="136.5" width="10" height="63.5" fill="#14a88a"></rect><rect x="180" y="196.4" width="10" height="3.6" fill="#8b5cf6"></rect><rect x="191" y="116.5" width="10" height="83.5" fill="#14a88a"></rect><rect x="208" y="157.7" width="10" height="42.3" fill="#8b5cf6"></rect><rect x="219" y="165.1" width="10" height="34.9" fill="#14a88a"></rect><rect x="236" y="200.0" width="10" height="29.2" fill="#8b5cf6"></rect><rect x="247" y="200.0" width="10" height="60.7" fill="#14a88a"></rect><rect x="264" y="200.0" width="10" height="120.4" fill="#8b5cf6"></rect><rect x="275" y="166.2" width="10" height="33.8" fill="#14a88a"></rect><rect x="292" y="80.7" width="10" height="119.3" fill="#8b5cf6"></rect><rect x="303" y="197.3" width="10" height="2.7" fill="#14a88a"></rect><rect x="320" y="171.7" width="10" height="28.3" fill="#8b5cf6"></rect><rect x="331" y="200.0" width="10" height="43.6" fill="#14a88a"></rect><rect x="348" y="200.0" width="10" height="8.5" fill="#8b5cf6"></rect><rect x="359" y="198.6" width="10" height="1.4" fill="#14a88a"></rect><rect x="376" y="200.0" width="10" height="22.3" fill="#8b5cf6"></rect><rect x="387" y="200.0" width="10" height="25.7" fill="#14a88a"></rect><rect x="404" y="174.3" width="10" height="25.7" fill="#8b5cf6"></rect><rect x="415" y="200.0" width="10" height="29.2" fill="#14a88a"></rect><rect x="432" y="181.8" width="10" height="18.2" fill="#8b5cf6"></rect><rect x="443" y="199.3" width="10" height="0.7" fill="#14a88a"></rect><rect x="460" y="200.0" width="10" height="10.6" fill="#8b5cf6"></rect><rect x="471" y="200.0" width="10" height="14.2" fill="#14a88a"></rect><rect x="488" y="200.0" width="10" height="38.3" fill="#8b5cf6"></rect><rect x="499" y="200.0" width="10" height="19.4" fill="#14a88a"></rect><rect x="516" y="37.3" width="10" height="162.7" fill="#8b5cf6"></rect><rect x="527" y="200.0" width="10" height="4.5" fill="#14a88a"></rect><rect x="544" y="200.0" width="10" height="25.9" fill="#8b5cf6"></rect><rect x="555" y="199.5" width="10" height="0.5" fill="#14a88a"></rect><rect x="572" y="200.0" width="10" height="19.1" fill="#8b5cf6"></rect><rect x="583" y="187.6" width="10" height="12.4" fill="#14a88a"></rect><rect x="600" y="200.0" width="10" height="42.3" fill="#8b5cf6"></rect><rect x="611" y="200.0" width="10" height="30.8" fill="#14a88a"></rect><rect x="628" y="200.0" width="10" height="71.6" fill="#8b5cf6"></rect><rect x="639" y="173.7" width="10" height="26.3" fill="#14a88a"></rect><rect x="656" y="182.5" width="10" height="17.5" fill="#8b5cf6"></rect><rect x="667" y="112.2" width="10" height="87.8" fill="#14a88a"></rect><rect x="684" y="200.0" width="10" height="54.4" fill="#8b5cf6"></rect><rect x="695" y="200.0" width="10" height="30.1" fill="#14a88a"></rect><rect x="712" y="196.0" width="10" height="4.0" fill="#8b5cf6"></rect><rect x="723" y="148.2" width="10" height="51.8" fill="#14a88a"></rect><rect x="740" y="200.0" width="10" height="22.3" fill="#8b5cf6"></rect><rect x="751" y="200.0" width="10" height="40.1" fill="#14a88a"></rect><rect x="768" y="118.6" width="10" height="81.4" fill="#8b5cf6"></rect><rect x="779" y="186.1" width="10" height="13.9" fill="#14a88a"></rect><rect x="796" y="188.3" width="10" height="11.7" fill="#8b5cf6"></rect><rect x="807" y="190.1" width="10" height="9.9" fill="#14a88a"></rect><rect x="824" y="200.0" width="10" height="52.7" fill="#8b5cf6"></rect><rect x="835" y="193.0" width="10" height="7.0" fill="#14a88a"></rect><rect x="852" y="178.4" width="10" height="21.6" fill="#8b5cf6"></rect><rect x="863" y="181.8" width="10" height="18.2" fill="#14a88a"></rect>
+  <text x="45" y="240" font-size="11" fill="#777">lag 1</text>
+  <text x="430" y="240" font-size="11" fill="#777" text-anchor="middle">lag 15</text>
+  <text x="860" y="240" font-size="11" fill="#777">lag 30</text>
+  <text x="700" y="30" font-size="11" fill="#888">浅蓝带 = 95% 置信带（|r|≈0.036）</text>
+</svg>
+<div class="legend">
+<span><i style="background:#8b5cf6"></i>早期（缺短期）</span><span><i style="background:#14a88a"></i>后期（修复期）</span>
+</div>
+</div>
+
+<table>
+<tr><th>lag</th><th>早期 (2007–2013.08)</th><th>后期 (2013.08–2026)</th><th>峰值出现在</th></tr>
+<tr><td>6</td><td>+0.0020</td><td><b>+0.0464</b></td><td>后期</td></tr>
+<tr><td>10</td><td><b>+0.0663</b></td><td>+0.0015</td><td>早期</td></tr>
+<tr><td>18</td><td><b>+0.0904</b></td><td>−0.0025</td><td>早期</td></tr>
+<tr><td>23</td><td>+0.0097</td><td><b>+0.0488</b></td><td>后期</td></tr>
+</table>
+<p><b>4 个"显著"的 lag 分属两个不同时期</b>，彼此不是同一个物理机制 —— 这强烈提示
+它们是<b>分段结构变化的副产物</b>，而非稳定周期。</p>
+
+<p>与开奖日历的对应也不成立：若是"每周 3 期"的周期性，lag=3 / 7 / 14 应更强，
+但实测 <code>lag3=+0.035 &lt; lag6=+0.066</code>。</p>
+
+<h3>决定性判据：样本外预测能力</h3>
+<table>
+<tr><th>模型</th><th>全样本 R²</th><th>前半训练 → 后半测试 R²</th></tr>
+<tr><td>AR(6,10,18,23)</td><td>0.0151</td><td><b>−0.0611</b></td></tr>
+<tr><td>单 lag 回归 (lag=6)</td><td>0.0044</td><td>−0.0849</td></tr>
+<tr><td>单 lag 回归 (lag=23)</td><td>0.0050</td><td>−0.0855</td></tr>
+</table>
+<p>全样本 R² = 0.015，看似"有效"；但只要做真正的时间序列外推，
+<b>R² 立即变成负值</b>（比直接猜均值还差）。这正是过拟合的教科书特征。</p>
+
+<div class="danger">
+<b>结论：ACF 存活 lag 是"真信号、真无效"。</b><br>
+它们通过了置换检验（不是假阳性），但 ① 分期不稳定、彼此机制不同；② 样本外 R² 为负；
+③ 即使 R²=0.015 成立，也只能把和值预测标准差缩窄 <b>0.75%</b>，对
+1/21,425,712 的一等奖概率<b>没有任何可检出的影响</b>。<br>
+上轮的"矛盾"至此解决：分段不显著 + FDR 存活 = 分段结构变化造成的伪周期信号。
+</div>
+
+<h2>五、被修正的两个上轮结论</h2>
+
+<h3>5.1 奇偶分布"偏离"—— 实为不显著</h3>
+<p>上轮用渐近卡方得到 <span class="eq">χ²=44.49, p&lt;1e-6</span>，判定"3 奇 2 偶系统性偏多"。
+但该检验的期望频数最小仅 55.9（k=0 格），且"3 奇 2 偶"格远超常规。用 20000 次精确蒙特卡洛：</p>
+<div class="chart">
+<h4>前区奇数个数分布：观测（蓝）vs 超几何理论（灰）</h4>
+<svg viewBox="0 0 800 280" style="width:100%;height:auto">
+  <line x1="40" y1="240" x2="770" y2="240" stroke="#ccc"/>
+  <rect x="80" y="231.3" width="42" height="8.7" fill="#4a7fb5"></rect><rect x="127" y="229.8" width="42" height="10.2" fill="#c9c9c9"></rect><text x="124" y="258" font-size="11" fill="#555" text-anchor="middle">0奇</text><rect x="190" y="173.5" width="42" height="66.5" fill="#4a7fb5"></rect><rect x="237" y="169.7" width="42" height="70.3" fill="#c9c9c9"></rect><text x="234" y="258" font-size="11" fill="#555" text-anchor="middle">1奇</text><rect x="300" y="77.1" width="42" height="162.9" fill="#4a7fb5"></rect><rect x="347" y="69.1" width="42" height="170.9" fill="#c9c9c9"></rect><text x="344" y="258" font-size="11" fill="#555" text-anchor="middle">2奇</text><rect x="410" y="45.5" width="42" height="194.5" fill="#4a7fb5"></rect><rect x="457" y="57.8" width="42" height="182.2" fill="#c9c9c9"></rect><text x="454" y="258" font-size="11" fill="#555" text-anchor="middle">3奇</text><rect x="520" y="154.2" width="42" height="85.8" fill="#4a7fb5"></rect><rect x="567" y="154.6" width="42" height="85.4" fill="#c9c9c9"></rect><text x="564" y="258" font-size="11" fill="#555" text-anchor="middle">4奇</text><rect x="630" y="225.5" width="42" height="14.5" fill="#4a7fb5"></rect><rect x="677" y="225.9" width="42" height="14.1" fill="#c9c9c9"></rect><text x="674" y="258" font-size="11" fill="#555" text-anchor="middle">5奇</text>
+</svg>
+</div>
+<table>
+<tr><th>奇数个数</th><th>观测</th><th>理论</th><th>差距</th></tr>
+<tr><td>0 奇</td><td>48</td><td>55.9</td><td>−7.9</td></tr>
+<tr><td>1 奇</td><td>366</td><td>386.9</td><td>−20.9</td></tr>
+<tr><td>2 奇</td><td>896</td><td>939.7</td><td>−43.7</td></tr>
+<tr><td>3 奇</td><td>1070</td><td>1002.3</td><td>+67.7</td></tr>
+<tr><td>4 奇</td><td>472</td><td>469.8</td><td>+2.2</td></tr>
+<tr><td>5 奇</td><td>80</td><td>77.4</td><td>+2.6</td></tr>
+</table>
+<div class="good">
+<b>精确蒙特卡洛检验：χ²=8.94，经验 p = 0.111 → 不显著。</b><br>
+上轮用的渐近卡方在"k=0 奇"格上给出错误权重（该格期望 55.9 但实际 48，贡献了大部分卡方值）。
+正确结论是：<b>奇偶分布与超几何理论一致</b>，所谓"3 奇 2 偶偏多"是检验方法选择不当的产物。
+</div>
+
+<h3>5.2 连号"开出率与理论一致" —— 实为轻微偏离</h3>
+<p>上轮称连号组合的开出占比"与理论完全一致"，据此推断连号效应 100% 来自彩民侧。
+本轮枚举全部 C(35,5)=324632 组合得到精确理论分布：</p>
+<div class="chart">
+<h4>连号对数分布：观测（蓝）vs 精确理论（灰）</h4>
+<svg viewBox="0 0 800 300" style="width:100%;height:auto">
+  <line x1="40" y1="260" x2="770" y2="260" stroke="#ccc"/>
+  <rect x="60" y="77.3" width="45" height="182.7" fill="#4a7fb5"></rect><rect x="110" y="69.7" width="45" height="190.3" fill="#c9c9c9"></rect><text x="107" y="278" font-size="12" fill="#555" text-anchor="middle">run=0</text><text x="82" y="72.3" font-size="10" fill="#4a7fb5" text-anchor="middle">0.5024</text><rect x="210" y="115.3" width="45" height="144.7" fill="#4a7fb5"></rect><rect x="260" y="119.0" width="45" height="141.0" fill="#c9c9c9"></rect><text x="257" y="278" font-size="12" fill="#555" text-anchor="middle">run=1</text><text x="232" y="110.3" font-size="10" fill="#4a7fb5" text-anchor="middle">0.3980</text><rect x="360" y="227.1" width="45" height="32.9" fill="#4a7fb5"></rect><rect x="410" y="229.8" width="45" height="30.2" fill="#c9c9c9"></rect><text x="407" y="278" font-size="12" fill="#555" text-anchor="middle">run=2</text><text x="382" y="222.1" font-size="10" fill="#4a7fb5" text-anchor="middle">0.0904</text><rect x="510" y="256.7" width="45" height="3.3" fill="#4a7fb5"></rect><rect x="560" y="257.9" width="45" height="2.1" fill="#c9c9c9"></rect><text x="557" y="278" font-size="12" fill="#555" text-anchor="middle">run=3</text><text x="532" y="251.7" font-size="10" fill="#4a7fb5" text-anchor="middle">0.0092</text>
+  <text x="430" y="296" font-size="11" fill="#777" text-anchor="middle">前区连号对数（run = 相邻号码对数为 1 的个数）</text>
+</svg>
+<div class="legend"><span><i style="background:#4a7fb5"></i>观测占比</span><span><i style="background:#c9c9c9"></i>精确理论占比</span></div>
+</div>
+<table>
+<tr><th>run</th><th>观测</th><th>理论</th><th>差</th><th>z</th></tr>
+<tr><td>0</td><td>0.5024 (1473)</td><td>0.5234 (1534.6)</td><td>−0.0210</td><td>−2.28</td></tr>
+<tr><td>1</td><td>0.3980 (1167)</td><td>0.3877 (1136.7)</td><td>+0.0103</td><td>+1.15</td></tr>
+<tr><td>2</td><td>0.0904 (265)</td><td>0.0831 (243.6)</td><td>+0.0073</td><td>+1.43</td></tr>
+<tr><td>3</td><td>0.0092 (26)</td><td>0.0057 (16.8)</td><td>+0.0035</td><td>+2.50</td></tr>
+</table>
+<p>合并检验：<span class="eq">χ²=7.045, p=0.0295</span>；精确蒙特卡洛 <b>p = 0.0317</b>。
+run≥2 的观测开出率/理论开出率 = <b>1.120</b>。</p>
+<p>但分期后：早期（2007–2013.08）χ² p=0.017，后期 p=0.356 —— 偏离主要来自早期。
+<b>所以"连号更容易开出"不能作为当前可用的规律</b>，反而是早期分布缺陷的一部分。</p>
+
+<h2>六、确认有效的发现：分奖结构效应</h2>
+
+<div class="grid2">
+<div class="kpi"><div><div class="v">8.46</div><div class="l">注数方差/均值</div></div></div>
+<div class="kpi"><div><div class="v">1.316</div><div class="l">连号组合 IRR</div></div></div>
+<div class="kpi"><div><div class="v">2.34</div><div class="l">销量 IRR</div></div></div>
+<div class="kpi"><div><div class="v">4.67e-08</div><div class="l">一等奖概率</div></div></div>
+</div>
+
+<h3>6.1 销量是压倒性主因</h3>
+<p><span class="eq">log_sale</span> 的 IRR = 2.34（p&lt;1e−300，NegBin 下 2.43）—— 
+销量翻倍，一等奖注数增加 2.3 倍。这是唯一在任何模型族下都稳健的变量。</p>
+
+<h3>6.2 连号效应的稳健性（本轮最重要确认）</h3>
+<table>
+<tr><th>控制变量组合</th><th>run≥2 IRR</th><th>95% CI</th><th>p</th></tr>
+<tr><td>log_sale</td><td>1.3515</td><td>[1.280, 1.427]</td><td>3.2e−27</td></tr>
+<tr><td>log_sale + span_z</td><td>1.3165</td><td>[1.245, 1.393]</td><td>8.8e−22</td></tr>
+<tr><td>log_sale + sum_z + span_z</td><td>1.3184</td><td>[1.246, 1.395]</td><td>5.6e−22</td></tr>
+<tr><td>全控制</td><td>1.3001</td><td>[1.229, 1.376]</td><td>7.3e−20</td></tr>
+<tr><td>QuasiPoisson（校正过度离散）</td><td>1.3165</td><td>—</td><td>4.8e−04</td></tr>
+</table>
+<table>
+<tr><th>分期</th><th>样本</th><th>run≥2 期数</th><th>IRR</th><th>p</th></tr>
+<tr><td>2007–2013.08</td><td>957</td><td>99</td><td>1.834</td><td>5.0e−22</td></tr>
+<tr><td>2013.08–2015</td><td>211</td><td>18</td><td>0.846</td><td>0.290</td></tr>
+<tr><td><b>2015–2026</b></td><td><b>1764</b></td><td><b>175</b></td><td><b>1.225</b></td><td><b>9.0e−10</b></td></tr>
+</table>
+<div class="good">
+<b>二阶独立验证：</b>用二等奖注数（样本量约 80 倍，噪声小得多）复现同一效应：
+IRR = 1.3421，p ≈ 0。<br>
+<b>结论：连号效应稳健存在，直到今天（2015–2026 分段 p=9e−10）仍成立。</b>
+</div>
+
+<h3>6.3 这个效应到底意味着什么</h3>
+<p>必须把两件事严格分开：</p>
+<table>
+<tr><th></th><th>含义</th><th>数值</th><th>是否可被利用</th></tr>
+<tr><td><b>被选中率</b></td><td>彩民选号时倾向于选连号</td><td>run≥2 期中奖注数 ×1.32</td><td><span class="tag t-ok">可避开</span></td></tr>
+<tr><td><b>开出率</b></td><td>连号是否更容易被摇出</td><td>1.12（仅早期，p 边缘）</td><td><span class="tag t-no">不可用</span></td></tr>
+</table>
+<p><b>可利用的是"被选中率"</b>：避开连号组合<b>完全不改变你中奖的概率</b>（分母恒为 21,425,712），
+但会降低你中奖时与他人平分奖金的概率。</p>
+
+<h3>6.4 经济价值量化（诚实的边界）</h3>
+<table>
+<tr><th>项目</th><th>数值</th></tr>
+<tr><td>run≥2 组合的注数倍率</td><td>1.351 倍</td></tr>
+<tr><td>避开后撞号概率降至</td><td>74.0%</td></tr>
+<tr><td>一等奖 81.4% 期数封顶 500 万</td><td>分摊减少仅在这 18.6% 期数兑现</td></tr>
+<tr><td>最易撞号组合（run≥2）平均注数</td><td>5.07</td></tr>
+<tr><td>最避坑组合（run=0 且宽跨度）平均注数</td><td>3.47</td></tr>
+<tr><td><b>差距</b></td><td><b>1.463 倍</b></td></tr>
+<tr><td>一等奖期望回报 / 2 元</td><td>0.327 元（一等奖部分）</td></tr>
+</table>
+<div class="danger">
+<b>必须说清楚：</b>避开连号<b>不会让你更容易中奖</b>，只会让你在中奖时分到更多钱。
+由于 81.4% 的期数奖金被截断在 500 万，这个"提升"在多数情况下被稀释。
+把它理解为"<b>同等运气下少分给陌生人一点</b>"是准确的；
+把它理解为"提高期望收益"则是夸大 —— 数学期望的主要部分（约 1.1 元 / 2 元）由
+奖级结构和返奖率决定，选号技巧几乎无法撬动。
+</div>
+
+<h2>七、完整的"有效性"总表</h2>
+<table>
+<tr><th>候选规律</th><th>统计判定</th><th>可否利用</th><th>说明</th></tr>
+<tr><td>销量 → 中奖注数</td><td><span class="tag t-ok">极显著</span></td><td><span class="tag t-no">不可控</span></td><td>IRR=2.34，但销量由市场决定</td></tr>
+<tr><td><b>连号 → 撞号概率</b></td><td><span class="tag t-ok">极显著</span></td><td><span class="tag t-ok">可避开</span></td><td>IRR=1.32，分期稳健，二等奖同向</td></tr>
+<tr><td>窄跨度 → 撞号概率</td><td><span class="tag t-ok">显著</span></td><td><span class="tag t-ok">可避开</span></td><td>span_z IRR=0.937（QuasiPoisson p=0.025）</td></tr>
+<tr><td>和值极端 → 撞号</td><td><span class="tag t-warn">边缘</span></td><td><span class="tag t-ok">可避开</span></td><td>QuasiPoisson p=0.61，稳健性不足</td></tr>
+<tr><td>结构对齐（和值 75–105 等）</td><td><span class="tag t-info">分布事实</span></td><td><span class="tag t-no">不改变概率</span></td><td>只是落在主流形态</td></tr>
+<tr><td>组合冷热 heat</td><td><span class="tag t-no">校正后不显著</span></td><td><span class="tag t-no">无效</span></td><td>过度离散校正后 z=2.3，分层后消失</td></tr>
+<tr><td>历史频率选号（16 冷 / 29 热）</td><td><span class="tag t-no">2013.08 后已失效</span></td><td><span class="tag t-no">无效</span></td><td>分布已回归均匀</td></tr>
+<tr><td>奇偶比"偏离"</td><td><span class="tag t-no">精确检验不显著</span></td><td><span class="tag t-no">无效</span></td><td>MC p=0.111</td></tr>
+<tr><td>ACF lag 6/10/18/23</td><td><span class="tag t-warn">真信号</span></td><td><span class="tag t-no">无效</span></td><td>样本外 R²=−0.061</td></tr>
+<tr><td>ML / 神经网络预测</td><td><span class="tag t-no">R²&lt;0</span></td><td><span class="tag t-no">无效</span></td><td>CV R² 全负，AUC≈0.5</td></tr>
+<tr><td>星期 / 周期 / 遗漏值</td><td><span class="tag t-no">不显著</span></td><td><span class="tag t-no">无效</span></td><td>p=0.35，无谱峰</td></tr>
+<tr><td>追"冷"后区</td><td><span class="tag t-no">完全均匀</span></td><td><span class="tag t-no">无效</span></td><td>p=0.505，互信息=置换基准</td></tr>
+</table>
+
+<h2>八、方法论层面的修正（供后续复用）</h2>
+<ol>
+<li><b>计数数据必须检查过度离散。</b>本轮 heat 的伪显著，根因就是直接用 Poisson。
+凡是 <code>var/mean &gt; 1.5</code> 的计数因变量，必须用 QuasiPoisson 或 NegBin。</li>
+<li><b>小期望格不要用渐近卡方。</b>奇偶分布的"显著偏离"完全是渐近近似在小格上的失效，
+必须用蒙特卡洛精确检验。</li>
+<li><b>变点检测不要用"自然年硬切"。</b>2015 vs 2013.08 的差别，就是硬切与扫描的差别。</li>
+<li><b>FDR 校正不能替代置换检验。</b>ACF 的"矛盾"只有靠置换检验才能判定真伪。</li>
+<li><b>重尾因变量不能用均值比较。</b>注数分布 var/mean=8.46，中位数/分位数才是正确的描述统计。</li>
+<li><b>相关性之外的稳健性。</b>本轮每个结论都做了：VIF、Bootstrap CI、分期、替换变量定义、二阶变量验证。</li>
+</ol>
+
+<h2>九、最终结论</h2>
+<div class="card" style="border-left:4px solid #1e3a5f">
+<p style="font-size:16px;line-height:2">
+1. <b>不存在可用于预测下一期开奖号码的规律。</b>所有序列层面的检验（ACF、FFT、Markov、ML、AR）
+   在正确的样本外口径下均为无效。这是数学上可预期的结果，本轮的数据证据与之一致。<br><br>
+
+2. <b>前区号码分布存在一个真实的、约在 2013 年 8 月结束的历史性偏离</b>（29–35 号被系统性超抽），
+   此后完全回归均匀。<b>任何基于历史频率的选号策略在当下已完全无效。</b><br><br>
+
+3. <b>唯一可被利用的真效应是"分奖结构"：</b>避开连号组合（run≥2）可把中奖时的
+   撞号概率降低到约 74%。它<b>不提高中奖概率</b>，只在中奖时分得更多。<br><br>
+
+4. <b>前两轮报告中的 3 处结论需要修正：</b>
+   "heat 显著" → 校正后不显著；
+   "2015 断点" → 实为 2013-08；
+   "奇偶分布偏离" → 精确检验下不显著。
+   另有 2 处表述需要修正："连号开出率与理论一致"（实为 1.12 倍，仅早期）、
+   "2015 年后已修复"（因果表述过强）。<br><br>
+
+5. <b>数学底线不变：</b>单注组合数 21,425,712，一等奖概率 4.667e−08，
+   每 2 元投入的数学期望回报约 1.1 元。<b>任何选号技巧都不改变这个分母。</b>
+</p>
+</div>
+
+<div class="note" style="margin-top:24px">
+<b>本报告的可复现性：</b>全部结论由 <code>scripts/</code> 下 10 个 Python 脚本独立产出，
+原始输出保存在各 <code>s*_output.txt</code>。环境：Python 3.13.12 / numpy 2.5.3 /
+pandas 3.0.6 / scipy 1.18.1 / statsmodels 0.15.0 / ruptures 1.1.10。<br>
+<b>证伪声明：</b>本报告主动推翻了前两轮 5 处结论。若后续轮次发现本报告的错误，
+欢迎以同样标准继续挑战。
+</div>
+
+<p style="margin-top:40px;text-align:center;color:#9aa4b0;font-size:13px">
+大数据统计结论仅供参考，不构成任何投注建议 · 请理性购彩<br>
+生成于 2026-10-10
+</p>
+
+</div>
+</body>
+</html>
