@@ -767,7 +767,11 @@ def validate_versions(repo_root: str | None = None,
             f"{s.get('file_version_lines_needed')} 一致"
         )
         rep.ok(f"framework_version = {s.get('framework_version')}，"
-               f"index_version = {s.get('index_version')}")
+               f"index_version = {s.get('index_version')}，"
+               f"project_version = {s.get('project_version')}")
+
+    # 顶层版本必须等于 pyproject 的 project.version（单一事实来源）
+    _check_project_version(root, s.get("project_version"), rep)
 
     # versions.json 自身合规于 schema
     vp = os.path.join(root, "versions.json")
@@ -785,6 +789,38 @@ def validate_versions(repo_root: str | None = None,
     _check_consumes_freshness(root, rep)
     _check_summary_counts(root, rep)
     return rep
+
+
+def _check_project_version(root: str, declared: str | None, rep: "ValidationReport") -> None:
+    """顶层 project_version 必须与 pyproject.toml 的 project.version 一致。
+
+    避免『versions.json 写的 release 版本』和『实际打包的版本』漂移 ——
+    这种漂移是最隐蔽的：两个数字都对，但彼此对不上。
+    """
+    import tomllib
+
+    pp = os.path.join(root, "pyproject.toml")
+    if not os.path.exists(pp):
+        rep.warn("pyproject.toml 不存在，跳过 project_version 一致性检查")
+        return
+    try:
+        with open(pp, "rb") as f:
+            cfg = tomllib.load(f)
+    except Exception as e:  # noqa: BLE001
+        rep.warn(f"pyproject.toml 解析失败，跳过 project_version 一致性检查: {e}")
+        return
+    actual = (cfg.get("project") or {}).get("version")
+    if not actual:
+        rep.warn("pyproject.toml 无 project.version，跳过 project_version 一致性检查")
+        return
+    if declared is None:
+        rep.err(f"versions.json 未声明 project_version，但 pyproject 的 project.version = {actual}")
+        return
+    if declared != actual:
+        rep.err(f"顶层版本不一致: versions.json project_version={declared}，"
+                f"pyproject project.version={actual}")
+    else:
+        rep.ok(f"project_version 一致（={declared}，源自 pyproject）")
 
 
 def _load_superseded_facts(root: str) -> dict[str, str]:

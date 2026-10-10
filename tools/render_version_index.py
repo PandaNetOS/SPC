@@ -42,6 +42,7 @@ def gen() -> str:
     out.append("> 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。")
     out.append("")
     out.append(f"**索引版本**：`{d['index_version']}` ｜ **框架版本**：`{d['framework_version']}` ｜ "
+               f"**顶层版本（release）**：`{d.get('project_version')}` ｜ "
                f"**当前轮次**：`{d['current_iteration']}` ｜ **生成日期**：{d['generated_at']}")
     out.append("")
     out.append("---")
@@ -63,6 +64,7 @@ def gen() -> str:
     out.append("| `data_version` | 用了**哪份数据** | `data/raw/` | `game.yaml` / manifest |")
     out.append(f"| **`content_version`** ★ | **这份内容改过几版** | **每份内容自己** | **文件内版本行 + 本索引** |")
     out.append(f"| **`framework_version`** ★ | **框架层改过几版** | **`framework/`** | **本索引** |")
+    out.append(f"| **`project_version`** ★ | **smartpickcore 整体 release 版本** | **整个包** | **本索引 + pyproject.toml** |")
     out.append("")
     out.append("★ = 本次（2026-10-11）新引入。此前全仓库**没有**「内容版本」与「框架版本」的概念。")
     out.append("")

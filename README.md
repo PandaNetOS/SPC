@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.7` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.8` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -86,6 +86,7 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
+pyproject.toml          v0.1.0   ← 顶层版本（release）= smartpickcore 整体版本，源自 project.version
 AI_CONTEXT.md          v1.3   ← 单一入口。AI 与人都从这里进
 VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
@@ -116,7 +117,7 @@ tests/                        ← 5 个测试文件（共 319 项，无需 pytes
 ```
 
 > **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
-> （B 级 `.py` 只登记索引；完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)）。
+> （B 级 `.py` 只登记索引）。例外：`pyproject.toml` 的 `v0.1.0` 标的是 **smartpickcore 整体 release 版本**（`project_version`），不是 `content_version`。完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)。
 >
 > **文件名本身不带版本号** —— 版本号在**文件头部版本行**与**本索引**里维护。
 > 原因：改名会让所有指向它的链接失效、`git log` 追不到历史。详见

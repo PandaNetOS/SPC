@@ -300,6 +300,7 @@ def verify_versions(repo_root: str) -> dict:
         "missing_files": n_missing,
         "index_version": d.get("index_version"),
         "framework_version": fv,
+        "project_version": d.get("project_version"),
         "current_iteration": d.get("current_iteration"),
     }
     return {"errors": errors, "warnings": warnings, "stats": stats}

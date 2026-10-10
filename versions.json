@@ -1,9 +1,10 @@
 {
-  "index_version": "1.0",
+  "index_version": "1.1",
   "repo": "PandaNetOS/smartpickcore",
   "generated_at": "2026-10-11",
   "current_iteration": "r03",
   "framework_version": "1.1",
+  "project_version": "0.1.0",
   "levels": {
     "A": {
       "name": "结论性内容",
@@ -391,7 +392,7 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.7",
+      "content_version": "1.8",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"

@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`1.0` ｜ **框架版本**：`1.1` ｜ **当前轮次**：`r03` ｜ **生成日期**：2026-10-11
+**索引版本**：`1.1` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r03` ｜ **生成日期**：2026-10-11
 
 ---
 
@@ -22,6 +22,7 @@
 | `data_version` | 用了**哪份数据** | `data/raw/` | `game.yaml` / manifest |
 | **`content_version`** ★ | **这份内容改过几版** | **每份内容自己** | **文件内版本行 + 本索引** |
 | **`framework_version`** ★ | **框架层改过几版** | **`framework/`** | **本索引** |
+| **`project_version`** ★ | **smartpickcore 整体 release 版本** | **整个包** | **本索引 + pyproject.toml** |
 
 ★ = 本次（2026-10-11）新引入。此前全仓库**没有**「内容版本」与「框架版本」的概念。
 
@@ -105,7 +106,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.3` | `r03` | active |  |
-| `README.md` | `1.7` | `r03` | active |  |
+| `README.md` | `1.8` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |

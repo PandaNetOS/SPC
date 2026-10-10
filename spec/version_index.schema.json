@@ -30,6 +30,11 @@
       "pattern": "^[0-9]+\\.[0-9]+$",
       "description": "★ 框架层（framework/）的独立版本。与包版本 __version__ 解耦 —— 框架演进节奏与库代码不同。"
     },
+    "project_version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
+      "description": "★ smartpickcore 顶层（release）版本 = 包版本，源自 pyproject.toml 的 project.version。代表『发布给用户用的整体版本』，与 framework_version（框架演进）／index_version（索引结构）解耦。校验器会核对它 == pyproject 的 project.version。"
+    },
     "levels": {
       "type": "object",
       "description": "分级定义。键为级别代号（A/B/C/D），值为该级别的说明。",
