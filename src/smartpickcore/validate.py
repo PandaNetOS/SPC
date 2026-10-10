@@ -560,7 +560,87 @@ def validate_versions(repo_root: str | None = None,
     else:
         rep.err("versions.json 不存在")
 
+    _check_consumes_freshness(root, rep)
     return rep
+
+
+def _load_superseded_facts(root: str) -> dict[str, str]:
+    """返回 {被取代的 F-id: 取代它的 F-id}。
+
+    只关心『已被推翻』的结论 —— 下游若仍引用且未更新，即为沉默。
+    """
+    out: dict[str, str] = {}
+    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    if not os.path.exists(p):
+        return out
+    with open(p, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:  # noqa: BLE001, S112
+                continue
+            if d.get("status") == "superseded":
+                out[d.get("id", "")] = d.get("superseded_by") or "?"
+    return out
+
+
+def _check_consumes_freshness(root: str, rep: ValidationReport) -> None:
+    """★ 下游新鲜度检查：引用了『已被推翻结论』的下游文档，是否同步更新过？
+
+    背景（r03 真实案例）：r03 推翻了 F-0015（『1 亿封顶已触发』为误判），
+    但 `STRATEGY_GUIDE.md`（给普通用户看的说明书）仍在传播该错误结论，
+    而其 content_version 停在 1.0 —— **旧校验器只看版本号自洽，完全看不见**。
+
+    判据（刻意保守，避免误报）：
+        条目声明了 `consumes`（引用的 F-id 列表）；若其中任一 F-id
+        在 FACTS.jsonl 里 `status == "superseded"` → 报 warning，
+        提示「你引用的结论已被取代，请确认内容已同步并提升 content_version」。
+
+    为什么用 warning 而非 error：引用 superseded 结论**未必**是错的
+    （可能是『历史沿革』式的正当引用，如说明『早期误判已成过往』）。
+    但**必须让人看见**，不能沉默。
+    """
+    vp = os.path.join(root, "versions.json")
+    if not os.path.exists(vp):
+        return
+    try:
+        with open(vp, encoding="utf-8") as f:
+            vd = json.load(f)
+    except Exception:  # noqa: BLE001
+        return
+
+    superseded = _load_superseded_facts(root)
+    if not superseded:
+        rep.ok("下游新鲜度: 无 superseded 结论，跳过")
+        return
+
+    n_declared = 0
+    n_dirty = 0
+    for e in vd.get("entries") or []:
+        consumes = e.get("consumes")
+        if not consumes:
+            continue
+        n_declared += 1
+        path = e.get("path", "?")
+        hits = sorted(set(consumes) & set(superseded))
+        if not hits:
+            continue
+        n_dirty += 1
+        mapping = ", ".join(f"{f}→{superseded[f]}" for f in hits)
+        rep.warn(
+            f"下游新鲜度: {path} 引用了已被取代的结论 [{mapping}] "
+            f"（cv={e.get('content_version')}, it={e.get('iteration')}）"
+            f" —— 请确认内容已同步；若属『历史沿革』式正当引用，可忽略"
+        )
+
+    if n_dirty == 0:
+        rep.ok(
+            f"下游新鲜度: {n_declared} 个条目声明了 consumes，"
+            f"引用 superseded 结论的均已同步（0 项沉默）"
+        )
 
 
 # ---------------------------------------------------------------- all

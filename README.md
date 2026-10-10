@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.0`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.1`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.0`（轮次 `r03`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.1`（轮次 `r03`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。

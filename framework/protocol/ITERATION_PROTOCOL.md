@@ -1,6 +1,6 @@
 # ITERATION_PROTOCOL.md — 迭代协议
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件定义"一轮研究"的完整生命周期。**
@@ -174,6 +174,22 @@
 | 假设变化 | 更新 `workbench/HYPOTHESES.md` |
 | 待办清算 | 更新 `workbench/TODO.md`（完成的移到「已完成」节） |
 | 本轮过程 | 新写 `memory/journal/roundNN.md` |
+| **★ 下游同步** | **结论被 superseded 时**，检查所有 `consumes` 引用它的下游文档（`versions.json` 的 `consumes` 字段），同步内容 + 升 `content_version` |
+
+### ★ 下游同步（r03 血的教训）
+
+**根因**：r03 推翻了 `F-0015`（「1 亿封顶已触发」），但给普通用户看的
+`STRATEGY_GUIDE.md` 仍在传播这个错误结论 —— 而当时**测试全绿、校验全绿**，
+因为旧校验只看版本号自洽，看不见"内容没跟上"。
+
+**协议要求**（每轮收轮时执行）：
+
+1. 列出本轮 `status` 从 `established` 变为 `superseded` 的结论
+2. 查 `versions.json` 里哪些条目的 `consumes` 引用了它们
+3. 对每一个：**要么同步内容并升版本，要么在文档内加显式存疑标记**
+4. 跑 `validate` 确认 warning 只剩"已确认的沿革式引用"
+
+**判据不是"有没有 warning"，而是"每个 warning 都有解释"。**
 
 ### 关键传导（本仓库的自我迭代机制）
 

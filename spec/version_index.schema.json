@@ -101,6 +101,14 @@
           "note": {
             "type": ["string", "null"],
             "description": "备注，如『派生物』『模板，落后实盘』。"
+          },
+          "consumes": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "string",
+              "pattern": "^F-[0-9]{4}$"
+            },
+            "description": "★ 本条目**引用了哪些结论**（FACTS.jsonl 的 F-xxxx）。用于下游新鲜度检查：若被引用的结论被 superseded 而本条目 content_version 未随之提升，校验器报错（防止上游修正后下游继续传播旧结论）。省略或空数组 = 不声明。"
           }
         }
       }

@@ -88,8 +88,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round03/scripts/cap_adjusted_uplift.json` | `1.0` | `r02` | 2026-10-11 | active |  |
 | `games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py` | `1.0` | `r02` | 2026-10-11 | active |  |
 | `games/dlt/iterations/round04/TASK_BRIEF.md` | `1.0` | `r04` | 2026-10-11 | active | planned |
-| `games/dlt/rules_history.md` | `1.0` | `r02` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞已标记存疑） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.0` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版） |
+| `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.1` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版）；r03 同步封顶修正 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.1` | `r03` | 2026-10-11 | active | 18 条结论（F-0001~F-0018；F-0015 superseded） |
 | `memory/facts/INDEX.md` | `1.1` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成 |
@@ -113,7 +113,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `docs/ITERATION_GUIDE.md` | `1.0` | `r02` | active |  |
 | `docs/METHODOLOGY.md` | `1.0` | `r02` | active |  |
 | `docs/PROPOSAL_SINGLE_TICKET_CORE.md` | `1.0` | `r02` | active |  |
-| `docs/VERSIONING_DOCS.md` | `1.1` | `r03` | active |  |
+| `docs/VERSIONING_DOCS.md` | `1.2` | `r03` | active |  |
 | `framework/INDEX.md` | `1.0` | `r02` | active |  |
 | `framework/README.md` | `1.0` | `r02` | active |  |
 | `framework/core/README.md` | `1.0` | `r02` | active |  |
@@ -126,7 +126,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/methodology/MATH_BOUNDARY.md` | `1.0` | `r02` | active |  |
 | `framework/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
-| `framework/protocol/ITERATION_PROTOCOL.md` | `1.0` | `r02` | active |  |
+| `framework/protocol/ITERATION_PROTOCOL.md` | `1.1` | `r03` | active |  |
 | `framework/protocol/MEMORY_PROTOCOL.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/README.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
@@ -167,7 +167,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round02/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.0` | 契约版本；内容版本见 content_version |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.0` | 契约版本；内容版本见 content_version；r03 同步 R-001 封顶修正（F-0015→F-0016/F-0017） |
 | `pyproject.toml` | `project.version` | `0.1.0` | 包版本 |
 | `spec/fact.schema.json` | `—` | `—` | schema 自身无版本；约束 fact.schema_version |
 | `spec/game_config.schema.json` | `—` | `—` | schema 自身无版本；约束 game_config.config_version |

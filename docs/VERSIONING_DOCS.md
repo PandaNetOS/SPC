@@ -1,6 +1,6 @@
 # VERSIONING_DOCS.md — 文档与内容版本规则
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件与 `spec/VERSIONING.md` 的关系：**
@@ -208,13 +208,47 @@ python cli/main.py versions
 python cli/main.py validate --all -v
 ```
 
-### 6.3 禁止事项
+### 6.3 下游新鲜度：`consumes` 声明（r03 新增）
+
+**版本号自洽 ≠ 内容跟得上结论。**
+
+这是一个**真实踩过的坑**（r03）：`F-0015`（「1 亿封顶已触发」）被推翻后，
+给普通用户看的 `STRATEGY_GUIDE.md` 仍在传播这个错误结论 ——
+而当时**全部 106 项测试 + 41 项校验都是绿的**，因为旧校验只比对
+「索引版本号 vs 文件内版本号」，两边都是 `1.0`，判定"一致"。
+
+**机制**：让下游文档声明它**引用了哪些结论**。
+
+```python
+# tools/build_versions.py
+CONSUMES: dict[str, list[str]] = {
+    "games/dlt/strategy/STRATEGY_GUIDE.md": ["F-0001", "F-0003", ...],
+    "games/dlt/strategy/strategy.json":     ["F-0001", "F-0003", ...],
+}
+```
+
+构建时写入 `versions.json` 条目的 `consumes` 字段；校验器检查：
+
+> 若某条目引用的 `F-xxxx` 在 `FACTS.jsonl` 里已 `status: superseded`
+> → 报 **warning（下游沉默）**，提示确认内容已同步。
+
+**为什么是 warning 而非 error**：引用 superseded 结论**未必是错的** ——
+可能是「历史沿革」式正当引用（如"早期文档曾误判为已触发，现已更正"）。
+但**必须让人看见**，不能沉默。
+
+**维护纪律**：
+1. 文档引用某条结论时，把编号填进 `CONSUMES`；引用关系消失时删掉
+2. 若只是「提及历史」而非「依赖」，**不要列入** —— 否则永久告警（噪音）
+3. 被 warning 命中时，二选一：① 同步内容并升 `content_version`；② 确认属沿革式引用，在文档内加显式存疑标记
+
+### 6.4 禁止事项
 
 | 禁止 | 后果 |
 |---|---|
 | 手改 `VERSION_INDEX.md` | 会被下次生成覆盖 |
 | 手改 `versions.json` 而不改对应文件 | `cli versions` 报不一致 |
 | **改内容但不升版本** | **索引记录的是错的 —— 比没有索引更坏** |
+| **引用了结论却不写 `consumes`** | 上游结论被推翻时下游沉默，无人察觉（见 §6.3） |
 | 把轮次编码进版本号 | 假升级（见 §2） |
 | 给 D 级数据加版本号 | 与 SHA256 双重记账 |
 | 版本行写成其他格式 | 正则提取失败，一致性检查失效 |

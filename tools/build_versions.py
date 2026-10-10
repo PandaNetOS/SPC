@@ -102,8 +102,8 @@ CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
     "memory/journal/round02.md":           ("1.0", "r02", "整理入库轮"),
     "memory/journal/round03.md":           ("1.0", "r03", "复核轮（含 1 次自我纠错）"),
     "memory/INDEX.md":                     ("1.0", "r02", "记忆层说明"),
-    "games/dlt/rules_history.md":          ("1.0", "r02", "E0~E6 共 7 段（§3.3 措辞已标记存疑）"),
-    "games/dlt/strategy/STRATEGY_GUIDE.md": ("1.0", "r03", "面向普通读者的策略说明书（人话版）"),
+    "games/dlt/rules_history.md":          ("1.1", "r03", "E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记）"),
+    "games/dlt/strategy/STRATEGY_GUIDE.md": ("1.1", "r03", "面向普通读者的策略说明书（人话版）；r03 同步封顶修正"),
     "games/dlt/iterations/round02/FINDINGS.md":     ("1.0", "r02", "整理入库轮发现"),
     "games/dlt/iterations/round02/HANDOFF.md":      ("1.0", "r02", "r02→r03 交接"),
     "games/dlt/iterations/round02/TASK_BRIEF.md":   ("1.0", "r02", "已交付"),
@@ -114,6 +114,40 @@ CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
     "games/dlt/iterations/round03/FINDINGS.md":     ("1.0", "r03", "复核轮发现（含自我纠错）"),
     "games/dlt/iterations/round03/HANDOFF.md":      ("1.0", "r03", "r03→r04 交接"),
     "games/dlt/iterations/round04/TASK_BRIEF.md":   ("1.0", "r04", "planned"),
+}
+
+# ★ C 级的内容版本（人工维护）。仅服务于「下游新鲜度检查」：
+#   校验器要判断「引用了某结论的契约文件，在结论被推翻后是否同步更新过」。
+#   ref_version 答「它声明的 schema 版本」；content_version 答「内容改过几版」。
+C_CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
+    "games/dlt/strategy/strategy.json": ("1.1", "r03", "r03 同步 R-001 封顶修正（F-0015→F-0016/F-0017）"),
+}
+
+# ★ 下游依赖声明（人工维护）：path → 该文档**引用了哪些结论**（F-xxxx）。
+#
+#   用途：防「上游结论被推翻、下游继续传播」。校验器会检查：
+#   若本条目引用的某个 F-xxxx 在 FACTS.jsonl 里已被 superseded，
+#   而本条目 content_version 与它上次同步时（此处记录的 sync_version）相比**未提升**
+#   → 报 warning（下游沉默）。
+#
+#   触发本次机制的真实案例：r03 推翻了 F-0015（封顶从未触发），
+#   但 STRATEGY_GUIDE.md 仍在传播「封顶已真实触发」——校验器当时完全看不见。
+#
+#   维护方式：文档里引用某条结论时，把编号填进来；引用关系消失时删掉。
+CONSUMES: dict[str, list[str]] = {
+    # 面向普通读者的说明书：引用了撞号效应、封顶、期望回报三类结论
+    # 注：F-0015 不列入 —— 本文档只在「更正说明」里提到它已作废，
+    #     属历史沿革式提及，非依赖；列进来会造成永久告警（噪音）。
+    "games/dlt/strategy/STRATEGY_GUIDE.md": [
+        "F-0001", "F-0003", "F-0004", "F-0006", "F-0008",
+        "F-0009", "F-0011", "F-0012", "F-0016", "F-0017",
+    ],
+    # 机器契约：avoid_list 的证据编号
+    "games/dlt/strategy/strategy.json": [
+        "F-0001", "F-0003", "F-0004", "F-0006", "F-0008", "F-0009", "F-0011", "F-0012",
+    ],
+    # 规则历史：封顶条款与 epoch 划分
+    "games/dlt/rules_history.md": ["F-0014", "F-0015"],
 }
 
 # 归档条目（A 级，但状态标 archived）
@@ -137,7 +171,7 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
     "framework/INDEX.md":                         ("1.0", "r02"),
     "framework/core/README.md":                   ("1.0", "r02"),
     "framework/protocol/README.md":               ("1.0", "r02"),
-    "framework/protocol/ITERATION_PROTOCOL.md":   ("1.0", "r02"),
+    "framework/protocol/ITERATION_PROTOCOL.md":   ("1.1", "r03"),
     "framework/protocol/MEMORY_PROTOCOL.md":      ("1.0", "r02"),
     "framework/protocol/templates/TASK_BRIEF.template.md": ("1.0", "r02"),
     "framework/protocol/templates/FINDINGS.template.md":   ("1.0", "r02"),
@@ -149,7 +183,7 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
     "docs/ITERATION_GUIDE.md":                    ("1.0", "r02"),
     "docs/METHODOLOGY.md":                        ("1.0", "r02"),
     "docs/PROPOSAL_SINGLE_TICKET_CORE.md":        ("1.0", "r02"),
-    "docs/VERSIONING_DOCS.md":                    ("1.1", "r03"),
+    "docs/VERSIONING_DOCS.md":                    ("1.2", "r03"),
     "games/INDEX.md":                             ("1.0", "r02"),
     "tests/README.md":                            ("1.0", "r02"),
 }
@@ -257,6 +291,14 @@ def main() -> int:
                     e["ref_version"] = cl[1]
                 if cl[2]:
                     e["note"] = cl[2]
+            # ★ C 级也可有 content_version（回答「这份契约的内容改过几版」，
+            #   与 ref_version 回答的「它声明的 schema 版本」是两个问题）
+            cvc = C_CONTENT_VERSIONS.get(p)
+            if cvc:
+                e["content_version"] = cvc[0]
+                e["iteration"] = cvc[1]
+                if cvc[2]:
+                    e["note"] = (e.get("note", "") + "；" + cvc[2]).strip("；")
             e["status"] = "active"
 
         else:  # D
@@ -266,6 +308,12 @@ def main() -> int:
             e["status"] = "active"
 
         entries.append(e)
+
+    # ★ 下游依赖声明：写入 consumes 字段（供校验器做新鲜度检查）
+    _by_path = {e["path"]: e for e in entries}
+    for _p, _fs in CONSUMES.items():
+        if _p in _by_path and _fs:
+            _by_path[_p]["consumes"] = sorted(set(_fs))
 
     entries.sort(key=lambda x: (x["level"], x["path"]))
 

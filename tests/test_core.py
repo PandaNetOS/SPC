@@ -500,6 +500,34 @@ def test_versions() -> None:
         f"过期 {s.get('readme_version_tags_bad', 0)} 项）",
     )
 
+    # ★ 下游新鲜度机制（r03 新增）：consumes 声明必须指向真实存在的 F-id
+    declared = [e for e in d["entries"] if e.get("consumes")]
+    check(len(declared) >= 1, f"至少 1 个条目声明了 consumes（实有 {len(declared)} 个）")
+
+    from smartpickcore.validate import load_fact_ids
+    fact_ids = load_fact_ids(_ROOT)
+    dangling: list[str] = []
+    for e in declared:
+        for fid in e["consumes"]:
+            if fid not in fact_ids:
+                dangling.append(f"{e['path']} → {fid}")
+    check(not dangling, f"consumes 引用的 F-id 全部存在（悬空 {len(dangling)} 个）")
+    for x in dangling[:5]:
+        print(f"      ✗ 悬空引用: {x}")
+
+    # 机制自检：构造一个「引用了 superseded 结论」的假条目，必须被检出
+    from smartpickcore.validate import _check_consumes_freshness
+    from smartpickcore.validate import ValidationReport
+
+    class _FakeReport(ValidationReport):
+        pass
+
+    fake = _FakeReport()
+    _check_consumes_freshness(_ROOT, fake)
+    # rules_history.md 引用了 superseded 的 F-0015 → 应产生 warning（而非静默）
+    has_sup_warn = any("下游新鲜度" in w for w in fake.warnings)
+    check(has_sup_warn, "下游新鲜度检查能检出『引用 superseded 结论』的条目")
+
 
 # ================================================================ 主流程
 
