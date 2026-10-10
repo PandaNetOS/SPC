@@ -20,7 +20,7 @@
 │ 4 schema │        │ protocol     │        │ facts (台账)  │
 │ 红线     │        │ methodology  │        │ journal      │
 │ 版本号    │        │ tools        │        │ lessons      │
-│          │        │ core(待实现)  │        │ workbench    │
+│          │        │ core(已实现)  │        │ workbench    │
 └──────────┘        └──────────────┘        └──────────────┘
      │                      │                      │
      └──────────────────────┼──────────────────────┘
@@ -42,7 +42,7 @@
 | 层 | 职责 | 允许写的内容 | 禁止写的内容 |
 |---|---|---|---|
 | `spec/` | 定义**数据结构与红线** | JSON Schema、版本规则 | 具体彩种参数、具体结论 |
-| `framework/` | 定义**怎么做研究** | 协议、方法论、通用工具 | 彩种专属分支、彩种数值 |
+| `framework/` | 定义**怎么做研究** | 协议、方法论、通用工具、**号码空间计算与判定核心** | 彩种专属分支、彩种数值 |
 | `memory/` | 存**结论与教训** | 结论台账、日志、教训、待办 | 原始数据、脚本 |
 | `src/` + `cli/` | **机械执行**契约与协议 | 校验、计算、生成 | 判断"哪条结论对" |
 | `games/<id>/` | **具体彩种的**数据与产出 | 数据、脚本、策略、轮次 | 修改上面任何一层 |
@@ -63,7 +63,7 @@ memory/ ←── 由 games/ 的轮次产出写入
 - `src/` 里硬编码 `35`、`12`、`21425712` → 破坏
 - `spec/` 里出现"大乐透"三个字 → 破坏
 
-## 三条核心设计
+## 四条核心设计
 
 ### 1. 契约优先（schema-first）
 
@@ -72,21 +72,47 @@ memory/ ←── 由 games/ 的轮次产出写入
 | 契约 | 约束对象 | 关键红线 |
 |---|---|---|
 | `fact.schema.json` | 结论台账 | `affects_win_probability` 恒 false |
-| `strategy.schema.json` | 对外策略输出 | `boundary.optimizable_target` 枚举里**没有** `win_probability` |
+| `strategy.schema.json` | 对外策略输出 | `boundary.optimizable_target` 枚举里**没有** `win_probability`；`predicate` 受限 DSL |
 | `game_config.schema.json` | 彩种配置 | `epochs[].sum_affects_numbers` 恒 false |
 | `iteration.schema.json` | 轮次登记 | `upstream_fact_ids` 形成演化链 |
 
-红线的实现方式不是"文档里写不要"，而是 **schema 里的 `const` / 枚举**——
+红线的实现方式不是"文档里写不要"，而是 **schema 里的 `const` / 枚举 / `pattern`**——
 写错的值**根本存不进去**。结构性拒收，不靠自觉。
 
 ### 2. 配置驱动（config-driven）
 
 `game.yaml` 是唯一彩种参数来源。`T = ∏ C(pool_size_i, pick_i)` 由
-`src/smartpickcore/game.py` 从 `machine.zones` **机械算出**，代码里没有任何 `35` 或 `12`。
+`framework/core/game_util.py` 从 `machine.zones` **机械算出**，代码里没有任何 `35` 或 `12`。
 
-验证方式：把 `game.yaml` 的 `pool_size` 从 35 改成 36，`T` 必须自动变。
+**同一思路已从「号码空间级」下沉到「单注级」**：
+`framework/core/` 的 21 个特征原语由 `game.yaml` 的 `features[]`
+以 `primitive` + `args` 形式声明驱动 —— 框架不知道"连号"是什么，只执行声明。
 
-### 3. 记忆四层（memory tiers）
+验证方式：把 `game.yaml` 的 `pool_size` 从 35 改成 36，`T` 必须自动变；
+把 `has_run_ge2` 的 `threshold` 从 2 改成 3，判定结果必须自动变。
+
+### 3. 单注层一等公民（single-ticket core）
+
+`framework/core/` 六个模块，构成 `Ticket → 求值 → 判定 → 生成` 链路：
+
+```
+L1 Ticket      ticket.py      一注号码。区名来自 machine.zones，不硬编码 front/back
+L2 Scoring     evaluate.py    按声明机械求值
+               judge.py       受限 DSL 解析 + 判定 + ★ 作用域切分
+L3 Portfolio   generate.py    拒绝采样 + 结构分散（跨注规则只留接口）
+```
+
+**为什么 `Ticket` 不含 `front`/`back`**：区名是可变长数组。这是"加入第二个彩种
+不改 `framework/`"的唯一硬标准的前提。
+
+**★ 作用域切分是本层的核心机制**：`R-002` 的 predicate
+`duplicated_structure_across_tickets == true` 是**跨注特征，一注号码算不出来**。
+`split_by_scope()` 把它切开并**显式上报** —— 绝不用 `try/except` 静默吞掉，
+因为那会连带使同批的 `R-001` 一起失效（静默降级比报错危险）。
+
+> 详见 `framework/core/README.md` 与 `docs/PROPOSAL_SINGLE_TICKET_CORE.md`。
+
+### 4. 记忆四层（memory tiers）
 
 不同寿命的信息分开存，避免"长寿命的被短寿命的污染"：
 

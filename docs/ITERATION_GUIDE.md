@@ -169,7 +169,7 @@ python cli/main.py validate --game <id>       # 单彩种（含 strategy + itera
 python cli/main.py validate --facts           # 只查台账
 ```
 
-校验项目（28 项）包括：
+校验项目（33 项）包括：
 
 - 4 份 schema 的 jsonschema 校验
 - 四条红线（`const` 级）
@@ -178,8 +178,10 @@ python cli/main.py validate --facts           # 只查台账
 - `caveats` 非空
 - `evidence.script` / `source` 文件存在性
 - **数据 SHA256 实算比对**
+- **`features[]` 声明可执行性**（每个声明能否被框架原语执行）
+- **`predicate` 引用完整性与作用域**（单注层 / 跨注层分类）
 
-**全绿才收轮。**
+**全绿才收轮。** 另需跑 `python tests/test_core.py`（92 项）。
 
 ## 6. 规模建议
 

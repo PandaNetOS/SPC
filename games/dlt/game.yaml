@@ -8,7 +8,7 @@
 
 id: dlt
 name: 超级大乐透
-config_version: "1.0"
+config_version: "2.0"
 owner: PandaNetOS
 
 machine:
@@ -31,69 +31,107 @@ machine:
 # ---------------------------------------------------------------- 特征
 # 可从一注号码机械计算的派生特征。
 # strategy.json 的 machine_rule.predicate 只能引用此处声明的 key。
+#
+# ────────────────────────────────────────────────────────────────────
+# 格式说明（config_version 2.0）
+#
+#   primitive  框架 **可执行** 的原语名，取自 framework/core/features.py 的 PRIMITIVES。
+#              有 primitive → 本特征可被 evaluate() 求值、可被 predicate 引用。
+#   args       原语参数。`zone` 指定对哪个区求值，其余参数名由原语决定。
+#   formula    人类可读的数学说明。**仅注释，不参与求值**（刻意不用 eval）。
+#   range      取值范围的说明性声明（供人核对，不强制校验）。
+#
+# ⚠️ formula 与 primitive 必须语义一致。改 primitive 时同步改 formula，
+#    否则注释会与行为脱节（这是本仓库要求 formula 存在的原因）。
+# ⚠️ 修改后必须跑：python cli/main.py validate --game dlt
+# ────────────────────────────────────────────────────────────────────
 features:
   - key: front_sum
     label: 前区和值
     type: integer
+    primitive: sum
+    args: {zone: front}
     formula: "sum(front)"
     range: [15, 165]
 
   - key: front_odd
     label: 前区奇数个数
     type: integer
+    primitive: count_odd
+    args: {zone: front}
     formula: "count(front, odd)"
     range: [0, 5]
 
   - key: front_big
     label: 前区大号个数（>=18）
     type: integer
+    primitive: count_ge
+    args: {zone: front, threshold: 18}
     formula: "count(front, >=18)"
     range: [0, 5]
 
   - key: front_span
     label: 前区跨度 = max(front) - min(front)
     type: integer
+    primitive: span
+    args: {zone: front}
     formula: "max(front) - min(front)"
     range: [4, 34]
 
   - key: adjacent_pairs
     label: 前区连号对数（相邻号对，如 12-13 算 1 对）
     type: integer
+    primitive: adjacent_pair_count
+    args: {zone: front}
     formula: "count(i in 1..4: front[i+1] - front[i] == 1)"
     range: [0, 4]
+    note: "run(c) 的定义量。精确理论分布见 data/derived/04_structure_distribution_exact.json"
 
   - key: has_adjacent
     label: 是否存在连号（adjacent_pairs >= 1）
     type: boolean
+    primitive: has_consecutive
+    args: {zone: front}
     formula: "adjacent_pairs >= 1"
 
   - key: has_run_ge2
     label: 是否存在 2 连号及以上（本仓库策略核心判定量）
     type: boolean
+    primitive: adjacent_pair_count_ge
+    args: {zone: front, threshold: 2}
     formula: "adjacent_pairs >= 2"
     # 说明：run>=2 定义为「至少两个相邻号对」。
     #       精确理论 P(run>=2) = 0.088904（枚举 C(35,5)=324632 全部组合）
+    #       ⚠️ 本特征是 R-001 的判定量，改动它会直接改变对外策略。
 
   - key: front_max
     label: 前区最大号
     type: integer
+    primitive: max
+    args: {zone: front}
     formula: "max(front)"
     range: [5, 35]
 
   - key: all_birthday_zone
     label: 前区全部号码 <= 31（"生日号区"）
     type: boolean
+    primitive: all_le
+    args: {zone: front, threshold: 31}
     formula: "max(front) <= 31"
 
   - key: back_sum
     label: 后区和值
     type: integer
+    primitive: sum
+    args: {zone: back}
     formula: "sum(back)"
     range: [3, 23]
 
   - key: back_span
     label: 后区跨度
     type: integer
+    primitive: span
+    args: {zone: back}
     formula: "max(back) - min(back)"
     range: [1, 11]
 

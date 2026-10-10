@@ -81,9 +81,19 @@
             "type": "string",
             "enum": ["integer", "number", "boolean", "category"]
           },
+          "primitive": {
+            "type": ["string", "null"],
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "description": "框架可执行的原语名，取自 framework/core/features.py 的 PRIMITIVES。有 primitive 则该特征可被 evaluate() 求值、可被 predicate 引用；没有则本特征只是注释，框架无法求值。"
+          },
+          "args": {
+            "type": ["object", "null"],
+            "description": "原语参数。zone 指定对哪个区求值（须为 machine.zones 已声明的 key）；其余参数名由原语决定。",
+            "additionalProperties": true
+          },
           "formula": {
             "type": "string",
-            "description": "人类可读定义，或受限表达式（对 zones 的聚合）。示例：'count(adjacent_pairs)'。"
+            "description": "人类可读的数学说明。**仅注释，不参与求值**（框架刻意不使用 eval）。必须与 primitive 语义一致。"
           },
           "range": {
             "type": ["array", "null"],
@@ -95,6 +105,10 @@
             "type": ["array", "null"],
             "items": {"type": "string"},
             "description": "type=category 时的取值域。"
+          },
+          "note": {
+            "type": ["string", "null"],
+            "description": "补充说明，如该特征的精确理论值、或改动它会影响哪些策略。"
           }
         }
       }

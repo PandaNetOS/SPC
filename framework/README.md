@@ -12,7 +12,7 @@
 | `protocol/` | 迭代协议、记忆协议、三个交接模板 | ✅ |
 | `methodology/` | 数学边界推导、统计纪律检查清单 | ✅（数值从 `game.yaml` 读） |
 | `tools/` | 通用工具（记忆读写库） | ✅ |
-| `core/` | 框架核心（特征计算、校验 —— 依赖 `game.yaml` 的声明） | ✅（通过配置驱动） |
+| `core/` | **框架核心（已实现）**：21 个特征原语 / `Ticket` / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器 | ✅（`game.yaml` 只提供声明） |
 
 ## 怎么判断某段代码属于框架还是彩种
 
@@ -22,6 +22,7 @@
 | 代码从 `game.yaml` 读 `machine.zones`？ | ✅ 正确 | — |
 | 代码从 `features` 段读特征定义？ | ✅ 正确 | — |
 | 代码硬编码某个特征的公式？ | ❌ 违反分离 | ✅ 应在 `game.yaml` 的 `features` 里 |
+| 代码里出现 `if zone_key == "front"`？ | ❌ 违反分离 | ✅ 只在 `game.yaml` 里作为数据出现 |
 
 **唯一的硬标准**：加入第二个彩种时，是否需要修改 `framework/`？
 - 需要 → 分离没做好，是技术债
@@ -29,6 +30,21 @@
 
 > 这个标准目前**尚未被检验** —— 因为仓库里只有 `games/dlt/` 一个彩种。
 > 见 `memory/workbench/TODO.md` 的 `T-031`。
+>
+> **但结构已经为它准备好了**：`Ticket` 的区名来自 `machine.zones`（可变长，
+> 不硬编码 `front`/`back`）；特征求值走 `primitive` + `args` 注册表
+> （框架不知道"连号"是什么）。这两条是"不改 `framework/`"的前提条件。
+
+## 框架核心（`core/`）速览
+
+| 模块 | 一行说明 |
+|---|---|
+| `features.py` | 21 个纯数学原语，签名 `(zone, **args) -> int\|bool`。输入**强制去重排序**，不规范就报错 |
+| `game_util.py` | `T = ∏ C(pool_size_i, pick_i)`、`p1 = 1/T`、`validate_feature_declarations()` |
+| `ticket.py` | `Ticket` 一等公民。可哈希、可比较、可渲染。**不含 `front`/`back`** |
+| `evaluate.py` | 按 `features[]` 声明机械求值（跳过纯 `formula` 的） |
+| `judge.py` | 受限 DSL 解析 + 判定 + **作用域切分**（`split_by_scope`） |
+| `generate.py` | 拒绝采样 + 结构分散。触顶**明确报错**，不返回空 |
 
 ## 两条核心设计
 

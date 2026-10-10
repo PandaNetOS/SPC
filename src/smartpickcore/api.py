@@ -9,6 +9,12 @@
       sp.strategy()          # 策略规则集（受 schema 约束）
       sp.disclaimer()        # 免责声明（必须原样展示）
 
+      # 单注层（framework/core）
+      sp.evaluate({"front": [...], "back": [...]})   # 求一注的特征
+      sp.judge(ticket)                               # 按规则判定
+      sp.pick(n=5)                                   # 生成合规号码
+      sp.spread(tickets)                             # 多注分散度（未量化）
+
   本仓库的 AI 分析者：
       sp = SmartPick.for_game("dlt")
       sp.facts()             # 结论台账
@@ -19,12 +25,36 @@
 from __future__ import annotations
 
 import os
+import sys
 from typing import Any
 
 from .game import compute_space, feature_keys, list_games, load_game_config
 from .memory import Memory
 from .strategy import load_strategy
 from .validate import validate_all
+
+# framework/core 是彩种无关的计算核心，不在 src/ 包内 —— 补进 import 路径
+_FRAMEWORK = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "framework")
+)
+if _FRAMEWORK not in sys.path:
+    sys.path.insert(0, _FRAMEWORK)
+
+from core import (  # noqa: E402
+    EvaluateError,
+    GenerateError,
+    JudgeResult,
+    PredicateError,
+    Ticket,
+    TicketError,
+    evaluable_features,
+    evaluate,
+    judge,
+    sample_batch,
+    spread_penalty,
+    ticket_from_any,
+)
+from core.judge import apply_scope  # noqa: E402
 
 __all__ = ["SmartPick"]
 
@@ -111,6 +141,107 @@ class SmartPick:
     def features(self) -> list[str]:
         """可算特征 key（machine_rule.predicate 只能引用这些）。"""
         return feature_keys(self.config)
+
+    # -------------------------------------------------- 单注层（framework/core）
+
+    def evaluable_features(self) -> list[str]:
+        """**可执行**的特征 key（声明了 primitive 的那些）。"""
+        return evaluable_features(self.config)
+
+    def evaluate(self, ticket: Any) -> dict[str, Any]:
+        """求一注号码的全部可执行特征。
+
+        接受 Ticket / {"front": [...], "back": [...]} / {"front": "03 11 ..."}
+        """
+        t = ticket_from_any(ticket)
+        return evaluate(self.config, t)
+
+    def judge(self, ticket: Any) -> JudgeResult:
+        """按**单注层**规则判定一注号码。
+
+        ⚠️ 跨注层规则（predicate 引用单注算不出来的特征，如 R-002 的组合分散度）
+        会被自动跳过。要查被跳过了哪些，用 `rule_scopes()`。
+        """
+        t = ticket_from_any(ticket)
+        single, _ = apply_scope(self.config, self.rules())
+        return judge(self.config, t, single)
+
+    def judge_scoped(
+        self, ticket: Any, rules: list[dict] | None = None
+    ) -> JudgeResult:
+        """按**给定规则集**判定（不做作用域切分）。
+
+        传混合规则集会明确报错（而不是静默忽略）—— 这是刻意的。
+        """
+        t = ticket_from_any(ticket)
+        return judge(self.config, t, rules if rules is not None else self.rules())
+
+    def rule_scopes(self) -> dict[str, list[str]]:
+        """规则的**作用域切分**。
+
+        {
+          "single": ["R-001"],            # 单注层可判定
+          "cross":  ["R-002"],            # 跨注层（单注层无法判定）
+          "cross_reasons": {              # 为什么它不属于单注层
+             "R-002": "predicate 引用了未声明特征 duplicated_structure_across_tickets"
+          }
+        }
+        """
+        single, cross = apply_scope(self.config, self.rules())
+        declared = set(f["key"] for f in (self.config.get("features") or []))
+        reasons: dict[str, str] = {}
+        for r in cross:
+            p = (r.get("machine_rule") or {}).get("predicate", "")
+            unknown = []
+            for token in p.replace("==", " ").replace("!=", " ").replace(">=", " ") \
+                          .replace("<=", " ").replace(">", " ").replace("<", " ") \
+                          .replace(" and ", " ").replace(" or ", " ").split():
+                if token in ("true", "false"):
+                    continue
+                try:
+                    float(token)
+                    continue
+                except ValueError:
+                    pass
+                if token not in declared:
+                    unknown.append(token)
+            reasons[r.get("id", "?")] = (
+                f"引用了未声明特征 {unknown}" if unknown else "无法由单注判定"
+            )
+        return {
+            "single": [r["id"] for r in single],
+            "cross": [r["id"] for r in cross],
+            "cross_reasons": reasons,
+        }
+
+    def pick(
+        self,
+        n: int = 1,
+        *,
+        seed: int | None = None,
+        use_rules: bool = True,
+        spread: bool = True,
+    ) -> Any:
+        """生成 n 注合规号码。
+
+        ⚠️ **本方法不改变中奖概率**（恒为 1/T）。它只保证产出的号码
+        满足单注层规则（如避开连号）。
+
+        返回 core.generate.GenerateResult（含 tickets / attempts / stats）。
+        """
+        rules = self.rules() if use_rules else []
+        return sample_batch(
+            self.config, rules, n=n, seed=seed, spread=spread
+        )
+
+    def spread(self, tickets: list[Any]) -> float:
+        """一组注的**结构分散度惩罚**（0 = 完全分散，1 = 完全同构）。
+
+        ⚠️ **未量化**（R-002 的 magnitude_pct 是 null）。
+        ⚠️ 与期望中奖注数**无关**（恒为 N/T，线性）。
+        """
+        ts = [ticket_from_any(t) for t in tickets]
+        return spread_penalty(self.config, ts)
 
     # -------------------------------------------------- 分析者接口
 

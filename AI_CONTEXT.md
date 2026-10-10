@@ -56,7 +56,13 @@ smartpickcore/
 │   ├── protocol/          迭代协议、记忆协议 ★ 动手前必读
 │   ├── methodology/       方法论（数学底线、统计纪律）
 │   ├── tools/             通用工具（记忆读写库）
-│   └── core/              框架核心（特征计算、校验）
+│   └── core/              ★ 框架核心（已实现，6 模块 / 21 原语）
+│       ├── features.py     特征原语库（纯数学，zone 已排序去重）
+│       ├── game_util.py    由 machine/features 段驱动的纯计算（T / p1 / 声明检查）
+│       ├── ticket.py       Ticket 一等公民（区名可变长，不硬编码 front/back）
+│       ├── evaluate.py     按声明机械求值
+│       ├── judge.py        受限 DSL + 判定 + ★ 作用域切分
+│       └── generate.py     通用生成器（拒绝采样 + 结构分散）
 ├── memory/                ★ 记忆层（本仓库的核心差异）
 │   ├── INDEX.md           ← 记忆层说明，建议读
 │   ├── facts/             FACTS.jsonl（权威源）+ INDEX.md（速览）
@@ -72,9 +78,10 @@ smartpickcore/
 │       ├── iterations/    round01/ round02/ round03/
 │       └── strategy/      strategy.json（对外输出）+ 模拟脚本与结果
 ├── src/smartpickcore/     库代码（api / memory / strategy / validate）
-├── cli/main.py            命令行入口
-├── tests/
+├── cli/main.py            命令行入口（12 个命令）
+├── tests/                 test_core.py（92 项，无需 pytest）
 └── docs/                  ARCHITECTURE.md / CONSUMING.md / ITERATION_GUIDE.md
+                           PROPOSAL_SINGLE_TICKET_CORE.md（已落地）
 ```
 
 ---
@@ -246,8 +253,8 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 ## 8. 校验与命令
 
 ```bash
-# 全量校验（schema + 外键 + 红线恒值 + 双向取代一致性）
-python cli/main.py validate --all
+# 全量校验（schema + 外键 + 红线恒值 + 双向取代 + features 声明可执行性 + predicate 作用域）
+python cli/main.py validate --all -v
 
 # 只校验结论台账
 python cli/main.py validate --facts
@@ -260,10 +267,42 @@ python cli/main.py strategy --game dlt
 
 # 列出现有彩种
 python cli/main.py games
+
+# ★ 生成号码（只执行单注层规则；跨注规则数在 stats 里显式上报）
+python cli/main.py pick --game dlt -n 10 --seed 20261011
+
+# ★ 对一注号码求值 + 判定
+python cli/main.py eval --game dlt --ticket "03 11 17 24 32 + 04 09"
+```
+
+### 库接口（`from smartpickcore.api import SmartPick`）
+
+```python
+sp = SmartPick("dlt")
+
+sp.evaluate(ticket)        # 求值全部声明特征 → dict
+sp.judge(ticket)           # 判定（自动只跑单注层）→ JudgeResult
+sp.rule_scopes()           # {"single": [...], "cross": [...], "cross_reasons": {...}}
+sp.pick(n=10, seed=...)    # 生成 n 注
 ```
 
 > 若命令未实现，`cli/main.py` 会打印清晰的"未实现"提示而非静默成功
 > —— 静默成功比报错危险。
+
+### ★ 作用域：本仓库最容易误用的地方
+
+`strategy.json` 的 `R-002` predicate 是 `duplicated_structure_across_tickets == true`
+—— **跨注特征，一注号码算不出来**。
+
+| 层 | 规则 | 能否单注判定 |
+|---|---|---|
+| 单注层 | R-001（`has_run_ge2 == true` → exclude） | ✅ |
+| 跨注层 | R-002（结构分散度 → penalize 0.5） | ❌ 需要整组号码上下文 |
+
+`sp.judge(ticket)` **自动只跑单注层**，跨注规则在 `rule_scopes()` 里可见。
+`pick` 命令会把跳过的跨注规则数写进 `stats["cross_scope_skipped"]`。
+
+> **禁止静默忽略跨注规则** —— 那会让调用方以为"全部规则已生效"。
 
 ---
 

@@ -91,5 +91,36 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 | 日期 | 变更 | 影响 |
 |---|---|---|
 | 2026-10-10 | 初始契约：`fact` / `strategy` / `game_config` / `iteration` 四个 schema，均 v1.0 / 1.0 | 建立仓库基线 |
+| 2026-10-10 | **`game_config` 主版本 1.0 → 2.0**：`features[]` 新增 `primitive`（枚举于框架原语注册表）、`args`（含 `zone` / `threshold` / `lo` / `hi` / `modulus`）、`note`；`formula` 降级为纯注释字段（不参与求值） | **破坏性**（若消费方曾按 `formula` 字符串求值，须改为按 `primitive` + `args` 求值）。**旧 config 仍可读**，`framework/core/evaluate.py` 会跳过无 `primitive` 的特征并显式提示 |
+| 2026-10-10 | **`strategy.schema.json` 次版本提升**：`machine_rule.predicate` 新增受限 DSL `pattern`（`<feature_key> <op> <literal>`，同连接词 `and`/`or`，禁括号/嵌套/混用/右侧非字面量） | **收紧校验**。原为自由字符串，现非法表达式在校验阶段被拒收。已发布的 `dlt` 策略两条 predicate 均合规 |
+| 2026-10-10 | **`iteration.schema.json` 次版本提升**：`started_at` 放宽为可空；`new_lesson_ids` pattern 由 `^L-[0-9]{2}$` 放宽为 `^L-?[0-9]{1,2}$`（仓内实际写法为 `L1`..`L9` 无补零）；新增可选字段 `planned_tasks`（下轮任务计划）与 `outputs_planned` | 向后兼容 |
+| 2026-10-10 | **`fact.schema.json` 次版本提升**：`evidence.effect` 放宽为 `["object","null"]` | 向后兼容（部分结论无效应量） |
 
 > 新增记录请追加到表末，**不要删除历史行**。
+
+## config_version 2.0 迁移指南
+
+**唯一变化**：`features[]` 每项从"只有 `formula` 注释"改为"`primitive` + `args` 声明"。
+
+| 旧（1.0，仍可读） | 新（2.0） |
+|---|---|
+| `key: front_sum`<br>`formula: "sum(front)"`<br>`range: [15, 165]` | `key: front_sum`<br>`primitive: sum`<br>`args: {zone: front}`<br>`formula: "sum(front)"`（保留为注释）<br>`range: [15, 165]` |
+
+**升级检查清单**：
+
+1. 每个 `formula` 对应的计算能否由框架 21 个原语之一表达？
+   `python cli/main.py games` 后查 `framework/core/README.md` 的原语表
+2. 参数落在 `args` 里，**不要**写进 `formula`
+3. 多区彩种必须显式写 `args.zone`；单区彩种可省略
+4. 升级后跑 `python cli/main.py validate --game <id> -v`，
+   应看到 `features 声明可执行 (N/N 个含 primitive)`
+
+**为什么是破坏性而不仅是"新增可选字段"**：
+`formula` 从"参与求值的语义载体"退回"注释"，这是**语义变更**（第 33 行"改变已有字段的语义"）。
+任何曾把 `formula` 当可执行规范的消费方，行为会静默改变 —— 这类变更必须提升主版本，
+强制消费方显式确认。
+
+**与红线的交互**：本次变更**未触碰任何红线段落**
+（`affects_win_probability` / `changes_win_probability` / `optimizable_target` /
+`sum_affects_numbers`）。若未来有变更触碰它们，按第 45–49 行处理 —— 那是立场变化，
+需单独评审记录，不能混在版本升级里。

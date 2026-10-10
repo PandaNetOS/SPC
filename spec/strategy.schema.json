@@ -110,7 +110,8 @@
             "properties": {
               "predicate": {
                 "type": "string",
-                "description": "对候选注的判定表达式，使用受限 DSL：字段来自 game.yaml 的 features 定义。"
+                "description": "对候选注的判定表达式，使用**受限 DSL**：`<feature_key> <op> <literal>`，多条用 and 或 or 连接（不可混用、不可加括号）。字段来自 game.yaml 的 features 定义。求值实现见 framework/core/judge.py。",
+                "pattern": "^[a-z_][a-z0-9_]* *(==|!=|<=|>=|<|>) *(-?[0-9]+(\\.[0-9]+)?|true|false)( *(and|or) *[a-z_][a-z0-9_]* *(==|!=|<=|>=|<|>) *(-?[0-9]+(\\.[0-9]+)?|true|false))*$"
               },
               "action": {
                 "type": "string",

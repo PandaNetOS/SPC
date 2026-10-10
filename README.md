@@ -65,7 +65,7 @@ framework/
   protocol/            ← 迭代协议 + 记忆协议 + 3 个模板
   methodology/         ← 数学边界 + 统计纪律
   tools/memory.py      ← 记忆读写库（彩种无关）
-  core/                ← 待实现（不为可能的复用做抽象）
+  core/                ← ★ 框架核心（已实现）：21 原语 / Ticket / 求值 / 判定 / 生成
 memory/
   facts/FACTS.jsonl    ← 结论台账（权威源，JSONL 追加式）
   facts/INDEX.md       ← 速览（派生物，CLI 生成，勿手改）
@@ -77,9 +77,9 @@ games/
   dlt/                 ← 超级大乐透（数据 + 轮次 + 策略）
   INDEX.md             ← 彩种索引
 src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api）
-cli/main.py            ← 命令行入口（10 个命令）
+cli/main.py            ← 命令行入口（12 个命令）
 docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY
-tests/                 ← 测试说明（应测什么）
+tests/                 ← test_core.py（92 项，无需 pytest）
 ```
 
 详见 `docs/ARCHITECTURE.md`。
@@ -132,13 +132,22 @@ python cli/main.py new-game <game_id>
 
 | 项 | 状态 |
 |---|---|
-| 契约层 | ✅ 4 schema + VERSIONING |
+| 契约层 | ✅ 4 schema + VERSIONING（含 config 2.0 迁移指南） |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
+| **框架核心** | ✅ **`framework/core/` 6 模块 / 21 原语**（Ticket / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器） |
 | 记忆层 | ✅ 15 条结论 / L1–L9 / 8 开放问题 / 5 假设 / 42 待办 |
-| 库与 CLI | ✅ 6 模块 + 10 命令，`validate --all` 28 项全绿 |
-| 彩种 `dlt` | ✅ `game.yaml` + `strategy.json`（2 规则 + 8 条 avoid_list）+ round02 收轮 + round03 任务书 |
-| `framework/core/` | ⬜ 待实现 |
-| `tests/` | ⬜ 说明已写，用例待写 |
+| 库与 CLI | ✅ 7 模块 + 12 命令，`validate --all` **33 项全绿** |
+| 彩种 `dlt` | ✅ `game.yaml`（config 2.0，11 特征全原语化）+ `strategy.json`（2 规则 + 8 条 avoid_list）+ round02 收轮 + round03 任务书 |
+| `tests/` | ✅ `test_core.py` **92 项全绿**（无需 pytest） |
+
+### 已知未闭合
+
+| 项 | 说明 |
+|---|---|
+| `R-002` 跨注特征 | `duplicated_structure_across_tickets` 一注号码算不出来 → 作用域切分显式上报，**处置方案待决策** |
+| `spread_penalty` | 启发式，**未量化**（不是统计结论） |
+| 奖金封顶 | +121.48% 的计算**未纳入** 1 亿封顶（Q-004，P0） |
+| Q-009 | 组合分散度研究**尚未写入**开放问题清单 |
 
 ## 免责声明
 

@@ -2,112 +2,85 @@
 
 ## 现状
 
-**未实现。** 本目录为后续测试预留。
+**已实现：`test_core.py`（92 项，全绿）。**
 
-## 应当测什么
+无需 pytest、无需任何第三方测试框架 —— 直接用 Python 跑：
 
-按重要性排序：
-
-### 1. 红线测试（最高优先）
-
-红线的存在意义就是"不能违反"。必须有意图违反的测试用例：
-
-```python
-def test_red_line_rejects_win_probability_claim():
-    """试图写入 affects_win_probability=True 必须被拒。"""
-    mem = Memory(repo_root)
-    with pytest.raises(RedLineViolation):
-        mem.add_fact({... "affects_win_probability": True ...})
-
-def test_strategy_loader_rejects_bad_disclaimer():
-    """changes_win_probability=True 的 strategy.json 必须拒绝解析。"""
+```bash
+python tests/test_core.py
 ```
 
-### 2. 契约测试
+退出码 0 = 全绿。失败项会在末尾单独列出（`✗` 打头 + 汇总表）。
 
-| 测试 | 断言 |
-|---|---|
-| schema 校验 | 每个 schema 都能被 jsonschema 解析（schema 自身合法） |
-| 红线恒值 | 现有 `strategy.json` 的四条红线全部合规 |
-| 外键 | `evidence_refs` 全部存在于 `FACTS.jsonl` |
-| 双向取代 | `supersedes` ↔ `superseded_by` 一致 |
-| 文件存在 | `source` / `evidence.script` / `deliverables` 指向真实文件 |
+## test_core.py 覆盖什么
 
-### 3. 数学一致性测试
+按优先级排序（与本文档剩余的「应当测什么」一致）：
 
-这是最容易出隐性错误的地方 —— **数值被抄错不会报错，只会静默给出错误结论**：
+| # | 段 | 项数 | 内容 |
+|---|---|---|---|
+| 1 | **红线测试** | 4+ | 最高优先。特征名不含 `win_probability`；`disclaimer` 两个恒值；`optimizable_target` 只能是 `expected_bonus_given_win`；`sum_affects_numbers` 恒 false |
+| 2 | **原语单测** | 30 | 21 个原语对固定输入给固定输出；连号专项（12-13 = 1 对，12-13-14 = 2 对，1-2-3-4-5 = 4 对）；参数缺失 / 未知原语 / 重复元素输入**必须报错** |
+| 3 | **Ticket 校验** | 15 | 越界 / 少号 / 多号 / 重复 / 缺区 / 多区 全部被拒；可哈希可比较；`render()` 格式；单区彩种兼容 |
+| 4 | **predicate DSL** | 14 | 6 个合法表达式通过；6 个非法（括号 / 混用 and-or / 右侧非字面量 / 取反 / 未知算子）明确报错 |
+| 5 | **作用域切分** | 8 | ★ `R-001` → single，`R-002` → cross（附原因）；**跨注规则不被静默忽略** |
+| 6 | **数学一致性** | 6 | `T = 21,425,712`；`T = C(35,5) × C(12,2)`；`p1 = 4.667289469773513e-08`；`p1 = 1/T`；选号不改概率；两注不同号码概率相同 |
+| 7 | **端到端** | 9 | 生成 20 注全部合规；注间唯一；求值覆盖全部 11 个声明特征；**同种子可复现**；不过滤时违规率 ≈ 理论值 8.9%；自相矛盾规则集报错 |
+| 8 | **features 声明静态检查** | 6 | 真实 `game.yaml` 0 错；不存在的 primitive / 缺必需参数 / 引用不存在的区 / 重复 key 全部被检出 |
 
-```python
-def test_total_combinations():
-    cfg = load_game_config("dlt")
-    assert compute_space(cfg)["total_combinations"] == 21_425_712
+## 为什么不用 pytest
 
-def test_first_prize_probability():
-    assert abs(compute_space(cfg)["first_prize_probability"] - 4.667289469773513e-08) < 1e-20
+两个理由：
 
-def test_fact_numbers_agree_with_game_config():
-    """FACTS.jsonl 里的 T 与 p1 应与 game.yaml 重算结果一致。"""
-    f1 = mem.fact("F-0001")
-    assert f1["evidence"]["effect"]["total_combinations"] == 21_425_712
-```
+1. **零依赖**。本仓库要求 `pip install pyyaml jsonschema` 即可跑全部功能，
+   引入 pytest 会让"跑一下测试"变成需要额外安装的动作。
+2. **测试本身是文档**。`check(cond, label)` 的 label 直接就是断言的可读说明，
+   失败时打印的是**一句中文结论**而不是 `AssertionError: assert 2 == 3`。
+
+自建断言器只有 3 个：`check()` / `check_raises()` / `section()`。
+
+## 尚未实现的部分（原计划中，暂缓）
+
+以下是本目录最初设计里列出、但因「没有 CI + 只有一个彩种」而**暂缓**的测试。
+它们不是不重要，是**性价比排序靠后**：
+
+| 项 | 状态 | 启动时机 |
+|---|---|---|
+| 契约测试（schema 自合法 / 外键 / 双向取代 / source 存真） | ⚠️ 由 `cli/main.py validate --all` 覆盖（33 项） | 已由 CLI 承担 |
+| `framework/` 无彩种专属内容扫描 | ⬜ 未实现 | 接入第二个彩种时 |
+| 记忆层可读性（单一入口存在 / caveats 非空且 ≥10 字） | ⬜ 未实现 | 首次引入 CI 时 |
+| 结论数字与 `game.yaml` 重算结果一致 | ⬜ 未实现 | 数据版本变更时 |
 
 > **为什么这类测试重要**：`4.667e-08` 这个数字在仓库里出现在
 > `FACTS.jsonl`、`strategy.json`、`game.yaml`、文档标题里。
-> 若某处被改成 `4.67e-08`，没有任何校验会报警 —— 但它已经从"精确值"降级为"近似值"。
-> 测试是唯一能捕获这种漂移的机制。
+> 若某处被改成 `4.67e-08`，现有校验**不会报警** ——
+> 但它已经从"精确值"降级为"近似值"。
 
-### 4. 聚类/AI 可读性测试
-
-```python
-def test_single_entry_exists():
-    """单一入口 AI_CONTEXT.md 必须存在且被 README 引用。"""
-
-def test_every_fact_has_source_file():
-    """每条结论的 source 必须真实存在（可追溯性的底线）。"""
-
-def test_every_caveat_is_actionable():
-    """caveats 非空且长度 >= 10（防止写成 'N/A' 敷衍）。"""
-```
-
-### 5. 框架/彩种分离测试
-
-```python
-def test_framework_has_no_game_specifics():
-    """framework/ 下的 .md 与 .py 不得出现具体彩种参数。"""
-    forbidden = ["21425712", "21,425,712", "4.667e-08", "dlt", "大乐透"]
-    for root, _, files in os.walk("framework"):
-        for fn in files:
-            if fn.endswith((".md", ".py")):
-                text = open(os.path.join(root, fn), encoding="utf-8").read()
-                for bad in forbidden:
-                    assert bad not in text, f"{root}/{fn} 含彩种专属内容: {bad}"
-```
-
-## 为什么不现在写
-
-**因为当前没有 CI，也没有第二个彩种。**
-
-一个只有 5 个测试、手动运行的测试目录，比一个 50 个测试但从不运行的目录更有价值。
-但反过来说：**红线测试现在就该写** —— 因为红线是"违反即严重错误"的那一类。
-
-**启动时机**：接入第二个彩种时（`T-031`），或首次引入 CI 时。
-
-## 运行方式（待实现后）
+## 运行方式
 
 ```bash
-python -m pytest tests/ -v
-# 或
-python tests/run_all.py
-```
+# 核心测试（92 项）
+python tests/test_core.py
 
-## 当前可用的替代校验
-
-CLI 已覆盖大部分契约检查：
-
-```bash
+# 契约校验（33 项，含 SHA256 一致性与红线恒值）
 python cli/main.py validate --all -v
 ```
 
-它检查 28 项，含 SHH256 一致性与红线恒值。
-**在测试目录实现之前，请把 `validate --all` 作为收轮的强制步骤**
+**收轮时的强制步骤**：跑上面两条，都全绿才算完成
 （已写入 `framework/protocol/ITERATION_PROTOCOL.md` §6）。
+
+## 写新测试的风格约定
+
+```python
+def test_something() -> None:
+    section("N. 段名")
+
+    check(actual == expected, "中文断言说明（失败时直接可读）")
+    check_raises(lambda: bad_call(), SpecificError, "某个非法输入必须报错")
+```
+
+三条规则：
+
+1. **断言说明必须写"为什么"**，不要写 `"test 1"`。
+2. **每个断言只测一件事**，失败时能立刻定位。
+3. **"必须报错"的测试用 `check_raises` 并指定具体异常类型** ——
+   `Exception` 太宽，会掩盖真正的 bug 类型。

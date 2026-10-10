@@ -133,6 +133,30 @@ def validate_game(game: str, repo_root: str | None = None,
 
     _jsonschema_check(cfg, "game_config.schema.json", f"game.yaml[{game}]", rep)
 
+    # 特征声明可执行性（framework/core 的静态检查）
+    # 这是「machine_rule.predicate 可被求值」的前提：
+    # 若 features[] 声明了不存在的 primitive、或 args 缺参数，
+    # 则所有引用该特征的规则都无法执行。
+    try:
+        import sys as _sys
+        _fw = os.path.join(root, "framework")
+        if _fw not in _sys.path:
+            _sys.path.insert(0, _fw)
+        from core.game_util import validate_feature_declarations  # type: ignore
+
+        ferrs = validate_feature_declarations(cfg)
+        for e in ferrs:
+            rep.err(f"game {game}: {e}")
+        if not ferrs:
+            n_exec = sum(1 for f in cfg.get("features", []) if f.get("primitive"))
+            n_all = len(cfg.get("features", []))
+            rep.ok(
+                f"game {game}: features 声明可执行 "
+                f"({n_exec}/{n_all} 个含 primitive)"
+            )
+    except ImportError as e:
+        rep.warn(f"game {game}: 无法加载 framework/core 做特征声明检查（{e}）")
+
     # 红线：奖金规则不影响号码分布
     for e in (cfg.get("prize_model") or {}).get("epochs", []):
         if e.get("sum_affects_numbers") is not False:
@@ -374,6 +398,62 @@ def validate_strategy(game: str, repo_root: str | None = None,
         rep.warn(
             f"strategy[{game}]: evidence_index 未覆盖被引用的结论 {sorted(missing)}"
             f"（消费者需回读 FACTS.jsonl 才能获得摘要）"
+        )
+
+    # machine_rule 的 predicate 引用完整性 + 作用域
+    # 这是「规则可被执行」的关键检查：
+    #   · 引用了未声明的特征 → 任何实现都无法求值
+    #   · 引用跨注特征 → 单注层无法判定（属 L3，应显式声明而非悄悄失败）
+    try:
+        import sys as _sys
+        _fw = os.path.join(root, "framework")
+        if _fw not in _sys.path:
+            _sys.path.insert(0, _fw)
+        from core.judge import PredicateError, apply_scope, parse_predicate  # type: ignore
+    except ImportError as e:
+        rep.warn(f"strategy[{game}]: 无法加载 framework/core 做 predicate 检查（{e}）")
+        return rep
+
+    cfg_path = os.path.join(root, "games", game, "game.yaml")
+    declared: list[str] = []
+    if os.path.exists(cfg_path):
+        try:
+            import yaml  # type: ignore
+            with open(cfg_path, encoding="utf-8") as f:
+                _cfg = yaml.safe_load(f)
+            declared = [f["key"] for f in (_cfg.get("features") or [])]
+        except Exception:
+            pass
+
+    single_cnt = cross_cnt = 0
+    for rule in st.get("rules", []):
+        rid = rule.get("id", "?")
+        mr = rule.get("machine_rule") or {}
+        pred = mr.get("predicate")
+        if not pred:
+            continue
+        if declared:
+            try:
+                unknown = [f for f in parse_predicate(pred).features()
+                           if f not in declared]
+            except PredicateError as e:
+                rep.err(f"strategy[{game}].{rid}: predicate 解析失败: {e}")
+                continue
+            if unknown:
+                # 不是错误：可能是跨注特征。但要显式区分「跨注」与「拼错」
+                rep.warn(
+                    f"strategy[{game}].{rid}: predicate 引用了未声明的特征 "
+                    f"{unknown} —— 该规则**单注层无法判定**，"
+                    f"若这是跨注特征（如组合分散度）应属 L3；"
+                    f"若是拼写错误则须修正。"
+                )
+                cross_cnt += 1
+            else:
+                single_cnt += 1
+    if declared and (single_cnt or cross_cnt):
+        rep.ok(
+            f"strategy[{game}]: predicate 作用域 单注层 {single_cnt} 条 / "
+            f"跨注或未声明 {cross_cnt} 条"
         )
 
     return rep

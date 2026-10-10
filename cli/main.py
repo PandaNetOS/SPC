@@ -45,7 +45,20 @@ from smartpickcore.validate import (  # noqa: E402
     validate_strategy,
 )
 
+# framework/core 是彩种无关的计算核心，不在 src/ 包内
+sys.path.insert(0, os.path.join(_ROOT, "framework"))
+from core import Ticket  # noqa: E402
+
 STARS = lambda c: "★" * c + "☆" * (5 - c)
+
+
+def _smartpick(game: str) -> SmartPick:
+    """统一的 SmartPick 构造 + 友好错误。"""
+    try:
+        return SmartPick.for_game(game, _ROOT)
+    except ValueError as e:
+        print(f"✗ {e}")
+        raise SystemExit(1)
 
 
 # ---------------------------------------------------------------- validate
@@ -280,7 +293,158 @@ def cmd_new_game(args) -> int:
     return 0
 
 
-# ---------------------------------------------------------------- main
+# ---------------------------------------------------------------- pick
+
+def cmd_pick(args) -> int:
+    from core import GenerateError
+
+    sp = _smartpick(args.game)
+    if args.n < 1:
+        print("✗ --n 必须是正整数")
+        return 1
+
+    try:
+        res = sp.pick(
+            n=args.n,
+            seed=args.seed,
+            use_rules=not args.no_rules,
+            spread=not args.no_spread,
+        )
+    except GenerateError as e:
+        print(f"✗ {e}")
+        return 1
+
+    if args.json:
+        import json
+        print(json.dumps(
+            {
+                "game": args.game,
+                "n": len(res),
+                "attempts": res.attempts,
+                "stats": res.stats,
+                "tickets": [t.to_json() for t in res],
+            },
+            ensure_ascii=False, indent=2,
+        ))
+        return 0
+
+    if args.quiet:
+        for t in res:
+            print(t.render())
+        return 0
+
+    # 表头
+    print(f"smartpickcore pick — game={args.game}  n={len(res)}"
+          f"  seed={args.seed if args.seed is not None else '随机'}")
+    print()
+
+    scopes = sp.rule_scopes()
+    if scopes["single"]:
+        print(f"已应用单注层规则: {scopes['single']}")
+    if scopes["cross"]:
+        print(f"⚠️ 跨注层规则已跳过（单注无法判定）: {scopes['cross']}")
+        for rid, why in scopes["cross_reasons"].items():
+            print(f"     {rid}: {why}")
+    print()
+
+    feats = sp.evaluable_features()
+    show = [k for k in ("adjacent_pairs", "has_run_ge2", "front_sum", "front_odd")
+            if k in feats]
+
+    if show:
+        head = f"{'#':>3}  {'号码':<32}  " + "  ".join(f"{k:>15s}" for k in show)
+    else:
+        head = f"{'#':>3}  {'号码':<32}"
+    print(head)
+    print("-" * len(head))
+
+    for i, t in enumerate(res, 1):
+        fv = sp.evaluate(t)
+        row = f"{i:>3}  {t.render():<32}  " + "  ".join(
+            f"{str(fv.get(k)):>15s}" for k in show
+        )
+        print(row)
+
+    print()
+    s = res.stats
+    print(f"尝试 {s.get('attempts', '?')} 次"
+          f"  接受率 {s.get('acceptance_rate', 0):.3f}"
+          f"  被 exclude {s.get('excluded', 0)} 次")
+    if "spread_penalty" in s:
+        print(f"结构分散惩罚 {s['spread_penalty']:.4f}"
+              f"  ⚠️ 该指标未量化（见 OPEN_QUESTIONS 的 Q-009 提案）")
+
+    print()
+    print("⚠️ 本命令不改变中奖概率（恒为 1/T）。产出的号码只是满足规则，")
+    print("   不代表更容易中奖。请理性购彩，量力而行。")
+    return 0
+
+
+# ---------------------------------------------------------------- eval
+
+def cmd_eval(args) -> int:
+    """求一注号码的特征并按规则判定。"""
+    from core import PredicateError, TicketError
+
+    sp = _smartpick(args.game)
+
+    # 号码来源：--ticket "03 11 17 24 32 + 04 09" 或 --front/--back
+    zones: dict[str, list[int]] = {}
+    if args.ticket:
+        text = args.ticket
+        if "+" in text:
+            parts = [p.strip() for p in text.split("+")]
+        else:
+            parts = [text]
+        keys = [z["key"] for z in sp.config["machine"]["zones"]]
+        if len(parts) != len(keys):
+            print(f"✗ 号码需要 {len(keys)} 个区（{keys}），用 + 分隔；"
+                  f"你给了 {len(parts)} 段")
+            return 1
+        for k, p in zip(keys, parts):
+            try:
+                zones[k] = [int(x) for x in p.replace(",", " ").split()]
+            except ValueError:
+                print(f"✗ 区 {k} 的号码无法解析为整数: {p!r}")
+                return 1
+    else:
+        print("✗ 需要 --ticket；例如 "
+              '--ticket "03 11 17 24 32 + 04 09"')
+        return 1
+
+    try:
+        t = Ticket(zones).check(sp.config)
+    except TicketError as e:
+        print(f"✗ 号码不合法: {e}")
+        return 1
+
+    feats = sp.evaluate(t)
+    print(f"号码: {t.render()}")
+    print()
+    print("特征：")
+    for k in sorted(feats):
+        print(f"  {k:24s} = {feats[k]}")
+
+    print()
+    scopes = sp.rule_scopes()
+    if scopes["cross"]:
+        print(f"⚠️ 跨注层规则不参与判定（单注无法算）: {scopes['cross']}")
+
+    try:
+        r = sp.judge(t)
+    except PredicateError as e:
+        print(f"✗ 规则求值失败: {e}")
+        return 1
+
+    print(f"判定: {r.explain()}")
+    print(f"  excluded={r.excluded}  required_failed={r.required_failed}"
+          f"  weight={r.weight:.3f}  matched={r.matched}")
+    print()
+    print("⚠️ 该判定只反映「号码与规则的契合度」，不代表中奖概率。")
+    return 0
+
+
+# ---------------------------------------------------------------- parsers
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
@@ -344,6 +508,26 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("new-game", help="从 _template 创建新彩种骨架")
     sp.add_argument("game_id", metavar="ID")
     sp.set_defaults(func=cmd_new_game)
+
+    # pick
+    sp = sub.add_parser("pick", help="生成合规号码（按单注层规则过滤）")
+    sp.add_argument("--game", required=True, metavar="ID")
+    sp.add_argument("-n", "--n", type=int, default=1, help="生成注数（默认 1）")
+    sp.add_argument("--seed", type=int, default=None, help="随机种子（固定后可复现）")
+    sp.add_argument("--no-rules", action="store_true",
+                    help="不过滤规则（等价于均匀随机，用于对照）")
+    sp.add_argument("--no-spread", action="store_true",
+                    help="不做注间结构分散（只看单注是否合规）")
+    sp.add_argument("--json", action="store_true", help="输出 JSON")
+    sp.add_argument("-q", "--quiet", action="store_true", help="只输出号码")
+    sp.set_defaults(func=cmd_pick)
+
+    # eval
+    sp = sub.add_parser("eval", help="求一注号码的特征并按规则判定")
+    sp.add_argument("--game", required=True, metavar="ID")
+    sp.add_argument("--ticket", required=True, metavar="TXT",
+                    help='号码，如 "03 11 17 24 32 + 04 09"')
+    sp.set_defaults(func=cmd_eval)
 
     return p
 

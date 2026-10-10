@@ -14,6 +14,10 @@
 | 搞清"选号能/不能影响什么" | `methodology/MATH_BOUNDARY.md` ★ |
 | 动手前过一遍检查清单 | `methodology/STATISTICAL_DISCIPLINE.md` ★ |
 | 读写记忆（程序化） | `tools/memory.py` |
+| **拿一注号码算特征 / 判定是否合规 / 打分** | `core/README.md` → `core/ticket.py` + `core/evaluate.py` + `core/judge.py` ★ |
+| **生成号码（遵守策略规则）** | `core/generate.py`，或 `python cli/main.py pick --game <id>` |
+| **知道框架有哪些原语可用来声明特征** | `core/features.py` 的 `PRIMITIVES`（21 个） |
+| **知道某个 predicate 该不该在单注层判定** | `core/judge.py` 的 `split_by_scope()` ★ |
 | 知道该彩种有哪些特征可算 | `games/<id>/game.yaml` 的 `features` 段（**不在本目录**） |
 
 ## 动手前的固定顺序
@@ -36,6 +40,7 @@
 | `STATISTICAL_DISCIPLINE.md` | 9 条检查清单，逐项打勾才能标 `established` |
 | `ITERATION_PROTOCOL.md` | 四件套（BRIEF/FINDINGS/HANDOFF/manifest）+ 收轮必生成下轮 BRIEF |
 | `MEMORY_PROTOCOL.md` | 四类记忆、状态机、演化链、`caveats` 非空 |
+| `core/README.md` | 三层（Ticket / Scoring / Portfolio）+ 原语注册表 + 受限 DSL + **作用域切分** ★ |
 
 ## 彩种无关性自检
 
