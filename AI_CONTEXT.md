@@ -87,11 +87,12 @@ smartpickcore/
 │       ├── rules_history.md   规则变更史（决定奖金类分析口径）
 │       ├── data/          raw/（原始，不可变）+ derived/ + tools/ + build_scripts/
 │       ├── iterations/    round01/ round02/ round03/
-│       └── strategy/      strategy.json（对外输出）+ 模拟脚本与结果
-├── src/smartpickcore/     库代码（api / memory / strategy / validate）
+│       └── strategy/      strategy.json（对外输出）+ STRATEGY_GUIDE.md（★ 人话版）
+│                           + 模拟脚本与结果
+├── src/smartpickcore/     库代码（api / memory / strategy / validate / versions）
 ├── cli/main.py            命令行入口（13 个命令）
-├── tools/                 仓库维护脚本（版本索引生成器）
-├── tests/                 test_core.py（92 项，无需 pytest）
+├── tools/                 仓库维护脚本（版本索引：build / render / inject）
+├── tests/                 test_core.py（105 项，无需 pytest）
 └── docs/                  ARCHITECTURE.md / CONSUMING.md / ITERATION_GUIDE.md
                            VERSIONING_DOCS.md（★ 文档版本规则）
 ```

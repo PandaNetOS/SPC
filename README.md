@@ -37,11 +37,11 @@
 
 ## 👤 普通用户从这里看
 
-**你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接看：
+**你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-```
-games/dlt/strategy/STRATEGY_GUIDE.md     策略说明书（人话版，不需要任何背景知识）
-```
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md)
+
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -103,8 +103,9 @@ memory/
 games/
   _template/           ← 新彩种骨架
   dlt/                 ← 超级大乐透（数据 + 轮次 + 策略）
+    strategy/          ← strategy.json（机器）+ STRATEGY_GUIDE.md（人话版）
   INDEX.md             ← 彩种索引
-src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api）
+src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api / versions）
 cli/main.py            ← 命令行入口（13 个命令）
 tools/                 ← 版本索引生成/注入脚本（build / render / inject）
 docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
@@ -166,9 +167,10 @@ python cli/main.py new-game <game_id>
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 6 模块 / 21 原语**（Ticket / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器） |
 | 记忆层 | ✅ 15 条结论 / L1–L9 / 8 开放问题 / 5 假设 / 42 待办 |
-| 库与 CLI | ✅ 7 模块 + 12 命令，`validate --all` **33 项全绿** |
-| 彩种 `dlt` | ✅ `game.yaml`（config 2.0，11 特征全原语化）+ `strategy.json`（2 规则 + 8 条 avoid_list）+ round02 收轮 + round03 任务书 |
-| `tests/` | ✅ `test_core.py` **92 项全绿**（无需 pytest） |
+| 库与 CLI | ✅ 8 模块 + 13 命令，`validate --all` **40 项全绿** |
+| 彩种 `dlt` | ✅ `game.yaml`（config 2.0，11 特征全原语化）+ `strategy.json`（2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + round02 收轮 + round03 任务书 |
+| `tests/` | ✅ `test_core.py` **105 项全绿**（无需 pytest） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**111 条**登记（A=22 B=52 C=12 D=25），版本行 39/39 一致 |
 
 ### 已知未闭合
 
