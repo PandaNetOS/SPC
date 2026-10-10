@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.9` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.10` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -86,120 +86,120 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-pyproject.toml          v0.1.0   ← 顶层版本（release）= smartpickcore 整体版本，源自 project.version
-AI_CONTEXT.md          v1.3   ← 单一入口。AI 与人都从这里进
-VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
-versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
-README.md              v1.9   ← 本文件
-spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
-  fact.schema.json            ← 结论契约（claim_type / source_sha256 / 红线）
-  game_config.schema.json     ← 彩种配置契约（sum_affects_numbers 红线）
-  strategy.schema.json        ← 策略契约（changes_win_probability 红线）
-  iteration.schema.json       ← 迭代契约
-  version_index.schema.json   ← 版本索引契约（index_version 1.1）
-  README.md
-  VERSIONING.md               ← 版本规则 + config 2.0→2.1 迁移指南
-framework/                    ← 框架层（framework_version = 1.1）
-  README.md                   ← 框架层说明（v1.0，框架/彩种分离判定标准）
-  INDEX.md             v1.1   ← 按需求找文件
-  core/                       ← ★ 框架核心（7 模块）
-    __init__.py
-    ticket.py                 ← L1 Ticket
-    features.py               ← 21 单注 + 5 跨注原语表
-    evaluate.py               ← 求值（单注）
-    judge.py                  ← 判定（受限 DSL）
-    portfolio.py              ← L3 Portfolio（跨注求值 / 判定）
-    generate.py               ← 候选生成
-    game_util.py              ← 彩种无关工具
-    README.md
-  protocol/                   ← 迭代协议 + 记忆协议 + 3 模板
-    ITERATION_PROTOCOL.md
-    MEMORY_PROTOCOL.md        ← 含 claim_type / 证据锚定章节
-    README.md
-    templates/
-      FINDINGS.template.md
-      HANDOFF.template.md
-      TASK_BRIEF.template.md
-  methodology/                ← 数学边界 + 统计纪律
-    MATH_BOUNDARY.md
-    STATISTICAL_DISCIPLINE.md
-  tools/
-    memory.py                 ← 记忆读写库（彩种无关）
-src/smartpickcore/            ← 库代码（8 模块）
-  __init__.py
-  game.py                     ← 彩种加载
-  memory.py                   ← 结论 / FACTS 读写
-  validate.py                 ← 校验器（49 项）
-  strategy.py                 ← 策略构建
-  evidence.py                 ← ★ 证据锚定（C 新增：sha256 / 漂移）
-  api.py                      ← 对外 API
-  versions.py                 ← 版本索引读写
-cli/
-  main.py              —      ← 命令行入口（14 个命令）
-memory/                        ← 记忆层
-  facts/
-    FACTS.jsonl        v1.3   ← 结论台账（18 条，JSONL 追加式；每条带 claim_type + source_sha256）
-    INDEX.md           v1.3   ← 速览（派生物，CLI 生成，勿手改）
-  journal/
-    round02.md
-    round03.md
-  lessons/
-    LESSONS.md         v1.1   ← 教训库 L1–L12（只增不删）
-  workbench/
-    TODO.md            v1.4   ← 任务台账（P0 已清空）
-    OPEN_QUESTIONS.md          ← 开放问题（11，3 answered）
-    HYPOTHESES.md              ← 假设（5）
-  INDEX.md
-games/                         ← 彩种（数据 + 轮次 + 策略）
-  _template/                   ← 新彩种骨架
-    game.yaml
-    README.md
-    strategy/strategy.json
-    data/{raw,derived,build_scripts,tools}/  ← 工具生成，各含 README
-    iterations/round01/TASK_BRIEF.md
-  dlt/                         ← 超级大乐透（实际数据）
-    game.yaml                  ← config 2.1（11 单注 + 3 跨注特征）
-    manifest_v4_source.json
-    rules_history.md           ← 规则沿革（F-0015 历史引用）
-    data/
-      raw/                     ← dlt_full_2933.{csv,jsonl}（原始开奖，2933 期）
-      derived/                 ← 8 份派生统计（CSV/JSON，工具生成）
-      build_scripts/           ← 3 个构建脚本
-      tools/                   ← 8 个分析工具（acf / changepoint / exact / 等）
-    iterations/
-      round01/                 ← 空占位
-      round02/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + legacy_findings/
-      round03/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + scripts/
-      round04/                 ← TASK_BRIEF / manifest（待测）
-    strategy/
-      strategy.json            ← schema 1.1（2 规则 + 8 avoid_list）
-      STRATEGY_GUIDE.md        ← 人话版 v1.1
-      simulation_results.json
-      strategy_simulation.py
-  INDEX.md             v1.1   ← 彩种索引
-tools/                         ← 版本索引生成 / 注入脚本
-  build_versions.py
-  render_version_index.py
-  inject_version_lines.py
-  count_tests.py        —      ← 测试计数自举（E 新增）
-docs/                          ← 设计 / 消费 / 迭代 / 方法 / 版本文档
-  ARCHITECTURE.md
-  CONSUMING.md
-  ITERATION_GUIDE.md
-  METHODOLOGY.md
-  PROPOSAL_SINGLE_TICKET_CORE.md
-  VERSIONING_DOCS.md
-tests/                         ← 5 个测试（共 319 项，无需 pytest）
-  README.md                   ← 测试说明（v1.3，tests/README.md）
-  test_core.py                 ← 113 项
-  test_cross_scope.py          ← 62 项
-  test_claim_type.py           ← 43 项
-  test_evidence_anchor.py      ← 32 项
-  test_shadow_game.py          ← 69 项（D 新增）
-  fixtures/shadow/             ← 影子彩种夹具（T-031 实测，与 dlt 零交集）
-    game.yaml
-    data/raw/shadow.csv
-    strategy/strategy.json
+├── pyproject.toml          v0.1.0   ← 顶层版本（release）= smartpickcore 整体版本，源自 project.version
+├── AI_CONTEXT.md          v1.3   ← 单一入口。AI 与人都从这里进
+├── VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
+├── versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
+├── README.md              v1.10  ← 本文件
+├── spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
+│   ├── fact.schema.json            ← 结论契约（claim_type / source_sha256 / 红线）
+│   ├── game_config.schema.json     ← 彩种配置契约（sum_affects_numbers 红线）
+│   ├── strategy.schema.json        ← 策略契约（changes_win_probability 红线）
+│   ├── iteration.schema.json       ← 迭代契约
+│   ├── version_index.schema.json   ← 版本索引契约（index_version 1.1）
+│   ├── README.md
+│   └── VERSIONING.md               ← 版本规则 + config 2.0→2.1 迁移指南
+├── framework/                    ← 框架层（framework_version = 1.1）
+│   ├── README.md                   ← 框架层说明（v1.0，框架/彩种分离判定标准）
+│   ├── INDEX.md             v1.1   ← 按需求找文件
+│   ├── core/                       ← ★ 框架核心（7 模块）
+│   │   ├── __init__.py
+│   │   ├── ticket.py                 ← L1 Ticket
+│   │   ├── features.py               ← 21 单注 + 5 跨注原语表
+│   │   ├── evaluate.py               ← 求值（单注）
+│   │   ├── judge.py                  ← 判定（受限 DSL）
+│   │   ├── portfolio.py              ← L3 Portfolio（跨注求值 / 判定）
+│   │   ├── generate.py               ← 候选生成
+│   │   ├── game_util.py              ← 彩种无关工具
+│   │   └── README.md
+│   ├── protocol/                   ← 迭代协议 + 记忆协议 + 3 模板
+│   │   ├── ITERATION_PROTOCOL.md
+│   │   ├── MEMORY_PROTOCOL.md        ← 含 claim_type / 证据锚定章节
+│   │   ├── README.md
+│   │   └── templates/
+│   │       ├── FINDINGS.template.md
+│   │       ├── HANDOFF.template.md
+│   │       └── TASK_BRIEF.template.md
+│   ├── methodology/                ← 数学边界 + 统计纪律
+│   │   ├── MATH_BOUNDARY.md
+│   │   └── STATISTICAL_DISCIPLINE.md
+│   └── tools/
+│       └── memory.py                 ← 记忆读写库（彩种无关）
+├── src/smartpickcore/            ← 库代码（8 模块）
+│   ├── __init__.py
+│   ├── game.py                     ← 彩种加载
+│   ├── memory.py                   ← 结论 / FACTS 读写
+│   ├── validate.py                 ← 校验器（49 项）
+│   ├── strategy.py                 ← 策略构建
+│   ├── evidence.py                 ← ★ 证据锚定（C 新增：sha256 / 漂移）
+│   ├── api.py                      ← 对外 API
+│   └── versions.py                 ← 版本索引读写
+├── cli/
+│   └── main.py              —      ← 命令行入口（14 个命令）
+├── memory/                        ← 记忆层
+│   ├── facts/
+│   │   ├── FACTS.jsonl        v1.3   ← 结论台账（18 条，JSONL 追加式；每条带 claim_type + source_sha256）
+│   │   └── INDEX.md           v1.3   ← 速览（派生物，CLI 生成，勿手改）
+│   ├── journal/
+│   │   ├── round02.md
+│   │   └── round03.md
+│   ├── lessons/
+│   │   └── LESSONS.md         v1.1   ← 教训库 L1–L12（只增不删）
+│   ├── workbench/
+│   │   ├── TODO.md            v1.4   ← 任务台账（P0 已清空）
+│   │   ├── OPEN_QUESTIONS.md          ← 开放问题（11，3 answered）
+│   │   └── HYPOTHESES.md              ← 假设（5）
+│   └── INDEX.md
+├── games/                         ← 彩种（数据 + 轮次 + 策略）
+│   ├── _template/                   ← 新彩种骨架
+│   │   ├── game.yaml
+│   │   ├── README.md
+│   │   ├── strategy/strategy.json
+│   │   ├── data/{raw,derived,build_scripts,tools}/  ← 工具生成，各含 README
+│   │   └── iterations/round01/TASK_BRIEF.md
+│   ├── dlt/                         ← 超级大乐透（实际数据）
+│   │   ├── game.yaml                  ← config 2.1（11 单注 + 3 跨注特征）
+│   │   ├── manifest_v4_source.json
+│   │   ├── rules_history.md           ← 规则沿革（F-0015 历史引用）
+│   │   ├── data/
+│   │   │   ├── raw/                     ← dlt_full_2933.{csv,jsonl}（原始开奖，2933 期）
+│   │   │   ├── derived/                 ← 8 份派生统计（CSV/JSON，工具生成）
+│   │   │   ├── build_scripts/           ← 3 个构建脚本
+│   │   │   └── tools/                   ← 8 个分析工具（acf / changepoint / exact / 等）
+│   │   ├── iterations/
+│   │   │   ├── round01/                 ← 空占位
+│   │   │   ├── round02/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + legacy_findings/
+│   │   │   ├── round03/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + scripts/
+│   │   │   └── round04/                 ← TASK_BRIEF / manifest（待测）
+│   │   └── strategy/
+│   │       ├── strategy.json            ← schema 1.1（2 规则 + 8 avoid_list）
+│   │       ├── STRATEGY_GUIDE.md        ← 人话版 v1.1
+│   │       ├── simulation_results.json
+│   │       └── strategy_simulation.py
+│   └── INDEX.md             v1.1   ← 彩种索引
+├── tools/                         ← 版本索引生成 / 注入脚本
+│   ├── build_versions.py
+│   ├── render_version_index.py
+│   ├── inject_version_lines.py
+│   └── count_tests.py        —      ← 测试计数自举（E 新增）
+├── docs/                          ← 设计 / 消费 / 迭代 / 方法 / 版本文档
+│   ├── ARCHITECTURE.md
+│   ├── CONSUMING.md
+│   ├── ITERATION_GUIDE.md
+│   ├── METHODOLOGY.md
+│   ├── PROPOSAL_SINGLE_TICKET_CORE.md
+│   └── VERSIONING_DOCS.md
+└── tests/                         ← 5 个测试（共 319 项，无需 pytest）
+    ├── README.md                   ← 测试说明（v1.3，tests/README.md）
+    ├── test_core.py                 ← 113 项
+    ├── test_cross_scope.py          ← 62 项
+    ├── test_claim_type.py           ← 43 项
+    ├── test_evidence_anchor.py      ← 32 项
+    ├── test_shadow_game.py          ← 69 项（D 新增）
+    └── fixtures/shadow/             ← 影子彩种夹具（T-031 实测，与 dlt 零交集）
+        ├── game.yaml
+        ├── data/raw/shadow.csv
+        └── strategy/strategy.json
 ```
 
 > **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
