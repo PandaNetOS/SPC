@@ -1,0 +1,203 @@
+{
+  "seed": 20261011,
+  "n_sim": 300000,
+  "report": {
+    "S1_cap_trigger_history": {
+      "note": "解析统计：封顶 = 一等奖所有中奖注数(含追加)的奖金总额单期最高 1 亿元。",
+      "rules_epoch": "E6",
+      "n_epochs": 102,
+      "cap_total_yuan": 100000000,
+      "max_total_yuan": 97883574.0,
+      "max_total_yi": 0.9788,
+      "n_triggered": 0,
+      "verdict": "封顶从未触发：E6 全部 102 期一等奖总额均 < 1 亿元，最大值 0.9788 亿（26060 期）。",
+      "top5": [
+        {
+          "draw_num": "26060",
+          "date": "2026-06-01",
+          "w1": 37,
+          "amt1_yuan": 2645502.0,
+          "total1_yuan": 97883574.0
+        },
+        {
+          "draw_num": "26113",
+          "date": "2026-10-05",
+          "w1": 37,
+          "amt1_yuan": 2392344.0,
+          "total1_yuan": 88516728.0
+        },
+        {
+          "draw_num": "26062",
+          "date": "2026-06-06",
+          "w1": 15,
+          "amt1_yuan": 5747126.0,
+          "total1_yuan": 86206890.0
+        },
+        {
+          "draw_num": "26054",
+          "date": "2026-05-18",
+          "w1": 13,
+          "amt1_yuan": 6280305.0,
+          "total1_yuan": 81643965.0
+        },
+        {
+          "draw_num": "26016",
+          "date": "2026-02-07",
+          "w1": 13,
+          "amt1_yuan": 5925957.0,
+          "total1_yuan": 77037441.0
+        }
+      ]
+    },
+    "S1_entry_cap_check": {
+      "official_rule": "单注最高限额 500 万元 / 部分；奖池 1~8 亿与 >=8 亿时一等奖分两部分 → 合计上限 1000 万",
+      "observed_max_amt_yuan": 10000000.0,
+      "pool_lt_8yi_max": 10000000.0,
+      "pool_ge_8yi_max": 10000000.0,
+      "verdict": "实测单注最大恰好 1000.0 万，与官方『2 元最高可中 1000 万』一致 → 口径吻合。"
+    },
+    "S1_critical_ticket_count": {
+      "formula": "n_crit = 1 亿 / 单注上限1000万 = 10 注",
+      "n_crit_if_amt_at_cap": 10,
+      "note": "若每注都触到 1000 万上限，则 10 注即达 1 亿封顶。但单注金额随奖池与注数变化，实际需按当期 amt 计算。"
+    },
+    "S1_threshold_by_draw": {
+      "note": "各期触发阈值 = 1 亿 / 该期单注金额。注数超过该阈值则封顶生效。",
+      "sample": [
+        {
+          "draw_num": "26014",
+          "w1": 2,
+          "amt1_yuan": 10000000.0,
+          "threshold_w1": 10.0
+        },
+        {
+          "draw_num": "26015",
+          "w1": 4,
+          "amt1_yuan": 9339920.0,
+          "threshold_w1": 10.7
+        },
+        {
+          "draw_num": "26016",
+          "w1": 13,
+          "amt1_yuan": 5925957.0,
+          "threshold_w1": 16.9
+        },
+        {
+          "draw_num": "26017",
+          "w1": 6,
+          "amt1_yuan": 7044236.0,
+          "threshold_w1": 14.2
+        },
+        {
+          "draw_num": "26018",
+          "w1": 7,
+          "amt1_yuan": 6692203.0,
+          "threshold_w1": 14.9
+        }
+      ],
+      "threshold_median": 13.0,
+      "threshold_min": 10.0,
+      "threshold_max": 41.8
+    },
+    "S2_pool_anchor": {
+      "method": "锚点直接取实测统计量：n0 = 中出注数 w1 的中位数；Pool = 一等奖总派发额 w1×amt1 的中位数。**不再**用 OLS 截距或 pool_yuan（奖池余额）反推。",
+      "why_fixed": "旧版用 n0 = pool_yuan/amt_med 得到 1.7 注，与实测 w1 中位 6 注矛盾 —— pool_yuan 是奖池【余额】而非当期一等奖可分配额，口径不成立。",
+      "w1_median": 6.0,
+      "w1_mean": 6.451,
+      "w1_min": 1,
+      "w1_max": 37,
+      "pool_median_yuan": 42521698.0,
+      "pool_median_yi": 0.4252,
+      "pool_mean_yi": 0.4343,
+      "slope_logamt_logw1": -0.3125,
+      "note": "Pool 中位 0.4252 亿 < 1 亿封顶 → 封顶罕见，与 S1 一致。"
+    },
+    "S3_baseline_reproduce": {
+      "collision_factor_rand": 1.0022,
+      "collision_factor_norun": 0.4528,
+      "ratio": 0.4518,
+      "ratio_ci95": [
+        0.4491,
+        0.4547
+      ],
+      "uplift_pct_nocap": -54.82,
+      "v4_reference": {
+        "cf_rand": 1.0028,
+        "cf_norun": 0.4528,
+        "ratio": 0.4515,
+        "uplift_pct": 121.48
+      },
+      "verdict": "复现成功：脚本可独立重建 F-0004 的数字。"
+    },
+    "S3_cap_adjusted": {
+      "mechanism": "单注 = min(Pool/n_total, 1000万)；总额 = min(n_total×单注, 1亿)，n_total = cf × n0；n0 = 实测 w1 中位数，Pool = 实测总派发中位数",
+      "free_parameters": {
+        "alpha": 13.9405,
+        "birthday_weight": 1.25,
+        "n0_baseline_tickets": 6.0,
+        "pool_baseline_yuan": 42521698.0,
+        "note": "n0 与 Pool 均直接取自 E6 实测开奖数据 → **未新增可调系数**。±50% 仅为敏感性检验，不是自由参数。"
+      },
+      "scenarios": {
+        "anchor": {
+          "n0_tickets": 6.0,
+          "pool_yi": 0.4252,
+          "n_total_random": 6.01,
+          "n_total_norun": 2.72,
+          "amt_random_yuan": 7071345.93,
+          "amt_norun_yuan": 10000000.0,
+          "uplift_pct_with_cap": 41.42,
+          "cap_triggered_random": false,
+          "cap_triggered_norun": false,
+          "note": "实测锚点",
+          "amt_cap_smoothing": false
+        },
+        "anchor_lo": {
+          "n0_tickets": 3.0,
+          "pool_yi": 0.4252,
+          "n_total_random": 3.01,
+          "n_total_norun": 1.36,
+          "amt_random_yuan": 10000000.0,
+          "amt_norun_yuan": 10000000.0,
+          "uplift_pct_with_cap": 0.0,
+          "cap_triggered_random": false,
+          "cap_triggered_norun": false,
+          "note": "注数规模减半（奖池小时）",
+          "amt_cap_smoothing": true,
+          "smoothing_note": "随机与避连号两侧的未封顶单注均已 > 1000 万单注上限 → 单注被同一上限压平，收益差被抹平，uplift ≈ 0。此为封顶条款的**真实作用**（并非计算错误）。"
+        },
+        "anchor_hi": {
+          "n0_tickets": 9.0,
+          "pool_yi": 0.4252,
+          "n_total_random": 9.02,
+          "n_total_norun": 4.08,
+          "amt_random_yuan": 4714230.62,
+          "amt_norun_yuan": 10000000.0,
+          "uplift_pct_with_cap": 112.12,
+          "cap_triggered_random": false,
+          "cap_triggered_norun": false,
+          "note": "注数规模增半（奖池大时）",
+          "amt_cap_smoothing": false
+        }
+      },
+      "headline": "实测锚点下 uplift = 41.42%（未计封顶为 121.48%，封顶压缩了收益差）；低注数情形出现『单注上限抹平』（uplift→0）；封顶在实测锚点下未触发"
+    },
+    "S3_strategy_vs_cap": {
+      "question": "避开连号策略会不会推高「触发封顶」的概率？",
+      "direction": "降低",
+      "reason": "避开连号使同期他人注数相对水平由 cf_rand=1.0022 降至 cf_norun=0.4528 → 当期总注数更少 → 更远离 1 亿封顶阈值。",
+      "verdict": "该策略与封顶条款**方向一致**（既提奖金又降封顶风险），不存在正面冲突。"
+    },
+    "S3_case_26113": {
+      "draw_num": "26113",
+      "date": "2026-10-05",
+      "w1": 37,
+      "amt1_yuan": 2392344.0,
+      "total1_yuan": 88516728.0,
+      "total1_yi": 0.8852,
+      "cap_total_yuan": 100000000,
+      "triggered": false,
+      "verdict": "26113 期一等奖总额 0.8852 亿 < 1 亿 → **未触发封顶**。单注 239 万是 37 注自然摊薄的结果，不是封顶所致。"
+    }
+  }
+}

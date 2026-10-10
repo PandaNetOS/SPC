@@ -1,0 +1,66 @@
+{
+  "round": "round04",
+  "game": "dlt",
+  "title": "撞号效应衰减归因与策略维度扩展",
+  "status": "planned",
+  "started_at": null,
+  "finished_at": null,
+  "executor": null,
+  "supersedes_round": null,
+
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": ["F-0003", "F-0004", "F-0006", "F-0011", "F-0012", "F-0016", "F-0017", "F-0018"],
+    "previous_handoff": "games/dlt/iterations/round03/HANDOFF.md",
+    "task_brief": "games/dlt/iterations/round04/TASK_BRIEF.md",
+    "forbidden_fact_ids": ["F-0007", "F-0015"],
+    "note": "本 manifest 由 round03 的 HANDOFF 预生成（status=planned）。执行时请填 started_at / executor，并在收轮时补 outputs 与 deliverables。"
+  },
+
+  "outputs": {
+    "new_fact_ids": [],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "strategy_updated": false,
+    "planned_updates": [
+      "F-0003: 补衰减归因（若 T-101 结论明确）",
+      "F-0004: 口径可能从全样本 1.36 改为后段 1.25（取决于 T-101）",
+      "可能新增 R-00x（择时规则，若 T-102 找到高期望期）"
+    ]
+  },
+
+  "deliverables": [
+    {"path": "games/dlt/iterations/round04/TASK_BRIEF.md", "kind": "task_brief", "note": "由 round03/HANDOFF 转写"},
+    {"path": "games/dlt/iterations/round04/manifest.json", "kind": "manifest", "note": "本文件（planned）"}
+  ],
+
+  "open_questions": ["Q-010", "Q-003", "Q-007"],
+
+  "framework_revision": null,
+
+  "planned_tasks": [
+    {
+      "id": "T-101",
+      "title": "撞号效应衰减归因（人群变化 / 数据口径 / 销量稀释）",
+      "priority": "P1",
+      "question": "Q-010",
+      "script": "games/dlt/iterations/round04/scripts/decay_cause.py"
+    },
+    {
+      "id": "T-102",
+      "title": "奖金瓜分机制与『高期望期』是否存在（Tobit + epoch 分段）",
+      "priority": "P1",
+      "question": "Q-007",
+      "script": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py"
+    },
+    {
+      "id": "T-103",
+      "title": "后区撞号建模（66 组合人群密度 + 条件份额模拟）",
+      "priority": "P1",
+      "question": "Q-003",
+      "script": "games/dlt/iterations/round04/scripts/back_collision.py"
+    }
+  ]
+}

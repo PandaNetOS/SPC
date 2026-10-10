@@ -1,0 +1,255 @@
+{
+  "seed": 20261011,
+  "n_boot": 2000,
+  "report": {
+    "S0_full_sample_reproduce": {
+      "note": "全样本同口径复现，用于确认分期结果与 F-0003 可比。",
+      "prize1": {
+        "ratio": 1.3603,
+        "ci95": [
+          1.1415,
+          1.6243
+        ],
+        "n_a": 292,
+        "n_b": 2641,
+        "mean_a": 5.0719,
+        "mean_b": 3.7285
+      },
+      "prize2": {
+        "ratio": 1.352,
+        "ci95": [
+          1.1667,
+          1.5761
+        ],
+        "n_a": 292,
+        "n_b": 2641,
+        "mean_a": 103.1918,
+        "mean_b": 76.3275
+      },
+      "f0003_reference": {
+        "prize1_ratio": 1.3603,
+        "prize1_ci95": [
+          1.1298,
+          1.6292
+        ],
+        "prize2_ratio": 1.352,
+        "prize2_ci95": [
+          1.1679,
+          1.5793
+        ]
+      },
+      "match": true
+    },
+    "S1_split_main": {
+      "note": "切点用 F-0006 最优变点 2013-08-28（不用自然年 —— L3）。口径同 F-0003。",
+      "changepoint": "2013-08-28",
+      "split": {
+        "cut_date": "2013-08-28",
+        "label": "主切点",
+        "pre": {
+          "n_draws": 960,
+          "n_ge2": 99,
+          "prize1": {
+            "ratio": 2.1072,
+            "ci95": [
+              1.3213,
+              3.2616
+            ],
+            "n_a": 99,
+            "n_b": 861,
+            "mean_a": 3.4141,
+            "mean_b": 1.6202
+          },
+          "prize2": {
+            "ratio": 2.425,
+            "ci95": [
+              1.5817,
+              3.5869
+            ],
+            "n_a": 99,
+            "n_b": 861,
+            "mean_a": 71.2121,
+            "mean_b": 29.3659
+          }
+        },
+        "post": {
+          "n_draws": 1973,
+          "n_ge2": 193,
+          "prize1": {
+            "ratio": 1.2472,
+            "ci95": [
+              1.0315,
+              1.4907
+            ],
+            "n_a": 193,
+            "n_b": 1780,
+            "mean_a": 5.9223,
+            "mean_b": 4.7483
+          },
+          "prize2": {
+            "ratio": 1.2075,
+            "ci95": [
+              1.0475,
+              1.4093
+            ],
+            "n_a": 193,
+            "n_b": 1780,
+            "mean_a": 119.5959,
+            "mean_b": 99.0433
+          }
+        }
+      },
+      "criteria": {
+        "sign_consistent_prize1": true,
+        "sign_consistent_prize2": true,
+        "ci_overlap_prize1": true,
+        "ci_overlap_prize2": false,
+        "weak_segments_prize1": [],
+        "weak_segments_prize2": [],
+        "magnitude_diff_prize1": 0.86,
+        "magnitude_diff_prize2": 1.2175,
+        "decay_post_over_pre_prize1": 0.5919,
+        "decay_post_over_pre_prize2": 0.4979,
+        "significant_decay_prize1": true,
+        "significant_decay_prize2": true,
+        "post_ci_lower_near_one_prize1": true,
+        "post_ci_lower_near_one_prize2": true
+      },
+      "verdict": "撞号效应在两段**均同向且均显著**（各段 CI 下界均 > 1），但**幅度显著衰减**：一等奖 ratio 2.107 → 1.247（后/前 = 0.592），二等奖 ratio 2.425 → 1.208（后/前 = 0.498，两段 CI 不重叠 → 衰减统计显著）。后段 CI 下界降至 1.032 / 1.048，逼近零效应边界。→ 结论：效应**仍成立但强度随时间弱化**（非『仅早期成立』，也非『完全稳定』）。建议在 F-0003 的 caveats 中声明**强度衰减**并给出分段估计。"
+    },
+    "S1_changepoint_sensitivity": {
+      "note": "F-0006 声明切点有 ±6 个月不确定性，故做两侧敏感性。",
+      "cases": {
+        "lo": {
+          "cut_date": "2013-02-28",
+          "label": "切点-6月",
+          "pre": {
+            "n_draws": 883,
+            "n_ge2": 89,
+            "prize1": {
+              "ratio": 2.2099,
+              "ci95": [
+                1.2948,
+                3.4953
+              ],
+              "n_a": 89,
+              "n_b": 794,
+              "mean_a": 3.3371,
+              "mean_b": 1.5101
+            },
+            "prize2": {
+              "ratio": 2.5205,
+              "ci95": [
+                1.5406,
+                3.8912
+              ],
+              "n_a": 89,
+              "n_b": 794,
+              "mean_a": 69.1685,
+              "mean_b": 27.4421
+            }
+          },
+          "post": {
+            "n_draws": 2050,
+            "n_ge2": 203,
+            "prize1": {
+              "ratio": 1.2457,
+              "ci95": [
+                1.0455,
+                1.5053
+              ],
+              "n_a": 203,
+              "n_b": 1847,
+              "mean_a": 5.8325,
+              "mean_b": 4.6822
+            },
+            "prize2": {
+              "ratio": 1.2133,
+              "ci95": [
+                1.0623,
+                1.4133
+              ],
+              "n_a": 203,
+              "n_b": 1847,
+              "mean_a": 118.1084,
+              "mean_b": 97.3427
+            }
+          }
+        },
+        "hi": {
+          "cut_date": "2014-02-28",
+          "label": "切点+6月",
+          "pre": {
+            "n_draws": 1036,
+            "n_ge2": 106,
+            "prize1": {
+              "ratio": 1.9478,
+              "ci95": [
+                1.2404,
+                2.953
+              ],
+              "n_a": 106,
+              "n_b": 930,
+              "mean_a": 3.2547,
+              "mean_b": 1.671
+            },
+            "prize2": {
+              "ratio": 2.2107,
+              "ci95": [
+                1.451,
+                3.2273
+              ],
+              "n_a": 106,
+              "n_b": 930,
+              "mean_a": 69.3302,
+              "mean_b": 31.3613
+            }
+          },
+          "post": {
+            "n_draws": 1897,
+            "n_ge2": 186,
+            "prize1": {
+              "ratio": 1.2601,
+              "ci95": [
+                1.0382,
+                1.5199
+              ],
+              "n_a": 186,
+              "n_b": 1711,
+              "mean_a": 6.1075,
+              "mean_b": 4.8469
+            },
+            "prize2": {
+              "ratio": 1.2156,
+              "ci95": [
+                1.0461,
+                1.4221
+              ],
+              "n_a": 186,
+              "n_b": 1711,
+              "mean_a": 122.4892,
+              "mean_b": 100.7686
+            }
+          }
+        }
+      }
+    },
+    "S2_conclusion": {
+      "verdict": "撞号效应在两段**均同向且均显著**（各段 CI 下界均 > 1），但**幅度显著衰减**：一等奖 ratio 2.107 → 1.247（后/前 = 0.592），二等奖 ratio 2.425 → 1.208（后/前 = 0.498，两段 CI 不重叠 → 衰减统计显著）。后段 CI 下界降至 1.032 / 1.048，逼近零效应边界。→ 结论：效应**仍成立但强度随时间弱化**（非『仅早期成立』，也非『完全稳定』）。建议在 F-0003 的 caveats 中声明**强度衰减**并给出分段估计。",
+      "need_caveat_amend": true,
+      "sign_consistent": true,
+      "both_segments_significant": true,
+      "amplitude_decay": {
+        "prize1_post_over_pre": 0.5919,
+        "prize2_post_over_pre": 0.4979,
+        "ci_overlap_prize2": false,
+        "significant": true
+      },
+      "weak_segments": {
+        "prize1": [],
+        "prize2": []
+      },
+      "action": "在 F-0003.caveats 中声明【强度随时间衰减】并给出分段估计"
+    }
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "seed": 20261011,
+  "n_boot": 2000,
+  "report": {
+    "S0_descriptives": {
+      "note": "L1 检查：一等奖注数 w1 的过度离散程度（var/mean >> 1 → 须用 NB2）。",
+      "w1_all": {
+        "n": 2933,
+        "mean": 3.8623,
+        "median": 2.0,
+        "std": 5.7171,
+        "var": 32.6857,
+        "var_over_mean": 8.4628,
+        "max": 106.0,
+        "p25": 1.0,
+        "p75": 5.0,
+        "p99": 25.0
+      },
+      "w1_ge2": {
+        "n": 292,
+        "mean": 5.0719,
+        "median": 3.0,
+        "std": 7.7089,
+        "var": 59.4278,
+        "var_over_mean": 11.717,
+        "max": 73.0,
+        "p25": 1.0,
+        "p75": 6.0,
+        "p99": 36.99
+      },
+      "w1_lt2": {
+        "n": 2641,
+        "mean": 3.7285,
+        "median": 2.0,
+        "std": 5.4379,
+        "var": 29.5706,
+        "var_over_mean": 7.9309,
+        "max": 106.0,
+        "p25": 1.0,
+        "p75": 5.0,
+        "p99": 21.6
+      },
+      "w2_all": {
+        "n": 2933,
+        "mean": 79.002,
+        "median": 64.0,
+        "std": 86.8294,
+        "var": 7539.3397,
+        "var_over_mean": 95.4322,
+        "max": 2251.0,
+        "p25": 31.0,
+        "p75": 102.0,
+        "p99": 329.4
+      },
+      "w2_ge2": {
+        "n": 292,
+        "mean": 103.1918,
+        "median": 79.5,
+        "std": 136.0916,
+        "var": 18520.9253,
+        "var_over_mean": 179.4806,
+        "max": 1424.0,
+        "p25": 37.75,
+        "p75": 124.25,
+        "p99": 698.12
+      },
+      "w2_lt2": {
+        "n": 2641,
+        "mean": 76.3275,
+        "median": 62.0,
+        "std": 79.1192,
+        "var": 6259.8491,
+        "var_over_mean": 82.013,
+        "max": 2251.0,
+        "p25": 30.0,
+        "p75": 100.0,
+        "p99": 314.6
+      },
+      "overdispersion_ok_for_nb2": true
+    },
+    "S1_estimators": {
+      "note": "三估计量同一数据、同一分组（run>=2 vs run<2）对照。",
+      "mean_ratio": {
+        "prize1": {
+          "ratio": 1.3603,
+          "ci95": [
+            1.1415,
+            1.6243
+          ]
+        },
+        "prize2": {
+          "ratio": 1.352,
+          "ci95": [
+            1.1681,
+            1.5778
+          ]
+        }
+      },
+      "median_ratio": {
+        "prize1": {
+          "ratio": 1.5,
+          "ci95": [
+            1.5,
+            2.0
+          ]
+        },
+        "prize2": {
+          "ratio": 1.2823,
+          "ci95": [
+            1.127,
+            1.4262
+          ]
+        }
+      },
+      "nb2_irr": {
+        "prize1": {
+          "irr": 1.3603,
+          "coef": 0.3077,
+          "se_conventional": 0.0678,
+          "ci95_conventional": [
+            1.1911,
+            1.5535
+          ],
+          "alpha_nb2_mle": 1.0034,
+          "alpha_method": "MLE（alpha 与 β 同时估计）",
+          "pvalue": 6e-06,
+          "converged": true,
+          "se_HAC": 0.0923,
+          "ci95_HAC": [
+            1.1352,
+            1.6301
+          ],
+          "irr_HAC": 1.3603,
+          "hac_status": "ok (statsmodels HAC)"
+        },
+        "prize2": {
+          "irr": 1.352,
+          "coef": 0.3016,
+          "se_conventional": 0.0499,
+          "ci95_conventional": [
+            1.2261,
+            1.4907
+          ],
+          "alpha_nb2_mle": 0.6436,
+          "alpha_method": "MLE（alpha 与 β 同时估计）",
+          "pvalue": 0.0,
+          "converged": true,
+          "se_HAC": 0.0785,
+          "ci95_HAC": [
+            1.1592,
+            1.5767
+          ],
+          "irr_HAC": 1.352,
+          "hac_status": "ok (statsmodels HAC)"
+        }
+      }
+    },
+    "S2_consistency": {
+      "table": [
+        {
+          "estimator": "均值比",
+          "prize1": 1.3603,
+          "prize1_ci_gt1": true,
+          "prize2": 1.352,
+          "prize2_ci_gt1": true
+        },
+        {
+          "estimator": "中位数比",
+          "prize1": 1.5,
+          "prize1_ci_gt1": true,
+          "prize2": 1.2823,
+          "prize2_ci_gt1": true
+        },
+        {
+          "estimator": "NB2 IRR",
+          "prize1": 1.3603,
+          "prize1_ci_gt1": true,
+          "prize2": 1.352,
+          "prize2_ci_gt1": true
+        }
+      ],
+      "all_same_direction": true,
+      "note": "方向一致 = 三个估计量都指向『run>=2 期注数更多』。",
+      "★_caveat_on_independence": "注意：NB2 用 log 链接时 IRR = exp(β) 在数值上**等于均值比**（E[y|x=1]/E[y|x=0]），故 IRR 与均值比**不是独立证据**，只是同一量的模型化表述。真正独立于均值比的稳健证据是【中位数比】。"
+    },
+    "S3_L5_check": {
+      "question": "均值比 1.3603 是否被重尾主导？（L5 技术债是否构成实质威胁）",
+      "trim_test": {
+        "p99_threshold_ge2": 36.99,
+        "p99_threshold_lt2": 21.6,
+        "mean_ratio_original": 1.3603,
+        "mean_ratio_trimmed": 1.3369,
+        "relative_change": 0.0172,
+        "tailed_dominant": false
+      },
+      "quantile_table": [
+        {
+          "q": 25,
+          "ge2": 1.0,
+          "lt2": 1.0,
+          "ratio": 1.0
+        },
+        {
+          "q": 50,
+          "ge2": 3.0,
+          "lt2": 2.0,
+          "ratio": 1.5
+        },
+        {
+          "q": 75,
+          "ge2": 6.0,
+          "lt2": 5.0,
+          "ratio": 1.2
+        },
+        {
+          "q": 90,
+          "ge2": 10.0,
+          "lt2": 8.0,
+          "ratio": 1.25
+        }
+      ],
+      "median_vs_mean_gap": 0.1397,
+      "verdict": "L5 技术债清偿：效应在【均值比家族】与【中位数比】两个独立口径下均成立；截尾敏感性 1.72% 表明重尾不主导。"
+    },
+    "S4_conclusion": {
+      "verdict": "两套**独立口径**均指向同一方向且 CI 下界 > 1：① 均值比家族（均值比 1.3603、NB2 IRR 1.3603，二者数值等价）② 中位数比 1.5 [1.5, 2.0]。截尾检验显示重尾仅贡献 1.72% 变化 → 重尾不主导，L5 技术债**可清偿**。",
+      "l5_verdict": "L5 技术债清偿：效应在【均值比家族】与【中位数比】两个独立口径下均成立；截尾敏感性 1.72% 表明重尾不主导。",
+      "estimators_consistent": true,
+      "mean_ratio_ci_gt1": true,
+      "median_ratio_ci_gt1": true,
+      "nb2_irr_ci_gt1": true
+    }
+  }
+}

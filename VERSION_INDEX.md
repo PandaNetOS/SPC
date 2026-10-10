@@ -76,17 +76,17 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt` | `1.0` | `r02` | 2026-10-11 | archived | 历史归档，设使用门槛（防锚定） |
 | `games/dlt/iterations/round02/legacy_findings/round2_main_report.md` | `1.0` | `r02` | 2026-10-11 | archived | 历史归档，设使用门槛（防锚定） |
 | `games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt` | `1.0` | `r02` | 2026-10-11 | archived | 历史归档，设使用门槛（防锚定） |
-| `games/dlt/iterations/round03/TASK_BRIEF.md` | `1.0` | `r03` | 2026-10-11 | active | planned |
-| `games/dlt/rules_history.md` | `1.0` | `r02` | 2026-10-11 | active | E0~E6 共 7 段 |
+| `games/dlt/iterations/round03/TASK_BRIEF.md` | `1.0` | `r03` | 2026-10-11 | active | 已交付 |
+| `games/dlt/rules_history.md` | `1.0` | `r02` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞已标记存疑） |
 | `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.0` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版） |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
-| `memory/facts/FACTS.jsonl` | `1.0` | `r02` | 2026-10-11 | active | 15 条结论（F-0001~F-0015） |
-| `memory/facts/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 派生物，由 cli index 生成 |
+| `memory/facts/FACTS.jsonl` | `1.1` | `r03` | 2026-10-11 | active | 18 条结论（F-0001~F-0018；F-0015 superseded） |
+| `memory/facts/INDEX.md` | `1.1` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成 |
 | `memory/journal/round02.md` | `1.0` | `r02` | 2026-10-11 | active | 整理入库轮 |
-| `memory/lessons/LESSONS.md` | `1.0` | `r02` | 2026-10-11 | active | L1–L9，只增不删 |
+| `memory/lessons/LESSONS.md` | `1.0` | `r02` | 2026-10-11 | active | L1–L9，只增不删（L10–L12 待确认） |
 | `memory/workbench/HYPOTHESES.md` | `1.0` | `r02` | 2026-10-11 | active | H-001~H-005 |
-| `memory/workbench/OPEN_QUESTIONS.md` | `1.0` | `r02` | 2026-10-11 | active | Q-001~Q-008；Q-009 待补 |
-| `memory/workbench/TODO.md` | `1.0` | `r02` | 2026-10-11 | active | 16 项未完成 |
+| `memory/workbench/OPEN_QUESTIONS.md` | `1.1` | `r03` | 2026-10-11 | active | 10 问，3 answered（Q-001/Q-002/Q-004） |
+| `memory/workbench/TODO.md` | `1.1` | `r03` | 2026-10-11 | active | P0 已清空；新增 T-013/T-023/T-033/T-043 |
 
 ### B 级 · 结构性文档 / 框架与库代码
 
