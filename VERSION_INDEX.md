@@ -106,7 +106,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.3` | `r03` | active |  |
-| `README.md` | `1.8` | `r03` | active |  |
+| `README.md` | `1.9` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |
