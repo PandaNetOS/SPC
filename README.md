@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -93,10 +93,10 @@ framework/                    ← 框架层（framework_version = 1.1）
   protocol/                   ← 迭代协议 + 记忆协议 + 3 个模板
   methodology/                ← 数学边界 + 统计纪律
   tools/memory.py      —      ← 记忆读写库（彩种无关，版本见索引）
-  core/                       ← ★ 框架核心（已实现）：21 原语 / Ticket / 求值 / 判定 / 生成
+  core/                       ← ★ 框架核心（已实现）：21 单注 + 5 跨注原语 / Ticket / Portfolio / 求值 / 判定 / 生成
 memory/
-  facts/FACTS.jsonl    v1.1   ← 结论台账（权威源，JSONL 追加式）
-  facts/INDEX.md       v1.1   ← 速览（派生物，CLI 生成，勿手改）
+  facts/FACTS.jsonl    v1.2   ← 结论台账（权威源，JSONL 追加式；每条带 claim_type）
+  facts/INDEX.md       v1.2   ← 速览（派生物，CLI 生成，勿手改）
   journal/roundNN.md          ← 迭代日志
   lessons/LESSONS.md   v1.1   ← 教训库 L1–L12（只增不删）
   workbench/                  ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
@@ -173,7 +173,7 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 5 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **18 条结论** / L1–L12 / 10 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
+| 记忆层 | ✅ **18 条结论**（每条带 `claim_type` 证据类型）/ L1–L12 / 11 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
 | 库与 CLI | ✅ 8 模块 + 13 命令，`validate --all` **46 项全绿** |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
 | `tests/` | ✅ `test_core.py` **113 项** + `test_cross_scope.py` **62 项**全绿（无需 pytest） |

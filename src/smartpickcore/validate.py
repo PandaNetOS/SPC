@@ -222,9 +222,88 @@ def validate_game(game: str, repo_root: str | None = None,
 
 # ---------------------------------------------------------------- facts
 
+# ★ claim_type：结论的『证据类型』。判据是『它会在什么情况下变错』，
+#   不是『它用了什么方法』 —— 后者只是描述，前者才能推出该强制哪些字段。
+#
+#   与 spec/fact.schema.json 的 allOf 约束一一对应。此处再实现一遍，
+#   是为了在 jsonschema 未安装时仍能报出（红线字段也是同样的双保险写法）。
+CLAIM_TYPES: dict[str, str] = {
+    "analytic": "只有模型定义错了才会错（组合数 / 概率恒等式）",
+    "empirical": "数据换了或时段移位就会错",
+    "simulation": "模型假设变了就会错",
+    "documentary": "官方规则文本变了就会错",
+    "methodological": "关于方法本身的判断（稳健性 / 伪显著 / 口径）",
+}
+
+
+def check_claim_type(ft: dict, fid: str, rep: ValidationReport) -> None:
+    """按 claim_type 施加结构性约束（缺字段即报错，不静默放过）。"""
+    ct = ft.get("claim_type")
+    if ct is None:
+        rep.err(
+            f"FACT {fid}: 缺 claim_type —— 无法判断这条结论靠什么立住。"
+            f"可选：{sorted(CLAIM_TYPES)}"
+        )
+        return
+    if ct not in CLAIM_TYPES:
+        rep.err(
+            f"FACT {fid}: claim_type={ct!r} 不在枚举内。可选：{sorted(CLAIM_TYPES)}"
+        )
+        return
+
+    ev = ft.get("evidence") or {}
+
+    if ct == "analytic":
+        # 解析结论没有『抽样误差』这个概念。带 p / CI 说明它其实依赖数据。
+        for k in ("p_value", "ci95"):
+            if ev.get(k) is not None:
+                rep.err(
+                    f"FACT {fid}: claim_type=analytic 但 evidence.{k}="
+                    f"{ev.get(k)!r} —— 解析结论不含抽样不确定性；"
+                    f"若它其实依赖数据，应改标 empirical"
+                )
+    elif ct == "empirical":
+        if not ev.get("data_version"):
+            rep.err(
+                f"FACT {fid}: claim_type=empirical 但未声明 evidence.data_version"
+                f" —— 消费者无法判断它对自己这份数据还成不成立"
+            )
+        if not isinstance(ev.get("n_observations"), int) or ev["n_observations"] < 1:
+            rep.err(
+                f"FACT {fid}: claim_type=empirical 但 evidence.n_observations="
+                f"{ev.get('n_observations')!r}（须为正整数）"
+            )
+    elif ct == "simulation":
+        eff = ev.get("effect")
+        if not isinstance(eff, dict) or (
+            "n_sim" not in eff and "rng_seed" not in eff
+        ):
+            rep.err(
+                f"FACT {fid}: claim_type=simulation 但 effect 里既无 n_sim 也无 "
+                f"rng_seed —— 不可复现的模拟等于不可检验"
+            )
+        if len(ft.get("caveats") or []) < 2:
+            rep.err(
+                f"FACT {fid}: claim_type=simulation 但 caveats 少于 2 条"
+                f" —— 模型假设必须写出来，藏起来就和拍脑袋没区别"
+            )
+    elif ct == "documentary":
+        if not ev.get("rules_epoch"):
+            rep.err(
+                f"FACT {fid}: claim_type=documentary 但未声明 evidence.rules_epoch"
+                f" —— 规则已变更 6 次（F-0014），脱离 epoch 引用会产生无意义结论"
+            )
+    elif ct == "methodological":
+        if not ft.get("caveats"):
+            rep.err(
+                f"FACT {fid}: claim_type=methodological 但 caveats 为空"
+                f" —— 方法论结论的价值全在『什么情况下不成立』"
+            )
+
+
 def validate_facts(repo_root: str | None = None,
                    rep: ValidationReport | None = None) -> ValidationReport:
-    """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats 非空。"""
+    """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats + claim_type。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
     facts_path = os.path.join(root, "memory", "facts", "FACTS.jsonl")
@@ -285,6 +364,9 @@ def validate_facts(repo_root: str | None = None,
                 f"（否则 caveat→问题 的自我迭代传导断裂）"
             )
 
+        # ★ claim_type 结构性约束
+        check_claim_type(ft, fid, rep)
+
     # 双向取代一致性
     for fid, ft in by_id.items():
         sb, ss = ft.get("superseded_by"), ft.get("supersedes")
@@ -312,7 +394,16 @@ def validate_facts(repo_root: str | None = None,
         if ft.get("status") == "superseded" and not sb:
             rep.err(f"FACT {fid}: status=superseded 但未填 superseded_by")
 
-    rep.ok(f"FACTS.jsonl: {len(facts)} 条，红线/外键/双向取代/caveats 全部检查")
+    dist: dict[str, int] = {}
+    for ft in facts:
+        ct = ft.get("claim_type") or "<缺失>"
+        dist[ct] = dist.get(ct, 0) + 1
+    summary = " / ".join(f"{k} {v}" for k, v in sorted(dist.items()))
+
+    rep.ok(
+        f"FACTS.jsonl: {len(facts)} 条，红线/外键/双向取代/caveats/claim_type 全部检查"
+    )
+    rep.ok(f"结论证据类型分布：{summary}")
     return rep
 
 

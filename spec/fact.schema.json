@@ -11,6 +11,7 @@
     "status",
     "confidence",
     "category",
+    "claim_type",
     "affects_win_probability",
     "evidence",
     "established_in",
@@ -66,6 +67,11 @@
         "rules_scope"
       ],
       "description": "结论所属分析层，便于按层检索。"
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": ["analytic", "empirical", "simulation", "documentary", "methodological"],
+      "description": "★ 结论的『证据类型』——回答『这个数字靠什么立住』，与 category（分析层）正交。判据是『它会在什么情况下变错』：analytic=只有模型定义错了才会错（组合数、概率恒等式）；empirical=数据或时段变了就会错（须声明 data_version 与 n_observations）；simulation=模型假设变了就会错（须给出可复现参数与假设清单）；documentary=官方规则文本变了就会错（须声明 rules_epoch）；methodological=关于方法本身的判断（稳健性 / 伪显著 / 口径），不直接产出效应量。本字段不是注释：见 allOf 中的按类型结构性约束。"
     },
     "affects_win_probability": {
       "const": false,
@@ -157,5 +163,99 @@
       "type": ["string", "null"],
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
     }
-  }
+  },
+  "allOf": [
+    {
+      "title": "analytic —— 解析结论不含抽样不确定性",
+      "description": "解析/数学恒等式要么精确成立要么恒错，没有『抽样误差』这个概念。若一条 analytic 结论带着 p_value 或 ci95，说明它其实依赖数据（应改标 empirical），或者把确定量伪装成了估计量。",
+      "if": {
+        "required": ["claim_type"],
+        "properties": {"claim_type": {"const": "analytic"}}
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": {
+              "p_value": {"const": null},
+              "ci95": {"const": null}
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "empirical —— 观测结论必须声明数据与样本量",
+      "description": "观测结论的失效方式是『数据换了 / 时段移位』（F-0003 的效应已从 2.11 衰减到 1.25，正是此型）。不声明 data_version 与 n_observations，消费者无法判断它对自己这份数据还成不成立。",
+      "if": {
+        "required": ["claim_type"],
+        "properties": {"claim_type": {"const": "empirical"}}
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "required": ["data_version", "n_observations"],
+            "properties": {
+              "data_version": {"type": "string", "minLength": 1},
+              "n_observations": {"type": "integer", "minimum": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "simulation —— 模拟结论必须可复现且写清假设",
+      "description": "模拟结论的失效方式是『模型假设变了』（人群权重 α、锚点口径等）。不给出 n_sim / rng_seed 就无法复现；不写 ≥2 条 caveats 就等于把模型假设藏起来 —— 那和拍脑袋没有区别（F-0004 的 121% 与 F-0017 的 41.4% 差距，正源于此）。",
+      "if": {
+        "required": ["claim_type"],
+        "properties": {"claim_type": {"const": "simulation"}}
+      },
+      "then": {
+        "required": ["caveats"],
+        "properties": {
+          "caveats": {"minItems": 2},
+          "evidence": {
+            "properties": {
+              "effect": {
+                "type": "object",
+                "anyOf": [
+                  {"required": ["n_sim"]},
+                  {"required": ["rng_seed"]}
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "documentary —— 规则类结论必须声明 epoch",
+      "description": "奖金/奖级规则已变更 6 次（F-0014）。脱离 rules_epoch 引用一条规则类结论，等于拿 E0 的数字描述 E6 —— 会产生无意义结论。",
+      "if": {
+        "required": ["claim_type"],
+        "properties": {"claim_type": {"const": "documentary"}}
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "required": ["rules_epoch"],
+            "properties": {
+              "rules_epoch": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "methodological —— 方法论结论必须有减损项",
+      "description": "方法论结论不直接产出效应量，它的价值全在『什么情况下这个判断不成立』。caveats 为空的方法论结论等于什么都没说。",
+      "if": {
+        "required": ["claim_type"],
+        "properties": {"claim_type": {"const": "methodological"}}
+      },
+      "then": {
+        "required": ["caveats"],
+        "properties": {"caveats": {"minItems": 1}}
+      }
+    }
+  ]
 }

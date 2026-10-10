@@ -302,9 +302,9 @@
       "path": "memory/facts/FACTS.jsonl",
       "level": "A",
       "kind": "fact_ledger",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
-      "note": "18 条结论（F-0001~F-0018；F-0015 superseded）",
+      "note": "18 条结论（F-0001~F-0018；F-0015 superseded）；r03 框架迭代回填 claim_type",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -312,9 +312,9 @@
       "path": "memory/facts/INDEX.md",
       "level": "A",
       "kind": "fact_index",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
-      "note": "派生物，由 cli index 生成",
+      "note": "派生物，由 cli index 生成；新增『按证据类型』段 + 表格 claim_type 列",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -391,7 +391,7 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.2",
+      "content_version": "1.3",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -597,8 +597,8 @@
       "path": "framework/protocol/MEMORY_PROTOCOL.md",
       "level": "B",
       "kind": "protocol",
-      "content_version": "1.0",
-      "iteration": "r02",
+      "content_version": "1.1",
+      "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1109,6 +1109,14 @@
       "path": "games/dlt/strategy/strategy_simulation.py",
       "level": "D",
       "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_claim_type.py",
+      "level": "B",
+      "kind": "test",
+      "iteration": "r03",
+      "note": "★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest",
       "status": "active"
     }
   ],

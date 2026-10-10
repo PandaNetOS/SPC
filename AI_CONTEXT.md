@@ -207,6 +207,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
   "confidence": 3,
   "confidence_basis": "条件份额模拟（必须估计的量，无法解析给出）...",
   "category": "prize_mechanism",
+  "claim_type": "simulation",                // ← ★ 证据类型：这个数字靠什么立住
   "affects_win_probability": false,          // ← 红线，恒 false
   "evidence": {
     "method": "条件份额模拟（100 注 × 300000 次抽样）",
@@ -231,6 +232,25 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 
 **注意 `caveats` 的长度**：本仓库要求它非空。
 一条没有减损项的结论，要么是数学定理，要么是作者没想清楚边界。
+
+### ★ `claim_type`：引用一条结论前先看它靠什么立住
+
+置信度（`confidence`）答「**有多可信**」；`claim_type` 答「**靠什么立住**」。
+判据不是「用了什么方法」，而是「**它会在什么情况下变错**」：
+
+| `claim_type` | 失效方式 | 强制项 | 本仓例 |
+|---|---|---|---|
+| `analytic` | 只有模型定义错了才会错 | 不得带 `p_value` / `ci95` | F-0001（组合数恒等式） |
+| `empirical` | 数据换了、时段移位就会错 | 声明 `data_version` + `n_observations` | F-0003（2.11 → 1.25） |
+| `simulation` | 模型假设变了就会错 | `n_sim` 或 `rng_seed` 可复现；`caveats` ≥ 2 | F-0004 / F-0017 |
+| `documentary` | 官方规则文本变了就会错 | 声明 `rules_epoch` | F-0002 / F-0014 |
+| `methodological` | 关于方法本身的判断 | `caveats` 非空 | F-0007 / F-0018 |
+
+填错会被 `validate --facts` **按类型拒收**（不是警告）。
+最典型的坑：把模拟结论标成 `empirical` —— 那等于暗示"换个数据集就能解决"，
+而 F-0004 的 121% 与 F-0017 的 41.4% 的差距恰恰来自**假设**，不是数据。
+
+> 详见 `framework/protocol/MEMORY_PROTOCOL.md` §1.7。
 
 ---
 

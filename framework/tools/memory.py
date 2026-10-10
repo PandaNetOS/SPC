@@ -372,16 +372,18 @@ class Memory:
         # 按状态
         out.append("## 全部结论")
         out.append("")
-        out.append("| id | 彩种 | 结论 | 状态 | 置信度 | 类别 | 轮次 |")
-        out.append("|---|---|---|---|---|---|---|")
+        out.append("| id | 彩种 | 结论 | 状态 | 置信度 | 类别 | ★证据类型 | 轮次 |")
+        out.append("|---|---|---|---|---|---|---|---|")
         for f in sorted(facts, key=lambda x: x["id"]):
             claim = f["claim"]
             if len(claim) > 46:
                 claim = claim[:44] + "…"
             claim = claim.replace("|", "\\|")
+            ct = f.get("claim_type") or "—"
             out.append(
                 f"| {f['id']} | {f['game']} | {claim} | {f['status']} "
-                f"| {stars(f['confidence'])} | `{f['category']}` | {f['established_in']} |"
+                f"| {stars(f['confidence'])} | `{f['category']}` | `{ct}` "
+                f"| {f['established_in']} |"
             )
         out.append("")
 
@@ -395,6 +397,30 @@ class Memory:
         out.append("|---|---|")
         for cat in sorted(by_cat):
             out.append(f"| `{cat}` | {' · '.join(sorted(by_cat[cat]))} |")
+        out.append("")
+
+        # 按证据类型（★ 本轮新增：回答"这个数字靠什么立住"）
+        out.append("## 按证据类型（引用时必看）")
+        out.append("")
+        out.append(
+            "> `claim_type` 的判据不是『用了什么方法』，而是『**它会在什么情况下变错**』。"
+            "与『类别』正交：类别说这结论属于哪一层，证据类型说它靠什么立住。"
+        )
+        out.append("")
+        ct_notes = [
+            ("analytic", "只有**模型定义**错了才会错", "可当不变量用；但不可拿来『验证』统计结论（L8）"),
+            ("empirical", "**数据换了 / 时段移位**就会错", "引用前必看 `data_version` 与 `n_observations`"),
+            ("simulation", "**模型假设**变了就会错", "依赖输入参数；**禁止当作真值引用**"),
+            ("documentary", "**官方规则文本**变了就会错", "必须带 `rules_epoch`，脱离 epoch 无意义"),
+            ("methodological", "关于**方法本身**的判断", "不产效应量；价值全在 caveats 的失效边界"),
+        ]
+        out.append("| 证据类型 | 失效方式 | 引用须知 | 结论 |")
+        out.append("|---|---|---|---|")
+        for ct, how, note in ct_notes:
+            ids = sorted(f["id"] for f in facts if f.get("claim_type") == ct)
+            out.append(
+                f"| `{ct}` | {how} | {note} | {' · '.join(ids) if ids else '（无）'} |"
+            )
         out.append("")
 
         # 按置信度
@@ -458,8 +484,14 @@ class Memory:
         out.append("4. 若推翻旧结论：旧条 `status=superseded` + 填 `superseded_by`；"
                    "新条填 `supersedes`。**双向必须一致**")
         out.append("5. `source` 必须是真实存在的文件路径；`evidence.script` 能复现")
-        out.append("6. 跑 `python cli/main.py validate --facts` 确认无报错")
-        out.append("7. 跑 `python cli/main.py index` 重新生成本文件")
+        out.append(
+            "6. ★ 填 `claim_type` —— 判据是『**它会在什么情况下变错**』，不是『用了什么方法』。"
+            "五选一：`analytic`（模型定义错才错）/ `empirical`（数据或时段变了就错）"
+            " / `simulation`（模型假设变了就错）/ `documentary`（规则文本变了就错）"
+            " / `methodological`（方法本身的判断）。填错会被 `validate` 按类型拒收"
+        )
+        out.append("7. 跑 `python cli/main.py validate --facts` 确认无报错")
+        out.append("8. 跑 `python cli/main.py index` 重新生成本文件")
         out.append("")
 
         return "\n".join(out)

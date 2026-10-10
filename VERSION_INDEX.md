@@ -46,7 +46,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 34 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 54 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 55 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 13 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 25 |
 
@@ -91,8 +91,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
 | `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.1` | `r03` | 2026-10-11 | active | 面向普通读者的策略说明书（人话版）；r03 同步封顶修正 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
-| `memory/facts/FACTS.jsonl` | `1.1` | `r03` | 2026-10-11 | active | 18 条结论（F-0001~F-0018；F-0015 superseded） |
-| `memory/facts/INDEX.md` | `1.1` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成 |
+| `memory/facts/FACTS.jsonl` | `1.2` | `r03` | 2026-10-11 | active | 18 条结论（F-0001~F-0018；F-0015 superseded）；r03 框架迭代回填 claim_type |
+| `memory/facts/INDEX.md` | `1.2` | `r03` | 2026-10-11 | active | 派生物，由 cli index 生成；新增『按证据类型』段 + 表格 claim_type 列 |
 | `memory/journal/round02.md` | `1.0` | `r02` | 2026-10-11 | active | 整理入库轮 |
 | `memory/journal/round03.md` | `1.0` | `r03` | 2026-10-11 | active | 复核轮（含 1 次自我纠错） |
 | `memory/lessons/LESSONS.md` | `1.1` | `r03` | 2026-10-11 | active | L1–L12，只增不删（r03 新增 L10–L12） |
@@ -105,7 +105,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.2` | `r03` | active |  |
-| `README.md` | `1.2` | `r03` | active |  |
+| `README.md` | `1.3` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |
@@ -128,7 +128,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/methodology/MATH_BOUNDARY.md` | `1.0` | `r02` | active |  |
 | `framework/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/ITERATION_PROTOCOL.md` | `1.1` | `r03` | active |  |
-| `framework/protocol/MEMORY_PROTOCOL.md` | `1.0` | `r02` | active |  |
+| `framework/protocol/MEMORY_PROTOCOL.md` | `1.1` | `r03` | active |  |
 | `framework/protocol/README.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/HANDOFF.template.md` | `1.0` | `r02` | active |  |
@@ -158,6 +158,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `tools/inject_version_lines.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tools/render_version_index.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `versions.json` | `1.0` | `r02` | generated |  |
+| `tests/test_claim_type.py` | —（见备注） | `r03` | active | ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -227,13 +228,13 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `protocol` | 3 | B | `framework/protocol/ITERATION_PROTOCOL.md`<br>`framework/protocol/MEMORY_PROTOCOL.md`<br>`framework/protocol/README.md` |
 | `repo_tool` | 3 | B | `tools/build_versions.py`<br>`tools/inject_version_lines.py`<br>`tools/render_version_index.py` |
 | `template` | 3 | B | `framework/protocol/templates/FINDINGS.template.md`<br>`framework/protocol/templates/HANDOFF.template.md`<br>`framework/protocol/templates/TASK_BRIEF.template.md` |
+| `test` | 3 | B | `tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_claim_type.py` |
 | `workbench` | 3 | A | `memory/workbench/HYPOTHESES.md`<br>`memory/workbench/OPEN_QUESTIONS.md`<br>`memory/workbench/TODO.md` |
 | `game_config` | 2 | C | `games/_template/game.yaml`<br>`games/dlt/game.yaml` |
 | `journal` | 2 | A | `memory/journal/round02.md`<br>`memory/journal/round03.md` |
 | `methodology` | 2 | B | `framework/methodology/MATH_BOUNDARY.md`<br>`framework/methodology/STATISTICAL_DISCIPLINE.md` |
 | `raw_data` | 2 | D | `games/dlt/data/raw/dlt_full_2933.csv`<br>`games/dlt/data/raw/dlt_full_2933.jsonl` |
 | `strategy` | 2 | C | `games/_template/strategy/strategy.json`<br>`games/dlt/strategy/strategy.json` |
-| `test` | 2 | B | `tests/test_core.py`<br>`tests/test_cross_scope.py` |
 | `analysis_output` | 1 | D | `games/dlt/strategy/simulation_results.json` |
 | `cli` | 1 | B | `cli/main.py` |
 | `entry_point` | 1 | B | `AI_CONTEXT.md` |
