@@ -1,6 +1,6 @@
 # VERSIONING.md — 版本与兼容策略
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 三个独立版本号
@@ -101,6 +101,7 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 | 2026-10-11 | **`game_config` 次版本 2.0 → 2.1**：`features[]` 新增可选 `scope`（`single` / `cross`，默认 `single`）；新增 5 个跨注原语，注册在**独立**的 `CROSS_PRIMITIVES` 表 | 向后兼容（`scope` 有默认值）。**收紧校验**：`scope` 与原语真实作用域不一致时结构性拒收 |
 | 2026-10-11 | **`strategy.schema.json` 次版本 1.0 → 1.1**：`rules[]` 新增**必填** `scope`（`single` / `cross`） | **破坏性**（存量 `strategy.json` 的每条 rule 必须补 `scope`）。理由见下节 —— 缺这个字段时，消费者无法知道该走哪个执行入口 |
 | 2026-10-11 | **`fact.schema.json` 次版本提升**：新增**必填** `claim_type`（枚举 `analytic` / `empirical` / `simulation` / `documentary` / `methodological`），并在 `allOf` 中按类型施加结构性约束 | **破坏性**（存量 18 条结论全部须回填）。此前"这个数字靠什么立住"只写在 `confidence_basis` 里当**建议**，属文档层约束；现升为结构层约束，填错即拒收 |
+| 2026-10-11 | **`fact.schema.json` 次版本提升**：`evidence` 新增可选 `source_sha256`（`^[0-9a-f]{64}$`） | 向后兼容（允许 null，但 null 时校验给 warning）。**新增检测能力**：source 文件被改而结论未更新时，"结论可能失效"变成可检出的错误 |
 
 > 新增记录请追加到表末，**不要删除历史行**。
 

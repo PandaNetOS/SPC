@@ -302,9 +302,9 @@
       "path": "memory/facts/FACTS.jsonl",
       "level": "A",
       "kind": "fact_ledger",
-      "content_version": "1.2",
+      "content_version": "1.3",
       "iteration": "r03",
-      "note": "18 条结论（F-0001~F-0018；F-0015 superseded）；r03 框架迭代回填 claim_type",
+      "note": "18 条结论；★ 每条锚定 evidence.source_sha256（漂移即报错）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -382,7 +382,7 @@
       "path": "AI_CONTEXT.md",
       "level": "B",
       "kind": "entry_point",
-      "content_version": "1.2",
+      "content_version": "1.3",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -391,7 +391,7 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.3",
+      "content_version": "1.5",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -597,10 +597,11 @@
       "path": "framework/protocol/MEMORY_PROTOCOL.md",
       "level": "B",
       "kind": "protocol",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
       "updated_at": "2026-10-11",
-      "status": "active"
+      "status": "active",
+      "note": "r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定"
     },
     {
       "path": "framework/protocol/README.md",
@@ -705,7 +706,7 @@
       "path": "spec/VERSIONING.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -786,7 +787,7 @@
       "path": "tests/README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.1",
+      "content_version": "1.2",
       "iteration": "r03",
       "updated_at": "2026-10-11",
       "status": "active"
@@ -898,7 +899,7 @@
       "kind": "strategy",
       "version_ref": "schema_version",
       "ref_version": "1.1",
-      "note": "契约版本；1.0 → 1.1（rules[] 新增必填 scope 字段；R-002 的 predicate 改为引用已声明的跨注特征 has_duplicated_structure，从此可真正执行）",
+      "note": "契约版本；1.0 → 1.1（rules[] 新增必填 scope；R-002 的 predicate 改为引用已声明的跨注特征 has_duplicated_structure，从此可真正执行）。provenance.evidence_hash 已实算（9 条被引结论的规范视图 SHA256）",
       "content_version": "1.1",
       "iteration": "r03",
       "status": "active",
@@ -911,7 +912,8 @@
         "F-0009",
         "F-0011",
         "F-0012"
-      ]
+      ],
+      "updated_at": "2026-10-11"
     },
     {
       "path": "pyproject.toml",
@@ -1117,6 +1119,22 @@
       "kind": "test",
       "iteration": "r03",
       "note": "★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/evidence.py",
+      "level": "B",
+      "kind": "library",
+      "iteration": "r03",
+      "note": "★ 证据锚定：sha256_file / fact_anchor / evidence_digest（结论与策略的哈希锚）",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_evidence_anchor.py",
+      "level": "B",
+      "kind": "test",
+      "iteration": "r03",
+      "note": "★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest",
       "status": "active"
     }
   ],

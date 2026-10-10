@@ -5,6 +5,7 @@
 命令：
     validate   校验契约（schema / 红线 / 外键 / 双向取代 / 文件存在性 / 版本一致性）
     index      从 FACTS.jsonl 重生成 memory/facts/INDEX.md
+    rehash     ★ 重算证据锚定哈希（结论 source_sha256 / 策略 evidence_hash）
     versions   ★ 版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
     strategy   重新生成 games/<game>/strategy/strategy.json
     games      列出彩种
@@ -95,6 +96,89 @@ def cmd_index(args) -> int:
     rel = os.path.relpath(path, _ROOT)
     n = len(mem.load_facts())
     print(f"✓ 已从 FACTS.jsonl（{n} 条）重新生成 {rel}")
+    return 0
+
+
+def cmd_rehash(args) -> int:
+    """重算证据锚定哈希。
+
+    **这不是"消掉报警"的按钮。** 哈希漂移意味着结论的担保物变了，
+    正确动作是：① 先确认结论是否仍成立；② 仍成立才重算基线；
+    ③ 不成立就改 status 并写新结论（旧条不得删）。
+    本命令把第 ② 步机械化，避免人手工填哈希（手填会再一次变成无人担保的断言）。
+    """
+    import json
+
+    from smartpickcore.evidence import (
+        evidence_digest,
+        load_facts,
+        sha256_file,
+    )
+
+    facts = load_facts(_ROOT)
+    by_id = {f["id"]: f for f in facts}
+    wanted = set(args.id) or set(by_id)
+    unknown = sorted(wanted - set(by_id))
+    if unknown:
+        print(f"✗ 未知结论 id: {unknown}")
+        return 1
+
+    changed: list[str] = []
+    for fid in sorted(wanted):
+        ft = by_id[fid]
+        src = ft.get("source")
+        abs_src = os.path.join(_ROOT, src)
+        if not os.path.exists(abs_src):
+            print(f"✗ {fid}: source 不存在 {src}")
+            return 1
+        new_h = sha256_file(abs_src)
+        old_h = (ft.get("evidence") or {}).get("source_sha256")
+        if new_h != old_h:
+            changed.append(fid)
+            ft.setdefault("evidence", {})["source_sha256"] = new_h
+        flag = "→ 已更新" if new_h != old_h else "（无变化）"
+        print(f"  {fid}  {new_h[:16]}…  {flag}")
+
+    strategy_changed = False
+    if args.strategy:
+        st_path = os.path.join(_ROOT, "games", args.game, "strategy", "strategy.json")
+        if not os.path.exists(st_path):
+            print(f"✗ strategy.json 不存在: {st_path}")
+            return 1
+        with open(st_path, encoding="utf-8") as f:
+            st = json.load(f)
+        used: set[str] = set()
+        for r in st.get("rules", []):
+            used.update(r.get("evidence_refs") or [])
+        for a in st.get("avoid_list", []):
+            used.update(a.get("refuted_by") or [])
+        new_d = evidence_digest(facts, sorted(used))
+        old_d = (st.get("provenance") or {}).get("evidence_hash")
+        if new_d != old_d:
+            strategy_changed = True
+            st.setdefault("provenance", {})["evidence_hash"] = new_d
+        print(f"  strategy  {new_d[:16]}…  "
+              f"{'→ 已更新' if new_d != old_d else '（无变化）'}")
+
+    if args.dry_run:
+        print("\n（dry-run，未写盘）")
+        return 0
+
+    if not changed and not strategy_changed:
+        print("\n✓ 全部已是最新基线，无需写盘")
+        return 0
+
+    if changed:
+        p = os.path.join(_ROOT, "memory", "facts", "FACTS.jsonl")
+        with open(p, "w", encoding="utf-8", newline="\n") as f:
+            for ft in facts:
+                f.write(json.dumps(ft, ensure_ascii=False) + "\n")
+        print(f"\n✓ 已写 FACTS.jsonl（重基线 {len(changed)} 条：{', '.join(changed)}）")
+    if strategy_changed:
+        with open(st_path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps(st, ensure_ascii=False, indent=2) + "\n")
+        print("✓ 已写 strategy.json（evidence_hash 重算）")
+    print("\n⚠ 重基线前请确认：被改动的证据是否仍支持原结论？")
     return 0
 
 
@@ -521,6 +605,17 @@ def build_parser() -> argparse.ArgumentParser:
     # index
     sp = sub.add_parser("index", help="从 FACTS.jsonl 重生成 INDEX.md")
     sp.set_defaults(func=cmd_index)
+
+    # rehash —— 证据锚定的重基线通道
+    sp = sub.add_parser("rehash", help="重算证据锚定哈希（改完结论或 source 后重新基线）")
+    sp.add_argument("--id", metavar="F-XXXX", action="append", default=[],
+                    help="只重算指定结论（可多次给）；不给则全部")
+    sp.add_argument("--strategy", action="store_true",
+                    help="重算 strategy.json 的 provenance.evidence_hash")
+    sp.add_argument("--game", metavar="ID", default="dlt",
+                    help="配合 --strategy 指定彩种（默认 dlt）")
+    sp.add_argument("--dry-run", action="store_true", help="只打印，不写盘")
+    sp.set_defaults(func=cmd_rehash)
 
     # versions
     sp = sub.add_parser("versions", help="版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）")

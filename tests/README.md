@@ -1,6 +1,6 @@
 # tests/ — 测试
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 现状
@@ -9,12 +9,16 @@
 |---|---|---|
 | `test_core.py` | **113**（全绿） | 红线 / 原语 / Ticket / DSL / 作用域 / 数学 / 端到端 / 声明静态检查 |
 | `test_cross_scope.py` | **62**（全绿） | ★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描 |
+| `test_claim_type.py` | **43**（全绿） | ★ 证据类型：五类约束**真的会拦** / schema 与 Python 双通道一致 / 分类自洽 |
+| `test_evidence_anchor.py` | **32**（全绿） | ★ 证据锚定：漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等 |
 
 无需 pytest、无需任何第三方测试框架 —— 直接用 Python 跑：
 
 ```bash
 python tests/test_core.py
 python tests/test_cross_scope.py
+python tests/test_claim_type.py
+python tests/test_evidence_anchor.py
 ```
 
 退出码 0 = 全绿。失败项会在末尾单独列出（`✗` 打头 + 汇总表）。
@@ -90,7 +94,13 @@ python tests/test_core.py
 # 跨注层测试（62 项）
 python tests/test_cross_scope.py
 
-# 契约校验（46 项，含 SHA256 一致性与红线恒值）
+# 证据类型测试（43 项）
+python tests/test_claim_type.py
+
+# 证据锚定测试（32 项）
+python tests/test_evidence_anchor.py
+
+# 契约校验（48 项，含 SHA256 一致性 / 证据锚定漂移 / 红线恒值）
 python cli/main.py validate --all -v
 ```
 

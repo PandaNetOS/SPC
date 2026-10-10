@@ -123,6 +123,11 @@
         "script": {
           "type": ["string", "null"],
           "description": "可复现脚本的相对路径。无法复现的结论不得标 established。"
+        },
+        "source_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "★ 本条结论 `source` 文件在锚定时刻的 SHA256（小写 64 位十六进制）。路径还在 ≠ 内容没变：若这个文件被改，结论里那串数字就失去了担保。`validate --facts` 会实算比对，不符即报错。为 null 时校验只给 warning（未锚定），但**不得长期为 null** —— 重算方式见 `python cli/main.py rehash`。"
         }
       }
     },

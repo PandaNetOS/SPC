@@ -301,9 +301,50 @@ def check_claim_type(ft: dict, fid: str, rep: ValidationReport) -> None:
             )
 
 
+def check_source_anchor(ft: dict, fid: str, src: str | None, ev: dict,
+                         root: str, rep: ValidationReport) -> None:
+    """★ 证据锚定：实算 `source` 的 SHA256 与锚定值比对。
+
+    只锚 `source`，不锚 `evidence.script`：
+    脚本会被正常重构（改名、加注释、换库），把脚本哈希当基线
+    会制造持续的误报 —— **会误报的检查比没有检查更坏**。
+    而 `source` 是结论数字的出处，它变了就意味着"这条结论的担保物变了"。
+    """
+    declared = ev.get("source_sha256")
+    if declared is None:
+        rep.warn(
+            f"FACT {fid}: 未锚定 evidence.source_sha256 —— "
+            f"`{src}` 若被修改无法检出，结论可能已失效。"
+            f"重算：python cli/main.py rehash --id {fid}"
+        )
+        return
+
+    if not src or not os.path.exists(os.path.join(root, src)):
+        # 缺失已由上面的 source 存在性检查报错，这里不重复报
+        return
+
+    try:
+        from .evidence import sha256_file
+        got = sha256_file(os.path.join(root, src))
+    except OSError as e:
+        rep.err(f"FACT {fid}: 无法读取 source 计算哈希: {e}")
+        return
+
+    if got != declared:
+        rep.err(
+            f"FACT {fid}: 证据文件已变更 —— 结论可能失效\n"
+            f"      source  = {src}\n"
+            f"      锚定值  = {declared}\n"
+            f"      实际值  = {got}\n"
+            f"      处理：① 确认结论是否仍成立；② 仍成立则重算基线 "
+            f"`python cli/main.py rehash --id {fid}`；"
+            f"③ 不成立则改 status 并写新结论（旧条不得删）"
+        )
+
+
 def validate_facts(repo_root: str | None = None,
                    rep: ValidationReport | None = None) -> ValidationReport:
-    """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats + claim_type。"""
+    """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats + claim_type + 证据锚定。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
     facts_path = os.path.join(root, "memory", "facts", "FACTS.jsonl")
@@ -356,6 +397,10 @@ def validate_facts(repo_root: str | None = None,
         scr = ev.get("script")
         if scr and not os.path.exists(os.path.join(root, scr)):
             rep.err(f"FACT {fid}: evidence.script 不存在: {scr}")
+
+        # ★ 证据锚定：source 内容漂移检测
+        #   路径还在 ≠ 内容没变。若 source 被改，结论里那串数字就失去了担保。
+        check_source_anchor(ft, fid, src, ev, root, rep)
 
         # caveats 非空（本仓库约定）
         if not ft.get("caveats"):
@@ -499,6 +544,40 @@ def validate_strategy(game: str, repo_root: str | None = None,
             f"strategy[{game}]: evidence_index 未覆盖被引用的结论 {sorted(missing)}"
             f"（消费者需回读 FACTS.jsonl 才能获得摘要）"
         )
+
+    # ★ 证据摘要锚定：策略引用的结论若被改动（数字 / 状态 / 口径 / 减损项），
+    #   provenance.evidence_hash 必然变化 —— 让"策略与证据脱节"变成可检出的错误，
+    #   而不是靠人记得回来复查。
+    prov = st.get("provenance") or {}
+    declared_hash = prov.get("evidence_hash")
+    if declared_hash is None:
+        rep.warn(
+            f"strategy[{game}]: provenance.evidence_hash 为 null —— "
+            f"被引用的结论若被修改无法检出，策略可能建立在旧结论上。"
+            f"重算：`python cli/main.py rehash --strategy`"
+        )
+    else:
+        try:
+            from .evidence import evidence_digest, load_facts
+            got_hash = evidence_digest(load_facts(root), sorted(used))
+        except Exception as e:  # noqa: BLE001
+            rep.err(f"strategy[{game}]: 计算证据摘要失败: {e}")
+        else:
+            if got_hash != declared_hash:
+                rep.err(
+                    f"strategy[{game}]: 证据摘要不符 —— 策略引用的结论已变更，"
+                    f"本策略可能建立在旧结论上\n"
+                    f"      锚定值  = {declared_hash}\n"
+                    f"      实际值  = {got_hash}\n"
+                    f"      处理：① 复核被引用的结论变更了什么；"
+                    f"② 仍适用则重算基线 `python cli/main.py rehash --strategy`；"
+                    f"③ 不适用则改规则并更新 evidence_refs"
+                )
+            else:
+                rep.ok(
+                    f"strategy[{game}]: 证据摘要一致 "
+                    f"（{len(used)} 条被引结论，{declared_hash[:16]}…）"
+                )
 
     # machine_rule 的 predicate 引用完整性 + 作用域
     # 这是「规则可被执行」的关键检查：

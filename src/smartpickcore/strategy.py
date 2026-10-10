@@ -245,4 +245,13 @@ def build_strategy(game: str, repo_root: str | None = None,
         prov["iteration"] = iteration
     prov["generator"] = generator or prov.get("generator")
 
+    # ★ 证据摘要锚定：把策略绑在它引用的那一份结论上。
+    #   被引用结论的数字 / 状态 / 口径 / 减损项一变，这个哈希就变，
+    #   于是"策略与证据脱节"能被检出，而不是靠人记得回来复查。
+    try:
+        from .evidence import evidence_digest
+        prov["evidence_hash"] = evidence_digest(list(facts.values()), sorted(used))
+    except Exception:  # noqa: BLE001 —— 算不出哈希不该让策略生成失败
+        prov["evidence_hash"] = None
+
     return st

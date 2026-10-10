@@ -1,6 +1,6 @@
 # AI_CONTEXT.md — 单一入口
 
-> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **如果你是一个 AI（或人），要在这个仓库里做分析 —— 从本文件开始，读完本文件再动手。**
@@ -251,6 +251,27 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 而 F-0004 的 121% 与 F-0017 的 41.4% 的差距恰恰来自**假设**，不是数据。
 
 > 详见 `framework/protocol/MEMORY_PROTOCOL.md` §1.7。
+
+### ★ 证据锚定：改了证据文件要能被发现
+
+结论只存 `source` 路径是不够的 —— **路径还在 ≠ 内容没变**。
+
+| 锚 | 位置 | 漂移时的含义 |
+|---|---|---|
+| `evidence.source_sha256` | 每条结论 | 证据文件被改 → 结论可能失效（`validate` 报 **error**） |
+| `provenance.evidence_hash` | `strategy.json` | 被引结论被改 → 策略可能建立在旧结论上（报 **error**） |
+
+摘要只取结论的**规范视图**（`claim` / `status` / `confidence` / `claim_type` /
+`superseded_by` / `evidence.effect` / `caveats`），
+**不含** `tags` / `updated_at` —— 无关编辑不该触发报警
+（**会误报的检查比没有检查更坏**）。
+
+**漂移了怎么办**（顺序不能反）：
+① 确认结论是否仍成立 → ② 仍成立则 `python cli/main.py rehash --id F-xxxx`
+（策略侧加 `--strategy`）重算基线 → ③ 不成立则改 status 并写新结论，旧条不得删。
+
+> `rehash` 不是"消掉报警"的按钮，它只是把"重算基线"机械化，
+> 避免手填哈希 —— 手填就又变成一次无人担保的断言。
 
 ---
 
