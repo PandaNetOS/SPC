@@ -1,5 +1,8 @@
 # FINDINGS.md — round02 · v4 素材结构化入库
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 | 项 | 内容 |
 |---|---|
 | **轮次** | `round02` |
@@ -157,7 +160,7 @@
 python --version                                  # 3.13.x
 pip install pyyaml jsonschema                     # 本轮新增依赖
 
-# 结构校验（28 项，含 SHA256 与红线恒值）
+# 结构校验（28 项，含 SHA256 与红线恒值；r03 后扩展为 40 项）
 python cli/main.py validate --all -v
 
 # 从 FACTS.jsonl 重生成索引

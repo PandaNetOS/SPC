@@ -1,5 +1,8 @@
 # smartpickcore
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > PandaNetOS 智能选号核心（Smart Pick Core）
 
 **通用的彩票投注策略研究框架** —— 带自我迭代能力，并把研究结论输出成
@@ -39,8 +42,11 @@ pip install pyyaml jsonschema numpy pandas
 # 仓库概览
 python cli/main.py info
 
-# 全量校验（28 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算）
+# 全量校验（40 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算 / 版本一致性）
 python cli/main.py validate --all -v
+
+# 版本一致性（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
+python cli/main.py versions --summary
 
 # 列彩种、列结论、看某条结论的减损项
 python cli/main.py games
@@ -58,7 +64,9 @@ python cli/main.py new-game <game_id>
 
 ```
 AI_CONTEXT.md          ← 单一入口。AI 与人都从这里进
-spec/                  ← 契约层：4 份 JSON Schema + 版本规则 + 四条红线
+VERSION_INDEX.md       ← 版本总索引（派生物，AI 先读这里）
+versions.json          ← 版本权威源（所有版本字段的唯一事实来源）
+spec/                  ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
 framework/
   readme.md            ← 框架层说明（框架/彩种分离判定标准）
   INDEX.md             ← 按需求找文件
@@ -77,9 +85,10 @@ games/
   dlt/                 ← 超级大乐透（数据 + 轮次 + 策略）
   INDEX.md             ← 彩种索引
 src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api）
-cli/main.py            ← 命令行入口（12 个命令）
-docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY
-tests/                 ← test_core.py（92 项，无需 pytest）
+cli/main.py            ← 命令行入口（13 个命令）
+tools/                 ← 版本索引生成/注入脚本（build / render / inject）
+docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY / VERSIONING_DOCS
+tests/                 ← test_core.py（105 项，无需 pytest）
 ```
 
 详见 `docs/ARCHITECTURE.md`。
@@ -132,7 +141,8 @@ python cli/main.py new-game <game_id>
 
 | 项 | 状态 |
 |---|---|
-| 契约层 | ✅ 4 schema + VERSIONING（含 config 2.0 迁移指南） |
+| 契约层 | ✅ 5 schema + VERSIONING（含 config 2.0 迁移指南） |
+| 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 6 模块 / 21 原语**（Ticket / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器） |
 | 记忆层 | ✅ 15 条结论 / L1–L9 / 8 开放问题 / 5 假设 / 42 待办 |

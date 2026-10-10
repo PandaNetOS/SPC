@@ -1,11 +1,19 @@
 # AI_CONTEXT.md — 单一入口
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **如果你是一个 AI（或人），要在这个仓库里做分析 —— 从本文件开始，读完本文件再动手。**
 >
 > 本文件约 10 分钟可读完。读完你能知道：这个仓库是干什么的、东西在哪、
 > 三条不能违反的红线、以及**动手前必须知道的方法论纪律**。
 >
-> 最后更新：2026-10-10 | 当前轮次：`round02`（已交付）| 下一轮：`round03`（待启动）
+> 最后更新：2026-10-11 | 当前轮次：`round02`（已交付）| 下一轮：`round03`（待启动）
+>
+> **★ 版本意识**：本仓库有五个版本号并存（`schema_version` / `config_version` /
+> `data_version` / **`content_version`** / **`framework_version`**）。
+> **引用任何内容前，先确认它的版本** → 读 [`VERSION_INDEX.md`](VERSION_INDEX.md)。
+> 规则见 `docs/VERSIONING_DOCS.md`。
 
 ---
 
@@ -50,9 +58,12 @@
 ```
 smartpickcore/
 ├── AI_CONTEXT.md          ← 你在这里（单一入口）
+├── VERSION_INDEX.md       ★ 版本索引（先读 §0，知道「我读的是哪一版」）
+├── versions.json             版本索引的机器可读镜像
 ├── README.md                  仓库总览（给人看）
-├── spec/                  ★ 契约层：4 个 JSON Schema + VERSIONING.md
-├── framework/             框架层（彩种无关）
+├── spec/                  ★ 契约层：5 个 JSON Schema + VERSIONING.md
+│   └── version_index.schema.json   版本索引的契约
+├── framework/             框架层（彩种无关）｜ framework_version = 1.0
 │   ├── protocol/          迭代协议、记忆协议 ★ 动手前必读
 │   ├── methodology/       方法论（数学底线、统计纪律）
 │   ├── tools/             通用工具（记忆读写库）
@@ -72,16 +83,17 @@ smartpickcore/
 ├── games/                 彩种层（插件）
 │   ├── _template/         新彩种模板
 │   └── dlt/               超级大乐透（当前唯一实现的彩种）
-│       ├── game.yaml      彩种声明式配置
+│       ├── game.yaml      彩种声明式配置（config_version 2.0）
 │       ├── rules_history.md   规则变更史（决定奖金类分析口径）
 │       ├── data/          raw/（原始，不可变）+ derived/ + tools/ + build_scripts/
 │       ├── iterations/    round01/ round02/ round03/
 │       └── strategy/      strategy.json（对外输出）+ 模拟脚本与结果
 ├── src/smartpickcore/     库代码（api / memory / strategy / validate）
-├── cli/main.py            命令行入口（12 个命令）
+├── cli/main.py            命令行入口（13 个命令）
+├── tools/                 仓库维护脚本（版本索引生成器）
 ├── tests/                 test_core.py（92 项，无需 pytest）
 └── docs/                  ARCHITECTURE.md / CONSUMING.md / ITERATION_GUIDE.md
-                           PROPOSAL_SINGLE_TICKET_CORE.md（已落地）
+                           VERSIONING_DOCS.md（★ 文档版本规则）
 ```
 
 ---
@@ -226,25 +238,31 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 ```
 【开始一轮】
 1. 读本文件（AI_CONTEXT.md）
-2. 读 memory/lessons/LESSONS.md               ← ★ 最重要的一步
-3. 读 games/<game>/iterations/roundNN/TASK_BRIEF.md   ← 这轮要做什么
-4. 读 memory/facts/INDEX.md                   ← 已有结论速览
-5. 读 memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md ← 从哪继续
-6. 需要精确数字时读 memory/facts/FACTS.jsonl（注意 caveats）
+2. 读 VERSION_INDEX.md §0 + §2-A               ← ★ 先知道「我读的是哪一版」
+3. 读 memory/lessons/LESSONS.md               ← ★ 最重要的一步
+4. 读 games/<game>/iterations/roundNN/TASK_BRIEF.md   ← 这轮要做什么
+5. 读 memory/facts/INDEX.md                   ← 已有结论速览
+6. 读 memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md ← 从哪继续
+7. 需要精确数字时读 memory/facts/FACTS.jsonl（注意 caveats）
 
 【做分析】
-7. 严格套用 LESSONS 的检测方法；每个结论写可复现脚本
-8. 遵守 games/<game>/game.yaml 的字段口径与数据警告
+8. 严格套用 LESSONS 的检测方法；每个结论写可复现脚本
+9. 遵守 games/<game>/game.yaml 的字段口径与数据警告
 
 【结束一轮】
-9. 新结论 → 追加 FACTS.jsonl（含 caveats 与真实存在的 source）
-10. 新教训 → 追加 LESSONS.md（含检测方法）
-11. 新问题 → 更新 workbench/（**caveats 条条变问题**）
-12. 写 iterations/roundNN/HANDOFF.md
-13. 生成下一轮 TASK_BRIEF.md（否则这条链就断了）
-14. 写 journal/roundNN.md
-15. 跑 python cli/main.py validate --all
+10. 新结论 → 追加 FACTS.jsonl（含 caveats 与真实存在的 source）
+11. 新教训 → 追加 LESSONS.md（含检测方法）
+12. 新问题 → 更新 workbench/（**caveats 条条变问题**）
+13. 写 iterations/roundNN/HANDOFF.md
+14. 生成下一轮 TASK_BRIEF.md（否则这条链就断了）
+15. 写 journal/roundNN.md
+16. **升版本** ← ★ 改了哪些内容就升哪些文件的 content_version，
+    并在 VERSION_INDEX 里留一行演化记录
+17. 跑 python cli/main.py versions      ← 版本一致性
+18. 跑 python cli/main.py validate --all
 ```
+
+**第 16 步是本次新增的**。**改了内容不升版本 = 索引记录的是错的，比没有索引更坏。**
 
 详细协议见 `framework/protocol/ITERATION_PROTOCOL.md` 与 `MEMORY_PROTOCOL.md`。
 
@@ -253,8 +271,15 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 ## 8. 校验与命令
 
 ```bash
-# 全量校验（schema + 外键 + 红线恒值 + 双向取代 + features 声明可执行性 + predicate 作用域）
+# 全量校验（schema + 外键 + 红线恒值 + 双向取代 + features 声明可执行性
+#           + predicate 作用域 + ★ 版本一致性）
 python cli/main.py validate --all -v
+
+# ★ 版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
+python cli/main.py versions
+
+# ★ 重生版本索引（改完 versions.json 后）
+python tools/render_version_index.py --write
 
 # 只校验结论台账
 python cli/main.py validate --facts

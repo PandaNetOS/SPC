@@ -1,5 +1,8 @@
 # CONSUMING —— 其他工具如何消费本仓库的输出
 
+> **版本**：`1.1` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 本仓库对外的**唯一稳定契约**是 `games/<id>/strategy/strategy.json`。
 其他工具（选号器、App、机器人、插件）只读这一个文件，不读本仓库其他任何内容。
 

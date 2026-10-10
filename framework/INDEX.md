@@ -1,5 +1,8 @@
 # INDEX.md — 框架层索引
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > 本文件是 `framework/` 的导航。**AI 读这一页就能知道该读哪个文件。**
 
 ## 按需求找文件

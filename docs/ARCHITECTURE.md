@@ -1,5 +1,8 @@
 # ARCHITECTURE —— 仓库架构
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 ## 一句话
 
 **框架是骨架与协议，彩种是数据与插件。** 新增彩种 = 加一个 `games/<id>/` 目录，不改一行框架代码。
@@ -67,7 +70,7 @@ memory/ ←── 由 games/ 的轮次产出写入
 
 ### 1. 契约优先（schema-first）
 
-先有 `spec/*.schema.json`，后有内容。四份契约：
+先有 `spec/*.schema.json`，后有内容。五份契约：
 
 | 契约 | 约束对象 | 关键红线 |
 |---|---|---|
@@ -75,6 +78,7 @@ memory/ ←── 由 games/ 的轮次产出写入
 | `strategy.schema.json` | 对外策略输出 | `boundary.optimizable_target` 枚举里**没有** `win_probability`；`predicate` 受限 DSL |
 | `game_config.schema.json` | 彩种配置 | `epochs[].sum_affects_numbers` 恒 false |
 | `iteration.schema.json` | 轮次登记 | `upstream_fact_ids` 形成演化链 |
+| `version_index.schema.json` | 版本索引 | `levels` 必须 A/B/C/D 齐全；`content_version` / `iteration` 格式 |
 
 红线的实现方式不是"文档里写不要"，而是 **schema 里的 `const` / 枚举 / `pattern`**——
 写错的值**根本存不进去**。结构性拒收，不靠自觉。

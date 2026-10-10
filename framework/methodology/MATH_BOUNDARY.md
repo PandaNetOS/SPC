@@ -1,5 +1,8 @@
 # MATH_BOUNDARY.md — 数学边界
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **本文件定义"选号策略能影响什么、不能影响什么"。**
 > 它是彩种无关的推导框架；具体数值由 `games/<id>/game.yaml` 的 `machine` 段提供。
 >

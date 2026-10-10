@@ -1,0 +1,959 @@
+{
+  "index_version": "1.0",
+  "repo": "PandaNetOS/smartpickcore",
+  "generated_at": "2026-10-11",
+  "current_iteration": "r03",
+  "framework_version": "1.0",
+  "levels": {
+    "A": {
+      "name": "结论性内容",
+      "versioned": true,
+      "field": "content_version",
+      "reason": "随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。"
+    },
+    "B": {
+      "name": "结构性文档 / 框架与库代码",
+      "versioned": true,
+      "field": "content_version",
+      "reason": "随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。"
+    },
+    "C": {
+      "name": "机器契约",
+      "versioned": false,
+      "field": null,
+      "reason": "已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。"
+    },
+    "D": {
+      "name": "纯数据 / 分析脚本",
+      "versioned": false,
+      "field": null,
+      "reason": "raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。"
+    }
+  },
+  "entries": [
+    {
+      "path": "games/dlt/iterations/round02/FINDINGS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "整理入库轮发现",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/HANDOFF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "r02→r03 交接",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "已交付",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/known_errors.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "E1~E9 避坑手册",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/README.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "归档，设使用门槛",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "archived",
+      "note": "历史归档，设使用门槛（防锚定）"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "archived",
+      "note": "历史归档，设使用门槛（防锚定）"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "archived",
+      "note": "历史归档，设使用门槛（防锚定）"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "archived",
+      "note": "历史归档，设使用门槛（防锚定）"
+    },
+    {
+      "path": "games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "archived",
+      "note": "历史归档，设使用门槛（防锚定）"
+    },
+    {
+      "path": "games/dlt/iterations/round03/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r03",
+      "note": "planned",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/rules_history.md",
+      "level": "A",
+      "kind": "rules_history",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "E0~E6 共 7 段",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/INDEX.md",
+      "level": "A",
+      "kind": "index",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "记忆层说明",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/facts/FACTS.jsonl",
+      "level": "A",
+      "kind": "fact_ledger",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "15 条结论（F-0001~F-0015）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/facts/INDEX.md",
+      "level": "A",
+      "kind": "fact_index",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "派生物，由 cli index 生成",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/journal/round02.md",
+      "level": "A",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "整理入库轮",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/lessons/LESSONS.md",
+      "level": "A",
+      "kind": "lesson_library",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "L1–L9，只增不删",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/workbench/HYPOTHESES.md",
+      "level": "A",
+      "kind": "workbench",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "H-001~H-005",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "level": "A",
+      "kind": "workbench",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "Q-001~Q-008；Q-009 待补",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "level": "A",
+      "kind": "workbench",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "note": "16 项未完成",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "level": "B",
+      "kind": "entry_point",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "VERSION_INDEX.md",
+      "level": "B",
+      "kind": "version_index_doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "note": "版本索引（人读），权威源是 versions.json"
+    },
+    {
+      "path": "cli/main.py",
+      "level": "B",
+      "kind": "cli",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/CONSUMING.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.1",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/ITERATION_GUIDE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/METHODOLOGY.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/PROPOSAL_SINGLE_TICKET_CORE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/VERSIONING_DOCS.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/INDEX.md",
+      "level": "B",
+      "kind": "index",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/__init__.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/evaluate.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/features.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/game_util.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/generate.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/judge.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/ticket.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/methodology/MATH_BOUNDARY.md",
+      "level": "B",
+      "kind": "methodology",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/methodology/STATISTICAL_DISCIPLINE.md",
+      "level": "B",
+      "kind": "methodology",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/ITERATION_PROTOCOL.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/MEMORY_PROTOCOL.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/README.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/FINDINGS.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/HANDOFF.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/TASK_BRIEF.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/tools/memory.py",
+      "level": "B",
+      "kind": "framework_tool",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "games/INDEX.md",
+      "level": "B",
+      "kind": "index",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/build_scripts/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/derived/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/raw/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/tools/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/iterations/round01/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "spec/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "spec/VERSIONING.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "src/__init__.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/__init__.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/api.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/game.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/memory.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/strategy.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/validate.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "src/smartpickcore/versions.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "tests/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_core.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "tools/build_versions.py",
+      "level": "B",
+      "kind": "repo_tool",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "tools/inject_version_lines.py",
+      "level": "B",
+      "kind": "repo_tool",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "tools/render_version_index.py",
+      "level": "B",
+      "kind": "repo_tool",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "versions.json",
+      "level": "B",
+      "kind": "version_index",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "generated"
+    },
+    {
+      "path": "games/_template/game.yaml",
+      "level": "C",
+      "kind": "game_config",
+      "version_ref": "config_version",
+      "ref_version": "2.0",
+      "note": "2026-10-11 与 dlt 同步升至 2.0（features 原语化）",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/strategy/strategy.json",
+      "level": "C",
+      "kind": "strategy",
+      "version_ref": "config_version",
+      "ref_version": "2.0",
+      "note": "模板策略，2026-10-11 随 game.yaml 同步至 2.0",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/game.yaml",
+      "level": "C",
+      "kind": "game_config",
+      "version_ref": "config_version",
+      "ref_version": "2.0",
+      "note": "★ 2026-10-11 由 1.0 升 2.0（features 原语化）",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round02/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "version_ref": "inputs.data_version",
+      "ref_version": "dlt_full_2933",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "version_ref": "inputs.data_version",
+      "ref_version": "dlt_full_2933",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/strategy/strategy.json",
+      "level": "C",
+      "kind": "strategy",
+      "version_ref": "schema_version",
+      "ref_version": "1.0",
+      "note": "契约版本；内容版本见 content_version",
+      "status": "active"
+    },
+    {
+      "path": "pyproject.toml",
+      "level": "C",
+      "kind": "package_manifest",
+      "version_ref": "project.version",
+      "ref_version": "0.1.0",
+      "note": "包版本",
+      "status": "active"
+    },
+    {
+      "path": "spec/fact.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 fact.schema_version",
+      "status": "active"
+    },
+    {
+      "path": "spec/game_config.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 game_config.config_version",
+      "status": "active"
+    },
+    {
+      "path": "spec/iteration.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 iteration 结构",
+      "status": "active"
+    },
+    {
+      "path": "spec/strategy.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 strategy.schema_version",
+      "status": "active"
+    },
+    {
+      "path": "spec/version_index.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 versions.index_version",
+      "status": "active"
+    },
+    {
+      "path": ".gitignore",
+      "level": "D",
+      "kind": "meta",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/build_derived_v4.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/hash_and_list.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/validate_package_v4.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/01_yearly_stats.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/02_front_number_frequency.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/03_back_number_frequency.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/04_structure_distribution_exact.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/05_back_combo_66.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/06_acf_lag1to60.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/07_data_quality_report.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/08_rules_epoch_summary.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/raw/dlt_full_2933.csv",
+      "level": "D",
+      "kind": "raw_data",
+      "sha256": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
+      "note": "SHA256 为准，不做内容版本",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/raw/dlt_full_2933.jsonl",
+      "level": "D",
+      "kind": "raw_data",
+      "sha256": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d",
+      "note": "SHA256 为准，不做内容版本",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/_load.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/acf_permutation_test.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/changepoint_refine.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/changepoint_scan.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/consecutive_exact_check.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/exact_tests.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/overdispersion_and_hac.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/validate_data.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/manifest_v4_source.json",
+      "level": "D",
+      "kind": "source_manifest",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/strategy/simulation_results.json",
+      "level": "D",
+      "kind": "analysis_output",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/strategy/strategy_simulation.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    }
+  ],
+  "history": [
+    {
+      "version": "1.0",
+      "date": "2026-10-11",
+      "scope": "全仓库",
+      "change": "建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 110 个文件。"
+    },
+    {
+      "version": "1.0",
+      "date": "2026-10-10",
+      "scope": "framework/",
+      "change": "单注层通用架构落地（framework/core/ 6 模块 / 21 原语），记为 framework_version 1.0。"
+    }
+  ]
+}

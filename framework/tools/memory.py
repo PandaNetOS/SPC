@@ -320,6 +320,28 @@ class Memory:
 
     # -------------------------------------------------- INDEX 生成
 
+    def _facts_content_version(self) -> str:
+        """从 versions.json 读 FACTS.jsonl 的 content_version（兜底 1.0）。"""
+        p = os.path.join(self.root, "versions.json")
+        try:
+            with open(p, encoding="utf-8") as f:
+                d = json.load(f)
+            for e in d.get("entries") or []:
+                if e.get("path") == "memory/facts/FACTS.jsonl":
+                    return e.get("content_version") or "1.0"
+        except (OSError, json.JSONDecodeError):
+            pass
+        return "1.0"
+
+    def _current_iteration(self) -> str:
+        p = os.path.join(self.root, "versions.json")
+        try:
+            with open(p, encoding="utf-8") as f:
+                d = json.load(f)
+            return d.get("current_iteration") or "r02"
+        except (OSError, json.JSONDecodeError):
+            return "r02"
+
     def render_index(self) -> str:
         """从 FACTS.jsonl 生成 INDEX.md 内容（不写盘）。"""
         facts = self.load_facts(reload=True)
@@ -335,6 +357,11 @@ class Memory:
         out.append("")
         out.append("> **本文件由 `cli/main.py index` 从 `FACTS.jsonl` 自动生成。请勿手工编辑。**")
         out.append("> 权威源是 `FACTS.jsonl`（每行一条，受 `spec/fact.schema.json` 约束）。")
+        out.append("")
+        ver = self._facts_content_version()
+        it = self._current_iteration()
+        out.append(f"> **版本**：`{ver}` ｜ 轮次 `{it}` ｜ 权威源 `VERSION_INDEX.md`")
+        out.append("> 版本规则见 `docs/VERSIONING_DOCS.md`")
         out.append("")
         stat = " / ".join(f"{v} {k}" for k, v in sorted(by_status.items()))
         out.append(f"**当前状态**：{n} 条结论 | {stat} | 生成日期 {self._today()}")

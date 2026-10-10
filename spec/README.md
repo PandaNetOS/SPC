@@ -1,5 +1,8 @@
 # spec/ — 契约层
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 本目录是仓库的**稳定接口**。框架代码、AI 协议、外部消费者都必须遵守这里定义的结构。
 
 ## 为什么先有契约
@@ -21,8 +24,9 @@
 | `strategy.schema.json` | 对外输出的彩种策略规则集 | **所有外部工具** |
 | `game_config.schema.json` | 彩种声明式配置（`games/<id>/game.yaml`） | 框架核心 |
 | `iteration.schema.json` | 一轮迭代的元数据（`iterations/roundNN/manifest.json`） | AI 协议、自我迭代 |
+| `version_index.schema.json` | 版本总索引（`versions.json`） | 版本校验、AI 读取版本 |
 
-版本规则见 `VERSIONING.md`。
+版本规则见 `VERSIONING.md`；文档与内容的版本分级见 `../docs/VERSIONING_DOCS.md`。
 
 ## 三条不可违反的红线
 

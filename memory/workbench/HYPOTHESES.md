@@ -1,5 +1,8 @@
 # HYPOTHESES.md — 待验证假设池（工作记忆）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **性质**：这里放**已成形但证据不足**的假设 —— 比 `OPEN_QUESTIONS.md` 的问题
 > 更具体（有明确的方向性猜测），但还没到能写成 `F-xxxx` 的程度。
 >

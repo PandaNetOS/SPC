@@ -1,5 +1,8 @@
 # framework/protocol/ — 协议层
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > 本目录定义**"在这个仓库里怎么做研究"**。它是彩种无关的 —— 换任何彩种都适用。
 
 ## 文件

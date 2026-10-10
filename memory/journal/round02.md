@@ -1,5 +1,8 @@
 # round02.md — 迭代日志（round02：v4 素材结构化入库）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 | 项 | 内容 |
 |---|---|
 | **轮次** | `round02` |
@@ -37,7 +40,7 @@
 ### 2.1 建立结构
 
 ```
-spec/          4 个 JSON Schema + VERSIONING.md   ← 契约层（稳定接口）
+spec/          5 个 JSON Schema + VERSIONING.md   ← 契约层（稳定接口）
 framework/     protocol/ methodology/ tools/ core/ ← 框架层（彩种无关）
 memory/        facts/ journal/ lessons/ workbench/ ← 记忆层（本仓库的核心差异）
 games/dlt/     game.yaml data/ iterations/ strategy/ ← 彩种层（插件）

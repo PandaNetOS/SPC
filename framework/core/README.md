@@ -1,5 +1,8 @@
 # framework/core/ — 框架核心（已实现）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **本目录存放彩种无关的计算核心。** 它从 `games/<id>/game.yaml` 读取参数，
 > 不硬编码任何具体彩种的数值。
 >

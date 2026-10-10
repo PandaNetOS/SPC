@@ -1,5 +1,8 @@
 # TASK_BRIEF.md — roundNN 任务书（模板）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **使用方式**：复制本文件到 `games/<game>/iterations/roundNN/TASK_BRIEF.md`，删掉本行与下节提示，填入内容。
 >
 > **写法要求**：

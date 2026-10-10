@@ -1,5 +1,8 @@
 # 03_findings — 历史分析产出（归档）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > ## ⚠️ 使用前必读
 >
 > **本目录的内容不是 ground truth，且包含已知错误。**

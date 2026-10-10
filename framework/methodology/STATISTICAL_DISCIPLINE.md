@@ -1,5 +1,8 @@
 # STATISTICAL_DISCIPLINE.md — 统计纪律
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **本文件是"动手前的检查清单"。**
 > `memory/lessons/LESSONS.md` 记录**具体的历史错误**；
 > 本文件把那些错误抽象成**可执行的检查流程**。

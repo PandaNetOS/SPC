@@ -1,5 +1,8 @@
 # ITERATION_GUIDE —— 如何做一轮分析
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 面向"下一轮的执行者"（人或 AI）。目标是：**任何有能力的执行者，照本文件就能正确完成一轮。**
 
 ## 0. 动手前的固定顺序（不许跳）
@@ -169,9 +172,9 @@ python cli/main.py validate --game <id>       # 单彩种（含 strategy + itera
 python cli/main.py validate --facts           # 只查台账
 ```
 
-校验项目（33 项）包括：
+校验项目（40 项）包括：
 
-- 4 份 schema 的 jsonschema 校验
+- 5 份 schema 的 jsonschema 校验（含 `version_index.schema.json`）
 - 四条红线（`const` 级）
 - 外键（`evidence_refs` / `upstream_fact_ids` 指向存在）
 - 双向取代一致性
@@ -180,8 +183,9 @@ python cli/main.py validate --facts           # 只查台账
 - **数据 SHA256 实算比对**
 - **`features[]` 声明可执行性**（每个声明能否被框架原语执行）
 - **`predicate` 引用完整性与作用域**（单注层 / 跨注层分类）
+- **版本一致性**：文件内版本行 ↔ `versions.json` ↔ `VERSION_INDEX.md`
 
-**全绿才收轮。** 另需跑 `python tests/test_core.py`（92 项）。
+**全绿才收轮。** 另需跑 `python tests/test_core.py`（105 项）。
 
 ## 6. 规模建议
 

@@ -1,5 +1,8 @@
 # FINDINGS.md — roundNN 发现（模板）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **使用方式**：复制到 `games/<game>/iterations/roundNN/FINDINGS.md`，替换 `NN` 与占位内容。
 >
 > **核心要求**：每个数字对应一个**能独立跑出它的脚本**。

@@ -1,5 +1,8 @@
 # OPEN_QUESTIONS.md — 开放问题池（工作记忆）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **性质**：工作记忆，**不是**结论台账。这里放"我们知道该问但还没答"的问题。
 > 一旦答出，就按 `spec/fact.schema.json` 写成 `F-xxxx` 进 `FACTS.jsonl`，
 > 然后在此处把该问题标记为 `answered`（**不要删除**，保留追溯）。

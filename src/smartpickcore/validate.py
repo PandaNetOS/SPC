@@ -33,6 +33,7 @@ __all__ = [
     "validate_facts",
     "validate_strategy",
     "validate_iterations",
+    "validate_versions",
 ]
 
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -508,6 +509,60 @@ def validate_iterations(game: str, repo_root: str | None = None,
     return rep
 
 
+# ---------------------------------------------------------------- versions
+
+def validate_versions(repo_root: str | None = None,
+                      rep: ValidationReport | None = None) -> ValidationReport:
+    """版本一致性：文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md。"""
+    root = repo_root or _ROOT
+    rep = rep if rep is not None else ValidationReport()
+
+    try:
+        from .versions import VersionsError, verify_versions
+    except ImportError as e:  # pragma: no cover
+        rep.warn(f"versions 模块不可用: {e}")
+        return rep
+
+    try:
+        r = verify_versions(root)
+    except VersionsError as e:
+        rep.err(f"版本索引: {e}")
+        return rep
+
+    s = r["stats"]
+    for e in r["errors"]:
+        rep.err(f"版本: {e}")
+    for w in r["warnings"]:
+        rep.warn(f"版本: {w}")
+
+    if not r["errors"]:
+        by = s.get("by_level", {})
+        rep.ok(
+            f"版本索引: {s.get('total')} 条登记 "
+            f"(A={by.get('A', 0)} B={by.get('B', 0)} "
+            f"C={by.get('C', 0)} D={by.get('D', 0)})，"
+            f"文件内版本行 {s.get('file_version_lines_ok')}/"
+            f"{s.get('file_version_lines_needed')} 一致"
+        )
+        rep.ok(f"framework_version = {s.get('framework_version')}，"
+               f"index_version = {s.get('index_version')}")
+
+    # versions.json 自身合规于 schema
+    vp = os.path.join(root, "versions.json")
+    if os.path.exists(vp):
+        try:
+            import json as _json
+            with open(vp, encoding="utf-8") as f:
+                _jsonschema_check(_json.load(f), "version_index.schema.json",
+                                  "versions.json", rep)
+        except Exception as e:  # noqa: BLE001
+            rep.err(f"versions.json 读取失败: {e}")
+    else:
+        rep.err("versions.json 不存在")
+
+    return rep
+
+
 # ---------------------------------------------------------------- all
 
 def validate_all(repo_root: str | None = None, verbose: bool = False) -> ValidationReport:
@@ -534,17 +589,24 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
 
     validate_facts(root, rep)
 
+    # 版本索引一致性
+    validate_versions(root, rep)
+
     # 协议文档存在性（软检查）
     docs = [
         "AI_CONTEXT.md",
+        "VERSION_INDEX.md",
+        "versions.json",
         "memory/lessons/LESSONS.md",
         "memory/INDEX.md",
+        "docs/VERSIONING_DOCS.md",
         "framework/protocol/ITERATION_PROTOCOL.md",
         "framework/protocol/MEMORY_PROTOCOL.md",
         "framework/methodology/MATH_BOUNDARY.md",
         "framework/methodology/STATISTICAL_DISCIPLINE.md",
         "spec/README.md",
         "spec/VERSIONING.md",
+        "spec/version_index.schema.json",
     ]
     for d in docs:
         if not os.path.exists(os.path.join(root, d)):

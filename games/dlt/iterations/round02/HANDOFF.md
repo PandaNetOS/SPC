@@ -1,5 +1,8 @@
 # HANDOFF.md — round02 → round03
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 | 项 | 内容 |
 |---|---|
 | **完成轮次** | `round02` |
@@ -193,7 +196,7 @@
 python cli/main.py validate --all -v
 ```
 
-结果：**✅ 全部通过（28 项检查）**
+结果：**✅ 全部通过（28 项检查；r03 起校验项扩展为 40 项）**
 
 包含：
 - `game.yaml` 合规 + SHA256 一致

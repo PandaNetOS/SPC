@@ -1,5 +1,8 @@
 # HANDOFF.md — roundNN 交接（模板）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **使用方式**：复制到 `games/<game>/iterations/roundNN/HANDOFF.md`。
 >
 > **最重要的要求**：本文件的「遗留问题」+「下轮建议」

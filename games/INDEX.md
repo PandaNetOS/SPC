@@ -1,5 +1,8 @@
 # games/ —— 彩种索引
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 ## 已接入彩种
 
 | id | 名称 | 号码空间 T | 一等奖概率 | 返奖率 | 结论数 | 轮次 | 策略 |
@@ -55,7 +58,7 @@ games/
 
 | 共享 | 不共享 |
 |---|---|
-| `spec/` 四份契约 | `game.yaml` 的 `machine` / `features` / `prize_model` |
+| `spec/` 五份契约 | `game.yaml` 的 `machine` / `features` / `prize_model` |
 | `framework/` 协议、方法论、工具 | `data/` 全部内容 |
 | `memory/` 的全局结论（`game: "global"`） | 该彩种专属结论（`game: "<id>"`） |
 | `src/` + `cli/` 全部代码 | `iterations/` 与 `strategy/` |

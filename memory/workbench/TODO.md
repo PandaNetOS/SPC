@@ -1,5 +1,8 @@
 # TODO.md — 待办池（工作记忆）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
 > 本文件是"具体要动手做什么"。
 >

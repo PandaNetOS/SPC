@@ -3,8 +3,9 @@
 """cli/main.py — smartpickcore 命令行入口
 
 命令：
-    validate   校验契约（schema / 红线 / 外键 / 双向取代 / 文件存在性）
+    validate   校验契约（schema / 红线 / 外键 / 双向取代 / 文件存在性 / 版本一致性）
     index      从 FACTS.jsonl 重生成 memory/facts/INDEX.md
+    versions   ★ 版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
     strategy   重新生成 games/<game>/strategy/strategy.json
     games      列出彩种
     facts      列结论（可筛选）
@@ -13,11 +14,14 @@
     caveats    列某条结论的减损项
     info       仓库概览
     new-game   从 _template 创建新彩种骨架
+    pick       生成合规号码（按单注层规则过滤）
+    eval       求一注号码的特征并按规则判定
 
 用法示例：
     python cli/main.py validate --all
     python cli/main.py validate --facts
     python cli/main.py index
+    python cli/main.py versions
     python cli/main.py facts --status established --game dlt
     python cli/main.py caves F-0004
     python cli/main.py strategy --game dlt --dry-run
@@ -91,6 +95,53 @@ def cmd_index(args) -> int:
     rel = os.path.relpath(path, _ROOT)
     n = len(mem.load_facts())
     print(f"✓ 已从 FACTS.jsonl（{n} 条）重新生成 {rel}")
+    return 0
+
+
+def cmd_versions(args) -> int:
+    """版本一致性检查。"""
+    from smartpickcore.versions import (
+        VersionsError,
+        render_versions_summary,
+        verify_versions,
+    )
+
+    try:
+        r = verify_versions(_ROOT)
+    except VersionsError as e:
+        print(f"✗ {e}")
+        return 1
+
+    if args.summary:
+        print(render_versions_summary(_ROOT))
+        return 0
+
+    s = r["stats"]
+    if args.verbose or args.summary:
+        print(render_versions_summary(_ROOT))
+        print()
+
+    print(f"登记条目 {s.get('total')} 个  "
+          f"(A={s['by_level'].get('A', 0)} B={s['by_level'].get('B', 0)} "
+          f"C={s['by_level'].get('C', 0)} D={s['by_level'].get('D', 0)})")
+    print(f"文件内版本行 {s.get('file_version_lines_ok')}/{s.get('file_version_lines_needed')} 一致")
+    print(f"C 级版本字段 {s.get('c_level_checked_ok')} 一致"
+          + (f"，{s['c_level_mismatch']} 不一致" if s.get("c_level_mismatch") else ""))
+    print()
+
+    if r["warnings"]:
+        print(f"⚠ {len(r['warnings'])} 项警告：")
+        for w in r["warnings"]:
+            print(f"  ! {w}")
+        print()
+
+    if r["errors"]:
+        print(f"✗ {len(r['errors'])} 项错误：")
+        for e in r["errors"]:
+            print(f"  ✗ {e}")
+        return 1
+
+    print("✓ 版本一致性检查通过")
     return 0
 
 
@@ -467,6 +518,12 @@ def build_parser() -> argparse.ArgumentParser:
     # index
     sp = sub.add_parser("index", help="从 FACTS.jsonl 重生成 INDEX.md")
     sp.set_defaults(func=cmd_index)
+
+    # versions
+    sp = sub.add_parser("versions", help="版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）")
+    sp.add_argument("--summary", action="store_true", help="打印版本概览")
+    sp.add_argument("-v", "--verbose", action="store_true", help="打印通过项")
+    sp.set_defaults(func=cmd_versions)
 
     # strategy
     sp = sub.add_parser("strategy", help="重新生成 strategy.json")

@@ -429,6 +429,71 @@ def test_declarations() -> None:
     check(any("重复" in e for e in errs5), "重复 key 被检出")
 
 
+# ================================================================ 9. 版本索引
+
+def test_versions() -> None:
+    section("9. 版本索引一致性")
+
+    import re as _re
+    from smartpickcore.versions import (
+        VersionsError,
+        load_versions,
+        verify_versions,
+    )
+
+    try:
+        d = load_versions(_ROOT)
+    except VersionsError as e:
+        check(False, f"versions.json 可读（{e}）")
+        return
+    check(True, "versions.json 可读")
+
+    check(
+        _re.fullmatch(r"\d+\.\d+", d.get("index_version") or ""),
+        f"index_version 格式合法（{d.get('index_version')}）",
+    )
+    check(bool(d.get("framework_version")), f"framework_version 存在（{d.get('framework_version')}）")
+
+    # 四级分区必须齐备
+    lv = d.get("levels") or {}
+    check(set(lv.keys()) == {"A", "B", "C", "D"}, "levels 定义了 A/B/C/D 四级")
+    check(lv.get("A", {}).get("versioned") is True, "A 级标记为需要版本化")
+    check(lv.get("D", {}).get("versioned") is False, "D 级标记为不版本化")
+
+    # 逐条目格式
+    bad_cv = [e["path"] for e in d["entries"]
+              if e.get("content_version") and not _re.fullmatch(r"\d+\.\d+", e["content_version"])]
+    check(not bad_cv, f"全部 content_version 格式合法（违规 {len(bad_cv)} 个）")
+
+    bad_it = [e["path"] for e in d["entries"]
+              if e.get("iteration") and not _re.fullmatch(r"r\d{2}", e["iteration"])]
+    check(not bad_it, f"全部 iteration 格式合法（违规 {len(bad_it)} 个）")
+
+    # 全量一致性
+    r = verify_versions(_ROOT)
+    check(not r["errors"], f"版本一致性无错误（错误 {len(r['errors'])} 项）")
+    if r["errors"]:
+        for e in r["errors"][:5]:
+            print(f"      ✗ {e}")
+
+    s = r["stats"]
+    check(
+        s["file_version_lines_ok"] == s["file_version_lines_needed"],
+        f"文件内版本行全部一致（{s['file_version_lines_ok']}/{s['file_version_lines_needed']}）",
+    )
+    check(s["missing_files"] == 0, f"全部登记文件存在（缺失 {s['missing_files']} 个）")
+
+    # 红线：D 级不得有 content_version
+    d_with_cv = [e["path"] for e in d["entries"]
+                 if e["level"] == "D" and e.get("content_version")]
+    check(not d_with_cv, f"D 级不带 content_version（违规 {len(d_with_cv)} 个）")
+
+    # 红线：raw 数据必须有 SHA256
+    raw_no_sha = [e["path"] for e in d["entries"]
+                  if e.get("kind") == "raw_data" and not e.get("sha256")]
+    check(not raw_no_sha, f"raw 数据都带 SHA256（缺失 {len(raw_no_sha)} 个）")
+
+
 # ================================================================ 主流程
 
 def main() -> int:
@@ -437,7 +502,7 @@ def main() -> int:
     print(f"game.yaml: dlt（config_version {CFG.get('config_version')}）")
 
     for fn in (test_red_lines, test_primitives, test_ticket, test_dsl,
-               test_scope, test_math, test_e2e, test_declarations):
+               test_scope, test_math, test_e2e, test_declarations, test_versions):
         fn()
 
     section("结果")

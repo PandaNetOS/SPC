@@ -1,5 +1,8 @@
 # PROPOSAL — 单注层通用架构（Single-Ticket Core）
 
+> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > **状态**：✅ **已落地**（全部 11 步完成，`validate --all` 33 项全绿，`tests/test_core.py` 92 项全绿）
 > **日期**：2026-10-11（提案）/ 2026-10-11（落地）
 > **提出缘起**：对外问答暴露三处缺口（见 §1）
