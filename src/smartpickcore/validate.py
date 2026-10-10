@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from typing import Any
 
 __all__ = [
@@ -561,6 +562,7 @@ def validate_versions(repo_root: str | None = None,
         rep.err("versions.json 不存在")
 
     _check_consumes_freshness(root, rep)
+    _check_summary_counts(root, rep)
     return rep
 
 
@@ -641,6 +643,79 @@ def _check_consumes_freshness(root: str, rep: ValidationReport) -> None:
             f"下游新鲜度: {n_declared} 个条目声明了 consumes，"
             f"引用 superseded 结论的均已同步（0 项沉默）"
         )
+
+
+# ★ 速览表计数一致性：手工维护的「N 条结论」必须等于 FACTS.jsonl 实际条数。
+#
+#   背景（r03 发现的第二类下游漏洞）：consumes 管得住「引用某条结论」，
+#   却管不住「表格里写的结论**总数**」—— games/INDEX.md 写「15」、
+#   AI_CONTEXT.md 写「FACTS.jsonl（15 条）」，而实盘已是 18 条，
+#   两种情况下校验依然全绿。
+#
+#   判据：在这些「速览类」文件里，凡出现「N 条结论」字样，N 必须等于
+#   台账实际条数（只统计 status != superseded 的活跃结论数 + 全部条数，
+#   两个口径都接受，因为不同文档可能选用不同口径，但**数字必须真实存在**）。
+_COUNT_LABEL_FILES = (
+    "games/INDEX.md",
+    "AI_CONTEXT.md",
+    "README.md",
+    "memory/INDEX.md",
+)
+
+_COUNT_PATTERNS = (
+    re.compile(r"(?P<n>\d+)\s*条结论"),
+    re.compile(r"FACTS\.jsonl[^）)]{0,8}?(?P<n>\d+)\s*条"),
+)
+
+
+def _check_summary_counts(root: str, rep: ValidationReport) -> None:
+    """校验速览表里的「N 条结论」是否与台账实际条数一致。"""
+    fp = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    if not os.path.exists(fp):
+        return
+    total = 0
+    active = 0
+    seen_f0 = False
+    with open(fp, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:  # noqa: BLE001, S112
+                continue
+            total += 1
+            if d.get("id") == "F-0001":
+                seen_f0 = True
+            if d.get("status") != "superseded":
+                active += 1
+    if not seen_f0:
+        return
+    allowed = {total, active}
+
+    checked = 0
+    bad: list[str] = []
+    for rel in _COUNT_LABEL_FILES:
+        p = os.path.join(root, rel)
+        if not os.path.exists(p):
+            continue
+        for lineno, line in enumerate(open(p, encoding="utf-8"), 1):
+            for pat in _COUNT_PATTERNS:
+                for m in pat.finditer(line):
+                    n = int(m.group("n"))
+                    # 过滤明显非结论数的数字（如「2933 期」不会命中；「18 条结论」会）
+                    if n < 1 or n > 500:
+                        continue
+                    checked += 1
+                    if n not in allowed:
+                        bad.append(f"{rel}:{lineno} 写「{n} 条结论」，台账实为 {total} 条")
+
+    if bad:
+        for b in bad:
+            rep.err(f"速览计数: {b}")
+    elif checked:
+        rep.ok(f"速览计数: {checked} 处「N 条结论」与台账一致（台账 {total} 条）")
 
 
 # ---------------------------------------------------------------- all

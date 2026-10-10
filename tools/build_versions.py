@@ -161,8 +161,8 @@ ARCHIVED = {
 
 # B 级文档的版本（含框架文档）
 DOC_VERSIONS: dict[str, tuple[str, str]] = {
-    "AI_CONTEXT.md":                              ("1.0", "r02"),
-    "README.md":                                  ("1.0", "r02"),
+    "AI_CONTEXT.md":                              ("1.1", "r03"),
+    "README.md":                                  ("1.1", "r03"),
     "VERSION_INDEX.md":                           ("1.0", "r02"),
     "versions.json":                              ("1.0", "r02"),
     "spec/README.md":                             ("1.0", "r02"),
@@ -183,8 +183,8 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
     "docs/ITERATION_GUIDE.md":                    ("1.0", "r02"),
     "docs/METHODOLOGY.md":                        ("1.0", "r02"),
     "docs/PROPOSAL_SINGLE_TICKET_CORE.md":        ("1.0", "r02"),
-    "docs/VERSIONING_DOCS.md":                    ("1.2", "r03"),
-    "games/INDEX.md":                             ("1.0", "r02"),
+    "docs/VERSIONING_DOCS.md":                    ("1.3", "r03"),
+    "games/INDEX.md":                             ("1.1", "r03"),
     "tests/README.md":                            ("1.0", "r02"),
 }
 

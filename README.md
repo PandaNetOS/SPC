@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -83,7 +83,7 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-AI_CONTEXT.md          v1.0   ← 单一入口。AI 与人都从这里进
+AI_CONTEXT.md          v1.1   ← 单一入口。AI 与人都从这里进
 VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
 spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
@@ -104,7 +104,7 @@ games/
   _template/                  ← 新彩种骨架
   dlt/                        ← 超级大乐透（数据 + 轮次 + 策略）
     strategy/                 ← strategy.json（机器）+ STRATEGY_GUIDE.md（人话版）
-  INDEX.md             v1.0   ← 彩种索引
+  INDEX.md             v1.1   ← 彩种索引
 src/smartpickcore/            ← 库代码（game / memory / validate / strategy / api / versions）
 cli/main.py            —      ← 命令行入口（13 个命令）
 tools/                        ← 版本索引生成/注入脚本（build / render / inject）
@@ -173,7 +173,7 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 6 模块 / 21 原语**（Ticket / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器） |
-| 记忆层 | ✅ **18 条结论** / L1–L9 / 10 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
+| 记忆层 | ✅ **18 条结论** / L1–L12 / 10 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
 | 库与 CLI | ✅ 8 模块 + 13 命令，`validate --all` **44 项全绿** |
 | 彩种 `dlt` | ✅ `game.yaml`（config 2.0，11 特征全原语化）+ `strategy.json`（2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
 | `tests/` | ✅ `test_core.py` **106 项全绿**（无需 pytest） |

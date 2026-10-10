@@ -104,8 +104,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
-| `AI_CONTEXT.md` | `1.0` | `r02` | active |  |
-| `README.md` | `1.0` | `r02` | active |  |
+| `AI_CONTEXT.md` | `1.1` | `r03` | active |  |
+| `README.md` | `1.1` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.0` | `r02` | active |  |
@@ -113,7 +113,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `docs/ITERATION_GUIDE.md` | `1.0` | `r02` | active |  |
 | `docs/METHODOLOGY.md` | `1.0` | `r02` | active |  |
 | `docs/PROPOSAL_SINGLE_TICKET_CORE.md` | `1.0` | `r02` | active |  |
-| `docs/VERSIONING_DOCS.md` | `1.2` | `r03` | active |  |
+| `docs/VERSIONING_DOCS.md` | `1.3` | `r03` | active |  |
 | `framework/INDEX.md` | `1.0` | `r02` | active |  |
 | `framework/README.md` | `1.0` | `r02` | active |  |
 | `framework/core/README.md` | `1.0` | `r02` | active |  |
@@ -133,7 +133,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/protocol/templates/HANDOFF.template.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/TASK_BRIEF.template.md` | `1.0` | `r02` | active |  |
 | `framework/tools/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
-| `games/INDEX.md` | `1.0` | `r02` | active |  |
+| `games/INDEX.md` | `1.1` | `r03` | active |  |
 | `games/_template/README.md` | —（见备注） | `—` | active |  |
 | `games/_template/data/build_scripts/README.md` | —（见备注） | `—` | active |  |
 | `games/_template/data/derived/README.md` | —（见备注） | `—` | active |  |

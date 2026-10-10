@@ -1,6 +1,6 @@
 # AI_CONTEXT.md — 单一入口
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **如果你是一个 AI（或人），要在这个仓库里做分析 —— 从本文件开始，读完本文件再动手。**
@@ -8,7 +8,7 @@
 > 本文件约 10 分钟可读完。读完你能知道：这个仓库是干什么的、东西在哪、
 > 三条不能违反的红线、以及**动手前必须知道的方法论纪律**。
 >
-> 最后更新：2026-10-11 | 当前轮次：`round02`（已交付）| 下一轮：`round03`（待启动）
+> 最后更新：2026-10-11 | 当前轮次：`round03`（已交付）| 下一轮：`round04`（待启动）
 >
 > **★ 版本意识**：本仓库有五个版本号并存（`schema_version` / `config_version` /
 > `data_version` / **`content_version`** / **`framework_version`**）。
@@ -86,7 +86,7 @@ smartpickcore/
 │       ├── game.yaml      彩种声明式配置（config_version 2.0）
 │       ├── rules_history.md   规则变更史（决定奖金类分析口径）
 │       ├── data/          raw/（原始，不可变）+ derived/ + tools/ + build_scripts/
-│       ├── iterations/    round01/ round02/ round03/
+│       ├── iterations/    round01/ round02/ round03/ round04/
 │       └── strategy/      strategy.json（对外输出）+ STRATEGY_GUIDE.md（★ 人话版）
 │                           + 模拟脚本与结果
 ├── src/smartpickcore/     库代码（api / memory / strategy / validate / versions）
@@ -170,7 +170,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 
 ## 5. 已经确定的结论（速览）
 
-**权威源是 `memory/facts/FACTS.jsonl`（15 条）**，此处只列最重要的几条。
+**权威源是 `memory/facts/FACTS.jsonl`（18 条）**，此处只列最重要的几条。
 引用前**必读该条的 `caveats`**。
 
 | id | 结论 | 置信度 |

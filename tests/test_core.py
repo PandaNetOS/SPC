@@ -528,6 +528,34 @@ def test_versions() -> None:
     has_sup_warn = any("下游新鲜度" in w for w in fake.warnings)
     check(has_sup_warn, "下游新鲜度检查能检出『引用 superseded 结论』的条目")
 
+    # ★ 速览计数机制（r03 新增）：手工速览表的「N 条结论」必须等于台账条数
+    from smartpickcore.validate import _check_summary_counts
+
+    cnt = _FakeReport()
+    _check_summary_counts(_ROOT, cnt)
+    cnt_err = [e for e in cnt.errors if "速览计数" in e]
+    check(not cnt_err, f"速览表「N 条结论」与台账一致（错误 {len(cnt_err)} 项）")
+    for x in cnt_err[:5]:
+        print(f"      ✗ {x}")
+
+    # 机制自检：构造错误计数，必须被检出
+    import tempfile
+    from pathlib import Path
+    with tempfile.TemporaryDirectory() as td:
+        (Path(td) / "memory" / "facts").mkdir(parents=True)
+        (Path(td) / "memory" / "facts" / "FACTS.jsonl").write_text(
+            '{"id":"F-0001","status":"established"}\n'
+            '{"id":"F-0002","status":"established"}\n', encoding="utf-8")
+        (Path(td) / "games").mkdir()
+        (Path(td) / "games" / "INDEX.md").write_text(
+            "台账共 99 条结论\n", encoding="utf-8")
+        probe = _FakeReport()
+        _check_summary_counts(td, probe)
+        check(
+            any("速览计数" in e for e in probe.errors),
+            "速览计数检查能检出错误的「N 条结论」",
+        )
+
 
 # ================================================================ 主流程
 
