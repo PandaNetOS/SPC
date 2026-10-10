@@ -2,74 +2,146 @@
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
 
-号码组合空间上的「形态感知」选号与撞号规避核心库。
+**通用的彩票投注策略研究框架** —— 带自我迭代能力，并把研究结论输出成
+其他工具可直接消费的策略规则。
 
-## 定位
+---
 
-在**不改变中奖概率**的前提下，通过避开高人群密度形态（连号、生日号等），
-降低中奖时的同号人数，从而提高**中奖时的期望奖金**。
+## 这个仓库做什么
 
-- 中奖概率 = 1 / 21,425,712（前区 35 选 5 × 后区 12 选 2）——**不可改变**
-- 可优化的量：撞号系数（决定奖金被多少人分）
+| 用途 | 说明 |
+|---|---|
+| ① **研究框架** | 与彩种无关的研究骨架：契约、协议、方法论、记忆系统。带**自我迭代**：每轮分析产出的 `caveats` 机械地转成下一轮的开放问题与任务，收轮时必须生成下轮任务书，迭代链不断。 |
+| ② **策略输出** | 产出 `games/<id>/strategy/strategy.json` —— 机器可读的规则（`exclude`/`penalize`/`prefer`/`require`），供选号器、App、机器人消费。 |
 
-## 目录
+## 核心立场（先看这个）
+
+> **选号不改变中奖概率。**
+
+大乐透单注组合总数 `C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712`，
+一等奖概率 `≈ 4.667e-08`。这是**解析结论**，不依赖任何数据——
+分子（是否命中）由开奖结果决定，选号无法影响。
+
+选号**唯一**能影响的是**分母**：中奖时是否与他人共享奖金。
+这就是本仓库全部策略的立足点。
+
+因此：
+
+- ✅ 可以做的：避开高人群密度形态（连号、生日号），降低撞号，提高**中奖时的期望奖金**
+- ❌ 不能做的：提高中奖率、预测号码、追冷热号、按周期选号
+
+## 快速开始
+
+```bash
+# 依赖
+pip install pyyaml jsonschema numpy pandas
+
+# 仓库概览
+python cli/main.py info
+
+# 全量校验（28 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算）
+python cli/main.py validate --all -v
+
+# 列彩种、列结论、看某条结论的减损项
+python cli/main.py games
+python cli/main.py facts --game dlt --min-confidence 4
+python cli/main.py caveats F-0004
+
+# 重生成对外策略（只重算 boundary 与 evidence_index；rules 不由代码生成）
+python cli/main.py strategy --game dlt --dry-run
+
+# 新彩种
+python cli/main.py new-game <game_id>
+```
+
+## 目录结构
 
 ```
-src/           核心实现
-tests/         测试
-docs/          设计与方法论文档
-data/dlt_v4/   大乐透 v4 分析包（数据 + 研究 + 模拟验证，作为 src/ 的方法来源）
+AI_CONTEXT.md          ← 单一入口。AI 与人都从这里进
+spec/                  ← 契约层：4 份 JSON Schema + 版本规则 + 四条红线
+framework/
+  readme.md            ← 框架层说明（框架/彩种分离判定标准）
+  INDEX.md             ← 按需求找文件
+  protocol/            ← 迭代协议 + 记忆协议 + 3 个模板
+  methodology/         ← 数学边界 + 统计纪律
+  tools/memory.py      ← 记忆读写库（彩种无关）
+  core/                ← 待实现（不为可能的复用做抽象）
+memory/
+  facts/FACTS.jsonl    ← 结论台账（权威源，JSONL 追加式）
+  facts/INDEX.md       ← 速览（派生物，CLI 生成，勿手改）
+  journal/roundNN.md   ← 迭代日志
+  lessons/LESSONS.md   ← 教训库 L1–L9（只增不删）
+  workbench/           ← 工作记忆（OPEN_QUESTIONS / HYPOTHESES / TODO）
+games/
+  _template/           ← 新彩种骨架
+  dlt/                 ← 超级大乐透（数据 + 轮次 + 策略）
+  INDEX.md             ← 彩种索引
+src/smartpickcore/     ← 库代码（game / memory / validate / strategy / api）
+cli/main.py            ← 命令行入口（10 个命令）
+docs/                  ← ARCHITECTURE / CONSUMING / ITERATION_GUIDE / METHODOLOGY
+tests/                 ← 测试说明（应测什么）
 ```
 
-## data/dlt_v4/ —— 数据与研究底座
+详见 `docs/ARCHITECTURE.md`。
 
-本仓库的 `src/` 实现直接以 `data/dlt_v4/` 的结论与数据为依据。
-该目录是 **「大乐透 AI 分析包 v4」** 的完整内容（40 文件，约 2.1 MB），覆盖：
+## 四条红线
 
-| 路径 | 内容 |
+不是"文档里写不要"，而是**schema 里用 `const` / 枚举结构性拒收**：
+
+| # | 红线 | 实现 |
+|---|---|---|
+| 1 | 任何结论都不得声称影响中奖概率 | `fact.schema.json`：`affects_win_probability` 为 `{"const": false}` |
+| 2 | 策略声明不得声称改变中奖概率 | `strategy.schema.json`：`disclaimer.changes_win_probability` 为 `{"const": false}` |
+| 3 | 可优化目标只能是"中奖时的期望奖金" | `boundary.optimizable_target` 枚举**故意不含** `win_probability` |
+| 4 | 奖金规则变更不得声称影响号码分布 | `game_config.schema.json`：`epochs[].sum_affects_numbers` 为 `{"const": false}` |
+
+违反红线的数据**根本存不进去**，不靠自觉。
+
+## 自我迭代怎么运转
+
+三条**机械式传导**（不依赖 AI 记得要做）：
+
+```
+每条结论的 caveats 非空（校验器强制）
+        │
+        ▼  每条 caveat → 一个开放问题 → 进 TODO（带脚本路径与验收判据）
+             → 成为下轮 TASK_BRIEF 的选题
+
+收轮时必须生成 iterations/round(N+1)/TASK_BRIEF.md
+        │
+        ▼  不生成 = 迭代链断裂
+
+每轮在 manifest.json 提 framework_revision.proposed
+        │
+        ▼  被采纳的进 accepted —— 框架自身的进化留痕
+```
+
+## 接入新彩种
+
+```bash
+python cli/main.py new-game <game_id>
+```
+
+**唯一硬标准**：
+
+> 加入第二个彩种时，是否需要改 `framework/` 或 `src/` 的任何一行？
+
+不需要 = 框架分离成立。需要 = 框架缺了抽象，必须补进框架而不是打补丁。
+
+## 当前状态
+
+| 项 | 状态 |
 |---|---|
-| `00_TASK_BRIEF.md` | 反锚定任务书：数据事实、数学底线、检验清单、方法论陷阱 |
-| `01_data/` | **2933 期**历史开奖（07001 ~ 26115，2007-05-30 ~ 2026-10-10），CSV + JSONL |
-| `02_derived/` | 规范化派生集（精确枚举理论分布、按规则断点分段统计等 8 个文件） |
-| `03_findings/` | 历史分析产出归档（⚠️ 含已知错误，统一在 `_legacy/`） |
-| `03_tools/` | 可复用检验脚本（自包含可直跑） |
-| `04_priority_tasks.md` | 任务清单 T1–T8，含验收判据 |
-| `05_known_errors.md` | 已知错误结论清单 E1–E9（避坑手册） |
-| `06_RULES_HISTORY.md` | **规则变更史**（6 次调整）与现行规则 |
-| `07_strategy_simulation/` | **策略模拟验证框架**（四层 + 可信度分级） |
-| `05_build_scripts/` | 派生数据重建 + 包完整性校验脚本 |
+| 契约层 | ✅ 4 schema + VERSIONING |
+| 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
+| 记忆层 | ✅ 15 条结论 / L1–L9 / 8 开放问题 / 5 假设 / 42 待办 |
+| 库与 CLI | ✅ 6 模块 + 10 命令，`validate --all` 28 项全绿 |
+| 彩种 `dlt` | ✅ `game.yaml` + `strategy.json`（2 规则 + 8 条 avoid_list）+ round02 收轮 + round03 任务书 |
+| `framework/core/` | ⬜ 待实现 |
+| `tests/` | ⬜ 说明已写，用例待写 |
 
-### 与本仓库代码的关系
+## 免责声明
 
-| 本仓库模块 | 对应 v4 依据 |
-|---|---|
-| 撞号系数计算 | `07_strategy_simulation/` C 层（条件份额模拟，α 校准） |
-| 人群权重模型 | `07_strategy_simulation/README.md` §5.2（α = 13.9405） |
-| 形态识别（连号/生日号） | `02_derived/04_structure_distribution_exact.json`（精确枚举） |
-| 规则与封顶约束 | `06_RULES_HISTORY.md`（现行 7 奖级、1 亿总额封顶） |
-| 效应量基准 | `07_strategy_simulation/simulation_results.json`（+121.5%） |
-
-### 关键结论（`src/` 须遵守）
-
-1. **中奖概率不可改变** —— 这是解析结论，任何"技巧"都不影响（p = 4.667e-08）。
-2. **唯一可优化的是"中奖时奖金"** —— 避开连号使撞号系数 1.003 → 0.453，奖金 +121.5%。
-3. **三道减损必须计入** —— 模型估计误差、封顶稀释、只在中奖时兑现。
-4. **长期期望为负** —— 返奖率 51%，2 元投入期望回收约 1.02 元。
-
-> 完整方法论见 [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)。
-
-### 数据红线
-
-- `draw_num` 必须强制字符串：`dtype={'draw_num': str}`（否则 `'07001'` → `7001`）
-- CSV 必须 `encoding='utf-8-sig'`（否则首列名变成 `'\ufeffdraw_num'`）
-- `prize1_amount_yuan` 是右删失数据（81.4% 封顶 500 万）；封顶规则多次变更
-- 跨规则断点的奖金金额不可直接比较（见 `data/dlt_v4/06_RULES_HISTORY.md`）
-
-## 状态
-
-- 仓库骨架 + v4 数据/研究底座已就位
-- `src/` 实现待填充
-
-## 许可
-
-私有仓库（PandaNetOS）。
+本仓库**不提供中奖保证**，不改变中奖概率，不构成投注建议。
+所有分析结论均附带减损项（`caveats`）与置信度分级，引用前请阅读。
+**理性购彩，量力而行。**

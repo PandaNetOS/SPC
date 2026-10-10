@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "game": "PLACEHOLDER_ID",
+  "generated_at": "1970-01-01T00:00:00Z",
+  "generator": "PLACEHOLDER — 用 python cli/main.py strategy --game <id> 重算",
+  "config_version": "1.0",
+
+  "disclaimer": {
+    "affects_win_probability": false,
+    "text": "本策略不改变中奖概率。选号方式无法影响是否命中，只能影响中奖时是否与他人共享奖金。",
+    "responsibility": "仅供参考，请理性购彩。因使用本策略产生的任何后果由使用者自负。",
+    "changes_win_probability": false
+  },
+
+  "boundary": {
+    "total_combinations": 0,
+    "first_prize_probability": 0.0,
+    "return_rate": null,
+    "net_expectation_per_yuan": null,
+    "optimizable_target": "expected_bonus_given_win"
+  },
+
+  "rules": [],
+
+  "avoid_list": [
+    {
+      "id": "A-000",
+      "practice": "占位：禁止的做法",
+      "reason": "占位：为何无效",
+      "evidence_refs": []
+    }
+  ],
+
+  "evidence_index": {},
+
+  "provenance": {
+    "facts_file": "memory/facts/FACTS.jsonl",
+    "iteration": "round01",
+    "notes": "占位。用 python cli/main.py strategy --game <id> 重建本文件的 boundary 与 evidence_index；rules 与 avoid_list 不由代码生成。"
+  }
+}

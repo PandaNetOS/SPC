@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "game": "dlt",
+  "generated_at": "2026-10-10",
+  "generated_by": "smartpickcore-cli/0.1.0",
+  "data_version": "dlt_full_2933",
+  "rules_epoch": "E6",
+
+  "disclaimer": {
+    "is_negative_ev": true,
+    "changes_win_probability": false,
+    "text": "本策略集不提高中奖概率，这是数学事实（单注一等奖概率恒为 1/21,425,712）。彩票是负期望游戏：现行返奖率 51%，每 2 元投注的长期数学期望回报约 1.02 元，净期望约 −0.98 元/注。本策略唯一的作用是在极小概率中奖时，减少与他人重号的人数、提高单注奖金；该收益受『一/二等奖单期总额封顶 1 亿元』条款稀释，且只在中奖时兑现。请理性购彩，量力而行，不得借贷投注。"
+  },
+
+  "boundary": {
+    "total_combinations": 21425712,
+    "first_prize_probability": 4.667289469773513e-08,
+    "return_rate": 0.51,
+    "optimizable_target": "expected_bonus_given_win",
+    "note": "期望回报可分解为 E = Σ_j P_j × (池_j / 中奖注数_j)。其中 P_j 由号码空间决定、与选号无关；唯一可被选号影响的是『中奖注数_j』。因此本策略集只作用于中奖时的奖金，不作用于中奖概率。",
+    "net_expected_per_2yuan": -0.98
+  },
+
+  "rules": [
+    {
+      "id": "R-001",
+      "statement": "避开含两个及以上相邻号对的形态（如 12-13-14 形成 2 对连号；单对连号如 12-13 不在此列——阈值是相邻号对数量 >= 2）",
+      "kind": "collision_avoidance",
+      "machine_rule": {
+        "predicate": "has_run_ge2 == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": ["F-0003", "F-0004"],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "bonus_given_win",
+        "direction": "increase",
+        "magnitude_pct": 121.48,
+        "ci95": [0.4487, 0.4543],
+        "changes_win_probability": false,
+        "caveats": [
+          "121.48% 是『未计封顶』的上界。现行规则（E6）一/二等奖单期总额封顶 1 亿元，且已实测触发（26113 期：37 注一等奖 → 单注仅 239 万元）。触发封顶后减少同号人数不再提高单注奖金，实际收益低于该上界。",
+          "该数字来自条件份额模拟（依赖人群权重模型，含 1 个校准参数 α=13.9405），属『模型估计』而非数学事实，置信度仅 ★★★☆☆。",
+          "只在中奖时兑现。中奖概率 4.67e-08 不变，期望回报的提升被极小概率大幅折现。",
+          "长期期望回报仍为负（约 −0.98 元/注），本规则不改变这一事实。",
+          "撞号效应的分期稳健性尚未验证（仅全体本估计），见 Q-001 / T-001。"
+        ]
+      },
+      "applicable_epochs": []
+    },
+    {
+      "id": "R-002",
+      "statement": "投注组合应分散覆盖号码空间，避免多注集中在小号区或同一结构形态（资金分散可比结构集中略微降低撞号方差）",
+      "kind": "portfolio_spread",
+      "machine_rule": {
+        "predicate": "duplicated_structure_across_tickets == true",
+        "action": "penalize",
+        "weight": 0.5
+      },
+      "evidence_refs": ["F-0003"],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "variance",
+        "direction": "decrease",
+        "magnitude_pct": null,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "本规则的直接证据仅来自 F-0003（连号形态人群更密）的推论，未经单独模拟验证。",
+          "对『中奖概率』无任何影响：期望中奖注数恒等于 N/T，与组合分散度无关。",
+          "作用在于降低方差（不同注同时撞号的风险），而非提高期望。",
+          "投注组合优化尚未在本仓库做过量化实验（F-0004 的 C 层是对单注策略的模拟）。"
+        ]
+      },
+      "applicable_epochs": []
+    }
+  ],
+
+  "avoid_list": [
+    {
+      "id": "A-001",
+      "statement": "追冷号 / 追热号 / 计算遗漏值",
+      "refuted_by": ["F-0008"],
+      "reason": "号码序列不可预测（ACF 置换检验家族 p=0.0004 但样本外 R²=−0.083，全负）。前后半程 Top/Bottom 交叉无延续性。『遗漏值』是赌徒谬误的量化形式。"
+    },
+    {
+      "id": "A-002",
+      "statement": "用历史频率选号（如『35 号长期超抽所以该买』）",
+      "refuted_by": ["F-0006"],
+      "reason": "前区号码分布的偏离仅存在于 2013-08 之前；切点后段 χ²=32.1（p=0.562）已完全均匀。当前不存在可利用的频率偏倚。"
+    },
+    {
+      "id": "A-003",
+      "statement": "按星期 / 周期选号",
+      "refuted_by": ["F-0012", "F-0008"],
+      "reason": "号码无星期效应（销量有，p=0.0004，但那是销量）。FFT 去趋势差分后在 2–80 期范围内无显著谱峰。开奖日历周期（lag 3/7/14）在 ACF 中不显著——存活的是 lag 6/10/18/23，与日历不对应。"
+    },
+    {
+      "id": "A-004",
+      "statement": "用机器学习 / 神经网络预测号码或和值",
+      "refuted_by": ["F-0008"],
+      "reason": "OLS / Ridge / RF / GBDT / LSTM 在严格时序 CV 下 R² 全负（RF R²=−0.296、OLS R²=−0.075）；单号分类 AUC≈0.5（等价随机）。全样本看似微弱的信号，一旦做真正的时间序列外推立即失效。"
+    },
+    {
+      "id": "A-005",
+      "statement": "依据『组合冷热（heat）』指标选号",
+      "refuted_by": ["F-0009"],
+      "reason": "HAC/Newey-West 稳健标准误下 heat 失效（t 从 +2.41 降至 +1.80，p 从 0.0158 升至 0.0714）。且 heat 与 sum_z/span_z 高度共线，换定义后效应符号会翻转（IRR 1.053 ↔ 0.842）。历史报告的显著性未做过度离散与稳健标准误校正。"
+    },
+    {
+      "id": "A-006",
+      "statement": "选『冷后区』或基于后区历史规律选号",
+      "refuted_by": ["F-0011"],
+      "reason": "后区与前区统计独立（互信息 0.203 < 置换基准 0.209）；66 种后区组合频次与均匀期望一致。前区信息不能用于推断后区。"
+    },
+    {
+      "id": "A-007",
+      "statement": "依据『预测』加倍投注 / 追损加注",
+      "refuted_by": ["F-0001", "F-0002", "F-0008"],
+      "reason": "不存在可提高中奖概率的选号方法（解析结论），序列不可预测，且游戏为负期望（净期望 −0.98 元/注）。加倍投注只会按比例放大负期望，不改变方向。"
+    },
+    {
+      "id": "A-008",
+      "statement": "把『避开连号』理解为『提高中奖率』",
+      "refuted_by": ["F-0001"],
+      "reason": "本仓库最严重的表述错误。避开连号作用于『与他人重号的人数』（奖金分母），不作用于『是否中奖』。中奖概率恒为 1/21,425,712，任何选号方式都无法改变。"
+    }
+  ],
+
+  "evidence_index": [
+    {
+      "id": "F-0001",
+      "claim": "任何选号方式都不能改变单注的中奖概率",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0002",
+      "claim": "彩票是负期望游戏：现行返奖率 51%，每 2 元投注的长期数学期望回报约 1.02 元",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0003",
+      "claim": "连号形态（run>=2）的投注人群密度更高，撞号效应真实存在",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0004",
+      "claim": "在固定预算下避开连号形态，可提高『中奖时的期望奖金』约 121%",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0006",
+      "claim": "前区号码分布存在结构变化，最优切点为 2013-08，且为渐变过程",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0008",
+      "claim": "开奖序列不可预测：所有 ML/时序模型在严格时间序列外推下 R² 均为负",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0009",
+      "claim": "『组合冷热（heat）』对中奖注数没有稳健效应，历史报告的显著性为伪显著",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0011",
+      "claim": "后区与前区统计独立，后区号码不存在可利用的偏好结构",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0012",
+      "claim": "销量存在星期效应（周六 > 周一/周三），但号码不存在星期效应",
+      "status": "established",
+      "confidence": 4
+    }
+  ],
+
+  "provenance": {
+    "iteration": "round02",
+    "generator": "manual (round02 整理入库轮)",
+    "evidence_hash": null,
+    "note": "本文件由 round02 整理入库轮生成。R-001 是当前唯一有量化证据支撑的规则；R-002 属推论，待 round03 验证。"
+  }
+}

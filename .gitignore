@@ -19,6 +19,9 @@ venv/
 __pycache__/
 *.py[cod]
 *.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # 编辑器 / IDE
 .idea/
@@ -31,10 +34,17 @@ __pycache__/
 Thumbs.db
 desktop.ini
 
-# 运行期数据（保留 data/dlt_v4/ 数据包，见 README）
-data/*
-!data/dlt_v4/
+# 运行期临时产物
 runs/
 scratch/
 *.log
 *.tmp
+
+# ⚠️ 数据不要整体忽略。
+# games/<id>/data/raw/           —— 必须进 git（结论可复现的前提，体积小）
+# games/<id>/data/derived/       —— 可重建；体积大时可忽略，但必须登记在 game.yaml 的 data.derived
+# games/<id>/data/tools/         —— 必须进 git（脚本是结论的证据链）
+# games/<id>/data/build_scripts/ —— 必须进 git
+#
+# 如需忽略某彩种的大体积派生数据，按下面写法单独加：
+# games/dlt/data/derived/*.big.csv

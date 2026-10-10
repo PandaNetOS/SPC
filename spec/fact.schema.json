@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/fact.schema.json",
+  "title": "Fact（结论台账条目）",
+  "description": "一条可追溯、可被推翻的研究结论。FACTS.jsonl 每行一条。这是仓库记忆层的权威源：任何策略规则若要引用证据，必须外键指向本 schema 的 id。",
+  "type": "object",
+  "required": [
+    "id",
+    "game",
+    "claim",
+    "status",
+    "confidence",
+    "category",
+    "affects_win_probability",
+    "evidence",
+    "established_in",
+    "supersedes",
+    "superseded_by",
+    "source",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^F-[0-9]{4}$",
+      "description": "全局唯一、永不复用的编号。仅追加，不回收已删除编号。"
+    },
+    "game": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "所属彩种 id，须存在于 games/<id>/game.yaml。跨彩种通用结论用 'global'。"
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 300,
+      "description": "一句话结论。必须可证伪（可被数据推翻），禁止写成价值判断或建议。"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["established", "tentative", "refuted", "superseded"],
+      "description": "结论状态机。established=证据充分；tentative=证据不足待补；refuted=已被推翻；superseded=被更新结论取代（须填 superseded_by）。"
+    },
+    "confidence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "1=猜测 2=弱迹象 3=中等（单一观测+CI） 4=强（多源交叉确认） 5=解析可证/数学定理。"
+    },
+    "confidence_basis": {
+      "type": "string",
+      "maxLength": 400,
+      "description": "为何是这一档。建议写清楚是『解析可证』『观测+CI』还是『模型估计』——三者不可混淆。"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "probability",
+        "fairness",
+        "structure_preference",
+        "predictability",
+        "prize_mechanism",
+        "sales_external",
+        "methodology",
+        "rules_scope"
+      ],
+      "description": "结论所属分析层，便于按层检索。"
+    },
+    "affects_win_probability": {
+      "const": false,
+      "description": "红线字段：恒为 false。彩票的选号方式在数学上不可能改变中奖概率，任何声称能提高中奖概率的结论一律拒收。"
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["method", "result_summary"],
+      "additionalProperties": true,
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "解析推导 / 精确枚举 / 置换检验 / 观测+Bootstrap / 条件模拟 / 回归 等。"
+        },
+        "result_summary": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "关键数字与方向，须含效应量与不确定性（CI 或 p 值）。"
+        },
+        "effect": {
+          "type": ["object", "null"],
+          "additionalProperties": true,
+          "description": "结构化效应量，如 {from, to} 或 {ratio, ci95}。无结构化效应量时填 null（如方法论类结论）。"
+        },
+        "ci95": {
+          "type": ["array", "null"],
+          "items": {"type": "number"},
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "95% 置信区间 [lo, hi]。无区间时填 null 并说明原因。"
+        },
+        "p_value": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "n_observations": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "data_version": {
+          "type": "string",
+          "description": "所用数据集版本标识，如 dlt_full_2933。"
+        },
+        "rules_epoch": {
+          "type": ["string", "null"],
+          "description": "奖金/奖级类结论必须声明所用规则 epoch（见 games/dlt/rules_history.md）。号码类结论填 null。"
+        },
+        "script": {
+          "type": ["string", "null"],
+          "description": "可复现脚本的相对路径。无法复现的结论不得标 established。"
+        }
+      }
+    },
+    "caveats": {
+      "type": "array",
+      "items": {"type": "string", "maxLength": 300},
+      "description": "减损项与失效边界。必须显式列出，禁止为空数组却声称无风险。"
+    },
+    "established_in": {
+      "type": "string",
+      "pattern": "^round[0-9]{2}$",
+      "description": "首次确立该结论的迭代轮次。"
+    },
+    "supersedes": {
+      "type": ["string", "null"],
+      "pattern": "^F-[0-9]{4}$",
+      "description": "被本条取代的旧结论 id；无则 null。形成结论演化链。"
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "pattern": "^F-[0-9]{4}$",
+      "description": "取代本条的更新结论 id；本条被取代时必须填写，且 status 应为 superseded。"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 3,
+      "description": "证据文件相对路径（仓库根为基准），须真实存在。"
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[a-z0-9_-]+$"}
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "updated_at": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    }
+  }
+}

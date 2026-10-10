@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smartpickcore"
+version = "0.1.0"
+description = "PandaNetOS 智能选号核心 —— 通用彩票投注策略研究框架 + 策略输出"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "PandaNetOS" }]
+keywords = ["lottery", "strategy", "research-framework", "collision-avoidance"]
+classifiers = [
+    "Private :: Do Not Upload",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# 运行期依赖：库代码本身只需要 stdlib。
+# 下列依赖按需安装 —— 缺了会降级（见各模块的 ImportError 处理），不阻断核心功能。
+dependencies = []
+
+[project.optional-dependencies]
+# 契约校验（cli/main.py validate）
+validate = ["jsonschema>=4.0", "pyyaml>=6.0"]
+# 分析（games/<id>/data/tools/）
+analysis = ["numpy>=1.24", "pandas>=2.0"]
+# 全装
+all = ["jsonschema>=4.0", "pyyaml>=6.0", "numpy>=1.24", "pandas>=2.0"]
+# 开发
+dev = ["jsonschema>=4.0", "pyyaml>=6.0", "numpy>=1.24", "pandas>=2.0", "pytest>=7.0"]
+
+[project.scripts]
+smartpickcore = "cli.main:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["smartpickcore*"]
+
+# 非 Python 资源随包分发：契约与彩种配置是运行期必需的
+[tool.setuptools.package-data]
+smartpickcore = ["py.typed"]

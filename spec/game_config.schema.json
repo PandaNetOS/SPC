@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/game_config.schema.json",
+  "title": "GameConfig（彩种配置 game.yaml）",
+  "description": "彩种插件的声明式配置。新增彩种 = 新增 games/<id>/game.yaml + data/，无需改动框架代码。框架的所有分析逻辑只依赖本文件声明的字段，不得硬编码任何具体彩种参数。",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "config_version",
+    "machine",
+    "features",
+    "prize_model",
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "彩种标识，须与目录名一致。"
+    },
+    "name": {
+      "type": "string",
+      "description": "中文名，如『超级大乐透』。"
+    },
+    "config_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "owner": {
+      "type": ["string", "null"]
+    },
+    "machine": {
+      "type": "object",
+      "description": "玩法结构。这是『概率不可变』结论的分母来源，必须准确。",
+      "required": ["zones"],
+      "additionalProperties": false,
+      "properties": {
+        "zones": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["key", "pool_size", "pick"],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$",
+                "description": "区标识，如 front / back。"
+              },
+              "label": {"type": "string"},
+              "pool_size": {"type": "integer", "minimum": 2},
+              "pick": {"type": "integer", "minimum": 1},
+              "ordered": {"type": "boolean", "default": false},
+              "min_value": {"type": "integer", "default": 1}
+            }
+          }
+        },
+        "draw_days": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1, "maximum": 7},
+          "description": "开奖星期（ISO：1=周一 … 7=周日）。"
+        },
+        "draw_time": {"type": ["string", "null"], "pattern": "^[0-9]{2}:[0-9]{2}$"}
+      }
+    },
+    "features": {
+      "type": "array",
+      "description": "可从一注号码机械计算的派生特征。框架的 machine_rule DSL 只能引用此处声明的 key —— 这是策略可执行性的保证。",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "type", "formula"],
+        "additionalProperties": false,
+        "properties": {
+          "key": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "label": {"type": "string"},
+          "type": {
+            "type": "string",
+            "enum": ["integer", "number", "boolean", "category"]
+          },
+          "formula": {
+            "type": "string",
+            "description": "人类可读定义，或受限表达式（对 zones 的聚合）。示例：'count(adjacent_pairs)'。"
+          },
+          "range": {
+            "type": ["array", "null"],
+            "items": {"type": "number"},
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "values": {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+            "description": "type=category 时的取值域。"
+          }
+        }
+      }
+    },
+    "prize_model": {
+      "type": "object",
+      "description": "奖金结构。规则变更频繁，必须带 epoch 划分；跨 epoch 不可直接比较金额。",
+      "required": ["current_epoch", "epochs"],
+      "additionalProperties": false,
+      "properties": {
+        "current_epoch": {"type": "string"},
+        "return_rate": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "epochs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "effective_from", "prize_levels"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {"type": "string"},
+              "effective_from": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+              "effective_to": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+              "first_draw_num": {"type": ["string", "null"]},
+              "prize_levels": {"type": "integer", "minimum": 1},
+              "sum_affects_numbers": {
+                "const": false,
+                "description": "红线：奖金规则变更不影响号码分布，恒为 false。"
+              },
+              "notes": {"type": "string"}
+            }
+          }
+        },
+        "cap_rules": {
+          "type": ["array", "null"],
+          "items": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "required": ["raw", "derived"],
+      "additionalProperties": false,
+      "properties": {
+        "raw": {
+          "type": "object",
+          "required": ["path", "n_draws", "first_draw_num", "last_draw_num", "sha256"],
+          "additionalProperties": true,
+          "properties": {
+            "path": {"type": "string"},
+            "format": {"type": "string", "enum": ["csv", "jsonl", "json", "parquet"]},
+            "encoding": {"type": "string", "default": "utf-8-sig"},
+            "n_draws": {"type": "integer", "minimum": 1},
+            "first_draw_num": {"type": "string"},
+            "last_draw_num": {"type": "string"},
+            "date_range": {"type": "array", "items": {"type": "string"}, "minItems": 2, "maxItems": 2},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "derived": {
+          "type": "object",
+          "required": ["path"],
+          "additionalProperties": true,
+          "properties": {
+            "path": {"type": "string"},
+            "rebuild_script": {"type": ["string", "null"]},
+            "files": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "columns": {
+          "type": ["object", "null"],
+          "additionalProperties": true,
+          "description": "字段口径字典：字段名 → 类型/含义/陷阱。"
+        },
+        "caveats": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "iterations": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["round", "status"],
+        "additionalProperties": true,
+        "properties": {
+          "round": {"type": "string", "pattern": "^round[0-9]{2}$"},
+          "status": {"type": "string", "enum": ["planned", "in_progress", "delivered", "archived"]},
+          "title": {"type": "string"},
+          "date": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "strategy_output": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "properties": {
+        "schema": {"type": "string"},
+        "path": {"type": "string"},
+        "version": {"type": "string"}
+      }
+    }
+  }
+}

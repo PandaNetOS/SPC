@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/strategy.schema.json",
+  "title": "Strategy（彩种策略建议规则集）",
+  "description": "本仓库对外输出的唯一稳定契约。其他工具（选号器、前端、Agent）消费此结构，不应直接读取 games/ 内部实现。字段只增不删；破坏性变更须提升 schema_version 主版本。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "game",
+    "generated_at",
+    "data_version",
+    "rules_epoch",
+    "disclaimer",
+    "boundary",
+    "rules",
+    "avoid_list",
+    "evidence_index"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "本契约版本。消费者应校验主版本号后再解析。"
+    },
+    "game": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "generated_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "generated_by": {
+      "type": ["string", "null"],
+      "description": "生成器与版本，如 smartpickcore-cli/0.1.0。"
+    },
+    "data_version": {
+      "type": "string",
+      "description": "依据的数据集版本，如 dlt_full_2933。"
+    },
+    "rules_epoch": {
+      "type": "string",
+      "description": "规则口径。奖金类规则必须声明，号码类规则也应声明以免误用。"
+    },
+    "disclaimer": {
+      "type": "object",
+      "required": ["is_negative_ev", "changes_win_probability", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "is_negative_ev": {
+          "const": true,
+          "description": "恒为 true：彩票是负期望游戏。"
+        },
+        "changes_win_probability": {
+          "const": false,
+          "description": "红线：本策略集不改变中奖概率，恒为 false。"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 20,
+          "description": "面向终端用户的完整免责声明，消费者必须原样展示。"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "description": "数学边界。给消费者一个可校验的『本策略能影响什么』的定量框架。",
+      "required": ["total_combinations", "first_prize_probability", "return_rate", "optimizable_target"],
+      "additionalProperties": true,
+      "properties": {
+        "total_combinations": {"type": "integer", "minimum": 1},
+        "first_prize_probability": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "return_rate": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "optimizable_target": {
+          "type": "string",
+          "enum": ["expected_bonus_given_win"],
+          "description": "唯一可被优化的量：中奖时的期望奖金。严禁出现 'win_probability'。"
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "description": "有效规则列表。每条都必须外键指向 FACTS.jsonl 中 status=established 的结论。",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement", "kind", "evidence_refs", "confidence", "expected_value_impact"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^R-[0-9]{3}$"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 300,
+            "description": "面向消费者的规则陈述。祈使句，可执行。"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["preference_shift", "collision_avoidance", "portfolio_spread", "mechanical"],
+            "description": "preference_shift=改变选号偏好分布；collision_avoidance=降低撞号；portfolio_spread=组合分散；mechanical=纯机械约束（如格式）。"
+          },
+          "machine_rule": {
+            "type": ["object", "null"],
+            "description": "可供程序直接执行的约束。消费者应优先执行本字段，statement 仅作展示。",
+            "additionalProperties": true,
+            "properties": {
+              "predicate": {
+                "type": "string",
+                "description": "对候选注的判定表达式，使用受限 DSL：字段来自 game.yaml 的 features 定义。"
+              },
+              "action": {
+                "type": "string",
+                "enum": ["exclude", "penalize", "prefer", "require"]
+              },
+              "weight": {
+                "type": ["number", "null"],
+                "description": "action 为 penalize/prefer 时的相对权重。"
+              }
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^F-[0-9]{4}$"},
+            "description": "支撑本条的结论 id 列表。必须全部存在。"
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "本条规则的可信度，通常取所引用证据中的最低值。"
+          },
+          "expected_value_impact": {
+            "type": "object",
+            "required": ["metric", "direction", "changes_win_probability"],
+            "additionalProperties": true,
+            "properties": {
+              "metric": {"type": "string", "enum": ["bonus_given_win", "variance", "none"]},
+              "direction": {"type": "string", "enum": ["increase", "decrease", "neutral"]},
+              "magnitude_pct": {"type": ["number", "null"], "description": "百分比量级，如 121.48。仅作参考上界。"},
+              "ci95": {"type": ["array", "null"], "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+              "changes_win_probability": {"const": false},
+              "caveats": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "applicable_epochs": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "适用规则 epoch 列表；留空表示与规则无关（号码结构类）。"
+          }
+        }
+      }
+    },
+    "avoid_list": {
+      "type": "array",
+      "description": "反向清单：已被证伪或无证据支持的做法。消费者应将其展示为『不要做』。",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement", "refuted_by"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^A-[0-9]{3}$"},
+          "statement": {"type": "string", "minLength": 5, "maxLength": 300},
+          "refuted_by": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^F-[0-9]{4}$"}
+          },
+          "reason": {"type": "string", "maxLength": 400}
+        }
+      }
+    },
+    "evidence_index": {
+      "type": "array",
+      "description": "被本文件引用的结论摘要，便于消费者离线校验而不必读全部台账。",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim", "status", "confidence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^F-[0-9]{4}$"},
+          "claim": {"type": "string"},
+          "status": {"type": "string", "enum": ["established", "tentative", "refuted", "superseded"]},
+          "confidence": {"type": "integer", "minimum": 1, "maximum": 5}
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "可追溯信息：生成脚本、迭代轮次、哈希。",
+      "properties": {
+        "iteration": {"type": "string", "pattern": "^round[0-9]{2}$"},
+        "generator": {"type": "string"},
+        "evidence_hash": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

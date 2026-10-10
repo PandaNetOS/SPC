@@ -1,0 +1,275 @@
+# game.yaml — 超级大乐透（dlt）
+#
+# 彩种声明式配置。框架据此驱动，不硬编码任何数值。
+# 受 spec/game_config.schema.json 约束。
+#
+# ⚠️ 修改本文件后必须跑：
+#      python cli/main.py validate --game dlt
+
+id: dlt
+name: 超级大乐透
+config_version: "1.0"
+owner: PandaNetOS
+
+machine:
+  zones:
+    - key: front
+      label: 前区
+      pool_size: 35
+      pick: 5
+      ordered: false
+      min_value: 1
+    - key: back
+      label: 后区
+      pool_size: 12
+      pick: 2
+      ordered: false
+      min_value: 1
+  draw_days: [1, 3, 6]        # ISO：周一 / 周三 / 周六
+  draw_time: "21:25"
+
+# ---------------------------------------------------------------- 特征
+# 可从一注号码机械计算的派生特征。
+# strategy.json 的 machine_rule.predicate 只能引用此处声明的 key。
+features:
+  - key: front_sum
+    label: 前区和值
+    type: integer
+    formula: "sum(front)"
+    range: [15, 165]
+
+  - key: front_odd
+    label: 前区奇数个数
+    type: integer
+    formula: "count(front, odd)"
+    range: [0, 5]
+
+  - key: front_big
+    label: 前区大号个数（>=18）
+    type: integer
+    formula: "count(front, >=18)"
+    range: [0, 5]
+
+  - key: front_span
+    label: 前区跨度 = max(front) - min(front)
+    type: integer
+    formula: "max(front) - min(front)"
+    range: [4, 34]
+
+  - key: adjacent_pairs
+    label: 前区连号对数（相邻号对，如 12-13 算 1 对）
+    type: integer
+    formula: "count(i in 1..4: front[i+1] - front[i] == 1)"
+    range: [0, 4]
+
+  - key: has_adjacent
+    label: 是否存在连号（adjacent_pairs >= 1）
+    type: boolean
+    formula: "adjacent_pairs >= 1"
+
+  - key: has_run_ge2
+    label: 是否存在 2 连号及以上（本仓库策略核心判定量）
+    type: boolean
+    formula: "adjacent_pairs >= 2"
+    # 说明：run>=2 定义为「至少两个相邻号对」。
+    #       精确理论 P(run>=2) = 0.088904（枚举 C(35,5)=324632 全部组合）
+
+  - key: front_max
+    label: 前区最大号
+    type: integer
+    formula: "max(front)"
+    range: [5, 35]
+
+  - key: all_birthday_zone
+    label: 前区全部号码 <= 31（"生日号区"）
+    type: boolean
+    formula: "max(front) <= 31"
+
+  - key: back_sum
+    label: 后区和值
+    type: integer
+    formula: "sum(back)"
+    range: [3, 23]
+
+  - key: back_span
+    label: 后区跨度
+    type: integer
+    formula: "max(back) - min(back)"
+    range: [1, 11]
+
+# ---------------------------------------------------------------- 奖金模型
+# ⚠️ 规则变更频繁：跨 epoch 不可直接比较奖金金额。
+#    详见 rules_history.md，以及 memory/lessons/LESSONS.md 的 L9。
+prize_model:
+  current_epoch: E6
+  return_rate: 0.51
+
+  epochs:
+    - id: E0
+      effective_from: "2007-05-30"
+      effective_to: "2009-10-17"
+      first_draw_num: "07001"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 原始规则；奖池未过亿封顶 500 万
+
+    - id: E1
+      effective_from: "2009-10-17"
+      effective_to: "2013-12-09"
+      first_draw_num: "09121"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 奖池过亿时一等奖单注最高 1000 万、追加最高 1600 万
+
+    - id: E2
+      effective_from: "2013-12-09"
+      effective_to: "2014-05-05"
+      first_draw_num: "13145"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 资金构成 50/15/35 → 51/14/35；调节基金 1% → 2%
+
+    - id: E3
+      effective_from: "2014-05-05"
+      effective_to: "2019-02-18"
+      first_draw_num: "14052"
+      prize_levels: 6
+      sum_affects_numbers: false
+      notes: 奖级 8 → 6；一/二/三等奖浮动并设保底
+
+    - id: E4
+      effective_from: "2019-02-18"
+      effective_to: "2023-01-01"
+      first_draw_num: "19019"
+      prize_levels: 9
+      sum_affects_numbers: false
+      notes: 奖级 6 → 9；追加范围改为仅一/二等奖，比例 60% → 80%
+
+    - id: E5
+      effective_from: "2023-01-01"
+      effective_to: "2026-02-02"
+      first_draw_num: "23001"
+      prize_levels: 9
+      sum_affects_numbers: false
+      notes: 销售截止 20:00→21:00；开奖 20:25 → 21:25（不改号码与奖金结构）
+
+    - id: E6
+      effective_from: "2026-02-02"
+      effective_to: null
+      first_draw_num: "26014"
+      prize_levels: 7
+      sum_affects_numbers: false
+      notes: 现行规则。奖级 9 → 7；一/二等奖单期总额封顶 1 亿元；返奖率 51%
+
+  cap_rules:
+    - epoch: E6
+      scope: "prize1 + prize2"
+      type: single_period_total_cap
+      amount_yuan: 100000000
+      overflow: roll_into_pool
+      observed_trigger: "26113 (2026-10-05): 37 注一等奖 → 单注 2,390,000 元"
+      # ⚠️ 此封顶直接削弱 F-0004 的 +121% 上界（见 Q-004 / T-003）
+    - epoch: E6
+      scope: "prize1"
+      type: single_ticket_cap
+      amount_yuan: 5000000
+      note: 基本投注单注最高 500 万元；追加部分另计
+    - epoch: E6
+      scope: "prize3..prize7"
+      type: pool_threshold_boost
+      threshold_pool_yuan: 800000000
+      boost_pct: [20, 40]
+      note: 奖池 >= 8 亿时三至七等奖提升 20%–40%
+
+# ---------------------------------------------------------------- 数据
+data:
+  raw:
+    path: games/dlt/data/raw/dlt_full_2933.csv
+    format: csv
+    encoding: utf-8-sig
+    n_draws: 2933
+    first_draw_num: "07001"
+    last_draw_num: "26115"
+    date_range: ["2007-05-30", "2026-10-10"]
+    sha256: "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7"
+
+  derived:
+    path: games/dlt/data/derived
+    rebuild_script: games/dlt/data/build_scripts/build_derived_v4.py
+    files:
+      - 01_yearly_stats.csv
+      - 02_front_number_frequency.csv
+      - 03_back_number_frequency.csv
+      - 04_structure_distribution_exact.json
+      - 05_back_combo_66.csv
+      - 06_acf_lag1to60.csv
+      - 07_data_quality_report.json
+      - 08_rules_epoch_summary.json
+
+  columns:
+    draw_num:
+      type: string
+      note: "★ 带前导零，读取必须 dtype={'draw_num': str}，否则 '07001' 变 7001"
+    date:
+      type: string
+      note: "YYYY-MM-DD，单调递增"
+    weekday:
+      type: string
+      note: "中文单字：一 / 三 / 六"
+    front_1..front_5:
+      type: integer
+      note: "严格升序，1-35"
+    front_sum:
+      type: integer
+      note: "15-165"
+    front_big:
+      type: integer
+      note: "★ 大号定义为 >= 18（不是 > 17.5 的直觉边界，注意口径）"
+    pool_yuan:
+      type: number
+      note: "★ 本期期末奖池（滚入下期），不是本期起始奖池"
+    sale_yuan:
+      type: number
+      note: "全国销售额（元）"
+    prize1_winners:
+      type: integer
+      note: "★ 重尾分布：mean 3.86 / median 2 / max 106 / var/mean 8.46。禁止均值比较（L5）"
+    prize1_amount_yuan:
+      type: number
+      note: "★ 右删失：81.4% 期数封顶 5,000,000。建模须用 Tobit；且封顶规则多次变更（L9）"
+    verified_pdf:
+      type: boolean
+      note: "2020-01 起 1001 期经官方 PDF 校验，0 不一致"
+    verified_api:
+      type: boolean
+      note: "2021-06 起 801 期经官方 API 校验，0 不一致"
+
+  caveats:
+    - "CSV 是 UTF-8 with BOM：漏掉 encoding='utf-8-sig' 会让首列名变成 '\\ufeffdraw_num'"
+    - "draw_num 是字符串，带前导零：漏 dtype={'draw_num': str} 会让 '07001' 变成整数 7001"
+    - "prize1_amount_yuan 是右删失数据（81.4% 封顶 500 万），建模须用删失模型"
+    - "prize1_amount_yuan 的封顶规则多次变更，跨 epoch 不可直接比较"
+    - "prize1_winners 是重尾分布（var/mean=8.46），禁止用均值比较（见 L5）"
+    - "18 组前区组合重复（涉及 36 期）；随机碰撞期望约 13.25 对，量级正常"
+    - "开奖频率不均：2007 年 93 期、2020 年 134 期、2026 年 115 期（未完）"
+    - "pool_yuan 是期末奖池（滚入下期），做因果分析时须注意滞后对齐"
+
+# ---------------------------------------------------------------- 轮次
+iterations:
+  - round: round01
+    status: archived
+    title: 历史轮次（第 2/3 轮分析，v4 之前的产出）
+    note: 产出已归入 round02/legacy_findings/
+  - round: round02
+    status: delivered
+    title: v4 素材结构化入库（建立记忆层与契约层）
+    date: "2026-10-10"
+  - round: round03
+    status: planned
+    title: 撞号效应稳健性与封顶修正
+    date: null
+
+strategy_output:
+  schema: spec/strategy.schema.json
+  path: games/dlt/strategy/strategy.json
+  version: "1.0"

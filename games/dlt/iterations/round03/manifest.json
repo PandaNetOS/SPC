@@ -1,0 +1,73 @@
+{
+  "round": "round03",
+  "game": "dlt",
+  "title": "撞号效应稳健性检验与封顶修正",
+  "status": "planned",
+  "started_at": null,
+  "finished_at": null,
+  "executor": null,
+  "supersedes_round": null,
+
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": ["F-0001", "F-0003", "F-0004", "F-0006", "F-0015"],
+    "previous_handoff": "games/dlt/iterations/round02/HANDOFF.md",
+    "task_brief": "games/dlt/iterations/round03/TASK_BRIEF.md",
+    "note": "本 manifest 由 round02 的 HANDOFF 预生成（status=planned）。执行时请填 started_at / executor，并在收轮时补 outputs 与 deliverables。"
+  },
+
+  "outputs": {
+    "new_fact_ids": [],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "strategy_updated": false,
+    "planned_updates": [
+      "F-0003: 增加分期稳健性结论（或降级适用时段）",
+      "F-0004: 修正 magnitude_pct 或增加封顶后 caveat",
+      "F-0001: 不变（概率不变性不可动摇）"
+    ]
+  },
+
+  "deliverables": [
+    {
+      "path": "games/dlt/iterations/round03/TASK_BRIEF.md",
+      "kind": "task_brief",
+      "note": "由 round02/HANDOFF 转写"
+    },
+    {
+      "path": "games/dlt/iterations/round03/manifest.json",
+      "kind": "manifest",
+      "note": "本文件（planned）"
+    }
+  ],
+
+  "open_questions": ["Q-001", "Q-002", "Q-004"],
+
+  "framework_revision": null,
+
+  "planned_tasks": [
+    {
+      "id": "T-003",
+      "title": "把 1 亿封顶纳入条件份额模拟，重算避开连号的 uplift（区分未触发/已触发封顶）",
+      "priority": "P0",
+      "question": "Q-004",
+      "script": "games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py"
+    },
+    {
+      "id": "T-001",
+      "title": "撞号效应按 2013-08 分期检验稳健性",
+      "priority": "P0",
+      "question": "Q-001",
+      "script": "games/dlt/iterations/round03/scripts/b2_split_stability.py"
+    },
+    {
+      "id": "T-002",
+      "title": "中位数比 + NegBin IRR 复核 1.3603（偿 L5 技术债）",
+      "priority": "P0",
+      "question": "Q-002",
+      "script": "games/dlt/iterations/round03/scripts/b2_robust_estimators.py"
+    }
+  ]
+}
