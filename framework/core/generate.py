@@ -34,9 +34,10 @@ from .judge import (
     ACTION_EXCLUDE,
     ACTION_REQUIRE,
     PredicateError,
-    apply_scope,
+    classify_rules,
     judge,
 )
+from .portfolio import Portfolio, judge_cross
 from .ticket import Ticket
 
 __all__ = [
@@ -133,11 +134,12 @@ def sample_filtered(
         max_attempts  最多尝试次数（防死循环 —— 规则不可满足时会触顶报错）
         min_weight    只接受权重 >= min_weight 的注（默认 0 = 只要通过即可）
 
-    ⚠️ **只执行单注层规则。** 跨注规则（如 R-002 的
-    `duplicated_structure_across_tickets`）无法由一注号码判定，
-    会被自动跳过并在 `stats["cross_scope_skipped"]` 里**显式上报**
-    （不静默忽略）。跨注层的分散度由 `sample_batch(spread=True)` 的
-    `spread_penalty` 事后评估。
+    ⚠️ **只执行单注层规则。** 跨注规则（已声明 `scope: cross` 的特征，
+    如 R-002 的 `duplicated_structure_across_tickets`）需要**整组**上下文，
+    逐注过滤时管不着 —— 它们由 `sample_batch()` 在整组生成后
+    用 `judge_cross()` **真正执行**（2.1 起）。
+    引用了**两边都没声明**特征的规则仍算配置缺陷，
+    在 `stats["undeclared_skipped"]` 里显式上报（不静默忽略）。
 
     产出保证：
         · 每注都通过单注层的全部规则
@@ -147,7 +149,8 @@ def sample_filtered(
     若规则不可满足（如 require 一个概率极低的条件），触顶后**明确报错**，
     不静默返回空列表。
     """
-    single, cross = apply_scope(cfg, rules)
+    scopes = classify_rules(cfg, rules)
+    single = scopes.single
     ok, why = _rule_is_satisfiable(single)
     if not ok:
         raise GenerateError(f"规则集自相矛盾，无法生成: {why}")
@@ -191,7 +194,8 @@ def sample_filtered(
         "required_failed": n_required_failed,
         "unique": len(picked),
         "single_scope_rules": [r["id"] for r in single],
-        "cross_scope_skipped": [r.get("id") for r in cross],
+        "cross_scope_pending": [r.get("id") for r in scopes.cross],
+        "undeclared_skipped": [r.get("id") for r in scopes.undeclared],
     }
     return GenerateResult([t for t, _ in ordered], attempts, stats)
 
@@ -215,7 +219,11 @@ def sample_batch(
         spread  是否启用「注间结构去重」（R-002 的精神；**未量化**，见 spread_penalty）
 
     返回 GenerateResult（含 tickets / attempts / stats）。
+
+    ★ 2.1 起：跨注规则（引用 `scope: cross` 特征）在整组生成后
+    由 `judge_cross()` 真正执行，结果写入 `stats["cross_scope_evaluated"]`。
     """
+
     rng = random.Random(seed)
 
     if not rules:
@@ -238,6 +246,20 @@ def sample_batch(
     res = sample_filtered(cfg, rules, rng, n=n, max_attempts=max_attempts)
     res.stats["mode"] = "filtered+spread"
     res.stats["spread_penalty"] = spread_penalty(cfg, res.tickets)
+    res.stats["spread_penalty_is_heuristic"] = True
+
+    # ★ 跨注层：整组上下文里真正执行 scope=cross 的规则
+    scopes = classify_rules(cfg, rules)
+    if scopes.cross:
+        pf = Portfolio(res.tickets)
+        jr = judge_cross(cfg, pf, scopes.cross)
+        res.stats["cross_scope_evaluated"] = {
+            "rules": [r.get("id") for r in scopes.cross],
+            "matched": jr.matched,
+            "weight": jr.weight,
+            "features": jr.features,
+            "note": "跨注规则只影响方差，不影响期望中奖注数（恒为 N/T）",
+        }
     return res
 
 
@@ -253,6 +275,10 @@ def spread_penalty(cfg: dict[str, Any], tickets: Sequence[Ticket]) -> float:
     ⚠️ 更重要：**本函数的结果与期望中奖注数无关。**
     期望中奖注数恒为 `N / T`（线性），与结构分散度无关。
     分散只影响**方差**。
+
+    ★ 2.1 起：若 `game.yaml` 声明了 `scope: cross` 的特征
+    （如 `duplicate_structure_count`），请优先用它 —— 它是**声明式、
+    可校验、可复现**的；本函数是未量化的启发式，保留仅为向后兼容。
 
     定义（可替换，接口先定下）：
         对每个可求值的整数特征，计算各注取值的「重复集中度」，

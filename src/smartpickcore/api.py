@@ -11,9 +11,14 @@
 
       # 单注层（framework/core）
       sp.evaluate({"front": [...], "back": [...]})   # 求一注的特征
-      sp.judge(ticket)                               # 按规则判定
+      sp.judge(ticket)                               # 按规则判定（单注层）
       sp.pick(n=5)                                   # 生成合规号码
-      sp.spread(tickets)                             # 多注分散度（未量化）
+      sp.spread(tickets)                             # 多注分散度（未量化，启发式）
+
+      # 跨注层（L3，需整组号码）
+      sp.rule_scopes()                               # 哪些规则是单注、哪些是跨注
+      sp.evaluate_portfolio([t1, t2, ...])           # 求注与注之间的特征
+      sp.judge_portfolio([t1, t2, ...])              # 执行跨注规则（如 R-002）
 
   本仓库的 AI 分析者：
       sp = SmartPick.for_game("dlt")
@@ -44,17 +49,22 @@ from core import (  # noqa: E402
     EvaluateError,
     GenerateError,
     JudgeResult,
+    Portfolio,
     PredicateError,
     Ticket,
     TicketError,
+    evaluable_cross_features,
     evaluable_features,
     evaluate,
+    evaluate_cross,
     judge,
+    judge_cross,
+    portfolio_from_any,
     sample_batch,
     spread_penalty,
     ticket_from_any,
 )
-from core.judge import apply_scope  # noqa: E402
+from core.judge import apply_scope, classify_rules  # noqa: E402
 
 __all__ = ["SmartPick"]
 
@@ -159,8 +169,9 @@ class SmartPick:
     def judge(self, ticket: Any) -> JudgeResult:
         """按**单注层**规则判定一注号码。
 
-        ⚠️ 跨注层规则（predicate 引用单注算不出来的特征，如 R-002 的组合分散度）
-        会被自动跳过。要查被跳过了哪些，用 `rule_scopes()`。
+        ⚠️ 跨注层规则（scope=cross，如 R-002 的组合分散度）不在此判定 ——
+        它们需要一整组注。**用 `judge_portfolio()` 执行它们**，
+        用 `rule_scopes()` 查哪些是跨注规则。
         """
         t = ticket_from_any(ticket)
         single, _ = apply_scope(self.config, self.rules())
@@ -176,43 +187,67 @@ class SmartPick:
         t = ticket_from_any(ticket)
         return judge(self.config, t, rules if rules is not None else self.rules())
 
-    def rule_scopes(self) -> dict[str, list[str]]:
-        """规则的**作用域切分**。
+    def rule_scopes(self) -> dict[str, Any]:
+        """规则的**作用域三分**。
 
         {
-          "single": ["R-001"],            # 单注层可判定
-          "cross":  ["R-002"],            # 跨注层（单注层无法判定）
-          "cross_reasons": {              # 为什么它不属于单注层
-             "R-002": "predicate 引用了未声明特征 duplicated_structure_across_tickets"
-          }
+          "single":     ["R-001"],   # 单注可判 → sp.judge(ticket)
+          "cross":      ["R-002"],   # 需整组   → sp.judge_portfolio([tickets])
+          "undeclared": [],          # ★ 谁都执行不了（拼错/漏声明）= 配置缺陷
+          "cross_reasons": {...}
         }
+
+        ★ 契约 1.1 起 `cross` 与 `undeclared` 分开：
+        1.0 时代二者混为一谈，于是 R-002 被归到"跨注"后**没有任何入口能执行它**
+        —— 消费者拿到策略却用不了。`undeclared` 现在是明确的错误信号。
         """
-        single, cross = apply_scope(self.config, self.rules())
-        declared = set(f["key"] for f in (self.config.get("features") or []))
+        scopes = classify_rules(self.config, self.rules())
         reasons: dict[str, str] = {}
-        for r in cross:
+        for r in scopes.cross:
             p = (r.get("machine_rule") or {}).get("predicate", "")
-            unknown = []
-            for token in p.replace("==", " ").replace("!=", " ").replace(">=", " ") \
-                          .replace("<=", " ").replace(">", " ").replace("<", " ") \
-                          .replace(" and ", " ").replace(" or ", " ").split():
-                if token in ("true", "false"):
-                    continue
-                try:
-                    float(token)
-                    continue
-                except ValueError:
-                    pass
-                if token not in declared:
-                    unknown.append(token)
             reasons[r.get("id", "?")] = (
-                f"引用了未声明特征 {unknown}" if unknown else "无法由单注判定"
+                f"predicate `{p}` 引用了跨注特征；"
+                f"整组号码上用 judge_portfolio() 执行"
             )
+        for r in scopes.undeclared:
+            p = (r.get("machine_rule") or {}).get("predicate", "")
+            reasons[r.get("id", "?")] = f"predicate `{p}` 引用了未声明特征"
         return {
-            "single": [r["id"] for r in single],
-            "cross": [r["id"] for r in cross],
+            "single": [r["id"] for r in scopes.single],
+            "cross": [r["id"] for r in scopes.cross],
+            "undeclared": [r["id"] for r in scopes.undeclared],
             "cross_reasons": reasons,
         }
+
+    # -------------------------------------------------- 跨注层（framework/core/portfolio）
+
+    def evaluable_cross_features(self) -> list[str]:
+        """可执行的**跨注**特征 key（scope=cross 且声明了 primitive）。"""
+        return evaluable_cross_features(self.config)
+
+    def evaluate_portfolio(self, tickets: Any) -> dict[str, Any]:
+        """求**一组注**的全部跨注特征。
+
+        接受 Ticket 列表 / dict 列表 / Portfolio。
+        ⚠️ 这些量描述的是注与注之间的关系，**一注号码算不出来**。
+        """
+        pf = portfolio_from_any(tickets, self.config)
+        return evaluate_cross(self.config, pf)
+
+    def judge_portfolio(self, tickets: Any) -> JudgeResult:
+        """按**跨注层**规则判定一组注（如 R-002 的组合分散度）。
+
+        这是契约 1.1 补上的一层：1.0 时代跨注规则只能被"上报跳过"，
+        消费者**没有任何办法执行 R-002**。
+
+        ⚠️ 判定结果只反映"这组注与跨注规则的契合度"。
+        跨注规则**不影响期望中奖注数**（恒为 N/T），只影响方差。
+        """
+        pf = portfolio_from_any(tickets, self.config)
+        scopes = classify_rules(self.config, self.rules())
+        if not scopes.cross:
+            return judge_cross(self.config, pf, [])
+        return judge_cross(self.config, pf, scopes.cross)
 
     def pick(
         self,

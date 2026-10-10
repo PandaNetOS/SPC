@@ -85,13 +85,18 @@
       "description": "有效规则列表。每条都必须外键指向 FACTS.jsonl 中 status=established 的结论。",
       "items": {
         "type": "object",
-        "required": ["id", "statement", "kind", "evidence_refs", "confidence", "expected_value_impact"],
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^R-[0-9]{3}$"
-          },
+      "required": ["id", "statement", "kind", "scope", "evidence_refs", "confidence", "expected_value_impact"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^R-[0-9]{3}$"
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["single", "cross"],
+          "description": "★ schema_version 1.1 新增（必填）。本规则的作用域：single=只看一注号码即可判定（用 framework/core/judge.py 的 judge()）；cross=**跨注**规则，必须拿到一整组号码才能判定（用 framework/core/portfolio.py 的 judge_cross()）。消费者据此知道哪些规则可以逐注执行、哪些必须凑齐一组再判 —— 这是 1.0 缺的一层：当时 R-002 只能被『上报跳过』，没有任何地方能执行它。"
+        },
           "statement": {
             "type": "string",
             "minLength": 8,

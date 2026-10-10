@@ -95,6 +95,12 @@
             "type": "string",
             "description": "人类可读的数学说明。**仅注释，不参与求值**（框架刻意不使用 eval）。必须与 primitive 语义一致。"
           },
+          "scope": {
+            "type": "string",
+            "enum": ["single", "cross"],
+            "default": "single",
+            "description": "★ config_version 2.1 新增。single=可从一注号码算出（默认）；cross=**跨注**特征，需一整组注才能算出，由 framework/core/portfolio.py 求值。scope 必须与 primitive 所属的原语表一致，否则校验器报错（单注原语不得用于 cross 特征，反之亦然）。"
+          },
           "range": {
             "type": ["array", "null"],
             "items": {"type": "number"},

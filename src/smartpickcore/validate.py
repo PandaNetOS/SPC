@@ -144,7 +144,11 @@ def validate_game(game: str, repo_root: str | None = None,
         _fw = os.path.join(root, "framework")
         if _fw not in _sys.path:
             _sys.path.insert(0, _fw)
-        from core.game_util import validate_feature_declarations  # type: ignore
+        from core.game_util import (  # type: ignore
+            cross_feature_keys,
+            single_feature_keys,
+            validate_feature_declarations,
+        )
 
         ferrs = validate_feature_declarations(cfg)
         for e in ferrs:
@@ -152,9 +156,12 @@ def validate_game(game: str, repo_root: str | None = None,
         if not ferrs:
             n_exec = sum(1 for f in cfg.get("features", []) if f.get("primitive"))
             n_all = len(cfg.get("features", []))
+            n_cross = len(cross_feature_keys(cfg))
+            n_single = len(single_feature_keys(cfg))
             rep.ok(
                 f"game {game}: features 声明可执行 "
-                f"({n_exec}/{n_all} 个含 primitive)"
+                f"({n_exec}/{n_all} 个含 primitive；"
+                f"单注 {n_single} / 跨注 {n_cross})"
             )
     except ImportError as e:
         rep.warn(f"game {game}: 无法加载 framework/core 做特征声明检查（{e}）")
@@ -411,51 +418,95 @@ def validate_strategy(game: str, repo_root: str | None = None,
         _fw = os.path.join(root, "framework")
         if _fw not in _sys.path:
             _sys.path.insert(0, _fw)
-        from core.judge import PredicateError, apply_scope, parse_predicate  # type: ignore
+        from core.judge import (  # type: ignore
+            PredicateError,
+            classify_rules,
+        )
     except ImportError as e:
         rep.warn(f"strategy[{game}]: 无法加载 framework/core 做 predicate 检查（{e}）")
         return rep
 
     cfg_path = os.path.join(root, "games", game, "game.yaml")
-    declared: list[str] = []
+    cfg: dict[str, Any] | None = None
     if os.path.exists(cfg_path):
         try:
             import yaml  # type: ignore
             with open(cfg_path, encoding="utf-8") as f:
-                _cfg = yaml.safe_load(f)
-            declared = [f["key"] for f in (_cfg.get("features") or [])]
+                cfg = yaml.safe_load(f)
         except Exception:
-            pass
+            cfg = None
 
-    single_cnt = cross_cnt = 0
-    for rule in st.get("rules", []):
-        rid = rule.get("id", "?")
-        mr = rule.get("machine_rule") or {}
-        pred = mr.get("predicate")
-        if not pred:
+    if cfg is None:
+        rep.warn(f"strategy[{game}]: 读不到 game.yaml，跳过 predicate 作用域检查")
+        return rep
+
+    scopes = classify_rules(cfg, st.get("rules", []))
+
+    # ① 未声明特征 = 配置缺陷（拼错 / 漏声明）。这是**错误**，不是警告：
+    #    引用了谁都不认识的特征，任何实现都执行不了该规则。
+    for r in scopes.undeclared:
+        rid = r.get("id", "?")
+        mr = r.get("machine_rule") or {}
+        rep.err(
+            f"strategy[{game}].{rid}: predicate 引用了未声明的特征 —— "
+            f"{mr.get('predicate')!r} 中的特征既不在单注声明里、"
+            f"也不在跨注声明里。若是跨注性质，请在 game.yaml 用 "
+            f"`scope: cross` 声明它；若是拼写错误则须修正。"
+        )
+
+    # ② scope 声明与实际作用域不符 = 契约自相矛盾
+    for r in st.get("rules", []):
+        rid = r.get("id", "?")
+        declared_scope = r.get("scope")
+        if declared_scope not in (None, "single", "cross"):
+            rep.err(
+                f"strategy[{game}].{rid}: scope={declared_scope!r} 非法，"
+                f"只能是 'single' 或 'cross'"
+            )
             continue
-        if declared:
-            try:
-                unknown = [f for f in parse_predicate(pred).features()
-                           if f not in declared]
-            except PredicateError as e:
-                rep.err(f"strategy[{game}].{rid}: predicate 解析失败: {e}")
-                continue
-            if unknown:
-                # 不是错误：可能是跨注特征。但要显式区分「跨注」与「拼错」
-                rep.warn(
-                    f"strategy[{game}].{rid}: predicate 引用了未声明的特征 "
-                    f"{unknown} —— 该规则**单注层无法判定**，"
-                    f"若这是跨注特征（如组合分散度）应属 L3；"
-                    f"若是拼写错误则须修正。"
-                )
-                cross_cnt += 1
-            else:
-                single_cnt += 1
-    if declared and (single_cnt or cross_cnt):
+        if not r.get("machine_rule"):
+            continue
+        actual = ("cross" if r in scopes.cross
+                  else "undeclared" if r in scopes.undeclared
+                  else "single")
+        if declared_scope is None:
+            rep.warn(
+                f"strategy[{game}].{rid}: 未声明 scope（契约 1.1 起必填），"
+                f"按其引用特征推断为 {actual}"
+            )
+        elif declared_scope != actual and actual != "undeclared":
+            rep.err(
+                f"strategy[{game}].{rid}: 声明 scope={declared_scope!r}，"
+                f"但其 predicate 引用的特征实为 {actual!r} —— 自相矛盾，"
+                f"消费者会按声明去调错的执行入口。"
+            )
+
+    # ③ 跨注规则必须能被 portfolio 真正执行（不能只是"声明了 cross"）
+    if scopes.cross:
+        try:
+            from core.portfolio import Portfolio, judge_cross  # type: ignore
+            from core.generate import sample_uniform  # type: ignore
+            import random as _random
+
+            _rng = _random.Random(20261011)
+            _pf = Portfolio([sample_uniform(cfg, _rng) for _ in range(3)])
+            _jr = judge_cross(cfg, _pf, scopes.cross)
+            rep.ok(
+                f"strategy[{game}]: 跨注规则 {[r.get('id') for r in scopes.cross]} "
+                f"可在整组上下文执行（实测 3 注样本，求得特征 "
+                f"{sorted(_jr.features)}）"
+            )
+        except Exception as e:  # noqa: BLE001
+            rep.err(
+                f"strategy[{game}]: 跨注规则声明为可执行，但实测失败 —— {e}。"
+                f"跨注规则执行不了等于契约缺一层（1.0 的 R-002 正是此病）。"
+            )
+
+    n_s, n_c = len(scopes.single), len(scopes.cross)
+    if n_s or n_c:
         rep.ok(
-            f"strategy[{game}]: predicate 作用域 单注层 {single_cnt} 条 / "
-            f"跨注或未声明 {cross_cnt} 条"
+            f"strategy[{game}]: predicate 作用域 单注层 {n_s} 条 / "
+            f"跨注层 {n_c} 条（可整组执行）"
         )
 
     return rep

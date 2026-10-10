@@ -1,6 +1,6 @@
 # TODO.md — 待办池（工作记忆）
 
-> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
@@ -71,9 +71,22 @@
 - [ ] **T-032** 摇奖设备数据的获取评估（H-003）
       唯一的"推翻 F-0001"路径。当前标 `unverifiable_with_current_data`
 
-- [ ] **T-033** R-002 的 predicate 处置（**待用户决策**）
-      当前 warning：引用了未声明特征 `duplicated_structure_across_tickets`（跨注特征，L3）
-      三选一：① 改 predicate 为单注可判定；② 加跨注层特征声明；③ 保持仅 warning
+- [x] **T-033** R-002 的 predicate 处置 ✅ **r03 框架迭代已落地（选 ② 加跨注层特征声明）**
+
+      **原状态**：warning —— 引用未声明特征 `duplicated_structure_across_tickets`（跨注，L3）。
+      **决策**：② 加跨注层特征声明。理由：① 与 ③ 只能维持"单注层自洽"，
+      但都等于承认**契约缺一层**（策略被发布却无法执行）。
+
+      **落地内容**：
+      - `framework/core/portfolio.py` 新增（Portfolio 一等公民 + `evaluate_cross` + `judge_cross`）
+      - `features.py` 新增 `CROSS_PRIMITIVES` 独立注册表（5 个跨注原语）
+      - `game.yaml` 声明 3 个 `scope: cross` 特征（config 2.0 → **2.1**）
+      - `strategy.json` `rules[]` 新增必填 `scope`；R-002 改引用 `has_duplicated_structure`（schema 1.0 → **1.1**）
+      - `judge.classify_rules()` 三路切分 single / cross / undeclared
+      - `validate_strategy()` 未声明特征由 warning 升 **error**，并对跨注规则**真样本冒烟执行**
+      - 新增 `tests/test_cross_scope.py`（62 项）
+
+      **剩余（不属于本条）**：`R-002.magnitude_pct` 仍为 `null` —— **可执行 ≠ 已量化**
 
 ## P4 — 框架自迭代（元层面）
 

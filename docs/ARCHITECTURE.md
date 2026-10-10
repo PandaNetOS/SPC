@@ -1,6 +1,6 @@
 # ARCHITECTURE —— 仓库架构
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 一句话
@@ -97,22 +97,37 @@ memory/ ←── 由 games/ 的轮次产出写入
 
 ### 3. 单注层一等公民（single-ticket core）
 
-`framework/core/` 六个模块，构成 `Ticket → 求值 → 判定 → 生成` 链路：
+`framework/core/` 七个模块，构成 `Ticket → 求值 → 判定 → 生成` 与
+`Portfolio → 跨注求值 → 跨注判定` 两条链路：
 
 ```
 L1 Ticket      ticket.py      一注号码。区名来自 machine.zones，不硬编码 front/back
-L2 Scoring     evaluate.py    按声明机械求值
+L2 Scoring     evaluate.py    按声明机械求值（仅 scope: single 特征）
                judge.py       受限 DSL 解析 + 判定 + ★ 作用域切分
-L3 Portfolio   generate.py    拒绝采样 + 结构分散（跨注规则只留接口）
+               features.py    21 个单注原语 + 5 个跨注原语（两张表分开注册）
+L3 Portfolio   portfolio.py   ★ 2.1 起已实现：整组一等公民 + 跨注求值/判定
+               generate.py    拒绝采样 + 结构分散（跨注规则在批次上下文执行）
 ```
 
 **为什么 `Ticket` 不含 `front`/`back`**：区名是可变长数组。这是"加入第二个彩种
-不改 `framework/`"的唯一硬标准的前提。
+不改 `framework/`"的唯一硬标准的前提。`Portfolio` 同理 —— 只持有 `tuple[Ticket]`。
 
-**★ 作用域切分是本层的核心机制**：`R-002` 的 predicate
-`duplicated_structure_across_tickets == true` 是**跨注特征，一注号码算不出来**。
-`split_by_scope()` 把它切开并**显式上报** —— 绝不用 `try/except` 静默吞掉，
-因为那会连带使同批的 `R-001` 一起失效（静默降级比报错危险）。
+**★ 作用域是本层的核心机制**，且 2.1 起从"二路切分"升级为"三路切分"：
+
+| 类别 | 判定 | 处理 |
+|---|---|---|
+| `single` | 特征已声明且 `scope: single` | 单注层正常判定 |
+| `cross` | 引用了 `scope: cross` 的已声明特征 | `judge_cross()` 在整组上下文**真正执行** |
+| `undeclared` | 引用了根本没声明的特征（拼错 / 遗漏） | **报错**，不是警告 |
+
+`classify_rules()` 负责三路切分（"跨注"与"拼错"不再混为一谈）。
+绝不用 `try/except` 静默吞掉 —— 那会连带使同批的 `R-001` 一起失效
+（静默降级比报错危险）。
+
+> **1.0 的病根**：`R-002` 引用 `duplicated_structure_across_tickets`，
+> 该特征**从未在 `game.yaml` 声明，且全仓库没有任何执行入口** ——
+> 策略被发布，消费者却无法执行它，**契约缺了整整一层**。
+> 2.1 已正式声明为 `scope: cross`（改名为 `has_duplicated_structure`）并补上 L3 执行层。
 
 > 详见 `framework/core/README.md` 与 `docs/PROPOSAL_SINGLE_TICKET_CORE.md`。
 

@@ -1,6 +1,6 @@
 # PROPOSAL — 单注层通用架构（Single-Ticket Core）
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **状态**：✅ **已落地**（全部 11 步完成，`validate --all` 33 项全绿，`tests/test_core.py` 92 项全绿）
@@ -341,6 +341,22 @@ R-002: "duplicated_structure_across_tickets == true"
 
 **未决（属研究/契约问题，不属架构）**：`strategy.json` 的 R-002 本身该怎么处置 ——
 改 predicate、加跨注层特征声明、还是保持现状只给 warning。这是**已向用户提出、待决策**的点。
+
+> **◆ 后续补记（r03 框架迭代，config_version 2.1）**：此项已决策并落地 ——
+> 选 **② 加跨注层特征声明**。当时的三选一里只有 ① 和 ③ 能维持"单注层自洽"，
+> 但它们都等于**承认契约缺一层**：`R-002` 被发布出去却永远执行不了。
+> 现在的形态：
+>
+> | 当时 | 现在（2.1） |
+> |---|---|
+> | 跨注特征**从未声明** | `game.yaml` 显式声明 3 个 `scope: cross` 特征 |
+> | 跨注原语**不存在** | `CROSS_PRIMITIVES` 独立注册表，5 个跨注原语 |
+> | `split_by_scope()` 二路切分，"跨注"与"拼错"混为一谈 | `classify_rules()` **三路**切分：`single` / `cross` / `undeclared` |
+> | 跨注规则只上报、不执行 | `portfolio.py` + `judge_cross()` **真正执行** |
+> | `stats["cross_scope_skipped"]` | `stats["cross_scope_pending"]` / `undeclared_skipped` / `cross_scope_evaluated` |
+> | `validate` 对未声明特征给 warning | 给 **error**，并对跨注规则做**真样本冒烟执行** |
+>
+> 另：本提案 §10.5 的 G3 由"部分闭合"升级为"**执行层已闭合，量化仍缺**"。
 
 ### 10.4 验证结果
 

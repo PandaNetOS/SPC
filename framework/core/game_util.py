@@ -19,7 +19,14 @@ from __future__ import annotations
 from math import comb
 from typing import Any
 
-from .features import PrimitiveError, arity_of, list_primitives
+from .features import (
+    SCOPE_CROSS,
+    SCOPE_SINGLE,
+    PrimitiveError,
+    arity_of,
+    list_primitives,
+    scope_of,
+)
 
 __all__ = [
     "GameUtilError",
@@ -32,7 +39,14 @@ __all__ = [
     "declared_features",
     "feature_by_key",
     "feature_keys",
+    "feature_scope",
+    "declared_single_features",
+    "declared_cross_features",
+    "single_feature_keys",
+    "cross_feature_keys",
     "validate_feature_declarations",
+    "SCOPE_SINGLE",
+    "SCOPE_CROSS",
 ]
 
 
@@ -122,6 +136,48 @@ def feature_keys(cfg: dict[str, Any]) -> list[str]:
     return [f["key"] for f in declared_features(cfg)]
 
 
+# ---------------------------------------------------------------- 作用域
+
+def feature_scope(cfg: dict[str, Any], key: str) -> str:
+    """某特征的作用域：`single`（单注可算）/ `cross`（需整组上下文）。
+
+    未显式声明 `scope` 的特征一律按 `single` —— 向后兼容 config_version 2.0。
+    """
+    f = feature_by_key(cfg, key)
+    s = f.get("scope")
+    if s is None:
+        return SCOPE_SINGLE
+    if s not in (SCOPE_SINGLE, SCOPE_CROSS):
+        raise GameUtilError(
+            f"特征 {key!r} 的 scope={s!r} 非法，只能是 "
+            f"{SCOPE_SINGLE!r} 或 {SCOPE_CROSS!r}"
+        )
+    return s
+
+
+def declared_single_features(cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    """scope=single（或未声明 scope）的特征。"""
+    out = []
+    for f in declared_features(cfg):
+        s = f.get("scope") or SCOPE_SINGLE
+        if s == SCOPE_SINGLE:
+            out.append(f)
+    return out
+
+
+def declared_cross_features(cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    """scope=cross 的特征。"""
+    return [f for f in declared_features(cfg) if f.get("scope") == SCOPE_CROSS]
+
+
+def single_feature_keys(cfg: dict[str, Any]) -> list[str]:
+    return [f["key"] for f in declared_single_features(cfg)]
+
+
+def cross_feature_keys(cfg: dict[str, Any]) -> list[str]:
+    return [f["key"] for f in declared_cross_features(cfg)]
+
+
 def validate_feature_declarations(cfg: dict[str, Any]) -> list[str]:
     """静态检查 features[] 的声明是否可被框架执行。
 
@@ -132,6 +188,11 @@ def validate_feature_declarations(cfg: dict[str, Any]) -> list[str]:
       · `primitive` 的必需参数必须齐备
       · `args.zone`（若有）必须在 machine.zones 的区名里
       · feature 的 `type` 若是 boolean，primitive 必须返回布尔（无法静态判定时只警告）
+      · ★ `scope` 若声明，只能是 single / cross，且**必须与原语的作用域一致**
+        （单注原语用在 cross 特征上、或跨注原语用在 single 特征上 → 报错）
+
+    最后一条是 **L3 跨注层**的结构性保障：跨注特征从一注号码算不出来，
+    若允许混用原语，调用方会得到"毫无意义却不报错"的结果。
 
     返回错误信息列表（空表示通过）。
     """
@@ -163,6 +224,29 @@ def validate_feature_declarations(cfg: dict[str, Any]) -> list[str]:
         if not isinstance(prim, str):
             errs.append(f"{where}: primitive 必须是字符串")
             continue
+
+        # ★ scope 与原语作用域必须一致
+        scope = f.get("scope") or SCOPE_SINGLE
+        if scope not in (SCOPE_SINGLE, SCOPE_CROSS):
+            errs.append(
+                f"{where}: scope={scope!r} 非法，只能是 "
+                f"{SCOPE_SINGLE!r} 或 {SCOPE_CROSS!r}"
+            )
+            continue
+        try:
+            actual_scope = scope_of(prim)
+        except PrimitiveError as e:
+            errs.append(f"{where}: {e}")
+            continue
+        if actual_scope != scope:
+            errs.append(
+                f"{where}: 原语 {prim!r} 是**{actual_scope}**原语，"
+                f"但本特征声明 scope={scope!r}。"
+                f"{'跨注原语需要一组注，单注原语只吃一注 —— 二者不可混用。' }"
+                f"可用的 {scope} 原语：{', '.join(list_primitives(scope))}"
+            )
+            continue
+
         try:
             need = arity_of(prim)
         except PrimitiveError as e:

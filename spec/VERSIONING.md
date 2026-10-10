@@ -1,6 +1,6 @@
 # VERSIONING.md — 版本与兼容策略
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 三个独立版本号
@@ -98,6 +98,8 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 | 2026-10-10 | **`strategy.schema.json` 次版本提升**：`machine_rule.predicate` 新增受限 DSL `pattern`（`<feature_key> <op> <literal>`，同连接词 `and`/`or`，禁括号/嵌套/混用/右侧非字面量） | **收紧校验**。原为自由字符串，现非法表达式在校验阶段被拒收。已发布的 `dlt` 策略两条 predicate 均合规 |
 | 2026-10-10 | **`iteration.schema.json` 次版本提升**：`started_at` 放宽为可空；`new_lesson_ids` pattern 由 `^L-[0-9]{2}$` 放宽为 `^L-?[0-9]{1,2}$`（仓内实际写法为 `L1`..`L9` 无补零）；新增可选字段 `planned_tasks`（下轮任务计划）与 `outputs_planned` | 向后兼容 |
 | 2026-10-10 | **`fact.schema.json` 次版本提升**：`evidence.effect` 放宽为 `["object","null"]` | 向后兼容（部分结论无效应量） |
+| 2026-10-11 | **`game_config` 次版本 2.0 → 2.1**：`features[]` 新增可选 `scope`（`single` / `cross`，默认 `single`）；新增 5 个跨注原语，注册在**独立**的 `CROSS_PRIMITIVES` 表 | 向后兼容（`scope` 有默认值）。**收紧校验**：`scope` 与原语真实作用域不一致时结构性拒收 |
+| 2026-10-11 | **`strategy.schema.json` 次版本 1.0 → 1.1**：`rules[]` 新增**必填** `scope`（`single` / `cross`） | **破坏性**（存量 `strategy.json` 的每条 rule 必须补 `scope`）。理由见下节 —— 缺这个字段时，消费者无法知道该走哪个执行入口 |
 
 > 新增记录请追加到表末，**不要删除历史行**。
 
@@ -117,6 +119,41 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 3. 多区彩种必须显式写 `args.zone`；单区彩种可省略
 4. 升级后跑 `python cli/main.py validate --game <id> -v`，
    应看到 `features 声明可执行 (N/N 个含 primitive)`
+
+## config_version 2.1 → 与 schema_version 1.1 迁移指南（跨注层）
+
+**为什么必须加 `scope`**：`config_version 2.0` 时，`strategy.json` 的 `R-002` 引用了一个
+跨注特征 —— 而该特征**既未在 `game.yaml` 声明，全仓库也没有任何执行入口**。
+策略被发布出去，消费者拿到却**无法执行**：契约缺了整整一层。
+
+`scope` 就是补上这层：**它告诉消费者该走哪个执行入口**。
+
+| 位置 | 字段 | 值 | 作用 |
+|---|---|---|---|
+| `game.yaml` `features[]` | `scope` | `single`（默认）/ `cross` | 声明该特征在哪一层可算 |
+| `strategy.json` `rules[]` | `scope` | `single` / `cross`（**必填**） | 声明该规则走哪个入口 |
+
+| 规则 `scope` | 执行入口 |
+|---|---|
+| `single` | `judge(cfg, ticket, rules)` / `SmartPick.judge(ticket)` |
+| `cross` | `judge_cross(cfg, portfolio, rules)` / `SmartPick.judge_portfolio(tickets)` |
+
+**升级检查清单**：
+
+1. `strategy.json` 每条 rule 补 `scope`（缺即 warning，`validate --all` 会报）
+2. 引用的跨注特征必须在 `game.yaml` 里以 `scope: cross` 声明 ——
+   否则进 `undeclared`，`validate` 报 **error**（1.0 是 warning，正是这个宽松让缺口活了下来）
+3. `scope: cross` 的特征只能挂 `CROSS_PRIMITIVES` 里的原语，反之亦然 —— 混用被结构性拒收
+4. `validate --all` 会对每条跨注规则做**真样本冒烟执行**，跑不通即 error
+
+> **可执行 ≠ 已量化**：`R-002` 现在能判定命中与否，但 `magnitude_pct` 仍是 `null`。
+> 把这两件事分开，避免"能跑"被误读成"有效"。
+
+**为什么 `rules[].scope` 是必填（而非默认 `single`）**：
+默认 `single` 会让一条跨注规则**静默地在单注层被跳过** ——
+而"静默跳过"正是 1.0 的病根。宁可让升级时报错，也不给一个会骗人的默认值。
+
+## 关于 config_version 2.0 那次
 
 **为什么是破坏性而不仅是"新增可选字段"**：
 `formula` 从"参与求值的语义载体"退回"注释"，这是**语义变更**（第 33 行"改变已有字段的语义"）。

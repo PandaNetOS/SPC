@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`1.0` ｜ **框架版本**：`1.0` ｜ **当前轮次**：`r03` ｜ **生成日期**：2026-10-11
+**索引版本**：`1.0` ｜ **框架版本**：`1.1` ｜ **当前轮次**：`r03` ｜ **生成日期**：2026-10-11
 
 ---
 
@@ -46,7 +46,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 34 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 52 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 54 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 13 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 25 |
 
@@ -97,26 +97,26 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `memory/journal/round03.md` | `1.0` | `r03` | 2026-10-11 | active | 复核轮（含 1 次自我纠错） |
 | `memory/lessons/LESSONS.md` | `1.1` | `r03` | 2026-10-11 | active | L1–L12，只增不删（r03 新增 L10–L12） |
 | `memory/workbench/HYPOTHESES.md` | `1.0` | `r02` | 2026-10-11 | active | H-001~H-005 |
-| `memory/workbench/OPEN_QUESTIONS.md` | `1.1` | `r03` | 2026-10-11 | active | 10 问，3 answered（Q-001/Q-002/Q-004） |
-| `memory/workbench/TODO.md` | `1.2` | `r03` | 2026-10-11 | active | P0 已清空；T-043 已销账 |
+| `memory/workbench/OPEN_QUESTIONS.md` | `1.2` | `r03` | 2026-10-11 | active | 11 问，3 answered（Q-001/Q-002/Q-004）；r03 框架迭代新增 Q-012（跨注规则量化） |
+| `memory/workbench/TODO.md` | `1.3` | `r03` | 2026-10-11 | active | P0 已清空；T-043 已销账；**T-033 已销账**（R-002 跨注层，选 ②） |
 
 ### B 级 · 结构性文档 / 框架与库代码
 
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
-| `AI_CONTEXT.md` | `1.1` | `r03` | active |  |
-| `README.md` | `1.1` | `r03` | active |  |
+| `AI_CONTEXT.md` | `1.2` | `r03` | active |  |
+| `README.md` | `1.2` | `r03` | active |  |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
-| `docs/ARCHITECTURE.md` | `1.0` | `r02` | active |  |
+| `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |
 | `docs/CONSUMING.md` | `1.1` | `r02` | active |  |
 | `docs/ITERATION_GUIDE.md` | `1.0` | `r02` | active |  |
 | `docs/METHODOLOGY.md` | `1.0` | `r02` | active |  |
-| `docs/PROPOSAL_SINGLE_TICKET_CORE.md` | `1.0` | `r02` | active |  |
+| `docs/PROPOSAL_SINGLE_TICKET_CORE.md` | `1.1` | `r03` | active |  |
 | `docs/VERSIONING_DOCS.md` | `1.3` | `r03` | active |  |
-| `framework/INDEX.md` | `1.0` | `r02` | active |  |
+| `framework/INDEX.md` | `1.1` | `r03` | active |  |
 | `framework/README.md` | `1.0` | `r02` | active |  |
-| `framework/core/README.md` | `1.0` | `r02` | active |  |
+| `framework/core/README.md` | `1.1` | `r03` | active |  |
 | `framework/core/__init__.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/core/evaluate.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/core/features.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
@@ -124,6 +124,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/core/generate.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/core/judge.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
+| `framework/core/portfolio.py` | —（见备注） | `—` | active | ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross |
 | `framework/methodology/MATH_BOUNDARY.md` | `1.0` | `r02` | active |  |
 | `framework/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/ITERATION_PROTOCOL.md` | `1.1` | `r03` | active |  |
@@ -141,7 +142,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/_template/data/tools/README.md` | —（见备注） | `—` | active |  |
 | `games/_template/iterations/round01/TASK_BRIEF.md` | —（见备注） | `—` | active |  |
 | `spec/README.md` | `1.0` | `r02` | active |  |
-| `spec/VERSIONING.md` | `1.0` | `r02` | active |  |
+| `spec/VERSIONING.md` | `1.1` | `r03` | active |  |
 | `src/__init__.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/__init__.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/api.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
@@ -150,8 +151,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/smartpickcore/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/validate.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/smartpickcore/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
-| `tests/README.md` | `1.0` | `r02` | active |  |
+| `tests/README.md` | `1.1` | `r03` | active |  |
 | `tests/test_core.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
+| `tests/test_cross_scope.py` | —（见备注） | `—` | active | ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需 pytest |
 | `tools/build_versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tools/inject_version_lines.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tools/render_version_index.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
@@ -163,11 +165,11 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 |---|---|---|---|
 | `games/_template/game.yaml` | `config_version` | `2.0` | 2026-10-11 与 dlt 同步升至 2.0（features 原语化） |
 | `games/_template/strategy/strategy.json` | `config_version` | `2.0` | 模板策略，2026-10-11 随 game.yaml 同步至 2.0 |
-| `games/dlt/game.yaml` | `config_version` | `2.0` | ★ 2026-10-11 由 1.0 升 2.0（features 原语化） |
+| `games/dlt/game.yaml` | `config_version` | `2.1` | ★ 2026-10-11 由 1.0 升 2.0（features 原语化）；2.0 → 2.1（新增 scope: single/cross，声明 3 个跨注特征） |
 | `games/dlt/iterations/round02/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.0` | 契约版本；内容版本见 content_version；r03 同步 R-001 封顶修正（F-0015→F-0016/F-0017） |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.1` | 契约版本；1.0 → 1.1（rules[] 新增必填 scope 字段；R-002 的 predicate 改为引用已声明的跨注特征 has_duplicated_structure，从此可真正执行） |
 | `pyproject.toml` | `project.version` | `0.1.0` | 包版本 |
 | `spec/fact.schema.json` | `—` | `—` | schema 自身无版本；约束 fact.schema_version |
 | `spec/game_config.schema.json` | `—` | `—` | schema 自身无版本；约束 game_config.config_version |
@@ -215,8 +217,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `doc` | 12 | B | `README.md`<br>`docs/ARCHITECTURE.md`<br>`docs/CONSUMING.md`<br>`docs/ITERATION_GUIDE.md`<br>`docs/METHODOLOGY.md`<br>`docs/PROPOSAL_SINGLE_TICKET_CORE.md`<br>`docs/VERSIONING_DOCS.md`<br>`framework/README.md`<br>`framework/core/README.md`<br>`spec/README.md`<br>`spec/VERSIONING.md`<br>`tests/README.md` |
 | `analysis_script` | 9 | D | `games/dlt/data/tools/_load.py`<br>`games/dlt/data/tools/acf_permutation_test.py`<br>`games/dlt/data/tools/changepoint_refine.py`<br>`games/dlt/data/tools/changepoint_scan.py`<br>`games/dlt/data/tools/consecutive_exact_check.py`<br>`games/dlt/data/tools/exact_tests.py`<br>`games/dlt/data/tools/overdispersion_and_hac.py`<br>`games/dlt/data/tools/validate_data.py`<br>`games/dlt/strategy/strategy_simulation.py` |
 | `derived_data` | 8 | D | `games/dlt/data/derived/01_yearly_stats.csv`<br>`games/dlt/data/derived/02_front_number_frequency.csv`<br>`games/dlt/data/derived/03_back_number_frequency.csv`<br>`games/dlt/data/derived/04_structure_distribution_exact.json`<br>`games/dlt/data/derived/05_back_combo_66.csv`<br>`games/dlt/data/derived/06_acf_lag1to60.csv`<br>`games/dlt/data/derived/07_data_quality_report.json`<br>`games/dlt/data/derived/08_rules_epoch_summary.json` |
+| `framework_core` | 8 | B | `framework/core/__init__.py`<br>`framework/core/evaluate.py`<br>`framework/core/features.py`<br>`framework/core/game_util.py`<br>`framework/core/generate.py`<br>`framework/core/judge.py`<br>`framework/core/ticket.py`<br>`framework/core/portfolio.py` |
 | `library` | 8 | B | `src/__init__.py`<br>`src/smartpickcore/__init__.py`<br>`src/smartpickcore/api.py`<br>`src/smartpickcore/game.py`<br>`src/smartpickcore/memory.py`<br>`src/smartpickcore/strategy.py`<br>`src/smartpickcore/validate.py`<br>`src/smartpickcore/versions.py` |
-| `framework_core` | 7 | B | `framework/core/__init__.py`<br>`framework/core/evaluate.py`<br>`framework/core/features.py`<br>`framework/core/game_util.py`<br>`framework/core/generate.py`<br>`framework/core/judge.py`<br>`framework/core/ticket.py` |
 | `template_game` | 6 | B | `games/_template/README.md`<br>`games/_template/data/build_scripts/README.md`<br>`games/_template/data/derived/README.md`<br>`games/_template/data/raw/README.md`<br>`games/_template/data/tools/README.md`<br>`games/_template/iterations/round01/TASK_BRIEF.md` |
 | `schema` | 5 | C | `spec/fact.schema.json`<br>`spec/game_config.schema.json`<br>`spec/iteration.schema.json`<br>`spec/strategy.schema.json`<br>`spec/version_index.schema.json` |
 | `build_script` | 3 | D | `games/dlt/data/build_scripts/build_derived_v4.py`<br>`games/dlt/data/build_scripts/hash_and_list.py`<br>`games/dlt/data/build_scripts/validate_package_v4.py` |
@@ -231,6 +233,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `methodology` | 2 | B | `framework/methodology/MATH_BOUNDARY.md`<br>`framework/methodology/STATISTICAL_DISCIPLINE.md` |
 | `raw_data` | 2 | D | `games/dlt/data/raw/dlt_full_2933.csv`<br>`games/dlt/data/raw/dlt_full_2933.jsonl` |
 | `strategy` | 2 | C | `games/_template/strategy/strategy.json`<br>`games/dlt/strategy/strategy.json` |
+| `test` | 2 | B | `tests/test_core.py`<br>`tests/test_cross_scope.py` |
 | `analysis_output` | 1 | D | `games/dlt/strategy/simulation_results.json` |
 | `cli` | 1 | B | `cli/main.py` |
 | `entry_point` | 1 | B | `AI_CONTEXT.md` |
@@ -243,7 +246,6 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `rules_history` | 1 | A | `games/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `games/dlt/manifest_v4_source.json` |
 | `strategy_guide` | 1 | A | `games/dlt/strategy/STRATEGY_GUIDE.md` |
-| `test` | 1 | B | `tests/test_core.py` |
 | `version_index` | 1 | B | `versions.json` |
 | `version_index_doc` | 1 | B | `VERSION_INDEX.md` |
 
@@ -255,6 +257,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 
 | 版本 | 日期 | 范围 | 变更 |
 |---|---|---|---|
+| `1.1` | 2026-10-11 | framework/ | 跨注层（L3）从『只上报』升级为『可执行』，记为 framework_version 1.1。新增 framework/core/portfolio.py（Portfolio 一等公民 + evaluate_cross + judge_cross）；features.py 新增 CROSS_PRIMITIVES 独立注册表（5 个跨注原语），与单注原语分开注册、混用结构性拒收；game.yaml 与 strategy.json 新增 scope: single/cross 声明（config 2.0→2.1 / schema 1.0→1.1）；judge.classify_rules() 三路切分（single / cross / undeclared），'跨注'与'拼错'不再混为一谈；validate_strategy() 对未声明特征由 warning 升为 error，并对跨注规则做真样本冒烟执行。修复 1.0 的契约缺口：R-002 引用了从未声明、且全仓库无执行入口的跨注特征。登记文件 124 → 126。 |
 | `1.0` | 2026-10-11 | 全仓库 | 建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 124 个文件。 |
 | `1.0` | 2026-10-10 | framework/ | 单注层通用架构落地（framework/core/ 6 模块 / 21 原语），记为 framework_version 1.0。 |
 

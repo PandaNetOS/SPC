@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -62,7 +62,7 @@ pip install pyyaml jsonschema numpy pandas
 # 仓库概览
 python cli/main.py info
 
-# 全量校验（40 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算 / 版本一致性）
+# 全量校验（46 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算 / 版本一致性 / 跨注规则冒烟）
 python cli/main.py validate --all -v
 
 # 版本一致性（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
@@ -83,11 +83,11 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-AI_CONTEXT.md          v1.1   ← 单一入口。AI 与人都从这里进
+AI_CONTEXT.md          v1.2   ← 单一入口。AI 与人都从这里进
 VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
 spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
-framework/                    ← 框架层（framework_version = 1.0）
+framework/                    ← 框架层（framework_version = 1.1）
   readme.md            v1.0   ← 框架层说明（框架/彩种分离判定标准）
   INDEX.md             v1.0   ← 按需求找文件
   protocol/                   ← 迭代协议 + 记忆协议 + 3 个模板
@@ -172,12 +172,12 @@ python cli/main.py new-game <game_id>
 | 契约层 | ✅ 5 schema + VERSIONING（含 config 2.0 迁移指南） |
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
-| **框架核心** | ✅ **`framework/core/` 6 模块 / 21 原语**（Ticket / 求值 / 受限 DSL 判定 / 作用域切分 / 生成器） |
+| **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 5 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
 | 记忆层 | ✅ **18 条结论** / L1–L12 / 10 开放问题（3 answered）/ 5 假设 / 待办（P0 已清空） |
-| 库与 CLI | ✅ 8 模块 + 13 命令，`validate --all` **44 项全绿** |
-| 彩种 `dlt` | ✅ `game.yaml`（config 2.0，11 特征全原语化）+ `strategy.json`（2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
-| `tests/` | ✅ `test_core.py` **106 项全绿**（无需 pytest） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**111 条**登记（A=22 B=52 C=12 D=25），版本行 41/41 一致 |
+| 库与 CLI | ✅ 8 模块 + 13 命令，`validate --all` **46 项全绿** |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 8 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round03 复核完成** + round04 任务书 |
+| `tests/` | ✅ `test_core.py` **113 项** + `test_cross_scope.py` **62 项**全绿（无需 pytest） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**126 条**登记（A=34 B=54 C=13 D=25），版本行 43/43 一致 |
 
 ### r03 复核要点（结论已修正）
 
@@ -192,8 +192,9 @@ python cli/main.py new-game <game_id>
 
 | 项 | 说明 |
 |---|---|
-| `R-002` 跨注特征 | `duplicated_structure_across_tickets` 一注号码算不出来 → 作用域切分显式上报，**处置方案待决策** |
-| `spread_penalty` | 启发式，**未量化**（不是统计结论） |
+| `R-002` 跨注规则 | ✅ **执行层已闭合**（2.1）：已声明 `scope: cross` 特征 `has_duplicated_structure`，`judge_cross()` 可真正判定。⚠️ 但 `magnitude_pct` 仍为 **null** —— **可执行 ≠ 已量化** |
+| `spread_penalty` | 启发式，**未量化**（不是统计结论）。有跨注特征时应优先用跨注特征 |
+| L3 组合**优化** | **未实现**。跨注层只补齐了"执行"，"在候选集上求解最优组合"仍未做 |
 | 奖金封顶 | +121.48% 的计算**未纳入** 1 亿封顶（Q-004，P0） |
 | Q-009 | 组合分散度研究**尚未写入**开放问题清单 |
 

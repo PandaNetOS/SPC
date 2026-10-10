@@ -20,6 +20,7 @@ from .features import PrimitiveError, apply_primitive, resolve_primitive
 from .game_util import (
     GameUtilError,
     declared_features,
+    declared_single_features,
     validate_feature_declarations,
     zone_keys,
 )
@@ -33,12 +34,17 @@ class EvaluateError(Exception):
 
 
 def evaluable_features(cfg: dict[str, Any]) -> list[str]:
-    """列出**可执行**的特征 key（即声明了 primitive 的那些）。
+    """列出**可执行**的**单注**特征 key（声明了 primitive 且 scope != cross）。
 
-    只有 `formula` 的旧格式特征不可执行 —— 它们是人类注释。
+    两类特征被排除：
+      · 只有 `formula` 的旧格式特征 —— 它们是人类注释
+      · `scope: cross` 的跨注特征 —— 它们需要一组注，走 `evaluate_cross()`
+
+    ★ 2.1 起必须排除 cross：否则 `evaluate()` 会把跨注原语喂进单注求值，
+    得到"毫无意义却可能不报错"的结果。
     """
     out = []
-    for f in declared_features(cfg):
+    for f in declared_single_features(cfg):
         if f.get("primitive"):
             out.append(f["key"])
     return out
@@ -54,6 +60,12 @@ def evaluate_one(cfg: dict[str, Any], ticket: Ticket, key: str) -> Any:
     if decl is None:
         raise EvaluateError(
             f"特征 {key!r} 未声明。可求值特征：{', '.join(evaluable_features(cfg))}"
+        )
+    if decl.get("scope") == "cross":
+        raise EvaluateError(
+            f"特征 {key!r} 是**跨注**特征（scope: cross），一注号码算不出来 —— "
+            f"请用 portfolio.evaluate_cross_one(cfg, portfolio, {key!r})，"
+            f"它需要一整组注作为输入。"
         )
     prim = decl.get("primitive")
     if not prim:

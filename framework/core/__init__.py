@@ -83,6 +83,18 @@ __all__ = [
     "judge",
     "score",
     "VALID_ACTIONS",
+    "split_by_scope",
+    "classify_rules",
+    "RuleScopes",
+    # portfolio（跨注层 L3）
+    "Portfolio",
+    "PortfolioError",
+    "portfolio_from_any",
+    "evaluate_cross",
+    "evaluate_cross_one",
+    "evaluable_cross_features",
+    "judge_cross",
+    "score_cross",
     # generate
     "GenerateError",
     "GenerateResult",
@@ -90,6 +102,9 @@ __all__ = [
     "sample_filtered",
     "sample_batch",
     "spread_penalty",
+    # 作用域常量
+    "SCOPE_SINGLE",
+    "SCOPE_CROSS",
 ]
 
 from .evaluate import (  # noqa: E402
@@ -99,18 +114,28 @@ from .evaluate import (  # noqa: E402
     evaluable_features,
 )
 from .features import (  # noqa: E402
+    CROSS_PRIMITIVES,
     PRIMITIVES,
+    PRIMITIVE_SCOPES,
     PrimitiveError,
+    apply_cross_primitive,
     apply_primitive,
     arity_of,
     list_primitives,
+    resolve_cross_primitive,
     resolve_primitive,
+    scope_of,
 )
 from .game_util import (  # noqa: E402
     GameUtilError,
     declared_features,
+    declared_single_features,
+    declared_cross_features,
     feature_by_key,
     feature_keys,
+    feature_scope,
+    single_feature_keys,
+    cross_feature_keys,
     first_prize_probability,
     max_value_of_zone,
     total_combinations,
@@ -133,9 +158,22 @@ from .judge import (  # noqa: E402
     JudgeResult,
     ParsedPredicate,
     PredicateError,
+    RuleScopes,
+    classify_rules,
     eval_predicate,
     judge,
     parse_predicate,
     score,
+    split_by_scope,
+)
+from .portfolio import (  # noqa: E402
+    Portfolio,
+    PortfolioError,
+    evaluate_cross,
+    evaluate_cross_one,
+    evaluable_cross_features,
+    judge_cross,
+    portfolio_from_any,
+    score_cross,
 )
 from .ticket import Ticket, TicketError, ticket_from_any  # noqa: E402

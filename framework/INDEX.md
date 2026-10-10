@@ -1,6 +1,6 @@
 # INDEX.md — 框架层索引
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > 本文件是 `framework/` 的导航。**AI 读这一页就能知道该读哪个文件。**
@@ -43,7 +43,7 @@
 | `STATISTICAL_DISCIPLINE.md` | 9 条检查清单，逐项打勾才能标 `established` |
 | `ITERATION_PROTOCOL.md` | 四件套（BRIEF/FINDINGS/HANDOFF/manifest）+ 收轮必生成下轮 BRIEF |
 | `MEMORY_PROTOCOL.md` | 四类记忆、状态机、演化链、`caveats` 非空 |
-| `core/README.md` | 三层（Ticket / Scoring / Portfolio）+ 原语注册表 + 受限 DSL + **作用域切分** ★ |
+| `core/README.md` | 三层（Ticket / Scoring / **Portfolio 已实现**）+ 单注/跨注两张原语表 + 受限 DSL + **作用域三路切分** ★ |
 
 ## 彩种无关性自检
 

@@ -1,16 +1,20 @@
 # tests/ — 测试
 
-> **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 现状
 
-**已实现：`test_core.py`（92 项，全绿）。**
+| 文件 | 项数 | 覆盖 |
+|---|---|---|
+| `test_core.py` | **113**（全绿） | 红线 / 原语 / Ticket / DSL / 作用域 / 数学 / 端到端 / 声明静态检查 |
+| `test_cross_scope.py` | **62**（全绿） | ★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描 |
 
 无需 pytest、无需任何第三方测试框架 —— 直接用 Python 跑：
 
 ```bash
 python tests/test_core.py
+python tests/test_cross_scope.py
 ```
 
 退出码 0 = 全绿。失败项会在末尾单独列出（`✗` 打头 + 汇总表）。
@@ -27,8 +31,27 @@ python tests/test_core.py
 | 4 | **predicate DSL** | 14 | 6 个合法表达式通过；6 个非法（括号 / 混用 and-or / 右侧非字面量 / 取反 / 未知算子）明确报错 |
 | 5 | **作用域切分** | 8 | ★ `R-001` → single，`R-002` → cross（附原因）；**跨注规则不被静默忽略** |
 | 6 | **数学一致性** | 6 | `T = 21,425,712`；`T = C(35,5) × C(12,2)`；`p1 = 4.667289469773513e-08`；`p1 = 1/T`；选号不改概率；两注不同号码概率相同 |
-| 7 | **端到端** | 9 | 生成 20 注全部合规；注间唯一；求值覆盖全部 11 个声明特征；**同种子可复现**；不过滤时违规率 ≈ 理论值 8.9%；自相矛盾规则集报错 |
+| 7 | **端到端** | 9+ | 生成 20 注全部合规；注间唯一；单注求值**恰好**覆盖 11 个 `single` 特征、且**不含**任何 `cross` 特征；**同种子可复现**；不过滤时违规率 ≈ 理论值 8.9%；自相矛盾规则集报错 |
 | 8 | **features 声明静态检查** | 6 | 真实 `game.yaml` 0 错；不存在的 primitive / 缺必需参数 / 引用不存在的区 / 重复 key 全部被检出 |
+
+## test_cross_scope.py 覆盖什么
+
+2.1 新增。核心命题：**跨注层不能再是"上报即完事"，必须真的能执行**。
+
+| # | 段 | 内容 |
+|---|---|---|
+| 1 | 跨注原语是纯数学 | 对固定输入给固定输出；间隔向量同构判定（`gaps(1,3,5) == gaps(2,4,6)`） |
+| 2 | `Portfolio` | 构造 / 校验 / 区集合一致性；**单注不包一层必须报错** |
+| 3 | `evaluate_cross` | 整组上下文求值；对非 `cross` 特征**报错** |
+| 4 | 结构性拒收混用 | `scope: cross` 挂单注原语（及反之）必须报错 —— 用 `deepcopy` 变异真实 `game.yaml` |
+| 5 | `judge_cross` 真执行 R-002 | 同构组命中（权重 0.5）vs 多样组不命中（1.0） |
+| 6 | `classify_rules` 三路切分 | 拼错的特征进 `undeclared`，**不**混进 `cross` |
+| 7 | 端到端 `sample_batch` | 断言 `stats["cross_scope_evaluated"]` **存在**且真的执行过 |
+| 8 | 铁律扫描 | `framework/core/` 无彩种常量 —— **AST 剥掉 docstring 与注释后再扫** |
+
+> 第 8 段为什么要剥 docstring：`portfolio.py` 的 docstring 里**正列举着被禁止的字符串**
+> （`"dlt"` / `"front"` / `大乐透`）。朴素全文本扫描会把"禁令清单"本身判成违规
+> —— **会误报的检查比没有检查更坏**。
 
 ## 为什么不用 pytest
 
@@ -61,10 +84,13 @@ python tests/test_core.py
 ## 运行方式
 
 ```bash
-# 核心测试（92 项）
+# 核心测试（113 项）
 python tests/test_core.py
 
-# 契约校验（33 项，含 SHA256 一致性与红线恒值）
+# 跨注层测试（62 项）
+python tests/test_cross_scope.py
+
+# 契约校验（46 项，含 SHA256 一致性与红线恒值）
 python cli/main.py validate --all -v
 ```
 

@@ -52,6 +52,8 @@ __all__ = [
     "score",
     "apply_scope",
     "split_by_scope",
+    "classify_rules",
+    "RuleScopes",
     "ACTION_EXCLUDE",
     "ACTION_PENALIZE",
     "ACTION_PREFER",
@@ -363,15 +365,20 @@ def judge(
 def split_by_scope(
     rules: list[dict[str, Any]],
     declared: list[str],
+    cross_declared: list[str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """把规则按**作用域**分成两组：
 
-        (single, cross) = split_by_scope(rules, declared)
+        (single, cross) = split_by_scope(rules, declared, cross_declared)
 
-    · `single` —— predicate 引用的**全部**特征都在 `declared` 里
-                   → 单注层可判定
-    · `cross`  —— predicate 引用了至少一个**未声明**的特征
-                   → 描述的是跨注性质（如组合分散度），单注层无法判定
+    · `single` —— predicate 引用的特征**全部**在 `declared`（单注声明）里
+                   → 单注层可判定（`judge()`）
+    · `cross`  —— 引用了 `cross_declared` 里的特征（**已知跨注**）、
+                  或引用了两边都没声明的特征（**未声明**，可能是拼错）
+                   → 单注层判定不了
+
+    `cross_declared` 为 `None` 时退化为旧行为（未声明即 cross），
+    以保持 config_version 2.0 的兼容。
 
     ## 为什么需要这个函数
 
@@ -382,8 +389,17 @@ def split_by_scope(
     若无本函数，`judge()` 会在遇到 R-002 时抛错，**连带 R-001 也用不了**。
     有了它，单注层可以只执行自己管得着的那部分，并把管不着的
     **显式上报**（而非静默忽略 —— 静默忽略正是本仓库要防的那类错误）。
+
+    ## ★ 从 2.0 到 2.1 的变化
+
+    2.0 里 `cross` 只意味着"单注层管不着"，**没有任何地方能执行它** ——
+    于是 R-002 成了"对外输出了却执行不了"的规则。
+    2.1 起，`game.yaml` 可以显式声明 `scope: cross` 的特征，
+    跨注规则由 `portfolio.judge_cross()` 在**整组上下文**里真正执行。
+    用 `classify_rules()` 可以把"已知跨注"与"未声明"分开。
     """
-    known = set(declared)
+    known_single = set(declared or [])
+    known_cross = set(cross_declared or [])
     single: list[dict[str, Any]] = []
     cross: list[dict[str, Any]] = []
     for r in rules:
@@ -396,17 +412,69 @@ def split_by_scope(
         except PredicateError:
             cross.append(r)       # 无法解析 → 不归单注层
             continue
-        (single if all(f in known for f in feats) else cross).append(r)
+        if any(f in known_cross for f in feats):
+            cross.append(r)       # 显式声明的跨注特征 → 需整组上下文
+        elif all(f in known_single for f in feats):
+            single.append(r)
+        else:
+            cross.append(r)       # 两边都没声明 → 拼错或漏声明
     return single, cross
+
+
+class RuleScopes(NamedTuple):
+    """规则的三分：`single` / `cross`（已声明跨注）/ `undeclared`（未声明）。
+
+    ★ `cross` 与 `undeclared` 的区分是本层的关键：
+      · `cross`      → 可以用 `judge_cross()` 在整组上**真正执行**
+      · `undeclared` → 谁都执行不了，是配置缺陷（拼错 / 漏声明）
+    二者混在一起时，前者会被后者的"执行不了"掩盖。
+    """
+
+    single: list[dict[str, Any]]
+    cross: list[dict[str, Any]]
+    undeclared: list[dict[str, Any]]
+
+
+def classify_rules(cfg: dict[str, Any], rules: list[dict[str, Any]]) -> RuleScopes:
+    """按 `game.yaml` 的 `scope` 声明把规则**三分**。"""
+    single_keys = [f["key"] for f in (cfg.get("features") or [])
+                   if (f.get("scope") or "single") == "single"]
+    cross_keys = [f["key"] for f in (cfg.get("features") or [])
+                  if f.get("scope") == "cross"]
+    ks, kc = set(single_keys), set(cross_keys)
+
+    single: list[dict[str, Any]] = []
+    cross: list[dict[str, Any]] = []
+    undeclared: list[dict[str, Any]] = []
+    for r in rules:
+        mr = r.get("machine_rule") or {}
+        p = mr.get("predicate")
+        if not p:
+            continue
+        try:
+            feats = parse_predicate(p).features()
+        except PredicateError:
+            undeclared.append(r)
+            continue
+        if any(f in kc for f in feats):
+            cross.append(r)
+        elif all(f in ks for f in feats):
+            single.append(r)
+        else:
+            undeclared.append(r)
+    return RuleScopes(single, cross, undeclared)
 
 
 def apply_scope(
     cfg: dict[str, Any],
     rules: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """`split_by_scope` 的便捷版：自动取 cfg 的声明特征。"""
-    declared = [f["key"] for f in (cfg.get("features") or [])]
-    return split_by_scope(rules, declared)
+    """`split_by_scope` 的便捷版：自动取 cfg 的声明特征。
+
+    ★ 2.1 起会传 `cross_declared`：已知跨注特征不再被当成"未声明"。
+    """
+    s = classify_rules(cfg, rules)
+    return s.single, (s.cross + s.undeclared)
 
 
 def score(cfg: dict[str, Any], ticket: Ticket, rules: list[dict[str, Any]]) -> float:

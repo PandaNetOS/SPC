@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "game": "dlt",
   "generated_at": "2026-10-11",
   "generated_by": "smartpickcore-cli/0.1.0",
@@ -23,6 +23,7 @@
       "id": "R-001",
       "statement": "避开含两个及以上相邻号对的形态（如 12-13-14 形成 2 对连号；单对连号如 12-13 不在此列——阈值是相邻号对数量 >= 2）",
       "kind": "collision_avoidance",
+      "scope": "single",
       "machine_rule": {
         "predicate": "has_run_ge2 == true",
         "action": "exclude",
@@ -61,8 +62,9 @@
       "id": "R-002",
       "statement": "投注组合应分散覆盖号码空间，避免多注集中在小号区或同一结构形态（资金分散可比结构集中略微降低撞号方差）",
       "kind": "portfolio_spread",
+      "scope": "cross",
       "machine_rule": {
-        "predicate": "duplicated_structure_across_tickets == true",
+        "predicate": "has_duplicated_structure == true",
         "action": "penalize",
         "weight": 0.5
       },
@@ -80,7 +82,9 @@
           "本规则的直接证据仅来自 F-0003（连号形态人群更密）的推论，未经单独模拟验证。",
           "对『中奖概率』无任何影响：期望中奖注数恒等于 N/T，与组合分散度无关。",
           "作用在于降低方差（不同注同时撞号的风险），而非提高期望。",
-          "投注组合优化尚未在本仓库做过量化实验（F-0004 的 C 层是对单注策略的模拟）。"
+          "投注组合优化尚未在本仓库做过量化实验（F-0004 的 C 层是对单注策略的模拟）。",
+          "【schema_version 1.1 起可执行】predicate 引用 game.yaml 的跨注特征 has_duplicated_structure（前区间隔向量同构），需**整组号码**上下文，由 framework/core/portfolio.py 的 judge_cross() 执行。1.0 时代该特征未声明，本规则在任何地方都执行不了。",
+          "【仍未量化】本规则可判定（真/假），但 magnitude_pct 仍为 null —— 判定不等于收益已知。"
         ]
       },
       "applicable_epochs": []

@@ -34,6 +34,25 @@
 
 若某彩种的特征现有原语表达不了 → **往 PRIMITIVES 加一个纯数学函数**。
 加的是彩种无关的通用原语，不是彩种分支 —— 这不违反「唯一硬标准」。
+
+## 单注原语与跨注原语（scope）
+
+`config_version 2.1` 起，`game.yaml` 的 `features[]` 可声明 `scope`：
+
+| scope | 输入 | 例子 | 求值入口 |
+|---|---|---|---|
+| `single`（默认） | 一注的**一个区** `[3,11,17,24,32]` | sum / adjacent_pair_count | `evaluate()` |
+| `cross` | **一组注**的同一个区 `[[3,11,...],[5,9,...],...]` | duplicate_structure_count | `evaluate_cross()` |
+
+两套原语**分表注册**（`PRIMITIVES` / `CROSS_PRIMITIVES`），
+`validate_feature_declarations()` 会**结构性拒绝**把单注原语用在
+`scope: cross` 的特征上（反之亦然）——
+与四条红线同一思路：靠 `const`/分表拒收，不靠自觉。
+
+**为什么必须分表**：跨注特征（如"这组注里有多少注结构重复"）
+从一注号码**在数学上算不出来**。若允许混用，调用方会把
+`sum` 之类的单注原语喂进一组注里，得到毫无意义却**不报错**的结果 ——
+静默错误正是本仓库要防的那类。
 """
 from __future__ import annotations
 
@@ -42,10 +61,21 @@ from typing import Any, Callable, Iterable, Sequence
 __all__ = [
     "PrimitiveError",
     "PRIMITIVES",
+    "CROSS_PRIMITIVES",
+    "PRIMITIVE_SCOPES",
+    "SCOPE_SINGLE",
+    "SCOPE_CROSS",
     "list_primitives",
     "resolve_primitive",
+    "resolve_cross_primitive",
     "arity_of",
+    "scope_of",
+    "apply_primitive",
+    "apply_cross_primitive",
 ]
+
+SCOPE_SINGLE = "single"
+SCOPE_CROSS = "cross"
 
 Numbers = Sequence[int]
 
@@ -236,6 +266,81 @@ def _p_sum_mod(zone: Numbers, **args: Any) -> int:
     return sum(zone) % m
 
 
+# ---------------------------------------------------------------- 跨注原语
+# 约定：签名 (groups, **args) -> int | bool
+#   groups  list[list[int]] —— **一组注**在同一区的号码（每注已排序去重）
+#
+# 这些量在数学上无法由单注算出：它们描述的是「注与注之间」的关系。
+
+def _sorted_groups(groups: Any, name: str) -> list[list[int]]:
+    """把输入规范成「若干组已排序去重的整数列表」。"""
+    if groups is None:
+        raise PrimitiveError(f"{name} 为空（跨注原语需要一组注）")
+    try:
+        raw = list(groups)
+    except TypeError as e:
+        raise PrimitiveError(f"{name} 不是可迭代对象") from e
+    if not raw:
+        raise PrimitiveError(f"{name} 为空列表（跨注原语至少需要一注）")
+    return [_sorted_zone(g, f"{name}[{i}]") for i, g in enumerate(raw)]
+
+
+def _gap_signature(vals: Sequence[int]) -> tuple[int, ...]:
+    """结构签名 = 相邻间隔向量。
+
+    例：(1,3,5) 与 (2,4,6) 的签名都是 (2,2) —— 号码不同但**结构相同**。
+    这正是 R-002「多注集中在同一结构形态」要刻画的量。
+    用间隔向量而非号码本身，是刻意的：否则两注号码不同就永远判不出「同构」。
+    """
+    return tuple(b - a for a, b in zip(vals, vals[1:]))
+
+
+def _c_duplicate_structure_count(groups: Any, **_: Any) -> int:
+    """结构签名在组内出现 >= 2 次的**注数**（不是"重复了几对"）。
+
+    例：3 注的签名若为 [(2,2), (2,2), (1,3)] → 返回 2（前两注互相同构）。
+    """
+    gs = _sorted_groups(groups, "groups")
+    sigs = [_gap_signature(g) for g in gs]
+    counts: dict[tuple[int, ...], int] = {}
+    for s in sigs:
+        counts[s] = counts.get(s, 0) + 1
+    return sum(1 for s in sigs if counts[s] >= 2)
+
+
+def _c_duplicate_structure_count_ge(groups: Any, **args: Any) -> bool:
+    """>= threshold 注与他人结构同构。args: threshold。
+
+    这是 `strategy.json` R-002 的判定量载体 —— 但原语本身不知道
+    「分散」「撞号」这些概念，它只数同构的注数。
+    """
+    t = _int_arg(args, "threshold", "duplicate_structure_count_ge")
+    return _c_duplicate_structure_count(groups) >= t
+
+
+def _c_distinct_structure_count(groups: Any, **_: Any) -> int:
+    """组内不同结构签名的个数（1 = 全同构，len(groups) = 全异）。"""
+    gs = _sorted_groups(groups, "groups")
+    return len({_gap_signature(g) for g in gs})
+
+
+def _c_coverage_unique_count(groups: Any, **_: Any) -> int:
+    """全组去重后覆盖到的不同号码总数（衡量号码空间的铺开程度）。"""
+    gs = _sorted_groups(groups, "groups")
+    return len({x for g in gs for x in g})
+
+
+def _c_max_shared_count(groups: Any, **_: Any) -> int:
+    """任意两注之间共享号码数的**最大值**（衡量注间重叠程度）。"""
+    gs = _sorted_groups(groups, "groups")
+    best = 0
+    for i in range(len(gs)):
+        si = set(gs[i])
+        for j in range(i + 1, len(gs)):
+            best = max(best, len(si & set(gs[j])))
+    return best
+
+
 # ---------------------------------------------------------------- 注册表
 
 PRIMITIVES: dict[str, Callable[..., Any]] = {
@@ -269,6 +374,21 @@ PRIMITIVES: dict[str, Callable[..., Any]] = {
     "sum_mod": _p_sum_mod,
 }
 
+#: 跨注原语（scope: cross）。输入是一组注，不是一注。
+CROSS_PRIMITIVES: dict[str, Callable[..., Any]] = {
+    "duplicate_structure_count": _c_duplicate_structure_count,
+    "duplicate_structure_count_ge": _c_duplicate_structure_count_ge,
+    "distinct_structure_count": _c_distinct_structure_count,
+    "coverage_unique_count": _c_coverage_unique_count,
+    "max_shared_count": _c_max_shared_count,
+}
+
+#: 原语名 → 作用域。供 game_util 静态校验「原语与 scope 是否匹配」。
+PRIMITIVE_SCOPES: dict[str, str] = {
+    **{n: SCOPE_SINGLE for n in PRIMITIVES},
+    **{n: SCOPE_CROSS for n in CROSS_PRIMITIVES},
+}
+
 #: 需要 args 的原语 → 必需参数名（供校验器静态检查 game.yaml 是否给全参数）
 _REQUIRED_ARGS: dict[str, tuple[str, ...]] = {
     "count_ge": ("threshold",),
@@ -281,20 +401,41 @@ _REQUIRED_ARGS: dict[str, tuple[str, ...]] = {
     "any_ge": ("threshold",),
     "max_in_range": ("lo", "hi"),
     "sum_mod": ("modulus",),
+    "duplicate_structure_count_ge": ("threshold",),
 }
 
 #: 声明为 `zone` 的原语（需要 zone 参数）
 _ZONE_PRIMITIVES = frozenset(PRIMITIVES)
 
 
-def list_primitives() -> list[str]:
-    """列出全部可用原语名（供文档与校验器）。"""
-    return sorted(PRIMITIVES)
+def list_primitives(scope: str | None = None) -> list[str]:
+    """列出可用原语名（供文档与校验器）。
+
+    scope=None  → 全部；"single" → 仅单注；"cross" → 仅跨注。
+    """
+    if scope is None:
+        return sorted(PRIMITIVE_SCOPES)
+    if scope == SCOPE_SINGLE:
+        return sorted(PRIMITIVES)
+    if scope == SCOPE_CROSS:
+        return sorted(CROSS_PRIMITIVES)
+    raise PrimitiveError(
+        f"未知 scope {scope!r}，只能是 {SCOPE_SINGLE!r} 或 {SCOPE_CROSS!r}"
+    )
+
+
+def scope_of(name: str) -> str:
+    """原语所属作用域。未知原语报错并列出可用项。"""
+    if name not in PRIMITIVE_SCOPES:
+        raise PrimitiveError(
+            f"未知原语 {name!r}。可用原语：{', '.join(list_primitives())}"
+        )
+    return PRIMITIVE_SCOPES[name]
 
 
 def arity_of(name: str) -> tuple[str, ...]:
     """返回原语必需的 args 名（空元组表示无必需参数）。"""
-    if name not in PRIMITIVES:
+    if name not in PRIMITIVE_SCOPES:
         raise PrimitiveError(
             f"未知原语 {name!r}。可用原语：{', '.join(list_primitives())}"
         )
@@ -302,12 +443,35 @@ def arity_of(name: str) -> tuple[str, ...]:
 
 
 def resolve_primitive(name: str) -> Callable[..., Any]:
-    """按名字取原语函数。名字不存在时报错并列出可用项。"""
+    """按名字取**单注**原语函数。名字不存在时报错并列出可用项。"""
     if name not in PRIMITIVES:
+        extra = ""
+        if name in CROSS_PRIMITIVES:
+            extra = (
+                f" —— 注意 {name!r} 是**跨注**原语，只能在 scope: cross 的"
+                f"特征上使用（用 resolve_cross_primitive 取它）"
+            )
         raise PrimitiveError(
-            f"未知原语 {name!r}。可用原语：{', '.join(list_primitives())}"
+            f"未知单注原语 {name!r}。可用单注原语："
+            f"{', '.join(list_primitives(SCOPE_SINGLE))}{extra}"
         )
     return PRIMITIVES[name]
+
+
+def resolve_cross_primitive(name: str) -> Callable[..., Any]:
+    """按名字取**跨注**原语函数。名字不存在时报错并列出可用项。"""
+    if name not in CROSS_PRIMITIVES:
+        extra = ""
+        if name in PRIMITIVES:
+            extra = (
+                f" —— 注意 {name!r} 是**单注**原语，不能用在 scope: cross 的"
+                f"特征上（用 resolve_primitive 取它）"
+            )
+        raise PrimitiveError(
+            f"未知跨注原语 {name!r}。可用跨注原语："
+            f"{', '.join(list_primitives(SCOPE_CROSS))}{extra}"
+        )
+    return CROSS_PRIMITIVES[name]
 
 
 def apply_primitive(
@@ -315,10 +479,23 @@ def apply_primitive(
     zone_values: Iterable[int],
     args: dict[str, Any] | None = None,
 ) -> Any:
-    """对一组号码值执行原语。args 中的 `zone` 键会被忽略（由调用方传入）。"""
+    """对一组号码值执行**单注**原语。args 中的 `zone` 键会被忽略（由调用方传入）。"""
     fn = resolve_primitive(name)
     a = dict(args or {})
     a.pop("zone", None)
     zone_key = a.pop("_zone_name", "zone")
     ordered = _sorted_zone(list(zone_values), zone_key)
     return fn(ordered, **a)
+
+
+def apply_cross_primitive(
+    name: str,
+    groups: Iterable[Iterable[int]],
+    args: dict[str, Any] | None = None,
+) -> Any:
+    """对**一组注**执行跨注原语。args 中的 `zone` 键会被忽略（由调用方传入）。"""
+    fn = resolve_cross_primitive(name)
+    a = dict(args or {})
+    a.pop("zone", None)
+    a.pop("_zone_name", None)
+    return fn(list(groups), **a)

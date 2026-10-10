@@ -360,10 +360,17 @@ def test_e2e() -> None:
     all_pass = all(judge(CFG, t, single).passes for t in res)
     check(all_pass, "全部通过单注层判定")
 
-    # 求值完整性
+    # 求值完整性：单注求值只应覆盖 single 特征，且必须**不含** cross 特征
+    # （★ 2.1 起跨注特征从一注算不出来，混进来就是静默错误）
     feats = evaluate(CFG, res[0])
-    check(set(feats) == set(DECLARED),
-          f"求值覆盖全部 {len(DECLARED)} 个声明特征")
+    from core.game_util import cross_feature_keys, single_feature_keys
+    skeys, ckeys = set(single_feature_keys(CFG)), set(cross_feature_keys(CFG))
+    check(set(feats) == skeys,
+          f"单注求值覆盖全部 {len(skeys)} 个单注特征")
+    check(not (set(feats) & ckeys),
+          f"单注求值不含跨注特征（跨注 {sorted(ckeys)}）")
+    check(len(DECLARED) == len(skeys) + len(ckeys),
+          f"声明总数 {len(DECLARED)} = 单注 {len(skeys)} + 跨注 {len(ckeys)}")
 
     # 可复现性：同种子同结果
     res2 = sample_batch(CFG, ST["rules"], n=20, seed=20261011)

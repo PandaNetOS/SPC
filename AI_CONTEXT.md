@@ -1,6 +1,6 @@
 # AI_CONTEXT.md — 单一入口
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **如果你是一个 AI（或人），要在这个仓库里做分析 —— 从本文件开始，读完本文件再动手。**
@@ -306,10 +306,16 @@ python cli/main.py eval --game dlt --ticket "03 11 17 24 32 + 04 09"
 ```python
 sp = SmartPick("dlt")
 
-sp.evaluate(ticket)        # 求值全部声明特征 → dict
+# —— 单注层 ——
+sp.evaluate(ticket)        # 求值全部「单注」声明特征 → dict
 sp.judge(ticket)           # 判定（自动只跑单注层）→ JudgeResult
-sp.rule_scopes()           # {"single": [...], "cross": [...], "cross_reasons": {...}}
-sp.pick(n=10, seed=...)    # 生成 n 注
+
+# —— 跨注层（config_version 2.1 起） ——
+sp.rule_scopes()           # {"single": [...], "cross": [...], "undeclared": [...], "cross_reasons": {...}}
+sp.evaluate_portfolio([t1, t2, t3])   # 整组上下文求值跨注特征 → dict
+sp.judge_portfolio([t1, t2, t3])      # 在整组上下文判定跨注规则 → JudgeResult
+
+sp.pick(n=10, seed=...)    # 生成 n 注（若有 cross 规则会自动执行跨注层）
 ```
 
 > 若命令未实现，`cli/main.py` 会打印清晰的"未实现"提示而非静默成功
@@ -317,18 +323,29 @@ sp.pick(n=10, seed=...)    # 生成 n 注
 
 ### ★ 作用域：本仓库最容易误用的地方
 
-`strategy.json` 的 `R-002` predicate 是 `duplicated_structure_across_tickets == true`
-—— **跨注特征，一注号码算不出来**。
+`strategy.json` 的 `R-002` 是**跨注规则**，一注号码算不出来，
+必须拿到整组号码（`Portfolio`）才能判定。
 
-| 层 | 规则 | 能否单注判定 |
+| 层 | 规则 | 判定入口 |
 |---|---|---|
-| 单注层 | R-001（`has_run_ge2 == true` → exclude） | ✅ |
-| 跨注层 | R-002（结构分散度 → penalize 0.5） | ❌ 需要整组号码上下文 |
+| 单注层 | R-001（`has_run_ge2 == true` → exclude） | `sp.judge(ticket)` ✅ |
+| 跨注层 | R-002（`has_duplicated_structure == true` → penalize 0.5） | `sp.judge_portfolio([...])` ✅ |
 
-`sp.judge(ticket)` **自动只跑单注层**，跨注规则在 `rule_scopes()` 里可见。
-`pick` 命令会把跳过的跨注规则数写进 `stats["cross_scope_skipped"]`。
+`sp.judge(ticket)` **自动只跑单注层**；跨注层必须显式传一组号码。
+`rule_scopes()` 三路返回 `single` / `cross` / `undeclared` ——
+其中 `undeclared` 表示"引用了根本没声明的特征"（拼错或遗漏），是**配置缺陷**，不是跨注。
 
-> **禁止静默忽略跨注规则** —— 那会让调用方以为"全部规则已生效"。
+`pick` 命令：存在 `cross` 规则时会构造 `Portfolio` **真正执行**跨注层，
+结果写进 `stats["cross_scope_evaluated"]`；`undeclared` 的部分写进 `stats["undeclared_skipped"]`。
+
+> **跨注规则要么被真正执行，要么被显式报错，禁止静默忽略**
+> —— 那会让调用方以为"全部规则已生效"。
+
+> **历史病（已在 2.1 修复）**：1.0 时 `R-002` 引用了 `duplicated_structure_across_tickets`，
+> 该特征**从未在 `game.yaml` 声明过，且全仓库没有任何执行入口**。
+> 策略被发布出去，消费者却无法执行它 —— 契约缺了整整一层。
+> 现在该特征已正式声明为 `scope: cross` 并改名 `has_duplicated_structure`，
+> `validate_strategy()` 会对每条跨注规则做**真样本冒烟执行**。
 
 ---
 
