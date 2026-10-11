@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 """build_versions.py — 穷举全仓库文件，生成 versions.json
 
+⚠️ **已降级为参考实现（T-044，r13 根治）**：
+  本工具内嵌的 CONTENT_VERSIONS / DOC_VERSIONS / C_LEVELS 等表停留在 r03，
+  直接运行 `--write` 会把 versions.json **回退**到 r03 旧条目集（丢弃后续轮次登记）。
+  因此 `--write` 已禁用（运行即报错退出）。versions.json 的权威维护流程为：
+  **手工登记 + `render_readme_tree / render_version_index / render_ai_map /
+  render_dependency_map / render_flywheel_health --write` + `inject_version_lines.py --write`**
+  （见 README「版本体系」与 `spec/VERSIONING.md`）。本工具保留仅供查看分类逻辑。
+
 用法：
-    python tools/build_versions.py            # 只统计
-    python tools/build_versions.py --write    # 写 versions.json
+    python tools/build_versions.py            # 只统计（参考）
+    python tools/build_versions.py --write    # ❌ 已禁用（防回退）
 
 分级（四级）：
     A  结论性内容 —— 文件内版本行 + 索引登记
@@ -389,11 +397,11 @@ def main() -> int:
     print(f"  需写文件内版本行: {n_verline}")
 
     if args.write:
-        p = os.path.join(_ROOT, "versions.json")
-        with open(p, "w", encoding="utf-8", newline="\n") as f:
-            json.dump(out, f, ensure_ascii=False, indent=2)
-            f.write("\n")
-        print(f"\n✓ 已写 versions.json（{len(entries)} 条）")
+        raise SystemExit(
+            "✗ --write 已禁用（T-044，r13）：build_versions.py 内嵌版本表停留在 r03，"
+            "运行会回退 versions.json。权威维护流程=手工登记 + render 五件套 + inject_version_lines，"
+            "详见 README「版本体系」与 spec/VERSIONING.md。"
+        )
     return 0
 
 

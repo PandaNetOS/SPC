@@ -1,0 +1,83 @@
+{
+  "round": "round13",
+  "game": "dlt",
+  "title": "L3 规则搜索 v2 轮：T-051（walk-forward 滚动再训练+候选池扩展→F-0045 R_new 二次确认）+ T-044（build_versions 防回退降级）+ T-045（测试计数注入销账）",
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（MainAgent 直接执行；用户「/连续迭代3轮」预授权任务书自动批准、每轮结束即推送）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0004",
+      "F-0017",
+      "F-0042",
+      "F-0043",
+      "F-0044"
+    ],
+    "previous_handoff": "games/dlt/iterations/round12/HANDOFF.md",
+    "task_brief": "games/dlt/iterations/round13/TASK_BRIEF.md",
+    "note": "任务书（render_task_brief --round 13 --top 3 生成：T-051 90 分首推 / T-044 20 分 / T-045 20 分）；T-025/T-032 资源缺口未列入。"
+  },
+  "outputs": {
+    "new_fact_ids": [
+      "F-0045"
+    ],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [
+      "R_new（R001_norun_high_mirror）二次样本外确认通过（F-0044+F-0045），落地为 R-004 需用户批准（T-052）"
+    ],
+    "actual_updates": [
+      "T-051 → F-0045：walk-forward 5 步（150 期评估窗）R_new 正增益步 4/5（80%）、中位增益约+150 万元、累计约+604 万元、3/5 步为本步最优，二次样本外确认 met=True；冷热号避让候选未超 R_new",
+      "T-044 → build_versions.py 降级为参考实现：--write 禁用（防 versions.json 回退），文件头声明权威维护流程",
+      "T-045 → 核实销账：count_tests --inject 已实际落地（r11），文档计数与实跑一致",
+      "FACTS 44→45（F-0045）；TODO T-051/T-044/T-045 → done，新增 T-052（R_new 落地待批准）"
+    ],
+    "open_questions": [
+      "Q-006",
+      "Q-016"
+    ],
+    "framework_revision": {
+      "proposed": [
+        "T-052：R_new 落地为 R-004（待用户批准）",
+        "F-0041 补强：三连号之外形态复验（CI 宽）",
+        "walk-forward 每步 bootstrap CI（当前单步仅点估计，第 5 步样本不足）"
+      ],
+      "accepted": [],
+      "rejected": []
+    }
+  },
+  "deliverables": [
+    {
+      "path": "games/dlt/iterations/round13/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "games/dlt/iterations/round13/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "games/dlt/iterations/round13/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round13/manifest.json",
+      "kind": "manifest"
+    }
+  ]
+}

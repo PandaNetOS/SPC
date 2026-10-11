@@ -1,0 +1,338 @@
+{
+  "round": "round13",
+  "task": "T-051",
+  "data_version": "dlt_full_2933",
+  "design": {
+    "walk_forward": "训练窗 1183 起步，步进 60 期，评估紧邻下一 60 期窗；冷热号统计只用训练窗（L6 防泄漏）",
+    "candidate_pool_v2": [
+      "R001_norun_high_mirror（R_new 二次确认）",
+      "R001_norun_high_hot",
+      "R001_norun_high_mirror_hot",
+      "R001_norun_mirror_hot",
+      "R003_norun_high（对照）",
+      "R001_norun_mirror（v1 候选）"
+    ]
+  },
+  "n_steps": 5,
+  "r_new_secondary_confirmation": {
+    "n_positive_gain_steps": 4,
+    "positive_share": 0.8,
+    "median_gain_yuan": 1500882.28,
+    "total_gain_yuan": 6041645.51,
+    "criteria": "有效步 ≥4 且正增益步占比 ≥60% 且中位数增益 >0",
+    "met": true
+  },
+  "winner_distribution": {
+    "R001_norun_high_mirror": 3,
+    "R001_norun_mirror": 2
+  },
+  "steps": [
+    {
+      "step": 1,
+      "train_periods": 1183,
+      "eval_range": [
+        1183,
+        1333
+      ],
+      "eval_start_date": "2021-07-10",
+      "hot_front_top6": [
+        1,
+        3,
+        7,
+        20,
+        22,
+        29
+      ],
+      "random_bonus": 7086666.67,
+      "r_new_bonus": 8323063.83,
+      "r_new_gain_vs_random": 1236397.16,
+      "step_winner": "R001_norun_high_mirror",
+      "step_winner_bonus": 8323063.83,
+      "rules": {
+        "R001_norun_high_mirror": {
+          "share_pct": 13.33,
+          "cf": 0.8514,
+          "expected_bonus_given_win_cap_yuan": 8323063.83,
+          "n_hit_periods": 20
+        },
+        "R001_norun_high_hot": {
+          "share_pct": 8.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 12
+        },
+        "R001_norun_high_mirror_hot": {
+          "share_pct": 4.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 6
+        },
+        "R001_norun_mirror_hot": {
+          "share_pct": 7.33,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 11
+        },
+        "R003_norun_high": {
+          "share_pct": 22.67,
+          "cf": 1.1296,
+          "expected_bonus_given_win_cap_yuan": 6273705.66,
+          "n_hit_periods": 34
+        },
+        "R001_norun_mirror": {
+          "share_pct": 25.33,
+          "cf": 1.1585,
+          "expected_bonus_given_win_cap_yuan": 6117280.66,
+          "n_hit_periods": 38
+        }
+      }
+    },
+    {
+      "step": 2,
+      "train_periods": 1333,
+      "eval_range": [
+        1333,
+        1483
+      ],
+      "eval_start_date": "2022-07-11",
+      "hot_front_top6": [
+        1,
+        3,
+        7,
+        20,
+        29,
+        35
+      ],
+      "random_bonus": 7086666.67,
+      "r_new_bonus": 7213214.29,
+      "r_new_gain_vs_random": 126547.62,
+      "step_winner": "R001_norun_mirror",
+      "step_winner_bonus": 7556700.68,
+      "rules": {
+        "R001_norun_high_mirror": {
+          "share_pct": 16.67,
+          "cf": 0.9825,
+          "expected_bonus_given_win_cap_yuan": 7213214.29,
+          "n_hit_periods": 25
+        },
+        "R001_norun_high_hot": {
+          "share_pct": 8.67,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 13
+        },
+        "R001_norun_high_mirror_hot": {
+          "share_pct": 6.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 9
+        },
+        "R001_norun_mirror_hot": {
+          "share_pct": 14.67,
+          "cf": 0.9649,
+          "expected_bonus_given_win_cap_yuan": 7344363.64,
+          "n_hit_periods": 22
+        },
+        "R003_norun_high": {
+          "share_pct": 25.33,
+          "cf": 1.0018,
+          "expected_bonus_given_win_cap_yuan": 7073603.69,
+          "n_hit_periods": 38
+        },
+        "R001_norun_mirror": {
+          "share_pct": 36.67,
+          "cf": 0.9378,
+          "expected_bonus_given_win_cap_yuan": 7556700.68,
+          "n_hit_periods": 55
+        }
+      }
+    },
+    {
+      "step": 3,
+      "train_periods": 1483,
+      "eval_range": [
+        1483,
+        1633
+      ],
+      "eval_start_date": "2023-07-10",
+      "hot_front_top6": [
+        1,
+        2,
+        5,
+        7,
+        20,
+        30
+      ],
+      "random_bonus": 7086666.67,
+      "r_new_bonus": 10000000.0,
+      "r_new_gain_vs_random": 2913333.33,
+      "step_winner": "R001_norun_high_mirror",
+      "step_winner_bonus": 10000000.0,
+      "rules": {
+        "R001_norun_high_mirror": {
+          "share_pct": 18.0,
+          "cf": 0.7066,
+          "expected_bonus_given_win_cap_yuan": 10000000.0,
+          "n_hit_periods": 27
+        },
+        "R001_norun_high_hot": {
+          "share_pct": 11.33,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 17
+        },
+        "R001_norun_high_mirror_hot": {
+          "share_pct": 6.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 9
+        },
+        "R001_norun_mirror_hot": {
+          "share_pct": 10.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 15
+        },
+        "R003_norun_high": {
+          "share_pct": 28.67,
+          "cf": 0.6798,
+          "expected_bonus_given_win_cap_yuan": 10000000.0,
+          "n_hit_periods": 43
+        },
+        "R001_norun_mirror": {
+          "share_pct": 28.67,
+          "cf": 0.8182,
+          "expected_bonus_given_win_cap_yuan": 8661716.53,
+          "n_hit_periods": 43
+        }
+      }
+    },
+    {
+      "step": 4,
+      "train_periods": 1633,
+      "eval_range": [
+        1633,
+        1783
+      ],
+      "eval_start_date": "2024-07-08",
+      "hot_front_top6": [
+        1,
+        3,
+        5,
+        7,
+        20,
+        30
+      ],
+      "random_bonus": 7086666.67,
+      "r_new_bonus": 8852034.07,
+      "r_new_gain_vs_random": 1765367.4,
+      "step_winner": "R001_norun_high_mirror",
+      "step_winner_bonus": 8852034.07,
+      "rules": {
+        "R001_norun_high_mirror": {
+          "share_pct": 14.0,
+          "cf": 0.8006,
+          "expected_bonus_given_win_cap_yuan": 8852034.07,
+          "n_hit_periods": 21
+        },
+        "R001_norun_high_hot": {
+          "share_pct": 6.67,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 10
+        },
+        "R001_norun_high_mirror_hot": {
+          "share_pct": 4.67,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 7
+        },
+        "R001_norun_mirror_hot": {
+          "share_pct": 7.33,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 11
+        },
+        "R003_norun_high": {
+          "share_pct": 23.33,
+          "cf": 0.8753,
+          "expected_bonus_given_win_cap_yuan": 8096372.63,
+          "n_hit_periods": 35
+        },
+        "R001_norun_mirror": {
+          "share_pct": 29.33,
+          "cf": 1.0486,
+          "expected_bonus_given_win_cap_yuan": 6758059.56,
+          "n_hit_periods": 44
+        }
+      }
+    },
+    {
+      "step": 5,
+      "train_periods": 1783,
+      "eval_range": [
+        1783,
+        1933
+      ],
+      "eval_start_date": "2025-07-07",
+      "hot_front_top6": [
+        1,
+        3,
+        5,
+        7,
+        20,
+        29
+      ],
+      "random_bonus": 7086666.67,
+      "r_new_bonus": null,
+      "r_new_gain_vs_random": null,
+      "step_winner": "R001_norun_mirror",
+      "step_winner_bonus": 7800690.95,
+      "rules": {
+        "R001_norun_high_mirror": {
+          "share_pct": 12.67,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 19
+        },
+        "R001_norun_high_hot": {
+          "share_pct": 9.33,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 14
+        },
+        "R001_norun_high_mirror_hot": {
+          "share_pct": 6.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 9
+        },
+        "R001_norun_mirror_hot": {
+          "share_pct": 10.0,
+          "cf": null,
+          "expected_bonus_given_win_cap_yuan": null,
+          "n_hit_periods": 15
+        },
+        "R003_norun_high": {
+          "share_pct": 23.33,
+          "cf": 1.0008,
+          "expected_bonus_given_win_cap_yuan": 7081108.5,
+          "n_hit_periods": 35
+        },
+        "R001_norun_mirror": {
+          "share_pct": 29.33,
+          "cf": 0.9085,
+          "expected_bonus_given_win_cap_yuan": 7800690.95,
+          "n_hit_periods": 44
+        }
+      }
+    }
+  ],
+  "caveats": [
+    "cf 口径 = mean(w1|开出∈池)/mean(w1|全部)，同 v1（F-0003 同族实证口径）",
+    "池内开出期数 < 20 不估 cf；每步评估窗 60 期，cf 样本量为窗口内命中期数",
+    "walk-forward 每步只评估紧邻下一窗，评估窗数据不参与训练/选型（L6）",
+    "全部数字为『中奖时期望奖金』提升，不改变各奖级中奖概率（红线）；概率口径带奖级限定",
+    "R_new 若二次确认通过，仍属新候选规则，正式进入 strategy.json 需用户批准"
+  ]
+}

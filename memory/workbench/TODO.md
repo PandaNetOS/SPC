@@ -1,6 +1,6 @@
 ﻿# TODO.md — 待办池（工作记忆）
 
-> **版本**：`1.8` ｜ 轮次 `r12` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`2.0` ｜ 轮次 `r13` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
@@ -143,12 +143,23 @@
 
 - [x] **T-024** 机选占比的代理变量（Q-015）✅ **r11 完成** → F-0043：连号注数比/偏好基尼代理可观测（显著变点），F-0021 caveats 已更新（补代理证据 + 概率口径限定）
 
-- [ ] **T-049** value: 80 ★ r12 首推：L3 组合优化的时序 hold-out 评测实现 + 规则搜索 v1
-      按 `round11/T048_HOLDOUT_DESIGN.md` 实现：后段 1973 期切训练 60%/验证 20%/测试 20%，
-      主指标 expected_bonus_given_win（含 1 亿封顶）+ 撞号系数 + 每元回报 (1+m)/(K+m)；
-      L6 防泄漏（特征只用 t 及之前信息、测试窗只评估一次、walk-forward 滚训）；
-      组合只作用选号分布（人群密度避让），三条红线不变；引用陷阱：禁止「提高中奖率」。
-      产出：评测脚本 + R_new 规则搜索 v1 + 结果 json + F-0xxx（若测试窗收益显著）。
+- [x] **T-049** value: 80 ★ r12 首推：L3 组合优化的时序 hold-out 评测实现 + 规则搜索 v1 ✅ **r12 完成** → F-0044：测试窗 R001_norun_high_mirror 906.4 万 vs 随机 708.7 万（+27.9%，CI 下界高于随机，验收 met=True）；R-001/R-003 获 B 档样本外确认；R_new（镜像对避让）待用户批准落地
+
+- [x] **T-051** value: 80 ★ r13 首推：L3 规则搜索 v2 —— walk-forward 滚动再训练 + 候选池扩展 ✅ **r13 完成** → F-0045：5 步 walk-forward（150 期评估窗），R_new 正增益步 4/5（80%）、中位增益 +150 万、总增益 +604 万，二次样本外确认 met=True；冷热号避让候选未超 R_new，winner 分布 3/5 归 R_new
+
+- [ ] **T-052** value: 40 ★ r14 候选：R_new（R001_norun_high_mirror）正式落地为 R-004 —— **需用户批准**（策略变更红线）
+      批准后：strategy.json 新增 R-004（effective_grade=B，引用 F-0044/F-0045），STRATEGY_GUIDE §2 同步；
+      若用户不批准则保持新候选状态，仅保留 F-0044/F-0045 证据链
+
+- [ ] **T-053** value: 30 P4：F-0041 补强——三连号之外形态复验（CI 宽）
+      r09 遗留：run>=3 形态样本少导致 CI 宽；扩展复验连号相邻形态（如 12-14 间隔形态）并评估是否入 avoid_list
+
+- [ ] **T-054** value: 30 P4：walk-forward 每步 bootstrap CI（当前单步仅点估计）
+      r13 T-051 遗留：第 5 步命中不足 20 期不估 cf；给每步加期重抽样 CI，跨步汇总时体现不确定性
+
+- [x] **T-055** value: 20 P4：README「版本体系」补 build_versions.py 禁用说明（T-044 收尾）✅ **r13 完成**
+      README 版本体系小节已补：`tools/build_versions.py --write` 已禁用（防 versions.json 回退），
+      权威维护流程=手工登记 + render 五件套 + inject_version_lines
 
 - [ ] **T-025** E6 固定奖加成是否真实发生（Q-016）★ r04 新增 `resource: external-data`
       需三至七等奖实发额（外部数据源）；先做事件计数再谈影响（L10）
@@ -156,8 +167,7 @@
 
 ## P3 — 结构性 / 长期
 
-- [ ] **T-030** 明确"策略有效性"的三档标准并写入 schema（Q-008）
-      影响对外表达的可信度，属伦理与质量双重要求
+- [x] **T-030** 明确"策略有效性"的三档标准并写入 schema（Q-008）✅ **r12 完成** → strategy.schema.json 1.4 `effectiveness_grade`（A 数学恒真 / B 统计确立 / C 模型估计）+ R-001=B/R-002=A/R-003=B 回填；STRATEGY_GUIDE §2 三档表；Q-008 → answered
 
 - [x] **T-031** 第二个彩种接入（验证框架的通用性）✅ **r03 框架迭代已落地（影子彩种实测）**
       目前只有 `games/dlt/`。**框架是否真通用，只有接入第二个彩种才知道**
@@ -191,8 +201,7 @@
 
 ## P4 — 框架自迭代（元层面）
 
-- [ ] **T-040** 从本仓库实践中提炼的框架改进，回写 `framework/protocol/`
-      r03 新增建议：**`evidence.effect` 应区分"观测事件"与"归因"两分**（F-0015 的教训）
+- [x] **T-040** 从本仓库实践中提炼的框架改进，回写 `framework/protocol/` ✅ **r12 完成** → ITERATION_PROTOCOL §6 校验扩展（概率口径派生扫描/★S 策略同步/deliverables 对象数组/schema 全字段）+ §7 禁止事项 +5（BOM 编码/策略版本落后/任务 id 纯数字/渲染五件套/deliverables 字符串）；遗留建议：`evidence.effect` 区分"观测事件/归因"（F-0015 教训）已记入 T-040 文本，仍开放可选做
 
 - [x] **T-041** 自动化：`cli/main.py index` 从 `FACTS.jsonl` 重生成 `INDEX.md` ✅ **已实现（误报，命令位早已落地）**
       `cli/main.py` 的 `index` 子命令（`cmd_index` → `mem.write_index()`）**已实现**，
@@ -209,15 +218,13 @@
 
       （呼应 `spec/VERSIONING.md` 中"数据层静默修改"的风险）
 
-- [ ] **T-044** ★ r04 新增：`tools/build_versions.py` 与 `versions.json` 脱节
-      该生成器内部的 `CONTENT_VERSIONS` / `DOC_VERSIONS` 表仍停留在 r02 的值，
-      直接跑 `build_versions.py --write` 会把 versions.json **回退**；r04 只能手工维护索引。
-      产出：把表同步到当前状态，或在文件头显式声明它已降级为"参考实现"并在 README 里写明正确的维护流程
+- [x] **T-044** ★ r04 新增：`tools/build_versions.py` 与 `versions.json` 脱节 ✅ **r13 完成（走"降级为参考实现"方案）**
+      内嵌版本表停留在 r03，直接 `--write` 会回退 versions.json → **`--write` 已禁用（运行即报错退出）**；
+      文件头显式声明降级为参考实现 + 权威维护流程（手工登记 + render 五件套 + inject_version_lines）
 
-- [ ] **T-045** ★ r04 新增：文档里的测试计数应自动注入
-      同一轮里 `319/113/105` 三个陈旧计数散落在 README / AI_CONTEXT / tests/README / ITERATION_GUIDE / framework/core/README；
-      `tools/count_tests.py` 已经能实跑计数，但结果要人手抄进文档。
-      产出：给 count_tests.py 加 `--inject`（或新增注入脚本），让文档计数与实跑结果一致
+- [x] **T-045** ★ r04 新增：文档里的测试计数应自动注入 ✅ **r11 已实际落地，r13 核实销账**
+      `tools/count_tests.py --inject` 已实现（`inject_tests_readme`，finish_round 自动调用），
+      文档计数与实跑结果一致（tests/README 表格由 --inject 重建）
 
 ---
 

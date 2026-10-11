@@ -14,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — FACTS 计数 38→43
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — ← 速览区 44 条结论 / open 2 / r12 彩种行
+- `README.md` — ← 速览区 45 条结论 / open 2 / r12 彩种行
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -55,7 +55,7 @@
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
 - `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — r12: +F-0044（hold-out 验收）；F-0004/F-0005 重校准 established_in=…
+- `memory/facts/FACTS.jsonl` — r13: +F-0045（walk-forward 二次确认，R_new B 档闭合）；FACTS 44→45
 - `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
 - `memory/journal/round02.md` — 整理入库轮
 - `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
@@ -68,11 +68,12 @@
 - `memory/journal/round10.md` — r10 执行日志
 - `memory/journal/round11.md` — r11 执行日志（含 schema 踩坑序列与 BOM 根治）
 - `memory/journal/round12.md` — r12 执行日志
+- `memory/journal/round13.md` — r13 执行日志
 - `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
-- `memory/workbench/TODO.md` — r12: T-030/T-040/T-049 → done
+- `memory/workbench/TODO.md` — r13: T-051/T-044/T-045/T-055 → done，新增 T-052/T-053/T-054
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
@@ -84,7 +85,7 @@
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
+- `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
@@ -99,7 +100,7 @@
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
+- `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）

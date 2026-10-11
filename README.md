@@ -94,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← FACTS 计数 38→43
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.16     ← ← 速览区 44 条结论 / open 2 / r12 彩种行
+├── README.md  v1.16     ← ← 速览区 45 条结论 / open 2 / r12 彩种行
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -217,12 +217,18 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
 │       │   │   ├── manifest.json  —         ← r11 deliverables（根级）
 │       │   │   └── scripts/  ← 轮次脚本（5 个）
-│       │   └── round12/
-│       │       ├── FINDINGS.md  v1.0      ← r12 研究结论
-│       │       ├── HANDOFF.md  v1.0      ← r12→r13 交接
-│       │       ├── TASK_BRIEF.md  v1.0      ← r12 任务书（T-049/T-030/T-040）
-│       │       ├── manifest.json  —         ← r12 manifest
-│       │       └── scripts/  ← 轮次脚本（3 个）
+│       │   ├── round12/
+│       │   │   ├── FINDINGS.md  v1.0      ← r12 研究结论
+│       │   │   ├── HANDOFF.md  v1.0      ← r12→r13 交接
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← r12 任务书（T-049/T-030/T-040）
+│       │   │   ├── manifest.json  —         ← r12 manifest
+│       │   │   └── scripts/  ← 轮次脚本（3 个）
+│       │   └── round13/
+│       │       ├── FINDINGS.md  v1.0      ← r13 研究结论
+│       │       ├── HANDOFF.md  v1.0      ← r13 交接
+│       │       ├── TASK_BRIEF.md  v1.0      ← r13 任务书（T-051/T-044/T-045）
+│       │       ├── manifest.json  —         ← r13 manifest
+│       │       └── scripts/  ← 轮次脚本（2 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -234,7 +240,7 @@ python cli/main.py new-game <game_id>
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
 │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.3      ← r12: +F-0044（hold-out 验收）；F-0004/F-…
+│   │   ├── FACTS.jsonl  v1.4      ← r13: +F-0045（walk-forward 二次确认，R_ne…
 │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
 │   │   ├── round02.md  v1.0      ← 整理入库轮
@@ -247,7 +253,8 @@ python cli/main.py new-game <game_id>
 │   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
 │   │   ├── round10.md  v1.0      ← r10 执行日志
 │   │   ├── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
-│   │   └── round12.md  v1.0      ← r12 执行日志
+│   │   ├── round12.md  v1.0      ← r12 执行日志
+│   │   └── round13.md  v1.0      ← r13 执行日志
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
@@ -255,7 +262,7 @@ python cli/main.py new-game <game_id>
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.7      ← r12: Q-008 → answered（open 3→2：Q-00…
-│       └── TODO.md  v1.8      ← r12: T-030/T-040/T-049 → done
+│       └── TODO.md  v2.0      ← r13: T-051/T-044/T-045/T-055 → done…
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
 │   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
@@ -299,7 +306,7 @@ python cli/main.py new-game <game_id>
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
-    ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r13 T-04…
     ├── count_tests.py  —         ← 登记测试文件 + --inject（T-045：tests/READM…
     ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
@@ -321,6 +328,11 @@ python cli/main.py new-game <game_id>
 > **文件名本身不带版本号** —— 版本号在**文件头部版本行**与**本索引**里维护。
 > 原因：改名会让所有指向它的链接失效、`git log` 追不到历史。详见
 > [`docs/VERSIONING_DOCS.md`](docs/VERSIONING_DOCS.md) §2。
+>
+> **⚠ `tools/build_versions.py --write` 已禁用（T-044，r13）**：该生成器内嵌版本表停留在 r03，
+> 运行会**回退** versions.json。权威维护流程 = **手工登记 + `render_readme_tree /
+> render_version_index / render_ai_map / render_dependency_map / render_flywheel_health --write` +
+> `inject_version_lines.py --write`**，勿跑 build_versions --write。
 
 详见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
 
@@ -376,7 +388,7 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **44 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**2 open**，r11 清偿 Q-011/Q-015，r12 清偿 Q-008）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 记忆层 | ✅ **45 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**2 open**，r11 清偿 Q-011/Q-015，r12 清偿 Q-008）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **98 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库 + **★S 策略文档随轮同步**） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.4**，**3 规则** + 9 条 avoid_list，规则含有效性三档 `effectiveness_grade`）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计）+ **r12 L3 hold-out 落地轮**（T-049 时序评测验收通过 F-0044、T-030 策略有效性三档 schema 1.4、Q-008 answered、F-0004/F-0005 锚点重校准） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
