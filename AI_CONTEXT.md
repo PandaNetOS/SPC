@@ -180,7 +180,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 
 ## 5. 已经确定的结论（速览）
 
-**权威源是 `memory/facts/FACTS.jsonl`（43 条）**，此处只列最重要的几条。
+**权威源是 `memory/facts/FACTS.jsonl`（44 条）**，此处只列最重要的几条。
 引用前**必读该条的 `caveats`**。
 
 | id | 结论 | 置信度 |

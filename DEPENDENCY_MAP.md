@@ -224,6 +224,11 @@
 - sha256锚→ `games/dlt/iterations/round11/scripts/t024_proxy.py`
 - source→ `games/dlt/iterations/round11/scripts/t024_proxy.py`
 
+## FACTS:F-0044
+- script→ `games/dlt/iterations/round12/scripts/t049_holdout.py`
+- sha256锚→ `games/dlt/iterations/round12/scripts/t049_holdout.py`
+- source→ `games/dlt/iterations/round12/scripts/t049_holdout.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 

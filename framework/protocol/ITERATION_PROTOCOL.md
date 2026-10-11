@@ -1,6 +1,6 @@
-# ITERATION_PROTOCOL.md — 迭代协议
+﻿# ITERATION_PROTOCOL.md — 迭代协议
 
-> **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r12` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件定义"一轮研究"的完整生命周期。**
@@ -223,6 +223,18 @@ python cli/main.py validate --all
 - `supersedes` ↔ `superseded_by` **双向一致**
 - `manifest.json` 的 id 引用存在
 
+r11/r12 新增的机械护栏（validate --all 已内置，勿手写白名单）：
+
+- 概率口径扫描**自动派生**：versions.json 全部 active .md/.py/.json/.jsonl 均在检查范围
+  （FACTS.jsonl 按**逐条 JSON 的 claim 字段**检查，避免跨字段误报；L15）
+- ★S 策略文档随轮同步：最近 `strategy_updated=true` 的收尾轮 → STRATEGY_GUIDE.md 与
+  strategy.json 登记轮次必须 >= 该轮，落后即 FAIL（防「策略文档漏更新」复发）
+- 迭代 manifest 的 deliverables 必须是 `{path, kind}` 对象数组（非字符串列表）；
+  status 用 schema 枚举（delivered），顶层不得出现 schema 外字段
+- 新增 fact 必填 schema 全字段：supersedes/superseded_by/created_at/updated_at/
+  confidence_grade/change_type/source（source=None 会崩 rehash）+ evidence 内
+  n_observations/data_version/rules_epoch/script/source_sha256/noop_count
+
 **校验不过 = 本轮未完成。** 不得标记 `status: delivered`。
 
 ---
@@ -240,6 +252,11 @@ python cli/main.py validate --all
 | 声称提高中奖概率 | 红线 |
 | 在 `TASK_BRIEF` 里写期望结论（独立复核场景） | 反锚定失效 |
 | 收轮不生成下轮 `TASK_BRIEF` | **迭代链断裂** |
+| 读改写脚本用 `utf-8` 读带 BOM 文件 | 每次运行叠加一个 U+FEFF → 版本行注入失效（r11 BOM 教训）；读/写统一 `utf-8-sig` |
+| 策略文档版本落后于最新策略更新轮 | ★S 拦截：轮次收尾前必须同步证据并 bump 登记（r10/r11.1 教训） |
+| 新任务 id 用非纯数字（如 T-048b） | 任务书生成器正则只匹配 `T-\d{3}`，用 `T-\d{3}[a-z]?` 会被静默漏掉（r12 教训） |
+| 变更 versions.json 后不跑 5 个 render + inject | README 目录树/版本行/派生图为派生物，validate 结构完整性会红 |
+| manifest 的 deliverables 写成字符串列表 | schema 要求 `{path, kind}` 对象数组（r11 教训） |
 
 ---
 

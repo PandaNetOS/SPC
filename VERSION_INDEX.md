@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`2.0` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r08` ｜ **生成日期**：2026-10-11
+**索引版本**：`2.0` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r12` ｜ **生成日期**：2026-10-11
 
 ---
 
@@ -47,9 +47,9 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 125 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 86 |
-| **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 20 |
-| **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 32 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 89 |
+| **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 23 |
+| **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 34 |
 
 **为什么 D 级（数据）不版本化**：`data/raw/` 已有 **SHA256**，
 那是**比版本号更强的完整性保证** —— 版本号只能告诉你「变了」，
@@ -147,9 +147,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round07/scripts/t016_holiday.json` | `1.0` | `r07` | 2026-10-11 | active | T-016 结果 |
 | `games/dlt/iterations/round07/scripts/t016_holiday.py` | `1.0` | `r07` | 2026-10-11 | active | T-016 节假日验证（F-0035） |
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.7` | `r11` | 2026-10-11 | active | r11：补 F-0042 平台期（后段不再弱化）+ F-0043 代理确认（R-003 依据稳固）；r10.1 概率口径修正 |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.8` | `r12` | 2026-10-11 | active | r12: 策略有效性三档表 + T-049 测试窗证据（v1.7→1.8） |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
-| `memory/facts/FACTS.jsonl` | `1.2` | `r11` | 2026-10-11 | active | 43 条（r11 新增 F-0042 效应平台期 / F-0043 机选代理可观测；F-0021 caveats 更新） |
+| `memory/facts/FACTS.jsonl` | `1.3` | `r12` | 2026-10-11 | active | r12: +F-0044（hold-out 验收）；F-0004/F-0005 重校准 established_in=round12 |
 | `memory/facts/INDEX.md` | `1.5` | `r04` | 2026-10-11 | active | 派生物，由 cli index 生成（32 条） |
 | `memory/journal/round02.md` | `1.0` | `r02` | 2026-10-11 | active | 整理入库轮 |
 | `memory/journal/round03.md` | `1.0` | `r03` | 2026-10-11 | active | 复核轮（含 1 次自我纠错） |
@@ -159,8 +159,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `memory/lessons/LESSONS.md` | `1.3` | `r10` | 2026-10-11 | active | L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单） |
 | `memory/spec/ITERATION_SOP_v2.md` | `1.3` | `r07` | 2026-10-11 | active | 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究池（研究可并行、入库串行过三闸门） |
 | `memory/workbench/HYPOTHESES.md` | `1.2` | `r07` | 2026-10-11 | active | H-001~H-006（H-006 refuted） |
-| `memory/workbench/OPEN_QUESTIONS.md` | `1.6` | `r11` | 2026-10-11 | active | 15 问 13 answered：r11 清偿 Q-011/Q-015，open 3（Q-006/Q-008/Q-016） |
-| `memory/workbench/TODO.md` | `1.7` | `r11` | 2026-10-11 | active | T-023/T-024/T-048 r11 完成（P2 段同步更新） |
+| `memory/workbench/OPEN_QUESTIONS.md` | `1.7` | `r12` | 2026-10-11 | active | r12: Q-008 → answered（open 3→2：Q-006/Q-016） |
+| `memory/workbench/TODO.md` | `1.8` | `r12` | 2026-10-11 | active | r12: T-030/T-040/T-049 → done |
 | `games/dlt/iterations/round08/scripts/all_tiers_expectation.py` | `1.0` | `r08` | 2026-10-11 | active | 全奖级口径期望分解（r08 T-049，各奖级精确枚举 + 封顶饱和 L5 双口径） |
 | `games/dlt/iterations/round08/scripts/all_tiers_expectation.json` | `1.0` | `r08` | 2026-10-11 | active | 全奖级口径输出（F-0036 的派生产物） |
 | `games/dlt/iterations/round08/FINDINGS.md` | `1.0` | `r08` | 2026-10-11 | active | 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四件套补齐） |
@@ -197,7 +197,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.5` | `r11` | active | FACTS 计数 38→43 |
-| `README.md` | `1.16` | `r11` | active | 速览区 43 条结论 / open 3 / r11 彩种行 |
+| `README.md` | `1.16` | `r12` | active | ← 速览区 44 条结论 / open 2 / r12 彩种行 |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |
@@ -219,7 +219,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/methodology/MATH_BOUNDARY.md` | `1.1` | `r10` | active | r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定） |
 | `framework/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
-| `framework/protocol/ITERATION_PROTOCOL.md` | `1.1` | `r03` | active |  |
+| `framework/protocol/ITERATION_PROTOCOL.md` | `1.2` | `r12` | active | r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏 |
 | `framework/protocol/MEMORY_PROTOCOL.md` | `1.2` | `r03` | active | r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定 |
 | `framework/protocol/README.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
@@ -248,7 +248,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/spc/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/tree.py` | —（见备注） | `r06` | active | 目录树生成源（P1-2）：README 树 = 派生物 |
-| `src/spc/validate.py` | —（见备注） | `r11` | active | r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲染编码护栏候选 |
+| `src/spc/validate.py` | —（见备注） | `r12` | active | r12: 策略同步 ★S 已内置（r11 起），登记轮次同步 |
 | `src/spc/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tests/README.md` | `1.5` | `r06` | active | 测试说明（自举计数：合计 333，含 test_structure 8） |
 | `tests/test_ai_readability.py` | —（见备注） | `—` | active | P1/P2/B/H/I 测试 |
@@ -282,6 +282,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md` | `1.0` | `r11` | active | T-048 L3 组合优化预备：时序 hold-out 评测设计（切分/指标/防泄漏/组合搜索边界/验收护栏，不落 L2） |
 | `games/dlt/iterations/round11/FINDINGS.md` | `1.0` | `r11` | active | r11 结论：F-0042 平台期 / F-0043 代理可观测 / T-048 设计 + 2 项顺带根治 |
 | `games/dlt/iterations/round11/HANDOFF.md` | `1.0` | `r11` | active | r11→r12 交接：T-048b 首推 + T-025 仍 blocked + 编码护栏建议 |
+| `games/dlt/iterations/round12/TASK_BRIEF.md` | `1.0` | `r12` | active | r12 任务书（T-049/T-030/T-040） |
+| `games/dlt/iterations/round12/FINDINGS.md` | `1.0` | `r12` | active | r12 研究结论 |
+| `games/dlt/iterations/round12/HANDOFF.md` | `1.0` | `r12` | active | r12→r13 交接 |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -294,7 +297,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
 | `games/dlt/iterations/round07/manifest.json` | `inputs.data_version` | `dlt_full_2933` | r07 机器登记 |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.3` | r11：evidence_hash 随 F-0021 caveats/F-0042/F-0043 重算（rehash）；规则无变更；r10 概率口径修正 |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.4` | r12: schema_version 1.4 + effectiveness_grade 三档回填（1.3→1.4） |
 | `pyproject.toml` | `project.version` | `0.1.0` | 包版本 |
 | `spec/fact.schema.json` | `—` | `—` | evidence 新增 noop_count |
 | `spec/game_config.schema.json` | `—` | `—` | schema 自身无版本；约束 game_config.config_version |
@@ -307,6 +310,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round11/scripts/t024_proxy.py` | `—` | `—` | T-024 机选占比代理变量（P1 低号注数比 / P2 连号注数比 / P3 偏好基尼 + 变点扫描；→ F-0043） |
 | `games/dlt/iterations/round11/scripts/apply_r11_facts.py` | `—` | `—` | r11 入库：F-0042/F-0043 新增 + F-0021 caveats 更新 + Q-011/Q-015 answered + TODO done |
 | `memory/journal/round11.md` | `—` | `—` | r11 执行日志（含 schema 踩坑序列与 BOM 根治） |
+| `games/dlt/iterations/round12/scripts/t049_holdout.py` | `—` | `—` | T-049 hold-out 评测 |
+| `games/dlt/iterations/round12/scripts/t030_effectiveness.py` | `—` | `—` | T-030 三档标准写入 |
+| `memory/journal/round12.md` | `—` | `—` | r12 执行日志 |
 
 ### D 级 · 纯数据 / 分析脚本（不版本化）
 
@@ -344,6 +350,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round11/scripts/t023_roll_decay.json` | `research_output` | — | T-023 复验结果（34/30 窗序列 + 趋势检验 + 节假日分段） |
 | `games/dlt/iterations/round11/scripts/t024_proxy.json` | `research_output` | — | T-024 代理序列 + 变点 + 相关结果 |
 | `games/dlt/iterations/round11/manifest.json` | `manifest` | — | r11 deliverables（根级） |
+| `games/dlt/iterations/round12/scripts/t049_holdout.json` | `data` | — | T-049 结果 |
+| `games/dlt/iterations/round12/manifest.json` | `manifest` | — | r12 manifest |
 
 ---
 
@@ -352,11 +360,11 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 类型 | 数量 | 级别 | 文件 |
 |---|---|---|---|
 | `iteration_artifact` | 52 | A | `games/dlt/iterations/round02/FINDINGS.md`<br>`games/dlt/iterations/round02/HANDOFF.md`<br>`games/dlt/iterations/round02/PRIORITY_TASKS.md`<br>`games/dlt/iterations/round02/TASK_BRIEF.md`<br>`games/dlt/iterations/round02/known_errors.md`<br>`games/dlt/iterations/round02/legacy_findings/README.md`<br>`games/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html`<br>`games/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt`<br>`games/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt`<br>`games/dlt/iterations/round02/legacy_findings/round2_main_report.md`<br>`games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt`<br>`games/dlt/iterations/round03/FINDINGS.md`<br>`games/dlt/iterations/round03/HANDOFF.md`<br>`games/dlt/iterations/round03/TASK_BRIEF.md`<br>`games/dlt/iterations/round03/scripts/apply_r03_facts.py`<br>`games/dlt/iterations/round03/scripts/apply_r03_strategy.py`<br>`games/dlt/iterations/round03/scripts/b2_robust_estimators.json`<br>`games/dlt/iterations/round03/scripts/b2_robust_estimators.py`<br>`games/dlt/iterations/round03/scripts/b2_split_stability.json`<br>`games/dlt/iterations/round03/scripts/b2_split_stability.py`<br>`games/dlt/iterations/round03/scripts/cap_adjusted_uplift.json`<br>`games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`<br>`games/dlt/iterations/round04/FINDINGS.md`<br>`games/dlt/iterations/round04/HANDOFF.md`<br>`games/dlt/iterations/round04/TASK_BRIEF.md`<br>`games/dlt/iterations/round04/scripts/apply_r04_facts.py`<br>`games/dlt/iterations/round04/scripts/apply_r04_strategy.py`<br>`games/dlt/iterations/round04/scripts/back_collision.json`<br>`games/dlt/iterations/round04/scripts/back_collision.py`<br>`games/dlt/iterations/round04/scripts/decay_cause.json`<br>`games/dlt/iterations/round04/scripts/decay_cause.py`<br>`games/dlt/iterations/round04/scripts/prize_mechanism_tobit.json`<br>`games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py`<br>`games/dlt/iterations/round05/FINDINGS.md`<br>`games/dlt/iterations/round05/HANDOFF.md`<br>`games/dlt/iterations/round05/TASK_BRIEF.md`<br>`games/dlt/iterations/round06/FINDINGS.md`<br>`games/dlt/iterations/round06/HANDOFF.md`<br>`games/dlt/iterations/round06/TASK_BRIEF.md`<br>`games/dlt/iterations/round06/manifest.json`<br>`games/dlt/iterations/round07/FINDINGS.md`<br>`games/dlt/iterations/round07/HANDOFF.md`<br>`games/dlt/iterations/round07/TASK_BRIEF.md`<br>`memory/journal/round04.md`<br>`games/dlt/iterations/round08/scripts/all_tiers_expectation.py`<br>`games/dlt/iterations/round08/scripts/all_tiers_expectation.json`<br>`games/dlt/iterations/round08/FINDINGS.md`<br>`games/dlt/iterations/round08/HANDOFF.md`<br>`games/dlt/iterations/round09/TASK_BRIEF.md`<br>`games/dlt/iterations/round09/FINDINGS.md`<br>`games/dlt/iterations/round09/HANDOFF.md`<br>`games/dlt/iterations/round10/TASK_BRIEF.md` |
-| `script` | 34 | A | `framework/tools/compress_memory.py`<br>`framework/tools/ingate.py`<br>`games/dlt/iterations/round05/scripts/apply_r05_facts.py`<br>`games/dlt/iterations/round05/scripts/bet_structure.py`<br>`games/dlt/iterations/round05/scripts/fix_r05_housekeeping.py`<br>`games/dlt/iterations/round05/scripts/sync_r05_versions.py`<br>`games/dlt/iterations/round05/scripts/timing_weekday.py`<br>`games/dlt/iterations/round06/scripts/add_v2_fields.py`<br>`games/dlt/iterations/round06/scripts/apply_r06_strategy.py`<br>`games/dlt/iterations/round06/scripts/fix_rename_remainder.py`<br>`games/dlt/iterations/round06/scripts/probe_r06.py`<br>`games/dlt/iterations/round06/scripts/probe_v2.py`<br>`games/dlt/iterations/round06/scripts/rename_spc.py`<br>`games/dlt/iterations/round06/scripts/smoke_ingate.py`<br>`games/dlt/iterations/round06/scripts/smoke_r06.py`<br>`games/dlt/iterations/round06/scripts/sync_guide_v14.py`<br>`games/dlt/iterations/round06/scripts/sync_structure_registration.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_final.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_versions.py`<br>`games/dlt/iterations/round06/scripts/versions_r06_strategy.py`<br>`games/dlt/iterations/round07/scripts/apply_r07_facts.py`<br>`games/dlt/iterations/round07/scripts/t013_recalibrate.py`<br>`games/dlt/iterations/round07/scripts/t014_forensics.py`<br>`games/dlt/iterations/round07/scripts/t015_external.py`<br>`games/dlt/iterations/round07/scripts/t016_holiday.py`<br>`games/dlt/iterations/round09/scripts/t046_r002_quantify.py`<br>`games/dlt/iterations/round09/scripts/t020_number_weight.py`<br>`games/dlt/iterations/round09/scripts/t013_recalibrate_r09.py`<br>`games/dlt/iterations/round09/scripts/apply_r09_facts.py`<br>`games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py`<br>`games/dlt/iterations/round10/scripts/t022_illusion.py`<br>`games/dlt/iterations/round10/scripts/t050_calibration.py`<br>`games/dlt/iterations/round10/scripts/t028_recalibrate_r10.py`<br>`games/dlt/iterations/round10/scripts/apply_r10_facts.py` |
-| `doc` | 19 | A/B | `AGENTS.md`<br>`AI_MAP.md`<br>`DEPENDENCY_MAP.md`<br>`FLYWHEEL_HEALTH.md`<br>`games/dlt/iterations/round06/research/ai_readability_proposal.md`<br>`games/dlt/iterations/round06/research/flywheel_upgrade_plan.md`<br>`memory/spec/ITERATION_SOP_v2.md`<br>`README.md`<br>`docs/ARCHITECTURE.md`<br>`docs/CONSUMING.md`<br>`docs/ITERATION_GUIDE.md`<br>`docs/METHODOLOGY.md`<br>`docs/PROPOSAL_SINGLE_TICKET_CORE.md`<br>`docs/VERSIONING_DOCS.md`<br>`framework/README.md`<br>`framework/core/README.md`<br>`spec/README.md`<br>`spec/VERSIONING.md`<br>`tests/README.md` |
+| `script` | 36 | A/C | `framework/tools/compress_memory.py`<br>`framework/tools/ingate.py`<br>`games/dlt/iterations/round05/scripts/apply_r05_facts.py`<br>`games/dlt/iterations/round05/scripts/bet_structure.py`<br>`games/dlt/iterations/round05/scripts/fix_r05_housekeeping.py`<br>`games/dlt/iterations/round05/scripts/sync_r05_versions.py`<br>`games/dlt/iterations/round05/scripts/timing_weekday.py`<br>`games/dlt/iterations/round06/scripts/add_v2_fields.py`<br>`games/dlt/iterations/round06/scripts/apply_r06_strategy.py`<br>`games/dlt/iterations/round06/scripts/fix_rename_remainder.py`<br>`games/dlt/iterations/round06/scripts/probe_r06.py`<br>`games/dlt/iterations/round06/scripts/probe_v2.py`<br>`games/dlt/iterations/round06/scripts/rename_spc.py`<br>`games/dlt/iterations/round06/scripts/smoke_ingate.py`<br>`games/dlt/iterations/round06/scripts/smoke_r06.py`<br>`games/dlt/iterations/round06/scripts/sync_guide_v14.py`<br>`games/dlt/iterations/round06/scripts/sync_structure_registration.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_final.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_versions.py`<br>`games/dlt/iterations/round06/scripts/versions_r06_strategy.py`<br>`games/dlt/iterations/round07/scripts/apply_r07_facts.py`<br>`games/dlt/iterations/round07/scripts/t013_recalibrate.py`<br>`games/dlt/iterations/round07/scripts/t014_forensics.py`<br>`games/dlt/iterations/round07/scripts/t015_external.py`<br>`games/dlt/iterations/round07/scripts/t016_holiday.py`<br>`games/dlt/iterations/round09/scripts/t046_r002_quantify.py`<br>`games/dlt/iterations/round09/scripts/t020_number_weight.py`<br>`games/dlt/iterations/round09/scripts/t013_recalibrate_r09.py`<br>`games/dlt/iterations/round09/scripts/apply_r09_facts.py`<br>`games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py`<br>`games/dlt/iterations/round10/scripts/t022_illusion.py`<br>`games/dlt/iterations/round10/scripts/t050_calibration.py`<br>`games/dlt/iterations/round10/scripts/t028_recalibrate_r10.py`<br>`games/dlt/iterations/round10/scripts/apply_r10_facts.py`<br>`games/dlt/iterations/round12/scripts/t049_holdout.py`<br>`games/dlt/iterations/round12/scripts/t030_effectiveness.py` |
+| `doc` | 27 | A/B/C | `AGENTS.md`<br>`AI_MAP.md`<br>`DEPENDENCY_MAP.md`<br>`FLYWHEEL_HEALTH.md`<br>`games/dlt/iterations/round06/research/ai_readability_proposal.md`<br>`games/dlt/iterations/round06/research/flywheel_upgrade_plan.md`<br>`games/dlt/strategy/STRATEGY_GUIDE.md`<br>`memory/spec/ITERATION_SOP_v2.md`<br>`memory/workbench/OPEN_QUESTIONS.md`<br>`memory/workbench/TODO.md`<br>`README.md`<br>`docs/ARCHITECTURE.md`<br>`docs/CONSUMING.md`<br>`docs/ITERATION_GUIDE.md`<br>`docs/METHODOLOGY.md`<br>`docs/PROPOSAL_SINGLE_TICKET_CORE.md`<br>`docs/VERSIONING_DOCS.md`<br>`framework/README.md`<br>`framework/core/README.md`<br>`framework/protocol/ITERATION_PROTOCOL.md`<br>`spec/README.md`<br>`spec/VERSIONING.md`<br>`tests/README.md`<br>`games/dlt/iterations/round12/TASK_BRIEF.md`<br>`games/dlt/iterations/round12/FINDINGS.md`<br>`games/dlt/iterations/round12/HANDOFF.md`<br>`memory/journal/round12.md` |
 | `report` | 14 | A/D | `games/dlt/iterations/round05/scripts/bet_structure.json`<br>`games/dlt/iterations/round05/scripts/timing_weekday.json`<br>`games/dlt/iterations/round07/scripts/t013_recalibrate.json`<br>`games/dlt/iterations/round07/scripts/t014_forensics.json`<br>`games/dlt/iterations/round07/scripts/t015_external.json`<br>`games/dlt/iterations/round07/scripts/t016_holiday.json`<br>`memory/facts/ACTIVE.md`<br>`games/dlt/iterations/round09/scripts/t046_r002_quantify.json`<br>`games/dlt/iterations/round09/scripts/t020_number_weight.json`<br>`games/dlt/iterations/round09/scripts/t013_recalibrate_r09.json`<br>`games/dlt/iterations/round10/scripts/t021_sales_endogeneity.json`<br>`games/dlt/iterations/round10/scripts/t022_illusion.json`<br>`games/dlt/iterations/round10/scripts/t050_calibration.json`<br>`games/dlt/iterations/round10/scripts/t028_recalibrate_r10.json` |
-| `code` | 12 | B | `src/spc/ai_map.py`<br>`src/spc/depmap.py`<br>`src/spc/flywheel.py`<br>`src/spc/tree.py`<br>`tests/test_structure.py`<br>`tools/register_r06_upgrade.py`<br>`tools/render_ai_map.py`<br>`tools/render_dependency_map.py`<br>`tools/render_flywheel_health.py`<br>`tools/render_readme_tree.py`<br>`tools/render_task_brief.py`<br>`tools/report_calibration.py` |
-| `library` | 12 | B | `src/__init__.py`<br>`src/spc/__init__.py`<br>`src/spc/api.py`<br>`src/spc/evidence.py`<br>`src/spc/game.py`<br>`src/spc/memory.py`<br>`src/spc/strategy.py`<br>`src/spc/validate.py`<br>`src/spc/versions.py`<br>`research_lib/__init__.py`<br>`research_lib/stats.py`<br>`research_lib/stability.py` |
+| `code` | 13 | B | `src/spc/ai_map.py`<br>`src/spc/depmap.py`<br>`src/spc/flywheel.py`<br>`src/spc/tree.py`<br>`src/spc/validate.py`<br>`tests/test_structure.py`<br>`tools/register_r06_upgrade.py`<br>`tools/render_ai_map.py`<br>`tools/render_dependency_map.py`<br>`tools/render_flywheel_health.py`<br>`tools/render_readme_tree.py`<br>`tools/render_task_brief.py`<br>`tools/report_calibration.py` |
+| `library` | 11 | B | `src/__init__.py`<br>`src/spc/__init__.py`<br>`src/spc/api.py`<br>`src/spc/evidence.py`<br>`src/spc/game.py`<br>`src/spc/memory.py`<br>`src/spc/strategy.py`<br>`src/spc/versions.py`<br>`research_lib/__init__.py`<br>`research_lib/stats.py`<br>`research_lib/stability.py` |
 | `test` | 11 | B | `tests/test_ai_readability.py`<br>`tests/test_claim_type.py`<br>`tests/test_consumes_completeness.py`<br>`tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_evidence_anchor.py`<br>`tests/test_flywheel.py`<br>`tests/test_shadow_game.py`<br>`tests/test_meta_variables.py`<br>`tests/test_open_questions_consistency.py`<br>`tests/test_research_lib.py` |
 | `analysis_script` | 9 | D | `games/dlt/data/tools/_load.py`<br>`games/dlt/data/tools/acf_permutation_test.py`<br>`games/dlt/data/tools/changepoint_refine.py`<br>`games/dlt/data/tools/changepoint_scan.py`<br>`games/dlt/data/tools/consecutive_exact_check.py`<br>`games/dlt/data/tools/exact_tests.py`<br>`games/dlt/data/tools/overdispersion_and_hac.py`<br>`games/dlt/data/tools/validate_data.py`<br>`games/dlt/strategy/strategy_simulation.py` |
 | `journal` | 9 | A/B/C | `memory/journal/round02.md`<br>`memory/journal/round03.md`<br>`memory/journal/round06.md`<br>`memory/journal/round07.md`<br>`memory/journal/round05.md`<br>`memory/journal/round08.md`<br>`memory/journal/round09.md`<br>`memory/journal/round10.md`<br>`memory/journal/round11.md` |
@@ -365,28 +373,28 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `iteration_manifest` | 6 | C | `games/dlt/iterations/round02/manifest.json`<br>`games/dlt/iterations/round03/manifest.json`<br>`games/dlt/iterations/round04/manifest.json`<br>`games/dlt/iterations/round07/manifest.json`<br>`games/dlt/iterations/round08/manifest.json`<br>`games/dlt/iterations/round09/manifest.json` |
 | `template_game` | 6 | B | `games/_template/README.md`<br>`games/_template/data/build_scripts/README.md`<br>`games/_template/data/derived/README.md`<br>`games/_template/data/raw/README.md`<br>`games/_template/data/tools/README.md`<br>`games/_template/iterations/round01/TASK_BRIEF.md` |
 | `schema` | 5 | C | `spec/fact.schema.json`<br>`spec/game_config.schema.json`<br>`spec/iteration.schema.json`<br>`spec/strategy.schema.json`<br>`spec/version_index.schema.json` |
+| `manifest` | 4 | A/B/D | `games/dlt/iterations/round05/manifest.json`<br>`games/dlt/iterations/round10/manifest.json`<br>`games/dlt/iterations/round11/manifest.json`<br>`games/dlt/iterations/round12/manifest.json` |
 | `build_script` | 3 | D | `games/dlt/data/build_scripts/build_derived_v4.py`<br>`games/dlt/data/build_scripts/hash_and_list.py`<br>`games/dlt/data/build_scripts/validate_package_v4.py` |
 | `index` | 3 | A/B | `memory/INDEX.md`<br>`framework/INDEX.md`<br>`games/INDEX.md` |
-| `manifest` | 3 | A/B/D | `games/dlt/iterations/round05/manifest.json`<br>`games/dlt/iterations/round10/manifest.json`<br>`games/dlt/iterations/round11/manifest.json` |
-| `protocol` | 3 | B | `framework/protocol/ITERATION_PROTOCOL.md`<br>`framework/protocol/MEMORY_PROTOCOL.md`<br>`framework/protocol/README.md` |
 | `repo_tool` | 3 | B | `tools/build_versions.py`<br>`tools/inject_version_lines.py`<br>`tools/render_version_index.py` |
 | `template` | 3 | B | `framework/protocol/templates/FINDINGS.template.md`<br>`framework/protocol/templates/HANDOFF.template.md`<br>`framework/protocol/templates/TASK_BRIEF.template.md` |
-| `workbench` | 3 | A | `memory/workbench/HYPOTHESES.md`<br>`memory/workbench/OPEN_QUESTIONS.md`<br>`memory/workbench/TODO.md` |
 | `findings` | 2 | A/B | `games/dlt/iterations/round10/FINDINGS.md`<br>`games/dlt/iterations/round11/FINDINGS.md` |
 | `game_config` | 2 | C | `games/_template/game.yaml`<br>`games/dlt/game.yaml` |
 | `handoff` | 2 | A/B | `games/dlt/iterations/round10/HANDOFF.md`<br>`games/dlt/iterations/round11/HANDOFF.md` |
 | `methodology` | 2 | B | `framework/methodology/MATH_BOUNDARY.md`<br>`framework/methodology/STATISTICAL_DISCIPLINE.md` |
+| `protocol` | 2 | B | `framework/protocol/MEMORY_PROTOCOL.md`<br>`framework/protocol/README.md` |
 | `raw_data` | 2 | D | `games/dlt/data/raw/dlt_full_2933.csv`<br>`games/dlt/data/raw/dlt_full_2933.jsonl` |
 | `research_output` | 2 | D | `games/dlt/iterations/round11/scripts/t023_roll_decay.json`<br>`games/dlt/iterations/round11/scripts/t024_proxy.json` |
 | `research_script` | 2 | C | `games/dlt/iterations/round11/scripts/t023_roll_decay.py`<br>`games/dlt/iterations/round11/scripts/t024_proxy.py` |
-| `strategy` | 2 | C | `games/_template/strategy/strategy.json`<br>`games/dlt/strategy/strategy.json` |
 | `analysis_output` | 1 | D | `games/dlt/strategy/simulation_results.json` |
 | `apply_script` | 1 | C | `games/dlt/iterations/round11/scripts/apply_r11_facts.py` |
 | `cli` | 1 | B | `cli/main.py` |
+| `contract` | 1 | C | `games/dlt/strategy/strategy.json` |
+| `data` | 1 | D | `games/dlt/iterations/round12/scripts/t049_holdout.json` |
 | `design` | 1 | B | `games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md` |
 | `entry_point` | 1 | B | `AI_CONTEXT.md` |
 | `fact_index` | 1 | A | `memory/facts/INDEX.md` |
-| `fact_ledger` | 1 | A | `memory/facts/FACTS.jsonl` |
+| `facts` | 1 | A | `memory/facts/FACTS.jsonl` |
 | `framework_tool` | 1 | B | `framework/tools/memory.py` |
 | `lesson_library` | 1 | A | `memory/lessons/LESSONS.md` |
 | `library_doc` | 1 | B | `research_lib/README.md` |
@@ -394,13 +402,14 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `package_manifest` | 1 | C | `pyproject.toml` |
 | `rules_history` | 1 | A | `games/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `games/dlt/manifest_v4_source.json` |
-| `strategy_guide` | 1 | A | `games/dlt/strategy/STRATEGY_GUIDE.md` |
+| `strategy` | 1 | C | `games/_template/strategy/strategy.json` |
 | `task_brief` | 1 | B | `games/dlt/iterations/round11/TASK_BRIEF.md` |
 | `test_fixture` | 1 | D | `tests/fixtures/shadow/game.yaml` |
 | `test_tool` | 1 | D | `tools/count_tests.py` |
 | `utility` | 1 | D | `tools/finish_round.py` |
 | `version_index` | 1 | B | `versions.json` |
 | `version_index_doc` | 1 | B | `VERSION_INDEX.md` |
+| `workbench` | 1 | A | `memory/workbench/HYPOTHESES.md` |
 
 ---
 

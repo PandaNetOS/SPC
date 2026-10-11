@@ -53,9 +53,9 @@ def section(t: str) -> None:
 
 
 def test_schema_version() -> None:
-    section("1. schema_version 1.3")
+    section("1. schema_version 1.4")
     st = load_strategy("dlt")
-    check(st.get("schema_version") == "1.3", "schema_version == 1.3")
+    check(st.get("schema_version") == "1.4", "schema_version == 1.4")
     for key in ("convenience", "experience", "psychology"):
         check(key in st, f"顶层字段 {key} 存在")
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.3",
+  "schema_version": "1.4",
   "game": "dlt",
   "generated_at": "2026-10-11",
   "generated_by": "spc-cli/0.1.0",
@@ -74,7 +74,9 @@
       },
       "applicable_epochs": [
         "E6"
-      ]
+      ],
+      "effectiveness_grade": "B",
+      "effectiveness_basis": "后段观测 R=1.2472（CI 下界 1.036）+ r11 F-0042 平台期 + r12 时序 hold-out 测试窗方向一致（cf=0.9531）——统计确立"
     },
     {
       "id": "R-002",
@@ -109,7 +111,9 @@
         ],
         "note": "K=10 注相同号码修复为单注的期望增益（后段口径，m=一等奖中出注数经验分布）；K=2 → 20.72% [20.23,21.23]、K=5 → 47.82% [47.09,48.53]（F-0037，round09）"
       },
-      "applicable_epochs": []
+      "applicable_epochs": [],
+      "effectiveness_grade": "A",
+      "effectiveness_basis": "dup_share_ratio 解析公式 (1+m)/(K+m)（F-0027），数学恒真无模型假设"
     },
     {
       "id": "R-003",
@@ -151,7 +155,9 @@
       },
       "applicable_epochs": [
         "E6"
-      ]
+      ],
+      "effectiveness_grade": "B",
+      "effectiveness_basis": "F-0029 条件份额模拟 + r11 F-0043 代理确认（生日号区注数比稳定 ~1.2）+ r12 测试窗 cf=0.8721 方向一致——统计确立（量级含模型估计成分）"
     }
   ],
   "avoid_list": [
@@ -458,7 +464,7 @@
   "provenance": {
     "iteration": "round06",
     "generator": "apply_r06_strategy.py (user-approved)",
-    "evidence_hash": "3ada7d026491e109c7e4b07e6ab90f4f9b89c1e063a23c43c3316657ef883b6d",
+    "evidence_hash": "f9a247eea429cc71d6f1ca6613fcfd1aec6838763fe47d4c5d950a7e760de0ca",
     "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。 ★ 元数据增强（非研究轮）：schema_version 1.2→1.3，新增 convenience（购彩便利性）/ experience（情绪体验与预期校准）/ psychology（心理学外部锚点）三组元数据；均为非收益变量（affects_expected_return=false），不改变策略数字与 evidence_hash。"
   }
 }

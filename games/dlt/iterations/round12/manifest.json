@@ -1,0 +1,90 @@
+{
+  "round": "round12",
+  "game": "dlt",
+  "title": "L3 hold-out 落地轮：T-049（时序 hold-out 评测+规则搜索 v1→F-0044 验收通过）+ T-030（策略有效性三档→schema 1.4，Q-008 answered）+ T-040（protocol 回写）",
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（MainAgent 直接执行；用户「/连续迭代3轮」「开始」批准任务书自动推进、每轮结束即推送）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0004",
+      "F-0017",
+      "F-0027",
+      "F-0029",
+      "F-0042",
+      "F-0043"
+    ],
+    "previous_handoff": "games/dlt/iterations/round11/HANDOFF.md",
+    "task_brief": "games/dlt/iterations/round12/TASK_BRIEF.md",
+    "note": "任务书（render_task_brief --round 12 --top 3 生成：T-049 90 分首推 / T-030 40 分 / T-040 20 分）经「/连续迭代3轮」自动批准；T-025/T-032 资源缺口未列入。"
+  },
+  "outputs": {
+    "new_fact_ids": [
+      "F-0044"
+    ],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": true,
+    "strategy_pending_user_approval": [
+      "R_new（R001_norun_high_mirror：避连号+避生日号区+避镜像对）落地需用户批准"
+    ],
+    "actual_updates": [
+      "T-049 → F-0044：时序 hold-out 实测撞号避让组合测试窗提升（R001_norun_high_mirror 906.4 万 vs 随机 708.7 万，+27.9%，CI 下界高于随机，验收 met=True）；R-001/R-003 获 B 档样本外确认",
+      "T-030 → Q-008 answered：strategy.schema.json 1.4 新增 effectiveness_grade（A/B/C）+ effectiveness_basis；strategy.json schema_version 1.4 + 三规则档位回填；STRATEGY_GUIDE v1.8/r12 三档表",
+      "T-040 → ITERATION_PROTOCOL 回写：§6 校验清单扩展 + §7 禁止事项新增 5 条机械护栏",
+      "F-0004/F-0005 重校准：E6 锚点精确复现（w1 中位 6.0 / 派发额 0.4252 亿 / 触发 0 次），established_in → round12",
+      "OPEN_QUESTIONS Q-008 → answered（open 3→2）；TODO T-030/T-040/T-049 → done；FACTS 43→44"
+    ],
+    "open_questions": [
+      "Q-006",
+      "Q-016"
+    ],
+    "framework_revision": {
+      "proposed": [
+        "R_new（镜像对避让）落地：待用户批准后入 strategy.json（schema 1.4 已就绪）+ STRATEGY_GUIDE + validate 同步",
+        "T-049b：walk-forward 滚动再训练 + 扩大候选池（gap 结构/和值区间/冷热形态），二次样本外确认",
+        "记忆压缩：round06→round12 已 6 轮到期，下轮执行 compress_memory.py --write",
+        "F-0041 补强：三连号之外形态复验（CI 宽）"
+      ],
+      "accepted": [],
+      "rejected": []
+    }
+  },
+  "deliverables": [
+    {
+      "path": "games/dlt/iterations/round12/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "games/dlt/iterations/round12/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "games/dlt/iterations/round12/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t049_holdout.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t049_holdout.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t030_effectiveness.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round12/manifest.json",
+      "kind": "manifest"
+    }
+  ]
+}

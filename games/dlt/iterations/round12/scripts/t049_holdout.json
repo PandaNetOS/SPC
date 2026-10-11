@@ -1,0 +1,168 @@
+{
+  "round": "round12",
+  "task": "T-049",
+  "data_version": "dlt_full_2933",
+  "split": {
+    "post_start": "2013-08-28",
+    "n_post": 1973,
+    "train": 1183,
+    "valid": 394,
+    "test": 396,
+    "valid_start": "2021-07-10",
+    "test_start": "2024-02-28"
+  },
+  "rules_evaluated": {
+    "train": {
+      "R_random": {
+        "share_pct": 100.0,
+        "cf": 1.0,
+        "expected_bonus_given_win_cap_yuan": 7086666.67,
+        "n_hit_periods": 1183
+      },
+      "R001_norun": {
+        "share_pct": 52.75,
+        "cf": 0.9649,
+        "expected_bonus_given_win_cap_yuan": 7344570.76,
+        "n_hit_periods": 624
+      },
+      "R003_norun_high": {
+        "share_pct": 26.54,
+        "cf": 0.8637,
+        "expected_bonus_given_win_cap_yuan": 8204929.75,
+        "n_hit_periods": 314
+      },
+      "R_mirror_free": {
+        "share_pct": 62.05,
+        "cf": 1.0291,
+        "expected_bonus_given_win_cap_yuan": 6886108.78,
+        "n_hit_periods": 734
+      },
+      "R_arith_free": {
+        "share_pct": 100.0,
+        "cf": 1.0,
+        "expected_bonus_given_win_cap_yuan": 7086666.67,
+        "n_hit_periods": 1183
+      },
+      "R_high32": {
+        "share_pct": 47.51,
+        "cf": 0.9078,
+        "expected_bonus_given_win_cap_yuan": 7806737.74,
+        "n_hit_periods": 562
+      }
+    },
+    "valid": {
+      "R001_norun": {
+        "share_pct": 49.49,
+        "cf": 1.04,
+        "expected_bonus_given_win_cap_yuan": 6814300.22,
+        "n_hit_periods": 195
+      },
+      "R003_norun_high": {
+        "share_pct": 25.63,
+        "cf": 0.9718,
+        "expected_bonus_given_win_cap_yuan": 7292529.63,
+        "n_hit_periods": 101
+      },
+      "R001_norun_mirror": {
+        "share_pct": 31.47,
+        "cf": 0.9926,
+        "expected_bonus_given_win_cap_yuan": 7139574.07,
+        "n_hit_periods": 124
+      },
+      "R001_norun_arith": {
+        "share_pct": 49.49,
+        "cf": 1.04,
+        "expected_bonus_given_win_cap_yuan": 6814300.22,
+        "n_hit_periods": 195
+      },
+      "R001_norun_high_mirror": {
+        "share_pct": 16.24,
+        "cf": 0.8861,
+        "expected_bonus_given_win_cap_yuan": 7997349.72,
+        "n_hit_periods": 64
+      },
+      "R001_norun_high_arith": {
+        "share_pct": 25.63,
+        "cf": 0.9718,
+        "expected_bonus_given_win_cap_yuan": 7292529.63,
+        "n_hit_periods": 101
+      }
+    },
+    "test": {
+      "R_random": {
+        "share_pct": 100.0,
+        "cf": 1.0,
+        "expected_bonus_given_win_cap_yuan": 7086666.67,
+        "n_hit_periods": 396
+      },
+      "R001_norun": {
+        "share_pct": 48.99,
+        "cf": 0.9531,
+        "expected_bonus_given_win_cap_yuan": 7435104.05,
+        "n_hit_periods": 194
+      },
+      "R003_norun_high": {
+        "share_pct": 22.98,
+        "cf": 0.8721,
+        "expected_bonus_given_win_cap_yuan": 8125822.95,
+        "n_hit_periods": 91
+      },
+      "R001_norun_high_mirror": {
+        "share_pct": 13.13,
+        "cf": 0.7819,
+        "expected_bonus_given_win_cap_yuan": 9063775.08,
+        "n_hit_periods": 52
+      }
+    }
+  },
+  "rule_search_v1": {
+    "valid_winner": "R001_norun_high_mirror",
+    "valid_winner_bonus": 7997349.72,
+    "test_winner_bonus": 9063775.08,
+    "test_random_bonus": 7086666.67,
+    "test_r001_bonus": 7435104.05,
+    "test_r003_bonus": 8125822.95,
+    "bootstrap_ci_test": {
+      "R_random": {
+        "ci95_yuan": [
+          7086666.67,
+          7086666.67
+        ],
+        "n_boot": 2000
+      },
+      "R001_norun": {
+        "ci95_yuan": [
+          6792842.68,
+          8224045.15
+        ],
+        "n_boot": 2000
+      },
+      "R003_norun_high": {
+        "ci95_yuan": [
+          7016008.17,
+          9602912.47
+        ],
+        "n_boot": 2000
+      },
+      "R001_norun_high_mirror": {
+        "ci95_yuan": [
+          7255892.45,
+          10000000.0
+        ],
+        "n_boot": 2000
+      }
+    },
+    "direction_consistent_valid_test": true
+  },
+  "acceptance": {
+    "criteria": "测试窗提升 > R-003 基线且 95% CI 不含 0；方向一致",
+    "met": true,
+    "reason": "测试窗提升且 CI 下界高于随机基线，方向一致"
+  },
+  "caveats": [
+    "cf 口径 = mean(w1|开出∈池)/mean(w1|全部)，分母为全池均值（F-0003 同族实证口径，非补池比）",
+    "池内开出期数 < 20 时不估 cf（样本不足）",
+    "测试窗只评估一次；本脚本为 v1 规则搜索，候选池 6 个形态组合",
+    "全部数字为『中奖时期望奖金』提升，不改变各奖级中奖概率（红线）"
+  ]
+}

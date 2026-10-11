@@ -1,6 +1,6 @@
 ﻿# SPC
 
-> **版本**：`1.16` ｜ 轮次 `r11` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r12` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.7`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.8`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.7`（轮次 `r11`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.8`（轮次 `r12`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -94,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← FACTS 计数 38→43
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.16     ← 速览区 43 条结论 / open 3 / r11 彩种行
+├── README.md  v1.16     ← ← 速览区 44 条结论 / open 2 / r12 彩种行
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -125,7 +125,7 @@ python cli/main.py new-game <game_id>
 │   │   ├── MATH_BOUNDARY.md  v1.1      ← r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
 │   │   └── STATISTICAL_DISCIPLINE.md  v1.0
 │   ├── protocol/
-│   │   ├── ITERATION_PROTOCOL.md  v1.1
+│   │   ├── ITERATION_PROTOCOL.md  v1.2      ← r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条…
 │   │   ├── MEMORY_PROTOCOL.md  v1.2      ← r03 框架迭代：新增 §1.7 claim_type 证据类型 + …
 │   │   └── README.md  v1.0
 │   └── tools/
@@ -210,25 +210,31 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
 │       │   │   ├── manifest.json  v1.0      ← r10 轮清单
 │       │   │   └── scripts/  ← 轮次脚本（9 个）
-│       │   └── round11/
-│       │       ├── FINDINGS.md  v1.0      ← r11 结论：F-0042 平台期 / F-0043 代理可观测 / …
-│       │       ├── HANDOFF.md  v1.0      ← r11→r12 交接：T-048b 首推 + T-025 仍 bloc…
-│       │       ├── T048_HOLDOUT_DESIGN.md  v1.0      ← T-048 L3 组合优化预备：时序 hold-out 评测设计（切分…
-│       │       ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
-│       │       ├── manifest.json  —         ← r11 deliverables（根级）
-│       │       └── scripts/  ← 轮次脚本（5 个）
+│       │   ├── round11/
+│       │   │   ├── FINDINGS.md  v1.0      ← r11 结论：F-0042 平台期 / F-0043 代理可观测 / …
+│       │   │   ├── HANDOFF.md  v1.0      ← r11→r12 交接：T-048b 首推 + T-025 仍 bloc…
+│       │   │   ├── T048_HOLDOUT_DESIGN.md  v1.0      ← T-048 L3 组合优化预备：时序 hold-out 评测设计（切分…
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
+│       │   │   ├── manifest.json  —         ← r11 deliverables（根级）
+│       │   │   └── scripts/  ← 轮次脚本（5 个）
+│       │   └── round12/
+│       │       ├── FINDINGS.md  v1.0      ← r12 研究结论
+│       │       ├── HANDOFF.md  v1.0      ← r12→r13 交接
+│       │       ├── TASK_BRIEF.md  v1.0      ← r12 任务书（T-049/T-030/T-040）
+│       │       ├── manifest.json  —         ← r12 manifest
+│       │       └── scripts/  ← 轮次脚本（3 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.7      ← r11：补 F-0042 平台期（后段不再弱化）+ F-0043 代理…
+│           ├── STRATEGY_GUIDE.md  v1.8      ← r12: 策略有效性三档表 + T-049 测试窗证据（v1.7→1.…
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.3      ← r11：evidence_hash 随 F-0021 caveats/…
+│           ├── strategy.json  v1.4      ← r12: schema_version 1.4 + effective…
 │           └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
 │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.2      ← 43 条（r11 新增 F-0042 效应平台期 / F-0043 机…
+│   │   ├── FACTS.jsonl  v1.3      ← r12: +F-0044（hold-out 验收）；F-0004/F-…
 │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
 │   │   ├── round02.md  v1.0      ← 整理入库轮
@@ -240,15 +246,16 @@ python cli/main.py new-game <game_id>
 │   │   ├── round08.md  v1.0      ← 体系升级批执行日志
 │   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
 │   │   ├── round10.md  v1.0      ← r10 执行日志
-│   │   └── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
+│   │   ├── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
+│   │   └── round12.md  v1.0      ← r12 执行日志
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
 │   │   └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
-│       ├── OPEN_QUESTIONS.md  v1.6      ← 15 问 13 answered：r11 清偿 Q-011/Q-015…
-│       └── TODO.md  v1.7      ← T-023/T-024/T-048 r11 完成（P2 段同步更新）
+│       ├── OPEN_QUESTIONS.md  v1.7      ← r12: Q-008 → answered（open 3→2：Q-00…
+│       └── TODO.md  v1.8      ← r12: T-030/T-040/T-049 → done
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
 │   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
@@ -275,7 +282,7 @@ python cli/main.py new-game <game_id>
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —         ← r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲…
+│       ├── validate.py  —         ← r12: 策略同步 ★S 已内置（r11 起），登记轮次同步
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
@@ -369,9 +376,9 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **43 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**3 open**，r11 清偿 Q-011/Q-015）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **94 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库） |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.3**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计） |
+| 记忆层 | ✅ **44 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**2 open**，r11 清偿 Q-011/Q-015，r12 清偿 Q-008）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **98 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库 + **★S 策略文档随轮同步**） |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.4**，**3 规则** + 9 条 avoid_list，规则含有效性三档 `effectiveness_grade`）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计）+ **r12 L3 hold-out 落地轮**（T-049 时序评测验收通过 F-0044、T-030 策略有效性三档 schema 1.4、Q-008 answered、F-0004/F-0005 锚点重校准） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**252 条**登记（A=125 B=82 C=16 D=29），版本行全部一致 |
 

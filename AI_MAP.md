@@ -14,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — FACTS 计数 38→43
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — 速览区 43 条结论 / open 3 / r11 彩种行
+- `README.md` — ← 速览区 44 条结论 / open 2 / r12 彩种行
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -45,7 +45,7 @@
 - `framework/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
 - `framework/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
 - `framework/methodology/STATISTICAL_DISCIPLINE.md`
-- `framework/protocol/ITERATION_PROTOCOL.md`
+- `framework/protocol/ITERATION_PROTOCOL.md` — r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏
 - `framework/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
 - `framework/protocol/README.md`
 - `framework/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）
@@ -55,7 +55,7 @@
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
 - `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — 43 条（r11 新增 F-0042 效应平台期 / F-0043 机选代理可观测；F-0021 caveats 更新）
+- `memory/facts/FACTS.jsonl` — r12: +F-0044（hold-out 验收）；F-0004/F-0005 重校准 established_in=…
 - `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
 - `memory/journal/round02.md` — 整理入库轮
 - `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
@@ -67,11 +67,12 @@
 - `memory/journal/round09.md` — 策略量化轮执行日志
 - `memory/journal/round10.md` — r10 执行日志
 - `memory/journal/round11.md` — r11 执行日志（含 schema 踩坑序列与 BOM 根治）
+- `memory/journal/round12.md` — r12 执行日志
 - `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
-- `memory/workbench/OPEN_QUESTIONS.md` — 15 问 13 answered：r11 清偿 Q-011/Q-015，open 3（Q-006/Q-008/Q-01…
-- `memory/workbench/TODO.md` — T-023/T-024/T-048 r11 完成（P2 段同步更新）
+- `memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
+- `memory/workbench/TODO.md` — r12: T-030/T-040/T-049 → done
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
@@ -138,7 +139,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲染编码护栏候选
+- `src/spc/validate.py` — r12: 策略同步 ★S 已内置（r11 起），登记轮次同步
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档

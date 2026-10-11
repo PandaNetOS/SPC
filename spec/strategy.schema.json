@@ -85,7 +85,7 @@
       "description": "有效规则列表。每条都必须外键指向 FACTS.jsonl 中 status=established 的结论。",
       "items": {
         "type": "object",
-      "required": ["id", "statement", "kind", "scope", "evidence_refs", "confidence", "expected_value_impact"],
+      "required": ["id", "statement", "kind", "scope", "evidence_refs", "confidence", "expected_value_impact", "effectiveness_grade"],
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -127,6 +127,16 @@
                 "description": "action 为 penalize/prefer 时的相对权重。"
               }
             }
+          },
+          "effectiveness_grade": {
+            "type": "string",
+            "enum": ["A", "B", "C"],
+            "description": "★ schema_version 1.4 新增（必填，T-030 / Q-008）。本规则『策略有效性』的三档标准：A=数学恒真（解析可证，无模型假设，如 R-002 自我摊薄公式）；B=统计确立（观测数据 + 样本外/测试窗验证 + 方向一致，如 R-001：后段 CI 下界>1 + r11 平台期 + r12 时序 hold-out 测试窗）；C=模型估计或探索性（依赖模型假设或样本有限）。任何规则不得声称提高中奖概率（各奖级恒定，红线）。"
+          },
+          "effectiveness_basis": {
+            "type": "string",
+            "minLength": 8,
+            "description": "档位判定的依据（引用的观测/模拟/测试窗证据与口径），供消费者与复核者追溯。"
           },
           "evidence_refs": {
             "type": "array",
