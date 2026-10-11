@@ -27,6 +27,8 @@ import os
 import re
 from typing import Any
 
+from .tree import load_versions, render_tree
+
 __all__ = [
     "ValidationReport",
     "validate_all",
@@ -1242,6 +1244,131 @@ def _check_summary_counts(root: str, rep: ValidationReport) -> None:
         rep.ok(f"速览计数: {checked} 处「N 条结论」与台账一致（台账 {total} 条）")
 
 
+# ---------------------------------------------------------------- 结构完整性（P1-2 根治）
+
+# 受管目录：这些目录下的**每个**文件都必须登记进 versions.json。
+# 排除（不要求登记）：数据（*/data/**，走 SHA256 清单）、夹具（tests/fixtures）、
+# 模板（framework/protocol/templates）、运行残留（__pycache__/.git/.idea 等）。
+_MANAGED_PREFIXES = (
+    "",               # 根层文件
+    "src/",
+    "framework/core/",
+    "framework/tools/",
+    "framework/protocol/",
+    "framework/methodology/",
+    "spec/",
+    "tools/",
+    "cli/",
+    "memory/",
+    "tests/",
+    "docs/",
+    "games/dlt/",
+)
+_STRUCT_EXCLUDE_DIRS = {
+    ".git", "__pycache__", ".idea", ".workbuddy", ".github",
+    "data", "fixtures", "templates", "legacy_findings",
+}
+_STRUCT_EXCLUDE_FILES = {".gitignore"}
+
+
+def _check_structure_completeness(root: str, rep: ValidationReport) -> None:
+    """★ 双向登记完整性：受管目录实际文件 ↔ versions.json。
+
+    根因（2026-10-11）：目录树是手写静态文本，校验只做一致性（标注 vs 索引），
+    不做完整性（实际文件 vs 登记）——v2.0 新增 8 文件/目录全部漏登记/漏进树，
+    validate 67 项全绿仍漏 13 处。
+
+    本检查扫受管目录的**实际文件**，凡未登记进 versions.json 即报错；
+    已登记但文件缺失由 validate_versions 的 missing_files 覆盖（不重复）。
+    方向相反的两道闸合并，任何新增文件未登记 → validate 红字。
+    """
+    vp = os.path.join(root, "versions.json")
+    if not os.path.exists(vp):
+        return
+    with open(vp, encoding="utf-8") as f:
+        vd = json.load(f)
+    registered = {e.get("path") for e in vd.get("entries") or []}
+
+    unregistered: list[str] = []
+    seen: set[str] = set()
+    for pfx in _MANAGED_PREFIXES:
+        base = os.path.join(root, pfx)
+        if not os.path.isdir(base):
+            continue
+        for dirpath, dirnames, filenames in os.walk(base):
+            dirnames[:] = [
+                d for d in dirnames
+                if d not in _STRUCT_EXCLUDE_DIRS
+            ]
+            for fn in filenames:
+                if fn in _STRUCT_EXCLUDE_FILES:
+                    continue
+                if fn.endswith(".pyc"):
+                    continue
+                full = os.path.join(dirpath, fn)
+                rel = os.path.relpath(full, root).replace("\\", "/")
+                if rel not in registered and rel not in seen:
+                    seen.add(rel)
+                    unregistered.append(rel)
+
+    if unregistered:
+        shown = sorted(unregistered)[:8]
+        more = f" 等 {len(unregistered)} 个" if len(unregistered) > 8 else ""
+        rep.err(
+            "结构完整性: 以下受管文件未登记进 versions.json（新增文件必须登记，"
+            f"目录树才同步）：{', '.join(shown)}{more}"
+        )
+    else:
+        rep.ok("结构完整性: 受管目录全部文件均已登记进 versions.json")
+
+
+def _check_readme_tree_rendered(root: str, rep: ValidationReport) -> None:
+    """★ README 目录树 = 派生物：必须与 render_tree(versions.json) 逐字一致。
+
+    根因：目录树曾是手写文本，更新面不全导致整片遗漏。生成式后：
+    任何手改 / 未跑 render_readme_tree --write → 本检查红字。
+    """
+    rp = os.path.join(root, "README.md")
+    if not os.path.exists(rp):
+        rep.err("README.md 缺失，无法核对目录树")
+        return
+    text = open(rp, encoding="utf-8").read()
+    lines = text.split("\n")
+    start = end = None
+    for i, ln in enumerate(lines):
+        if ln.strip() == "## 目录结构":
+            for j in range(i + 1, len(lines)):
+                if lines[j].strip() == "```":
+                    start = j
+                    break
+            break
+    if start is None:
+        rep.err("README 未找到「## 目录结构」区块")
+        return
+    for j in range(start + 1, len(lines)):
+        if lines[j].strip() == "```":
+            end = j
+            break
+    if end is None:
+        rep.err("目录结构代码块未闭合")
+        return
+
+    try:
+        vd = load_versions(root)
+        expected = render_tree(vd["entries"]).strip()
+    except Exception as e:  # noqa: BLE001
+        rep.err(f"目录树渲染失败: {e}")
+        return
+    actual = "\n".join(lines[start + 1:end]).strip()
+    if actual == expected:
+        rep.ok("目录树: 为派生物且与 versions.json 一致（render_readme_tree --write 生成）")
+    else:
+        rep.err(
+            "目录树: 与 versions.json 派生物不一致——请运行 "
+            "`python tools/render_readme_tree.py --write` 重新生成，勿手改"
+        )
+
+
 # ---------------------------------------------------------------- all
 
 def validate_all(repo_root: str | None = None, verbose: bool = False) -> ValidationReport:
@@ -1270,6 +1397,10 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
 
     # 版本索引一致性
     validate_versions(root, rep)
+
+    # 结构完整性（P1-2 根治）：受管文件双向登记 + README 目录树为派生物
+    _check_structure_completeness(root, rep)
+    _check_readme_tree_rendered(root, rep)
 
     # 协议文档存在性（软检查）
     docs = [

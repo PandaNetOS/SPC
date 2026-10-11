@@ -916,11 +916,11 @@
       "path": "tests/README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.4",
-      "iteration": "r04",
+      "content_version": "1.5",
+      "iteration": "r06",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "测试说明（r04 更新计数：test_core 117、合计 323；claim_type/evidence_anchor 的结论数守卫 18 → 25）"
+      "note": "测试说明（自举计数：合计 333，含 test_structure 8）"
     },
     {
       "path": "tests/test_claim_type.py",
@@ -1467,7 +1467,7 @@
       "path": "memory/spec/ITERATION_SOP_v2.md",
       "level": "A",
       "kind": "doc",
-      "content_version": "1.0",
+      "content_version": "1.1",
       "iteration": "r06",
       "note": "证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩",
       "updated_at": "2026-10-11",
@@ -1519,6 +1519,93 @@
       "content_version": "1.0",
       "iteration": "r06",
       "note": "v2.0 版本登记与 README 同步",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/fix_rename_remainder.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "改名残余引用修正（路径/import/标识）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/rename_spc.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "全链路改名：git mv src→spc + 包/品牌替换",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/sync_guide_v14.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "STRATEGY_GUIDE v1.4 同步",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/sync_v2_final.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "v2.0 收尾：版本登记 + README 计数同步",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/versions_r06_strategy.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "r06 策略落地的版本登记",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "src/spc/tree.py",
+      "level": "B",
+      "kind": "code",
+      "iteration": "r06",
+      "note": "目录树生成源（P1-2）：README 树 = 派生物",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tools/render_readme_tree.py",
+      "level": "B",
+      "kind": "code",
+      "iteration": "r06",
+      "note": "目录树渲染 CLI（--write 写回 README）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/sync_structure_registration.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "结构完整性补登记 + 目录树写回（P1-2）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_structure.py",
+      "level": "B",
+      "kind": "code",
+      "iteration": "r06",
+      "note": "结构完整性回归测试（P1-2 三道防线）",
       "updated_at": "2026-10-11",
       "status": "active"
     }

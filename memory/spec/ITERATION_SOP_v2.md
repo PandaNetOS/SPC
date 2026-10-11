@@ -1,6 +1,6 @@
 # ITERATION_SOP_v2 —— 证据门控式迭代规范（v2.0）
 
-> **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.1` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 
 > 本文件是 SPC 自我迭代的 v2.0 操作规范：**记忆分层、入库门控、
 > 矛盾双通道、一致性不变量、重校准与记忆压缩**。由 v1（`framework/protocol/ITERATION_PROTOCOL.md`）
@@ -97,7 +97,10 @@ revision 必须落到 status ∈ {superseded, refuted}（validate 强制）。
 
 1. 三闸门通过的新结论才允许 Add；
 2. `python cli/main.py rehash --strategy`（FACTS 变更后证据摘要重算）；
-3. `python cli/main.py validate --all` —— **全部通过**；
+3. `python cli/main.py validate --all` —— **全部通过**（含结构完整性两项）；
 4. 四件套（FINDINGS / HANDOFF / manifest / journal）落地；
 5. versions.json 登记 + VERSION_INDEX 重渲染 + README 计数同步；
-6. 涉及代码/配置/策略 → 用户批准门后才提交推送（仅 main 单分支）。
+6. **结构完整性（P1-2 根治）**：新增文件必须登记 versions.json
+   （validate `check_structure` 双向比对强制）；README 目录树为**派生物**——
+   先 `python tools/render_readme_tree.py --write` 再提交，**禁止手改目录树**；
+7. 涉及代码/配置/策略 → 用户批准门后才提交推送（仅 main 单分支）。

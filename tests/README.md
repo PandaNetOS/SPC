@@ -1,6 +1,6 @@
 # tests/ — 测试
 
-> **版本**：`1.4` ｜ 轮次 `r04` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.5` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 现状
@@ -8,10 +8,11 @@
 | 文件 | 项数 | 覆盖 |
 |---|---|---|
 | `test_core.py` | **117**（全绿） | 红线 / 原语 / Ticket / DSL / 作用域 / 数学 / 端到端 / 声明静态检查 |
-| `test_cross_scope.py` | **62**（全绿） | ★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描 |
+| `test_cross_scope.py` | **64**（全绿） | ★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描 |
 | `test_claim_type.py` | **43**（全绿） | ★ 证据类型：五类约束**真的会拦** / schema 与 Python 双通道一致 / 分类自洽 |
 | `test_evidence_anchor.py` | **32**（全绿） | ★ 证据锚定：漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等 |
 | `test_shadow_game.py` | **69**（全绿） | ★ 影子彩种：第二彩种全链路跑通 + 铁律扫描（`framework/` 与 `src/` 无 dlt 痕迹）+ 扫描器自检 |
+| `test_structure.py` | **8**（全绿） | ★ 结构完整性（P1-2 根治）：目录树 = 派生物防手改 / 双向登记真的会拦 / 裁剪不误伤 / scripts 聚合 |
 
 **计数自举**：上表每行的项数是**运行时**计数（大量 `check()` 在循环内，
 静态行数不等于实际断言数）。权威来源是 `python tools/count_tests.py`
@@ -80,7 +81,7 @@ python tests/test_evidence_anchor.py
 
 | 项 | 状态 | 启动时机 |
 |---|---|---|
-| 契约测试（schema 自合法 / 外键 / 双向取代 / source 存真） | ⚠️ 由 `cli/main.py validate --all` 覆盖（33 项） | 已由 CLI 承担 |
+| 契约测试（schema 自合法 / 外键 / 双向取代 / source 存真） | ⚠️ 由 `cli/main.py validate --all` 覆盖（69 项） | 已由 CLI 承担 |
 | `framework/` 无彩种专属内容扫描 | ✅ 已实现（`test_shadow_game.py` §9–10：AST 剥 docstring 扫描 + 扫描器自检，确认非"永远全绿"） | r03 框架迭代·D |
 | 记忆层可读性（单一入口存在 / caveats 非空且 ≥10 字） | ⬜ 未实现 | 首次引入 CI 时 |
 | 结论数字与 `game.yaml` 重算结果一致 | ⬜ 未实现 | 数据版本变更时 |
@@ -108,10 +109,13 @@ python tests/test_evidence_anchor.py
 # 影子彩种回归测试（69 项）
 python tests/test_shadow_game.py
 
+# 结构完整性回归测试（8 项；目录树派生物防手改）
+python tests/test_structure.py
+
 # 一次性抓取全部测试通过计数（自举，避免手写数字漂移）
 python tools/count_tests.py
 
-# 契约校验（48 项，含 SHA256 一致性 / 证据锚定漂移 / 红线恒值 / 版本一致性）
+# 契约校验（69 项，含 SHA256 一致性 / 证据锚定漂移 / 红线恒值 / 版本一致性 / 结构完整性）
 python cli/main.py validate --all -v
 ```
 

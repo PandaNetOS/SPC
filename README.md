@@ -86,123 +86,164 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-├── pyproject.toml          v0.1.0   ← 顶层版本（release）= SPC 整体版本，源自 project.version
-├── AI_CONTEXT.md          v1.4   ← 单一入口。AI 与人都从这里进
-├── VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
-├── versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
-├── README.md              v1.12  ← 本文件
-├── spec/                         ← 契约层：5 份 JSON Schema + 版本规则 + 四条红线
-│   ├── fact.schema.json            ← 结论契约（claim_type / source_sha256 / 红线）
-│   ├── game_config.schema.json     ← 彩种配置契约（sum_affects_numbers 红线）
-│   ├── strategy.schema.json        ← 策略契约（changes_win_probability 红线）
-│   ├── iteration.schema.json       ← 迭代契约
-│   ├── version_index.schema.json   ← 版本索引契约（index_version 1.2）
-│   ├── README.md
-│   └── VERSIONING.md               ← 版本规则 + config 2.0→2.1 迁移指南
-├── framework/                    ← 框架层（framework_version = 1.1）
-│   ├── README.md                   ← 框架层说明（v1.0，框架/彩种分离判定标准）
-│   ├── INDEX.md             v1.1   ← 按需求找文件
-│   ├── core/                       ← ★ 框架核心（7 模块）
-│   │   ├── __init__.py
-│   │   ├── ticket.py                 ← L1 Ticket
-│   │   ├── features.py               ← 21 单注 + 5 跨注原语表
-│   │   ├── evaluate.py               ← 求值（单注）
-│   │   ├── judge.py                  ← 判定（受限 DSL）
-│   │   ├── portfolio.py              ← L3 Portfolio（跨注求值 / 判定）
-│   │   ├── generate.py               ← 候选生成
-│   │   ├── game_util.py              ← 彩种无关工具
-│   │   └── README.md
-│   ├── protocol/                   ← 迭代协议 + 记忆协议 + 3 模板
-│   │   ├── ITERATION_PROTOCOL.md
-│   │   ├── MEMORY_PROTOCOL.md        ← 含 claim_type / 证据锚定章节
-│   │   ├── README.md
-│   │   └── templates/
-│   │       ├── FINDINGS.template.md
-│   │       ├── HANDOFF.template.md
-│   │       └── TASK_BRIEF.template.md
-│   ├── methodology/                ← 数学边界 + 统计纪律
-│   │   ├── MATH_BOUNDARY.md
-│   │   └── STATISTICAL_DISCIPLINE.md
-│   └── tools/
-│       └── memory.py                 ← 记忆读写库（彩种无关）
-├── src/spc/            ← 库代码（8 模块）
-│   ├── __init__.py
-│   ├── game.py                     ← 彩种加载
-│   ├── memory.py                   ← 结论 / FACTS 读写
-│   ├── validate.py                 ← 校验器（49 项）
-│   ├── strategy.py                 ← 策略构建
-│   ├── evidence.py                 ← ★ 证据锚定（C 新增：sha256 / 漂移）
-│   ├── api.py                      ← 对外 API
-│   └── versions.py                 ← 版本索引读写
+├── pyproject.toml  v0.1.0  ← 包版本
+├── AI_CONTEXT.md  v1.5  ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
+├── VERSION_INDEX.md  v1.0  ← 版本索引（人读），权威源是 versions.json
+├── versions.json  v1.0
+├── README.md  v1.14  ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
 ├── cli/
-│   └── main.py              —      ← 命令行入口（14 个命令）
-├── memory/                        ← 记忆层
-│   ├── facts/
-│   │   ├── FACTS.jsonl        v1.5   ← 结论台账（32 条，JSONL 追加式；每条带 claim_type + source_sha256）
-│   │   └── INDEX.md           v1.5   ← 速览（派生物，CLI 生成，勿手改）
-│   ├── journal/
-│   │   ├── round02.md
-│   │   ├── round03.md
-│   │   └── round04.md
-│   ├── lessons/
-│   │   └── LESSONS.md         v1.2   ← 教训库 L1–L14（只增不删）
-│   ├── workbench/
-│   │   ├── TODO.md            v1.6   ← 任务台账（P0 已清空）
-│   │   ├── OPEN_QUESTIONS.md  v1.4   ← 开放问题（15，7 answered）
-│   │   └── HYPOTHESES.md      v1.2   ← 假设（6；H-004/H-005 已推翻）
-│   └── INDEX.md
-├── games/                         ← 彩种（数据 + 轮次 + 策略）
-│   ├── _template/                   ← 新彩种骨架
-│   │   ├── game.yaml
-│   │   ├── README.md
-│   │   ├── strategy/strategy.json
-│   │   ├── data/{raw,derived,build_scripts,tools}/  ← 工具生成，各含 README
-│   │   └── iterations/round01/TASK_BRIEF.md
-│   ├── dlt/                         ← 超级大乐透（实际数据）
-│   │   ├── game.yaml                  ← config 2.1（11 单注 + 3 跨注特征）
-│   │   ├── manifest_v4_source.json
-│   │   ├── rules_history.md           ← 规则沿革（F-0015 历史引用）
-│   │   ├── data/
-│   │   │   ├── raw/                     ← dlt_full_2933.{csv,jsonl}（原始开奖，2933 期）
-│   │   │   ├── derived/                 ← 8 份派生统计（CSV/JSON，工具生成）
-│   │   │   ├── build_scripts/           ← 3 个构建脚本
-│   │   │   └── tools/                   ← 8 个分析工具（acf / changepoint / exact / 等）
+│   └── main.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+├── docs/
+│   ├── ARCHITECTURE.md  v1.1
+│   ├── CONSUMING.md  v1.1
+│   ├── ITERATION_GUIDE.md  v1.0
+│   ├── METHODOLOGY.md  v1.0
+│   ├── PROPOSAL_SINGLE_TICKET_CORE.md  v1.1
+│   └── VERSIONING_DOCS.md  v1.3
+├── framework/
+│   ├── INDEX.md  v1.1
+│   ├── README.md  v1.0
+│   ├── core/
+│   │   ├── README.md  v1.1
+│   │   ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── evaluate.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── features.py  —  ← 新增跨注原语 duplicate_ticket_count / dup…
+│   │   ├── game_util.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── generate.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── judge.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── portfolio.py  —  ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
+│   │   └── ticket.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── methodology/
+│   │   ├── MATH_BOUNDARY.md  v1.0
+│   │   └── STATISTICAL_DISCIPLINE.md  v1.0
+│   ├── protocol/
+│   │   ├── ITERATION_PROTOCOL.md  v1.1
+│   │   ├── MEMORY_PROTOCOL.md  v1.2  ← r03 框架迭代：新增 §1.7 claim_type 证据类型 + …
+│   │   └── README.md  v1.0
+│   └── tools/
+│       ├── compress_memory.py  v1.0  ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
+│       ├── ingate.py  v1.0  ← 入库三闸门（filter/judge/manager，LSTM-MAS…
+│       └── memory.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+├── games/
+│   ├── INDEX.md  v1.2  ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
+│   ├── _template/
+│   │   ├── README.md  —
+│   │   ├── game.yaml  v2.0  ← 2026-10-11 与 dlt 同步升至 2.0（features …
 │   │   ├── iterations/
-│   │   │   ├── round01/                 ← 空占位
-│   │   │   ├── round02/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + legacy_findings/
-│   │   │   ├── round03/                 ← FINDINGS / HANDOFF / TASK_BRIEF / manifest + scripts/
-│   │   │   ├── round04/                 ← FINDINGS / HANDOFF / manifest + 5 个脚本 + 3 个 JSON
-│   │   │   └── round05/                 ← TASK_BRIEF（待做）
+│   │   │   └── round01/
+│   │   │       └── TASK_BRIEF.md  —
 │   │   └── strategy/
-│   │       ├── strategy.json            ← schema 1.1（2 规则 + 9 avoid_list）
-│   │       ├── STRATEGY_GUIDE.md        ← 人话版 v1.2
-│   │       ├── simulation_results.json
-│   │       └── strategy_simulation.py
-│   └── INDEX.md             v1.2   ← 彩种索引
-├── tools/                         ← 版本索引生成 / 注入脚本
-│   ├── build_versions.py
-│   ├── render_version_index.py
-│   ├── inject_version_lines.py
-│   └── count_tests.py        —      ← 测试计数自举（E 新增）
-├── docs/                          ← 设计 / 消费 / 迭代 / 方法 / 版本文档
-│   ├── ARCHITECTURE.md
-│   ├── CONSUMING.md
-│   ├── ITERATION_GUIDE.md
-│   ├── METHODOLOGY.md
-│   ├── PROPOSAL_SINGLE_TICKET_CORE.md
-│   └── VERSIONING_DOCS.md
-└── tests/                         ← 5 个测试（共 323 项，无需 pytest）
-    ├── README.md                   ← 测试说明（v1.3，tests/README.md）
-    ├── test_core.py                 ← 117 项
-    ├── test_cross_scope.py          ← 62 项
-    ├── test_claim_type.py           ← 43 项
-    ├── test_evidence_anchor.py      ← 32 项
-    ├── test_shadow_game.py          ← 69 项（D 新增）
-    └── fixtures/shadow/             ← 影子彩种夹具（T-031 实测，与 dlt 零交集）
-        ├── game.yaml
-        ├── data/raw/shadow.csv
-        └── strategy/strategy.json
+│   │       └── strategy.json  v2.0  ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
+│   └── dlt/
+│       ├── game.yaml  v2.1  ← 跨注特征 3→5（新增 identical_ticket_count …
+│       ├── iterations/
+│       │   ├── round02/
+│       │   │   ├── FINDINGS.md  v1.0  ← 整理入库轮发现
+│       │   │   ├── HANDOFF.md  v1.0  ← r02→r03 交接
+│       │   │   ├── PRIORITY_TASKS.md  v1.0
+│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付
+│       │   │   ├── known_errors.md  v1.0  ← E1~E9 避坑手册
+│       │   │   ├── legacy_findings/
+│       │   │   │   ├── README.md  v1.0  ← 归档，设使用门槛
+│       │   │   │   ├── _round3_reference/
+│       │   │   │   │   └── round3_independent_review.html  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_deep_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_glm_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_main_report.md  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   └── round2_verify_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   └── manifest.json  vdlt_full_2933
+│       │   ├── round03/
+│       │   │   ├── FINDINGS.md  v1.0  ← 复核轮发现（含自我纠错）
+│       │   │   ├── HANDOFF.md  v1.0  ← r03→r04 交接
+│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付
+│       │   │   ├── manifest.json  vdlt_full_2933
+│       │   │   └── scripts/  ← 轮次脚本（8 个）
+│       │   ├── round04/
+│       │   │   ├── FINDINGS.md  v1.0
+│       │   │   ├── HANDOFF.md  v1.0
+│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付（round04 执行完毕）
+│       │   │   ├── manifest.json  —
+│       │   │   └── scripts/  ← 轮次脚本（8 个）
+│       │   ├── round05/
+│       │   │   ├── FINDINGS.md  v1.0  ← 投注方式数学层 + R-002 量化 + 时间因素证伪
+│       │   │   ├── HANDOFF.md  v1.0  ← r05→r06 交接；策略变更待用户批准
+│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
+│       │   │   ├── manifest.json  v1.0
+│       │   │   └── scripts/  ← 轮次脚本（7 个）
+│       │   └── round06/
+│       │       ├── TASK_BRIEF.md  v1.0  ← 由 round05 HANDOFF 转写（planned；T-201 …
+│       │       └── scripts/  ← 轮次脚本（13 个）
+│       ├── manifest_v4_source.json  —
+│       ├── rules_history.md  v1.1  ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
+│       └── strategy/
+│           ├── STRATEGY_GUIDE.md  v1.4  ← r06：R-002 重构 + R-003 新增；§7 参考表格加超链接
+│           ├── simulation_results.json  —
+│           ├── strategy.json  v1.3  ← r06（用户批准）：R-002 → exclude + 禁止完全相同号…
+│           └── strategy_simulation.py  —
+├── memory/
+│   ├── INDEX.md  v1.0  ← 记忆层说明
+│   ├── facts/
+│   │   ├── ACTIVE.md  —  ← 当前有效结论清单（与台账分离，compress_memory 生成）
+│   │   ├── FACTS.jsonl  v1.5  ← 32 条结论（F-0001~F-0032；F-0015/F-0007 …
+│   │   └── INDEX.md  v1.5  ← 派生物，由 cli index 生成（32 条）
+│   ├── journal/
+│   │   ├── round02.md  v1.0  ← 整理入库轮
+│   │   ├── round03.md  v1.0  ← 复核轮（含 1 次自我纠错）
+│   │   ├── round04.md  v1.0
+│   │   └── round05.md  v1.0  ← 叙事：R-002 量化不成立 + H-005 证伪
+│   ├── lessons/
+│   │   └── LESSONS.md  v1.2  ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
+│   ├── spec/
+│   │   └── ITERATION_SOP_v2.md  v1.1  ← 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道…
+│   └── workbench/
+│       ├── HYPOTHESES.md  v1.2  ← H-001~H-006；r04：H-004 被 F-0023 推翻；r…
+│       ├── OPEN_QUESTIONS.md  v1.4  ← 15 问，7 answered（Q-001/Q-002/Q-004 r…
+│       └── TODO.md  v1.6  ← r05 清算 T-011/T-202/T-205/T-206；新增 T…
+├── spec/
+│   ├── README.md  v1.0
+│   ├── VERSIONING.md  v1.2
+│   ├── fact.schema.json  —  ← v2.0：新增 confidence_grade（GRADE）/ ch…
+│   ├── game_config.schema.json  —  ← schema 自身无版本；约束 game_config.config_…
+│   ├── iteration.schema.json  —  ← schema 自身无版本；约束 iteration 结构
+│   ├── strategy.schema.json  —  ← schema 自身无版本；约束 strategy.schema_ver…
+│   └── version_index.schema.json  —  ← schema 自身无版本；约束 versions.index_vers…
+├── src/
+│   ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   └── spc/
+│       ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── api.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── evidence.py  —  ← ★ 证据锚定：sha256_file / fact_anchor / …
+│       ├── game.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── memory.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── strategy.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── tree.py  —  ← 目录树生成源（P1-2）：README 树 = 派生物
+│       ├── validate.py  —  ← v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环…
+│       └── versions.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+├── tests/
+│   ├── README.md  v1.5  ← 测试说明（自举计数：合计 333，含 test_structure 8）
+│   ├── test_claim_type.py  —  ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
+│   ├── test_core.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── test_cross_scope.py  —  ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
+│   ├── test_evidence_anchor.py  —  ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
+│   ├── test_shadow_game.py  v1.0
+│   └── test_structure.py  —  ← 结构完整性回归测试（P1-2 三道防线）
+└── tools/
+    ├── build_versions.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+    ├── count_tests.py  —
+    ├── inject_version_lines.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+    ├── render_readme_tree.py  —  ← 目录树渲染 CLI（--write 写回 README）
+    └── render_version_index.py  —  ← 代码文件：不写文件内版本行（用 git blame）
 ```
+
+> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
+
+> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
+
+> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
+
+> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
+
+> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
 
 > **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
 > （B 级 `.py` 只登记索引）。例外：`pyproject.toml` 的 `v0.1.0` 标的是 **SPC 整体 release 版本**（`project_version`），不是 `content_version`。完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)。
@@ -268,7 +309,7 @@ python cli/main.py new-game <game_id>
 | 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
-| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **325** 项） |
+| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** 全绿（无需 pytest，共 **333** 项） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**167 条**登记（A=66 B=60 C=13 D=28），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）
