@@ -40,6 +40,7 @@ TEST_FILES = [
     "tests/test_ai_readability.py",
     "tests/test_consumes_completeness.py",
     "tests/test_meta_variables.py",
+    "tests/test_open_questions_consistency.py",
 ]
 
 _LINE_RE = re.compile(r"通过\s+(\d+)\s+失败\s+(\d+)")

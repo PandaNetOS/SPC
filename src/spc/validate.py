@@ -1312,6 +1312,111 @@ def _check_summary_counts(root: str, rep: ValidationReport) -> None:
         rep.ok(f"速览计数: {checked} 处「N 条结论」与台账一致（台账 {total} 条）")
 
 
+# ---------------------------------------------------------------- 开放问题一致性（Q 状态根治）
+
+_QUESTION_ID_RE = re.compile(r"^##\s+(Q-\d{3})\s+—\s+(.+)$", re.M)
+_QUESTION_STATUS_RE = re.compile(r"\|\s*\*\*状态\*\*\s*\|\s*([^|\n]+?)\s*\|")
+_HEADER_ANSWERED_RE = re.compile(r"\*\*(\d+)\s*answered\*\*")
+
+
+def _question_sections(txt: str) -> list[tuple[str, str, str]]:
+    """解析 OPEN_QUESTIONS.md，返回 [(qid, status, title)]，status 归一化。"""
+    out = []
+    for m in _QUESTION_ID_RE.finditer(txt):
+        qid, title = m.group(1), m.group(2)
+        seg = txt[m.end(): m.end() + 2000]
+        status = "unknown"
+        sm = _QUESTION_STATUS_RE.search(seg)
+        if sm:
+            w = re.search(r"[A-Za-z]+", sm.group(1))
+            if w:
+                status = w.group(0).lower()
+        out.append((qid, status, title))
+    return out
+
+
+def _check_open_questions_consistency(root: str, rep: ValidationReport) -> None:
+    """★ Q 状态一致性：状态字段 ↔ 标题 ✅ ↔ 头部统计 ↔ 优先级总览。
+
+    根治目标：Q 的 answered 标记需 4 处手动同步，漏一处即滞后
+    （曾发生：Q-012/013/014 内容状态已 answered，但头部统计、标题 ✅、
+    优先级总览未同步 → CLI 显示错误）。任一不一致 → error（FAIL）。
+    """
+    p = os.path.join(root, "memory", "workbench", "OPEN_QUESTIONS.md")
+    if not os.path.exists(p):
+        rep.err("开放问题一致性: OPEN_QUESTIONS.md 缺失")
+        return
+    txt = open(p, encoding="utf-8").read()
+
+    qs = _question_sections(txt)
+    if not qs:
+        rep.err("开放问题一致性: 未解析到任何 Q-xxx 节")
+        return
+
+    qids = [qid for qid, _, _ in qs]
+    status_of = {qid: st for qid, st, _ in qs}
+    answered_ids = {qid for qid, st in status_of.items() if st == "answered"}
+
+    problems: list[str] = []
+
+    # 规则 0：Q 编号唯一（重复定义会掩盖滞后）
+    if len(qids) != len(set(qids)):
+        dup = sorted({q for q in qids if qids.count(q) > 1})
+        problems.append(f"Q 编号重复定义 {dup}")
+
+    # 规则 1：状态字段词合法
+    for qid, st, _t in qs:
+        if st not in ("answered", "open", "blocked"):
+            problems.append(f"{qid} 状态字段无法解析（值 {st!r}）——应为 answered/open/blocked")
+
+    # 规则 2：标题 ✅ 标记 ↔ 状态字段
+    for m in _QUESTION_ID_RE.finditer(txt):
+        qid, title = m.group(1), m.group(2)
+        has_mark = "✅ answered" in title
+        st = status_of.get(qid, "unknown")
+        if st == "answered" and not has_mark:
+            problems.append(f"{qid} 状态=answered 但标题缺『✅ answered』标记")
+        elif st != "answered" and has_mark:
+            problems.append(f"{qid} 标题含『✅ answered』但状态字段={st}")
+
+    # 规则 3：头部 answered 计数 ↔ 实际
+    hm = _HEADER_ANSWERED_RE.search(txt)
+    if hm:
+        declared = int(hm.group(1))
+        if declared != len(answered_ids):
+            problems.append(
+                f"头部 answered 计数 {declared} ≠ 实际 {len(answered_ids)} "
+                f"（{sorted(answered_ids)}）——头部统计未同步"
+            )
+    else:
+        problems.append("头部缺少『N answered』统计行")
+
+    # 规则 4：优先级总览 active 行（未 ~~ 划掉）不得含 answered 的 Q
+    prio_start = txt.find("## 优先级总览")
+    if prio_start >= 0:
+        prio_txt = txt[prio_start:]
+        for line in prio_txt.splitlines():
+            if "|" not in line or "~~" in line:
+                continue  # 跳过非表格行与已划掉（~~）行
+            ids_in_line = set(re.findall(r"Q-\d{3}", line))
+            overlap = ids_in_line & answered_ids
+            if overlap:
+                problems.append(
+                    f"优先级总览 active 行仍列出已清偿问题 {sorted(overlap)}——应划掉（~~）"
+                )
+    else:
+        problems.append("缺少『优先级总览』段")
+
+    # 汇总
+    if problems:
+        for msg in problems:
+            rep.err(f"开放问题一致性: {msg}")
+    else:
+        rep.ok(
+            f"开放问题一致性: {len(qs)} 个 Q，状态字段/标题✅/头部统计/优先级表 4 处一致"
+        )
+
+
 # ---------------------------------------------------------------- 结构完整性（P1-2 根治）
 
 # 受管目录：这些目录下的**每个**文件都必须登记进 versions.json。
@@ -1782,6 +1887,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_calibration(root, rep)               # D1 置信度校准
     _check_dependency_map(root, rep)            # C 依赖图
     _check_critical_numbers(root, rep)          # C2 关键数字一致性
+    _check_open_questions_consistency(root, rep)  # Q 状态一致性（4 处手动同步根治）
 
     # 协议文档存在性（软检查）
     docs = [

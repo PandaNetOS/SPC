@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿﻿# SPC
 
 > **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -131,7 +131,7 @@ python cli/main.py new-game <game_id>
 │   └── tools/
 │       ├── compress_memory.py  v1.0      ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
 │       ├── ingate.py  v1.1      ← 新增 _evidence_tier 分档校验
-│       └── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       └── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）；open_que…
 ├── games/
 │   ├── INDEX.md  v1.2      ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
 │   ├── _template/
@@ -256,11 +256,12 @@ python cli/main.py new-game <game_id>
 │   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
 │   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
+│   ├── test_open_questions_consistency.py  —         ← Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表act…
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
-    ├── count_tests.py  —
+    ├── count_tests.py  —         ← 登记 tests/test_open_questions_consis…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
     ├── render_ai_map.py  —         ← AI_MAP.md 渲染器（--write 写回）

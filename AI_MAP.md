@@ -50,7 +50,7 @@
 - `framework/protocol/README.md`
 - `framework/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）
 - `framework/tools/ingate.py` — 新增 _evidence_tier 分档校验
-- `framework/tools/memory.py` — 代码文件：不写文件内版本行（用 git blame）
+- `framework/tools/memory.py` — 代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）…
 
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
@@ -80,7 +80,7 @@
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/count_tests.py`
+- `tools/count_tests.py` — 登记 tests/test_open_questions_consistency.py
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
@@ -94,7 +94,7 @@
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/count_tests.py`
+- `tools/count_tests.py` — 登记 tests/test_open_questions_consistency.py
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
@@ -115,6 +115,7 @@
 - `tests/test_evidence_anchor.py` — ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest
 - `tests/test_flywheel.py` — K/D1/D2/C/F 测试（无需 pytest）
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
+- `tests/test_open_questions_consistency.py` — Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法
 - `tests/test_shadow_game.py`
 - `tests/test_structure.py` — 结构完整性回归测试（P1-2 三道防线）
 
@@ -130,7 +131,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — r07：新增 _check_consumes_completeness 逆向声明完整性检查
+- `src/spc/validate.py` — r07：新增 _check_consumes_completeness 逆向声明完整性检查；r08：新增 _check…
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档

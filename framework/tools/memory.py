@@ -511,7 +511,12 @@ class Memory:
         return f"Q-{max(nums) + 1:03d}" if nums else "Q-001"
 
     def open_questions(self) -> list[tuple[str, str]]:
-        """返回 [(id, 状态)] —— 从 OPEN_QUESTIONS.md 粗解析。"""
+        """返回 [(id, 状态)] —— 从 OPEN_QUESTIONS.md 粗解析。
+
+        状态归一化为 answered / open / blocked / unknown：
+        - 状态字段取首个英文单词（兼容 ``answered``（r05 → F-xxx）等带说明写法）；
+        - 无状态字段 → unknown。
+        """
         p = os.path.join(self.workbench_dir, "OPEN_QUESTIONS.md")
         if not os.path.exists(p):
             return []
@@ -520,10 +525,15 @@ class Memory:
             txt = f.read()
         for m in re.finditer(r"^##\s+(Q-\d{3})\s+—\s+(.+)$", txt, re.M):
             qid, title = m.group(1), m.group(2)
-            # 找该节内的状态
+            # 找该节内的状态字段，取首个英文状态词（容忍 → / （） / + 等说明字符）
             seg = txt[m.end(): m.end() + 2000]
-            sm = re.search(r"\|\s*\*\*状态\*\*\s*\|\s*`?([\w\s()→\-]+?)`?\s*\|", seg)
-            out.append((qid, (sm.group(1).strip() if sm else "unknown"), title))
+            sm = re.search(r"\|\s*\*\*状态\*\*\s*\|\s*([^|\n]+?)\s*\|", seg)
+            status = "unknown"
+            if sm:
+                word = re.search(r"[A-Za-z]+", sm.group(1))
+                if word:
+                    status = word.group(0).lower()
+            out.append((qid, status, title))
         return out
 
     def next_lesson_id(self) -> str:

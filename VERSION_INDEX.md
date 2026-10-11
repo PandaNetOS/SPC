@@ -47,7 +47,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 97 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 76 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 77 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 14 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 28 |
 
@@ -197,7 +197,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/HANDOFF.template.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/templates/TASK_BRIEF.template.md` | `1.0` | `r02` | active |  |
-| `framework/tools/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
+| `framework/tools/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）/+ 说明字符） |
 | `games/INDEX.md` | `1.2` | `r04` | active | 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ / round05 计划中） |
 | `games/_template/README.md` | —（见备注） | `—` | active |  |
 | `games/_template/data/build_scripts/README.md` | —（见备注） | `—` | active |  |
@@ -220,7 +220,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/spc/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/tree.py` | —（见备注） | `r06` | active | 目录树生成源（P1-2）：README 树 = 派生物 |
-| `src/spc/validate.py` | —（见备注） | `r06` | active | r07：新增 _check_consumes_completeness 逆向声明完整性检查 |
+| `src/spc/validate.py` | —（见备注） | `r06` | active | r07：新增 _check_consumes_completeness 逆向声明完整性检查；r08：新增 _check_open_questions_consistency Q 状态 4 处一致性检查 |
 | `src/spc/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tests/README.md` | `1.5` | `r06` | active | 测试说明（自举计数：合计 333，含 test_structure 8） |
 | `tests/test_ai_readability.py` | —（见备注） | `—` | active | P1/P2/B/H/I 测试 |
@@ -244,6 +244,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `tools/report_calibration.py` | —（见备注） | `—` | active | 置信度校准报告（D1） |
 | `versions.json` | `1.0` | `r02` | generated |  |
 | `tests/test_meta_variables.py` | —（见备注） | `r08` | active | schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI 展示测试 |
+| `tests/test_open_questions_consistency.py` | —（见备注） | `r08` | active | Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法 |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -295,7 +296,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/strategy/strategy_simulation.py` | `analysis_script` | — |  |
 | `memory/facts/ACTIVE.md` | `report` | — | 当前有效结论清单（与台账分离，compress_memory 生成） |
 | `tests/fixtures/shadow/game.yaml` | `test_fixture` | — |  |
-| `tools/count_tests.py` | `test_tool` | — |  |
+| `tools/count_tests.py` | `test_tool` | — | 登记 tests/test_open_questions_consistency.py |
 
 ---
 
@@ -307,9 +308,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `script` | 25 | A | `framework/tools/compress_memory.py`<br>`framework/tools/ingate.py`<br>`games/dlt/iterations/round05/scripts/apply_r05_facts.py`<br>`games/dlt/iterations/round05/scripts/bet_structure.py`<br>`games/dlt/iterations/round05/scripts/fix_r05_housekeeping.py`<br>`games/dlt/iterations/round05/scripts/sync_r05_versions.py`<br>`games/dlt/iterations/round05/scripts/timing_weekday.py`<br>`games/dlt/iterations/round06/scripts/add_v2_fields.py`<br>`games/dlt/iterations/round06/scripts/apply_r06_strategy.py`<br>`games/dlt/iterations/round06/scripts/fix_rename_remainder.py`<br>`games/dlt/iterations/round06/scripts/probe_r06.py`<br>`games/dlt/iterations/round06/scripts/probe_v2.py`<br>`games/dlt/iterations/round06/scripts/rename_spc.py`<br>`games/dlt/iterations/round06/scripts/smoke_ingate.py`<br>`games/dlt/iterations/round06/scripts/smoke_r06.py`<br>`games/dlt/iterations/round06/scripts/sync_guide_v14.py`<br>`games/dlt/iterations/round06/scripts/sync_structure_registration.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_final.py`<br>`games/dlt/iterations/round06/scripts/sync_v2_versions.py`<br>`games/dlt/iterations/round06/scripts/versions_r06_strategy.py`<br>`games/dlt/iterations/round07/scripts/apply_r07_facts.py`<br>`games/dlt/iterations/round07/scripts/t013_recalibrate.py`<br>`games/dlt/iterations/round07/scripts/t014_forensics.py`<br>`games/dlt/iterations/round07/scripts/t015_external.py`<br>`games/dlt/iterations/round07/scripts/t016_holiday.py` |
 | `doc` | 19 | A/B | `AGENTS.md`<br>`AI_MAP.md`<br>`DEPENDENCY_MAP.md`<br>`FLYWHEEL_HEALTH.md`<br>`games/dlt/iterations/round06/research/ai_readability_proposal.md`<br>`games/dlt/iterations/round06/research/flywheel_upgrade_plan.md`<br>`memory/spec/ITERATION_SOP_v2.md`<br>`README.md`<br>`docs/ARCHITECTURE.md`<br>`docs/CONSUMING.md`<br>`docs/ITERATION_GUIDE.md`<br>`docs/METHODOLOGY.md`<br>`docs/PROPOSAL_SINGLE_TICKET_CORE.md`<br>`docs/VERSIONING_DOCS.md`<br>`framework/README.md`<br>`framework/core/README.md`<br>`spec/README.md`<br>`spec/VERSIONING.md`<br>`tests/README.md` |
 | `code` | 12 | B | `src/spc/ai_map.py`<br>`src/spc/depmap.py`<br>`src/spc/flywheel.py`<br>`src/spc/tree.py`<br>`tests/test_structure.py`<br>`tools/register_r06_upgrade.py`<br>`tools/render_ai_map.py`<br>`tools/render_dependency_map.py`<br>`tools/render_flywheel_health.py`<br>`tools/render_readme_tree.py`<br>`tools/render_task_brief.py`<br>`tools/report_calibration.py` |
+| `test` | 10 | B | `tests/test_ai_readability.py`<br>`tests/test_claim_type.py`<br>`tests/test_consumes_completeness.py`<br>`tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_evidence_anchor.py`<br>`tests/test_flywheel.py`<br>`tests/test_shadow_game.py`<br>`tests/test_meta_variables.py`<br>`tests/test_open_questions_consistency.py` |
 | `analysis_script` | 9 | D | `games/dlt/data/tools/_load.py`<br>`games/dlt/data/tools/acf_permutation_test.py`<br>`games/dlt/data/tools/changepoint_refine.py`<br>`games/dlt/data/tools/changepoint_scan.py`<br>`games/dlt/data/tools/consecutive_exact_check.py`<br>`games/dlt/data/tools/exact_tests.py`<br>`games/dlt/data/tools/overdispersion_and_hac.py`<br>`games/dlt/data/tools/validate_data.py`<br>`games/dlt/strategy/strategy_simulation.py` |
 | `library` | 9 | B | `src/__init__.py`<br>`src/spc/__init__.py`<br>`src/spc/api.py`<br>`src/spc/evidence.py`<br>`src/spc/game.py`<br>`src/spc/memory.py`<br>`src/spc/strategy.py`<br>`src/spc/validate.py`<br>`src/spc/versions.py` |
-| `test` | 9 | B | `tests/test_ai_readability.py`<br>`tests/test_claim_type.py`<br>`tests/test_consumes_completeness.py`<br>`tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_evidence_anchor.py`<br>`tests/test_flywheel.py`<br>`tests/test_shadow_game.py`<br>`tests/test_meta_variables.py` |
 | `derived_data` | 8 | D | `games/dlt/data/derived/01_yearly_stats.csv`<br>`games/dlt/data/derived/02_front_number_frequency.csv`<br>`games/dlt/data/derived/03_back_number_frequency.csv`<br>`games/dlt/data/derived/04_structure_distribution_exact.json`<br>`games/dlt/data/derived/05_back_combo_66.csv`<br>`games/dlt/data/derived/06_acf_lag1to60.csv`<br>`games/dlt/data/derived/07_data_quality_report.json`<br>`games/dlt/data/derived/08_rules_epoch_summary.json` |
 | `framework_core` | 8 | B | `framework/core/__init__.py`<br>`framework/core/evaluate.py`<br>`framework/core/features.py`<br>`framework/core/game_util.py`<br>`framework/core/generate.py`<br>`framework/core/judge.py`<br>`framework/core/portfolio.py`<br>`framework/core/ticket.py` |
 | `report` | 7 | A/D | `games/dlt/iterations/round05/scripts/bet_structure.json`<br>`games/dlt/iterations/round05/scripts/timing_weekday.json`<br>`games/dlt/iterations/round07/scripts/t013_recalibrate.json`<br>`games/dlt/iterations/round07/scripts/t014_forensics.json`<br>`games/dlt/iterations/round07/scripts/t015_external.json`<br>`games/dlt/iterations/round07/scripts/t016_holiday.json`<br>`memory/facts/ACTIVE.md` |
