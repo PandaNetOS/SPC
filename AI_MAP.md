@@ -25,10 +25,10 @@
 ## 契约
 - `spec/README.md`
 - `spec/VERSIONING.md`
-- `spec/fact.schema.json` — v2.0：新增 confidence_grade（GRADE）/ change_type（update-revisio…
+- `spec/fact.schema.json` — evidence 新增 noop_count
 - `spec/game_config.schema.json` — schema 自身无版本；约束 game_config.config_version
 - `spec/iteration.schema.json` — schema 自身无版本；约束 iteration 结构
-- `spec/strategy.schema.json` — schema 自身无版本；约束 strategy.schema_version
+- `spec/strategy.schema.json` — metric enum 同步为 expected_bonus_given_win
 - `spec/version_index.schema.json` — schema 自身无版本；约束 versions.index_version
 
 ## 框架
@@ -49,13 +49,13 @@
 - `framework/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
 - `framework/protocol/README.md`
 - `framework/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）
-- `framework/tools/ingate.py` — 入库三闸门（filter/judge/manager，LSTM-MAS 依据）
+- `framework/tools/ingate.py` — 新增 _evidence_tier 分档校验
 - `framework/tools/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
 - `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — 35 条结论（F-0001~F-0035；F-0032 superseded；F-0004/F-0005 重校准维持）
+- `memory/facts/FACTS.jsonl` — 新增 F-0036 全奖级口径
 - `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
 - `memory/journal/round02.md` — 整理入库轮
 - `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
@@ -67,7 +67,7 @@
 - `memory/spec/ITERATION_SOP_v2.md` — r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写）
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
-- `memory/workbench/TODO.md` — T-014/T-015/T-016 已交付
+- `memory/workbench/TODO.md` — 新增 T-046/047/048
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0

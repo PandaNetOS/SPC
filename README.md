@@ -1,4 +1,4 @@
-﻿﻿# SPC
+﻿﻿﻿﻿# SPC
 
 > **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -130,7 +130,7 @@ python cli/main.py new-game <game_id>
 │   │   └── README.md  v1.0
 │   └── tools/
 │       ├── compress_memory.py  v1.0      ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
-│       ├── ingate.py  v1.0      ← 入库三闸门（filter/judge/manager，LSTM-MAS…
+│       ├── ingate.py  v1.1      ← 新增 _evidence_tier 分档校验
 │       └── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── games/
 │   ├── INDEX.md  v1.2      ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
@@ -187,24 +187,26 @@ python cli/main.py new-game <game_id>
 │       │   │   │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
 │       │   │   │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
 │       │   │   └── scripts/  ← 轮次脚本（13 个）
-│       │   └── round07/
-│       │       ├── FINDINGS.md  v1.0      ← 前段取证+外部核对+节假日验证+锚点重校准
-│       │       ├── HANDOFF.md  v1.0      ← r07→r08 交接
-│       │       ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
-│       │       ├── manifest.json  vdlt_full_2933  ← r07 机器登记
-│       │       └── scripts/  ← 轮次脚本（9 个）
+│       │   ├── round07/
+│       │   │   ├── FINDINGS.md  v1.0      ← 前段取证+外部核对+节假日验证+锚点重校准
+│       │   │   ├── HANDOFF.md  v1.0      ← r07→r08 交接
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
+│       │   │   ├── manifest.json  vdlt_full_2933  ← r07 机器登记
+│       │   │   └── scripts/  ← 轮次脚本（9 个）
+│       │   └── round08/
+│       │       └── scripts/  ← 轮次脚本（2 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
 │           ├── STRATEGY_GUIDE.md  v1.5      ← r07：数据可靠性段升级（F-0033/F-0034 根因定位）；co…
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.3      ← r06（用户批准）：R-002 → exclude + 禁止完全相同号…
+│           ├── strategy.json  v1.3      ← ★ r08 口径变更：expected_bonus_given_win…
 │           └── strategy_simulation.py  —
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
 │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.2      ← 35 条结论（F-0001~F-0035；F-0032 superse…
+│   │   ├── FACTS.jsonl  v1.2      ← 新增 F-0036 全奖级口径
 │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
 │   │   ├── round02.md  v1.0      ← 整理入库轮
@@ -220,14 +222,14 @@ python cli/main.py new-game <game_id>
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…
-│       └── TODO.md  v1.6      ← T-014/T-015/T-016 已交付
+│       └── TODO.md  v1.7      ← 新增 T-046/047/048
 ├── spec/
 │   ├── README.md  v1.0
 │   ├── VERSIONING.md  v1.2
-│   ├── fact.schema.json  —         ← v2.0：新增 confidence_grade（GRADE）/ ch…
+│   ├── fact.schema.json  —         ← evidence 新增 noop_count
 │   ├── game_config.schema.json  —         ← schema 自身无版本；约束 game_config.config_…
 │   ├── iteration.schema.json  —         ← schema 自身无版本；约束 iteration 结构
-│   ├── strategy.schema.json  —         ← schema 自身无版本；约束 strategy.schema_ver…
+│   ├── strategy.schema.json  —         ← metric enum 同步为 expected_bonus_give…
 │   └── version_index.schema.json  —         ← schema 自身无版本；约束 versions.index_vers…
 ├── src/
 │   ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
@@ -332,10 +334,10 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
+| 记忆层 | ✅ **36 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
-| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** + `test_flywheel.py` **20** + `test_ai_readability.py` **25** 全绿（无需 pytest，共 **378** 项） |
+| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** + `test_flywheel.py` **20** + `test_ai_readability.py` **25** + `test_consumes_completeness.py` **6** 全绿（无需 pytest，共 **384** 项） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**167 条**登记（A=66 B=60 C=13 D=28），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）

@@ -184,6 +184,11 @@
 - sha256锚→ `games/dlt/iterations/round07/scripts/t016_holiday.py`
 - source→ `games/dlt/iterations/round07/scripts/t016_holiday.py`
 
+## FACTS:F-0036
+- script→ `games/dlt/iterations/round08/scripts/all_tiers_expectation.py`
+- sha256锚→ `games/dlt/iterations/round08/scripts/all_tiers_expectation.py`
+- source→ `games/dlt/iterations/round08/scripts/all_tiers_expectation.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 

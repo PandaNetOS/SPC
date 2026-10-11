@@ -1,0 +1,134 @@
+{
+  "tier_enumeration": {
+    "T": 21425712,
+    "T_front": 324632,
+    "T_back": 66,
+    "tiers": [
+      {
+        "tier": "一等",
+        "type": "浮动奖",
+        "winning_combos": 1,
+        "probability": 4.6672894697735135e-08,
+        "amount_yuan": null,
+        "amount_yuan_pool_ge_8yi": null,
+        "fixed_expectation_yuan_per_2yuan": null
+      },
+      {
+        "tier": "二等",
+        "type": "浮动奖",
+        "winning_combos": 2,
+        "probability": 9.334578939547027e-08,
+        "amount_yuan": null,
+        "amount_yuan_pool_ge_8yi": null,
+        "fixed_expectation_yuan_per_2yuan": null
+      },
+      {
+        "tier": "三等",
+        "type": "固定奖",
+        "winning_combos": 151,
+        "probability": 7.047607099358005e-06,
+        "amount_yuan": 5000,
+        "amount_yuan_pool_ge_8yi": 6666,
+        "fixed_expectation_yuan_per_2yuan": 0.017619017748395013
+      },
+      {
+        "tier": "四等",
+        "type": "固定奖",
+        "winning_combos": 300,
+        "probability": 1.400186840932054e-05,
+        "amount_yuan": 300,
+        "amount_yuan_pool_ge_8yi": 380,
+        "fixed_expectation_yuan_per_2yuan": 0.002100280261398081
+      },
+      {
+        "tier": "五等",
+        "type": "固定奖",
+        "winning_combos": 4500,
+        "probability": 0.0002100280261398081,
+        "amount_yuan": 150,
+        "amount_yuan_pool_ge_8yi": 200,
+        "fixed_expectation_yuan_per_2yuan": 0.01575210196048561
+      },
+      {
+        "tier": "六等",
+        "type": "固定奖",
+        "winning_combos": 49300,
+        "probability": 0.002300973708598342,
+        "amount_yuan": 15,
+        "amount_yuan_pool_ge_8yi": 18,
+        "fixed_expectation_yuan_per_2yuan": 0.017257302814487563
+      },
+      {
+        "tier": "七等",
+        "type": "固定奖",
+        "winning_combos": 365081,
+        "probability": 0.01703938706914384,
+        "amount_yuan": 5,
+        "amount_yuan_pool_ge_8yi": 7,
+        "fixed_expectation_yuan_per_2yuan": 0.0425984676728596
+      }
+    ],
+    "winning_combos_total": 419335,
+    "p_any_prize": 0.019571578298074762,
+    "p_any_prize_odds": "1/51.1",
+    "fixed_expectation_yuan_per_2yuan": 0.095327,
+    "note": "现行口径隐含 P(中奖)=4.6673e-08（仅一等），真实 P(任中)=0.019572，相差 419,335 倍。固定奖金额是 E6 规则常数，本值为理论精确值，不依赖历史数据。"
+  },
+  "red_lines": {
+    "affects_win_probability_stays_false": true,
+    "reason": "各奖级中奖组合数由开奖号码唯一决定，与选号无关；合并奖级（5+0 与 4+2 同归三等奖）只归并奖金档，不改变任一组合出现概率。",
+    "fixed_prize_is_selection_independent": true,
+    "fixed_reason": "三~七等奖单注金额是 E6 规则常数（5000/300/150/15/5），与选号无关。",
+    "net_expectation_stays_negative": true
+  },
+  "anchors": {
+    "n_post": 1973,
+    "cutoff": "2013-08-28",
+    "prize1_median_all_yuan": 10000000.0,
+    "prize1_median_unsat_yuan": 7306714.0,
+    "prize1_saturation_ratio": 0.5397871262037507,
+    "prize2_median_yuan": 142554.0
+  },
+  "variants": {
+    "A_naive_median_incl_cap": {
+      "prize1_anchor_yuan": 10000000.0,
+      "floating_expectation_yuan_per_2yuan": 0.240018,
+      "fixed_expectation_yuan_per_2yuan": 0.095327,
+      "total_expectation_yuan_per_2yuan": 0.335345,
+      "fixed_share": 0.284266,
+      "optimizable_share": 0.715734,
+      "net_expected_yuan_per_2yuan": -1.6647
+    },
+    "B_trimmed_median_L5": {
+      "prize1_anchor_yuan": 7306714.0,
+      "floating_expectation_yuan_per_2yuan": 0.177166,
+      "fixed_expectation_yuan_per_2yuan": 0.095327,
+      "total_expectation_yuan_per_2yuan": 0.272493,
+      "fixed_share": 0.349833,
+      "optimizable_share": 0.650167,
+      "net_expected_yuan_per_2yuan": -1.7275
+    }
+  },
+  "rule_conversion": {
+    "R-001": {
+      "head_prize_uplift_cap": 40.64,
+      "refs": [
+        "F-0004",
+        "F-0017",
+        "F-0022"
+      ],
+      "all_tiers_uplift_A_naive_median_incl_cap": 29.09,
+      "all_tiers_uplift_B_trimmed_median_L5": 26.42
+    },
+    "R-003": {
+      "head_prize_uplift_cap": 41.8,
+      "refs": [
+        "F-0029"
+      ],
+      "all_tiers_uplift_A_naive_median_incl_cap": 29.92,
+      "all_tiers_uplift_B_trimmed_median_L5": 27.18
+    }
+  },
+  "conclusion": "现行 expected_bonus_given_win 的分母口径是「中一等奖」，真实口径应为「中任意奖级」：P(任中)=0.019572（1/51.1），相差 419,335 倍。固定奖（三~七等，占全奖级期望 34.98%）从未被计入，且这部分选号完全无法影响 —— 这正是现行口径的缺口。换算后规则方向不变、幅度下调约 35%。三条红线（不提高中奖概率 / 只作用于浮动奖 / 负期望）全部仍然成立。",
+  "caveat_l10": "L10 兑现：三至七等奖实发注数在 dlt_full_2933.csv 中不存在，故本脚本只给固定奖的**理论精确值**（金额为规则常数、概率可精确枚举，不需历史数据），不给逐期实测对照。若要核验实际派发，需外部来源补齐三~七等奖字段。"
+}
