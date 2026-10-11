@@ -1,6 +1,6 @@
 ﻿# SPC
 
-> **版本**：`1.16` ｜ 轮次 `r12` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -107,7 +107,7 @@ python cli/main.py new-game <game_id>
 │   ├── ITERATION_GUIDE.md  v1.0
 │   ├── METHODOLOGY.md  v1.0
 │   ├── PROPOSAL_SINGLE_TICKET_CORE.md  v1.1
-│   └── VERSIONING_DOCS.md  v1.3
+│   └── VERSIONING_DOCS.md  v1.4
 ├── framework/
 │   ├── INDEX.md  v1.1
 │   ├── README.md  v1.0
@@ -310,10 +310,12 @@ python cli/main.py new-game <game_id>
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
 │   ├── test_open_questions_consistency.py  —         ← Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表act…
 │   ├── test_research_lib.py  —         ← research_lib 原语测试（已知分布验证可复现/正确性/样本不…
+│   ├── test_round_stall.py  —         ← 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不…
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r13 T-04…
+    ├── bump_iteration.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r14.2 新增…
     ├── count_tests.py  —         ← 登记测试文件 + --inject（T-045：tests/READM…
     ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）

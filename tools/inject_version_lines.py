@@ -111,14 +111,23 @@ def main() -> int:
     stats = {"inserted": 0, "updated": 0, "unchanged": 0, "no-h1": 0}
     for e in sorted(targets, key=lambda x: x["path"]):
         p = os.path.join(_ROOT, e["path"])
-        # utf-8-sig：README 等文件带 BOM，普通 utf-8 会让 `# ` 标题识别失败
-        text = open(p, encoding="utf-8-sig").read()
+        # utf-8-sig：README 等文件带 BOM，普通 utf-8 会让 `# ` 标题识别失败。
+        # ⚠️ utf-8-sig 只吃掉**一个** BOM —— 历史上出现过 BOM 叠加（\ufeff\ufeff），
+        #    残留的第二个 BOM 会让 H1 识别失败 → 该文件**永远无法自动注入版本行**，
+        #    却仍被 verify_versions 读到旧版本行而判定"一致"（静默失效）。
+        #    r14.2 实测命中：STRATEGY_GUIDE.md、OPEN_QUESTIONS.md。
+        #    故在此清掉全部前导 BOM；写回时 utf-8-sig 只补一个，顺带修复文件。
+        raw = open(p, encoding="utf-8-sig").read()
+        text = raw.lstrip("\ufeff")
+        bom_fixed = text != raw
         line = make_line(e["content_version"], e.get("iteration") or "", e.get("updated_at") or "")
         ntext, act = inject(text, line)
         stats[act] = stats.get(act, 0) + 1
         icon = {"inserted": "+", "updated": "~", "unchanged": "=", "no-h1": "!"}.get(act, "?")
-        print(f"  {icon} {e['path']}" + ("" if act != "no-h1" else "   ⚠️ 无 H1 标题"))
-        if args.write and act in ("inserted", "updated"):
+        suffix = "   ⚠️ 无 H1 标题" if act == "no-h1" else (
+            "   （已修 BOM 叠加）" if bom_fixed else "")
+        print(f"  {icon} {e['path']}" + suffix)
+        if args.write and (act in ("inserted", "updated") or bom_fixed):
             # 写回保持 utf-8-sig（保留/兼容 BOM）
             with open(p, "w", encoding="utf-8-sig", newline="\n") as f:
                 f.write(ntext)
