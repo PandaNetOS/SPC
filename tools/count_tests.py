@@ -42,6 +42,7 @@ TEST_FILES = [
     "tests/test_meta_variables.py",
     "tests/test_open_questions_consistency.py",
     "tests/test_research_lib.py",
+    "tests/test_round_stall.py",
 ]
 
 # 覆盖说明（tests/README.md 表格的权威来源；--inject 时用此重建表格）
@@ -58,6 +59,7 @@ TEST_COVERAGE = {
     "tests/test_meta_variables.py": "★ schema 1.3 元数据：convenience/experience/psychology 结构 + 红线恒值 + CLI 展示",
     "tests/test_open_questions_consistency.py": "★ Q 状态一致性：解析归一化 / 头部计数滞后 / 标题缺 ✅ / 优先级表 active 含已清偿 / 状态词非法",
     "tests/test_research_lib.py": "★ 研究资本化（Y）：bootstrap/比率/Wilson 原语已知分布验证 + 分期稳健性判定 + 样本不足不硬报",
+    "tests/test_round_stall.py": "★ 轮次停滞（r14.2）：同源自洽陷阱必须被识破 / 已对齐与未声明活文档不误伤 / bump_iteration 能修复",
 }
 
 _LINE_RE = re.compile(r"通过\s+(\d+)\s+失败\s+(\d+)")

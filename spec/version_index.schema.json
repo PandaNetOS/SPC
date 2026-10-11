@@ -89,6 +89,11 @@
             "pattern": "^r[0-9]{2}$",
             "description": "最近一次产出/更新的轮次。"
           },
+          "follows_current": {
+            "type": "boolean",
+            "default": false,
+            "description": "★ 本条目是否为『随轮演进的活文档』（入口/速览/索引/策略/事实库等每轮必更或必复核者）。为 true 时，校验器要求 iteration 必须 == current_iteration，否则报错（★ 轮次停滞检查，r14.2 根治）。历史归档类（roundNN 产物、journal）必须保持 false —— 它们的轮次天生属于产出那轮，强制对齐会掩盖真实信息。省略 = false。"
+          },
           "updated_at": {
             "type": ["string", "null"],
             "description": "最近更新日期（YYYY-MM-DD）。"
