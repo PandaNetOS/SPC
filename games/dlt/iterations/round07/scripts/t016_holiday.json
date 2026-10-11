@@ -1,0 +1,69 @@
+{
+  "cut": "2013-08-28",
+  "n_boot": 2000,
+  "rng_seed": 20261011,
+  "window": "春节=正月初一±7天（农历精确）；国庆 9/25-10/10；元旦 12/26-1/6",
+  "ratio_definition": "sum(w1|run>=2)/sum(w1|run<2)（加总口径，F-0032 同口径；均值口径另列对照）",
+  "baseline_post": {
+    "n": 1973,
+    "n_run_ge2": 193,
+    "ratio_sum": 1.388,
+    "ci95_sum": [
+      0.066,
+      21.139
+    ],
+    "ratio_mean_ref": 1.388
+  },
+  "spring_exact": {
+    "n_all": 53,
+    "n_post": 33,
+    "ratio_sum_all": 1.007,
+    "ci95_sum_all": [
+      NaN,
+      NaN
+    ],
+    "ratio_sum_post": 1.005,
+    "ci95_sum_post": [
+      0.009,
+      86.556
+    ],
+    "ratio_mean_post_ref": 1.005,
+    "sale_ratio_post_vs_base": 0.952,
+    "n_run_ge2_post": 2
+  },
+  "national": {
+    "n_all": 123,
+    "n_post": 82,
+    "ratio_sum_all": 1.017,
+    "ci95_sum_all": [
+      NaN,
+      NaN
+    ],
+    "ratio_sum_post": 1.01,
+    "ci95_sum_post": [
+      0.106,
+      7.806
+    ],
+    "ratio_mean_post_ref": 1.01,
+    "sale_ratio_post_vs_base": 0.903,
+    "n_run_ge2_post": 11
+  },
+  "newyear": {
+    "n_all": 50,
+    "n_post": 33,
+    "ratio_sum_all": 1.004,
+    "ci95_sum_all": [
+      NaN,
+      NaN
+    ],
+    "ratio_sum_post": 1.003,
+    "ci95_sum_post": [
+      0.074,
+      13.243
+    ],
+    "ratio_mean_post_ref": 1.003,
+    "sale_ratio_post_vs_base": 0.969,
+    "n_run_ge2_post": 9
+  },
+  "verdict": "春节精确映射后，若窗口后段 ratio 的 CI 仍宽含基线 → H-006 无法确认节假日撞号减弱；若窗口 ratio 显著低于基线且 CI 不含基线 → H-006 支持（节假日人群更随机）。F-0032 tentative 状态的更新以 CI 是否越过基线为准。"
+}

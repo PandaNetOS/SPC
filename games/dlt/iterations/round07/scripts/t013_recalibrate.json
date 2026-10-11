@@ -1,0 +1,33 @@
+{
+  "E6_anchor": {
+    "n": 102,
+    "w1_median": 6,
+    "payout1_median_yi": 0.4252,
+    "reference_n0": 6,
+    "reference_pool_yi": 0.4252,
+    "match": true
+  },
+  "post_segment_R": {
+    "n_ge2": 193,
+    "n_lt2": 1780,
+    "ratio_mean": 1.3884,
+    "ci95_mean": [
+      1.042,
+      1.5167
+    ],
+    "ratio_sum": 1.3884,
+    "ratio_median": 2.0,
+    "reference_ratio": 1.2472,
+    "match": true
+  },
+  "post_open_rate": {
+    "n": 1973,
+    "obs_run_ge2_rate": 0.09782,
+    "theo_run_ge2_rate": 0.088904,
+    "chi2": 1.937,
+    "p": 0.16402640133756957,
+    "reference": "后段不显著（p≈0.356，r03 分期结论）",
+    "match": true
+  },
+  "verdict": "维持（recalibrated）——F-0004/F-0005 的锚点与后段显著性在当前数据版本（dlt_full_2933，含 26115）下仍成立，无需 update 通道。按 SOP 重记校准时间戳。"
+}

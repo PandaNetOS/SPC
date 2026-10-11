@@ -174,12 +174,21 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
 │       │   │   ├── manifest.json  v1.0
 │       │   │   └── scripts/  ← 轮次脚本（7 个）
-│       │   └── round06/
-│       │       ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
-│       │       ├── research/
-│       │       │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
-│       │       │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
-│       │       └── scripts/  ← 轮次脚本（13 个）
+│       │   ├── round06/
+│       │   │   ├── FINDINGS.md  v1.0      ← r06 元层轮发现（策略落地+飞轮升级）
+│       │   │   ├── HANDOFF.md  v1.0      ← r06→r07 交接（结论/遗留/下轮建议）
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
+│       │   │   ├── manifest.json  v1.0      ← r06 机器登记
+│       │   │   ├── research/
+│       │   │   │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
+│       │   │   │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
+│       │   │   └── scripts/  ← 轮次脚本（13 个）
+│       │   └── round07/
+│       │       ├── FINDINGS.md  v1.0      ← 前段取证+外部核对+节假日验证+锚点重校准
+│       │       ├── HANDOFF.md  v1.0      ← r07→r08 交接
+│       │       ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
+│       │       ├── manifest.json  vdlt_full_2933  ← r07 机器登记
+│       │       └── scripts/  ← 轮次脚本（9 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -191,21 +200,23 @@ python cli/main.py new-game <game_id>
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
 │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.5      ← 32 条结论（F-0001~F-0032；F-0015/F-0007 …
+│   │   ├── FACTS.jsonl  v1.2      ← 35 条结论（F-0001~F-0035；F-0032 superse…
 │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
 │   │   ├── round02.md  v1.0      ← 整理入库轮
 │   │   ├── round03.md  v1.0      ← 复核轮（含 1 次自我纠错）
 │   │   ├── round04.md  v1.0
-│   │   └── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
+│   │   ├── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
+│   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
+│   │   └── round07.md  v1.0      ← r07 叙事（研究轮）
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
 │   │   └── ITERATION_SOP_v2.md  v1.1      ← 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道…
 │   └── workbench/
-│       ├── HYPOTHESES.md  v1.2      ← H-001~H-006；r04：H-004 被 F-0023 推翻；r…
-│       ├── OPEN_QUESTIONS.md  v1.4      ← 15 问，7 answered（Q-001/Q-002/Q-004 r…
-│       └── TODO.md  v1.6      ← r05 清算 T-011/T-202/T-205/T-206；新增 T…
+│       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
+│       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…
+│       └── TODO.md  v1.6      ← T-014/T-015/T-016 已交付
 ├── spec/
 │   ├── README.md  v1.0
 │   ├── VERSIONING.md  v1.2

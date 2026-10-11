@@ -53,17 +53,19 @@
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
 - `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — 32 条结论（F-0001~F-0032；F-0015/F-0007 superseded）；r05 新增 F-002…
+- `memory/facts/FACTS.jsonl` — 35 条结论（F-0001~F-0035；F-0032 superseded；F-0004/F-0005 重校准维持）
 - `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
 - `memory/journal/round02.md` — 整理入库轮
 - `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
 - `memory/journal/round04.md`
 - `memory/journal/round05.md` — 叙事：R-002 量化不成立 + H-005 证伪
+- `memory/journal/round06.md` — r06 叙事（元层轮）
+- `memory/journal/round07.md` — r07 叙事（研究轮）
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩
-- `memory/workbench/HYPOTHESES.md` — H-001~H-006；r04：H-004 被 F-0023 推翻；r05：H-005 被 F-0030 证伪（方向相…
-- `memory/workbench/OPEN_QUESTIONS.md` — 15 问，7 answered（Q-001/Q-002/Q-004 r03；Q-003/Q-007/Q-010 r04…
-- `memory/workbench/TODO.md` — r05 清算 T-011/T-202/T-205/T-206；新增 T-016（H-006）；T-014/T-015 …
+- `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
+- `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
+- `memory/workbench/TODO.md` — T-014/T-015/T-016 已交付
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0

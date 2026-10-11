@@ -77,7 +77,7 @@ def _render_brief(root: str, items: list[dict], rnd: int) -> str:
     lines = [
         f"# TASK_BRIEF —— round{rnd:02d} 任务书",
         "",
-        f"> **版本**：`1.0` ｜ 轮次 `round{rnd:02d}` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`",
+        f"> **版本**：`1.0` ｜ 轮次 `r{rnd:02d}` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`",
         "> 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成",
         "> （派生物草稿，人工确认后可改）。评分依据：TODO 条目 value / P 级 / ★首推。",
         "",

@@ -167,6 +167,21 @@
 - sha256锚→ `games/dlt/iterations/round05/scripts/timing_weekday.py`
 - source→ `games/dlt/iterations/round05/scripts/timing_weekday.py`
 
+## FACTS:F-0033
+- script→ `games/dlt/iterations/round07/scripts/t014_forensics.py`
+- sha256锚→ `games/dlt/iterations/round07/scripts/t014_forensics.py`
+- source→ `games/dlt/iterations/round07/scripts/t014_forensics.py`
+
+## FACTS:F-0034
+- script→ `games/dlt/iterations/round07/scripts/t015_external.py`
+- sha256锚→ `games/dlt/iterations/round07/scripts/t015_external.py`
+- source→ `games/dlt/iterations/round07/scripts/t015_external.py`
+
+## FACTS:F-0035
+- script→ `games/dlt/iterations/round07/scripts/t016_holiday.py`
+- sha256锚→ `games/dlt/iterations/round07/scripts/t016_holiday.py`
+- source→ `games/dlt/iterations/round07/scripts/t016_holiday.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 
