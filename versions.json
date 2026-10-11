@@ -2,7 +2,7 @@
   "index_version": "2.1",
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
-  "current_iteration": "r14",
+  "current_iteration": "r15",
   "framework_version": "1.1",
   "project_version": "0.1.0",
   "levels": {
@@ -33,6 +33,12 @@
   },
   "entries": [
     {
+      "path": ".gitignore",
+      "level": "D",
+      "kind": "meta",
+      "status": "active"
+    },
+    {
       "path": "AGENTS.md",
       "level": "A",
       "kind": "doc",
@@ -43,13 +49,24 @@
       "status": "active"
     },
     {
+      "path": "AI_CONTEXT.md",
+      "level": "B",
+      "kind": "entry_point",
+      "content_version": "1.5",
+      "iteration": "r15",
+      "updated_at": "2026-10-12",
+      "status": "active",
+      "note": "FACTS 计数 38→43",
+      "follows_current": true
+    },
+    {
       "path": "AI_MAP.md",
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "机器地图（派生物，render_ai_map 生成）",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "generated",
       "follows_current": true
     },
@@ -58,9 +75,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "跨文件依赖图（派生物，render_dependency_map 生成）",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "generated",
       "follows_current": true
     },
@@ -69,11 +86,270 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "飞轮健康度仪表盘（派生物，render_flywheel_health 生成）",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "generated",
       "follows_current": true
+    },
+    {
+      "path": "README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.16",
+      "iteration": "r15",
+      "updated_at": "2026-10-12",
+      "status": "active",
+      "note": "← 速览区 47 条结论 / open 2 / r12 彩种行",
+      "follows_current": true
+    },
+    {
+      "path": "VERSION_INDEX.md",
+      "level": "B",
+      "kind": "version_index_doc",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "updated_at": "2026-10-12",
+      "status": "active",
+      "note": "版本索引（人读），权威源是 versions.json",
+      "follows_current": true
+    },
+    {
+      "path": "cli/main.py",
+      "level": "B",
+      "kind": "cli",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.1",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/CONSUMING.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.1",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/ITERATION_GUIDE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/METHODOLOGY.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/PROPOSAL_SINGLE_TICKET_CORE.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.1",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "docs/VERSIONING_DOCS.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.5",
+      "iteration": "r15",
+      "updated_at": "2026-10-12",
+      "status": "active",
+      "note": "r15: §6.2 追加『manifest 先于 bump』顺序约束；新增 §6.7 轮次号唯一判据"
+    },
+    {
+      "path": "framework/INDEX.md",
+      "level": "B",
+      "kind": "index",
+      "content_version": "1.1",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/README.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.1",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/__init__.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/evaluate.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/features.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "新增跨注原语 duplicate_ticket_count / duplicate_ticket_count_ge（F-0027 判定量）",
+      "iteration": "r06",
+      "status": "active",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "framework/core/game_util.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/generate.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/judge.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/portfolio.py",
+      "level": "B",
+      "kind": "framework_core",
+      "note": "★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross",
+      "status": "active"
+    },
+    {
+      "path": "framework/core/ticket.py",
+      "level": "B",
+      "kind": "framework_core",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "iteration": "r02",
+      "status": "active"
+    },
+    {
+      "path": "framework/methodology/MATH_BOUNDARY.md",
+      "level": "B",
+      "kind": "methodology",
+      "content_version": "1.1",
+      "iteration": "r10",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "note": "r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）"
+    },
+    {
+      "path": "framework/methodology/STATISTICAL_DISCIPLINE.md",
+      "level": "B",
+      "kind": "methodology",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/ITERATION_PROTOCOL.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.2",
+      "iteration": "r12",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "note": "r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏"
+    },
+    {
+      "path": "framework/protocol/MEMORY_PROTOCOL.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.2",
+      "iteration": "r03",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "note": "r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定"
+    },
+    {
+      "path": "framework/protocol/README.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/FINDINGS.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/HANDOFF.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/protocol/templates/TASK_BRIEF.template.md",
+      "level": "B",
+      "kind": "template",
+      "content_version": "1.0",
+      "iteration": "r02",
+      "updated_at": "2026-10-11",
+      "status": "active"
     },
     {
       "path": "framework/tools/compress_memory.py",
@@ -94,6 +370,221 @@
       "note": "新增 _evidence_tier 分档校验",
       "updated_at": "2026-10-11",
       "status": "active"
+    },
+    {
+      "path": "framework/tools/memory.py",
+      "level": "B",
+      "kind": "framework_tool",
+      "content_version": null,
+      "note": "代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）/+ 说明字符）",
+      "iteration": "r02",
+      "status": "active",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/INDEX.md",
+      "level": "B",
+      "kind": "index",
+      "content_version": "1.2",
+      "iteration": "r04",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "note": "彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ / round05 计划中）"
+    },
+    {
+      "path": "games/_template/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/build_scripts/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/derived/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/raw/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/data/tools/README.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/game.yaml",
+      "level": "C",
+      "kind": "game_config",
+      "version_ref": "config_version",
+      "ref_version": "2.0",
+      "note": "2026-10-11 与 dlt 同步升至 2.0（features 原语化）",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/iterations/round01/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "template_game",
+      "status": "active"
+    },
+    {
+      "path": "games/_template/strategy/strategy.json",
+      "level": "C",
+      "kind": "strategy",
+      "version_ref": "config_version",
+      "ref_version": "2.0",
+      "note": "模板策略，2026-10-11 随 game.yaml 同步至 2.0",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/build_derived_v4.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/hash_and_list.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/build_scripts/validate_package_v4.py",
+      "level": "D",
+      "kind": "build_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/01_yearly_stats.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/02_front_number_frequency.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/03_back_number_frequency.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/04_structure_distribution_exact.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/05_back_combo_66.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/06_acf_lag1to60.csv",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/07_data_quality_report.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/derived/08_rules_epoch_summary.json",
+      "level": "D",
+      "kind": "derived_data",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/raw/dlt_full_2933.csv",
+      "level": "D",
+      "kind": "raw_data",
+      "sha256": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
+      "note": "SHA256 为准，不做内容版本",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/raw/dlt_full_2933.jsonl",
+      "level": "D",
+      "kind": "raw_data",
+      "sha256": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d",
+      "note": "SHA256 为准，不做内容版本",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/_load.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/acf_permutation_test.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/changepoint_refine.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/changepoint_scan.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/consecutive_exact_check.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/exact_tests.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/overdispersion_and_hac.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/data/tools/validate_data.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/game.yaml",
+      "level": "C",
+      "kind": "game_config",
+      "version_ref": "config_version",
+      "ref_version": "2.2",
+      "note": "r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2",
+      "status": "active",
+      "iteration": "r14",
+      "updated_at": "2026-10-11"
     },
     {
       "path": "games/dlt/iterations/round02/FINDINGS.md",
@@ -205,6 +696,14 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
+      "path": "games/dlt/iterations/round02/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "version_ref": "inputs.data_version",
+      "ref_version": "dlt_full_2933",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/iterations/round03/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
@@ -232,6 +731,14 @@
       "iteration": "r03",
       "note": "已交付",
       "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round03/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "version_ref": "inputs.data_version",
+      "ref_version": "dlt_full_2933",
       "status": "active"
     },
     {
@@ -335,6 +842,12 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round04/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/iterations/round04/scripts/apply_r04_facts.py",
       "level": "A",
       "kind": "iteration_artifact",
@@ -435,6 +948,16 @@
       "updated_at": "2026-10-11",
       "status": "active",
       "note": "已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 r06）"
+    },
+    {
+      "path": "games/dlt/iterations/round05/manifest.json",
+      "level": "B",
+      "kind": "manifest",
+      "content_version": "1.0",
+      "iteration": "r05",
+      "note": "",
+      "updated_at": "2026-10-11",
+      "status": "active"
     },
     {
       "path": "games/dlt/iterations/round05/scripts/apply_r05_facts.py",
@@ -727,6 +1250,16 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round07/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "version_ref": "inputs.data_version",
+      "ref_version": "dlt_full_2933",
+      "note": "r07 机器登记",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/iterations/round07/scripts/apply_r07_facts.py",
       "level": "A",
       "kind": "script",
@@ -837,6 +1370,16 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round08/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "体系升级批清单（C+X+Y+Z）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/iterations/round08/scripts/all_tiers_expectation.json",
       "level": "A",
       "kind": "iteration_artifact",
@@ -883,6 +1426,16 @@
       "content_version": "1.0",
       "iteration": "r09",
       "note": "任务书：T-046/T-047/T-020 + 并行建议（X）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round09/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "content_version": null,
+      "iteration": "r09",
+      "note": "策略量化轮清单",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1087,6 +1640,349 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round11/FINDINGS.md",
+      "level": "B",
+      "kind": "findings",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 结论：F-0042 平台期 / F-0043 代理可观测 / T-048 设计 + 2 项顺带根治",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/HANDOFF.md",
+      "level": "B",
+      "kind": "handoff",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11→r12 交接：T-048b 首推 + T-025 仍 blocked + 编码护栏建议",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
+      "level": "B",
+      "kind": "design",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-048 L3 组合优化预备：时序 hold-out 评测设计（切分/指标/防泄漏/组合搜索边界/验收护栏，不落 L2）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "task_brief",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 任务书：T-023/T-024/T-048（render_task_brief --round 11 --top 3）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/manifest.json",
+      "level": "D",
+      "kind": "manifest",
+      "iteration": "r11",
+      "note": "r11 deliverables（根级）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/apply_r11_facts.py",
+      "level": "C",
+      "kind": "apply_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 入库：F-0042/F-0043 新增 + F-0021 caveats 更新 + Q-011/Q-015 answered + TODO done",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.json",
+      "level": "D",
+      "kind": "research_output",
+      "iteration": "r11",
+      "note": "T-023 复验结果（34/30 窗序列 + 趋势检验 + 节假日分段）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.py",
+      "level": "C",
+      "kind": "research_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-023 效应弱化滚动复验（W=300/500 滚动窗口 + 节假日分时段；→ F-0042）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.json",
+      "level": "D",
+      "kind": "research_output",
+      "iteration": "r11",
+      "note": "T-024 代理序列 + 变点 + 相关结果",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.py",
+      "level": "C",
+      "kind": "research_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-024 机选占比代理变量（P1 低号注数比 / P2 连号注数比 / P3 偏好基尼 + 变点扫描；→ F-0043）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round12/FINDINGS.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "r12 研究结论"
+    },
+    {
+      "path": "games/dlt/iterations/round12/HANDOFF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "r12→r13 交接"
+    },
+    {
+      "path": "games/dlt/iterations/round12/TASK_BRIEF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "r12 任务书（T-049/T-030/T-040）"
+    },
+    {
+      "path": "games/dlt/iterations/round12/manifest.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r12",
+      "note": "r12 manifest"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t030_effectiveness.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "T-030 三档标准写入"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t049_holdout.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r12",
+      "note": "T-049 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round12/scripts/t049_holdout.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "T-049 hold-out 评测"
+    },
+    {
+      "path": "games/dlt/iterations/round13/FINDINGS.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r13",
+      "note": "r13 研究结论"
+    },
+    {
+      "path": "games/dlt/iterations/round13/HANDOFF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r13",
+      "note": "r13 交接"
+    },
+    {
+      "path": "games/dlt/iterations/round13/TASK_BRIEF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r13",
+      "note": "r13 任务书（T-051/T-044/T-045）"
+    },
+    {
+      "path": "games/dlt/iterations/round13/manifest.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r13",
+      "note": "r13 manifest"
+    },
+    {
+      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r13",
+      "note": "T-051 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r13",
+      "note": "T-051 walk-forward 评测"
+    },
+    {
+      "path": "games/dlt/iterations/round14/FINDINGS.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 研究结论"
+    },
+    {
+      "path": "games/dlt/iterations/round14/HANDOFF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 交接"
+    },
+    {
+      "path": "games/dlt/iterations/round14/TASK_BRIEF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 任务书（T-052 待批准/T-053/T-054）"
+    },
+    {
+      "path": "games/dlt/iterations/round14/manifest.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "r14 manifest"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "T-053 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "T-053 形态撞号比复验"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "T-054 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "T-054 walk-forward 每步 CI"
+    },
+    {
+      "path": "games/dlt/iterations/round15/FINDINGS.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "note": "r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 的同源关系）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round15/HANDOFF.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "note": "r15 交接（含 T-020 未决裁定项）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round15/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "note": "r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地漏勾）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round15/manifest.json",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r15",
+      "note": "r15 manifest",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/manifest_v4_source.json",
+      "level": "D",
+      "kind": "source_manifest",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/rules_history.md",
       "level": "A",
       "kind": "rules_history",
@@ -1107,9 +2003,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.9",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "r14.1: R-004 小节 + 三档表 B 档行（v1.8→1.9）",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "active",
       "consumes": [
         "F-0001",
@@ -1140,6 +2036,53 @@
       "follows_current": true
     },
     {
+      "path": "games/dlt/strategy/simulation_results.json",
+      "level": "D",
+      "kind": "analysis_output",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/strategy/strategy.json",
+      "level": "C",
+      "kind": "contract",
+      "version_ref": "schema_version",
+      "ref_version": "1.4",
+      "note": "r14.1: R-004 落地（用户批准 T-052）；schema 仍 1.4，内容 1.4→1.5",
+      "content_version": "1.5",
+      "iteration": "r15",
+      "status": "active",
+      "consumes": [
+        "F-0001",
+        "F-0002",
+        "F-0003",
+        "F-0004",
+        "F-0006",
+        "F-0008",
+        "F-0009",
+        "F-0011",
+        "F-0012",
+        "F-0017",
+        "F-0019",
+        "F-0020",
+        "F-0021",
+        "F-0022",
+        "F-0023",
+        "F-0024",
+        "F-0025"
+      ],
+      "updated_at": "2026-10-12",
+      "follows_current": true
+    },
+    {
+      "path": "games/dlt/strategy/strategy_simulation.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active",
+      "iteration": "r10",
+      "note": "r10.1：docstring 一等奖概率口径",
+      "updated_at": "2026-10-11"
+    },
+    {
       "path": "memory/INDEX.md",
       "level": "A",
       "kind": "index",
@@ -1150,13 +2093,22 @@
       "status": "active"
     },
     {
+      "path": "memory/facts/ACTIVE.md",
+      "level": "D",
+      "kind": "report",
+      "iteration": "r06",
+      "note": "当前有效结论清单（与台账分离，compress_memory 生成）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
       "path": "memory/facts/FACTS.jsonl",
       "level": "A",
       "kind": "facts",
       "content_version": "1.5",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "active",
       "follows_current": true
     },
@@ -1196,6 +2148,16 @@
       "kind": "iteration_artifact",
       "content_version": "1.0",
       "iteration": "r04",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/journal/round05.md",
+      "level": "B",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r05",
+      "note": "叙事：R-002 量化不成立 + H-005 证伪",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1250,6 +2212,55 @@
       "status": "active"
     },
     {
+      "path": "memory/journal/round11.md",
+      "level": "C",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 执行日志（含 schema 踩坑序列与 BOM 根治）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "memory/journal/round12.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r12",
+      "note": "r12 执行日志"
+    },
+    {
+      "path": "memory/journal/round13.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r13",
+      "note": "r13 执行日志"
+    },
+    {
+      "path": "memory/journal/round14.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 执行日志"
+    },
+    {
+      "path": "memory/journal/round15.md",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "note": "r15 执行日志（治理轮）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
       "path": "memory/lessons/LESSONS.md",
       "level": "A",
       "kind": "lesson_library",
@@ -1284,9 +2295,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.7",
-      "iteration": "r14",
+      "iteration": "r15",
       "note": "r12: Q-008 → answered（open 3→2：Q-006/Q-016）",
-      "updated_at": "2026-10-11",
+      "updated_at": "2026-10-12",
       "status": "active",
       "follows_current": true
     },
@@ -1294,482 +2305,20 @@
       "path": "memory/workbench/TODO.md",
       "level": "A",
       "kind": "doc",
-      "content_version": "2.1",
-      "iteration": "r14",
-      "note": "r14: T-053/T-054 → done，T-052 证据闭合待批准",
-      "updated_at": "2026-10-11",
+      "content_version": "2.2",
+      "iteration": "r15",
+      "note": "r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08 记 done 但无产出记录、Q-006 仍 open），勾选状态未改待裁定",
+      "updated_at": "2026-10-12",
       "status": "active",
       "follows_current": true
     },
     {
-      "path": "AI_CONTEXT.md",
-      "level": "B",
-      "kind": "entry_point",
-      "content_version": "1.5",
-      "iteration": "r14",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "FACTS 计数 38→43",
-      "follows_current": true
-    },
-    {
-      "path": "README.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.16",
-      "iteration": "r14",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "← 速览区 47 条结论 / open 2 / r12 彩种行",
-      "follows_current": true
-    },
-    {
-      "path": "VERSION_INDEX.md",
-      "level": "B",
-      "kind": "version_index_doc",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "版本索引（人读），权威源是 versions.json",
-      "follows_current": true
-    },
-    {
-      "path": "cli/main.py",
-      "level": "B",
-      "kind": "cli",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "docs/ARCHITECTURE.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.1",
-      "iteration": "r03",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "docs/CONSUMING.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.1",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "docs/ITERATION_GUIDE.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "docs/METHODOLOGY.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "docs/PROPOSAL_SINGLE_TICKET_CORE.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.1",
-      "iteration": "r03",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "docs/VERSIONING_DOCS.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.4",
-      "iteration": "r14",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/INDEX.md",
-      "level": "B",
-      "kind": "index",
-      "content_version": "1.1",
-      "iteration": "r03",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/README.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/README.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.1",
-      "iteration": "r03",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/__init__.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/evaluate.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/features.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "新增跨注原语 duplicate_ticket_count / duplicate_ticket_count_ge（F-0027 判定量）",
-      "iteration": "r06",
-      "status": "active",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "framework/core/game_util.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/generate.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/judge.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/portfolio.py",
-      "level": "B",
-      "kind": "framework_core",
-      "note": "★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross",
-      "status": "active"
-    },
-    {
-      "path": "framework/core/ticket.py",
-      "level": "B",
-      "kind": "framework_core",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
-    },
-    {
-      "path": "framework/methodology/MATH_BOUNDARY.md",
-      "level": "B",
-      "kind": "methodology",
-      "content_version": "1.1",
-      "iteration": "r10",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）"
-    },
-    {
-      "path": "framework/methodology/STATISTICAL_DISCIPLINE.md",
-      "level": "B",
-      "kind": "methodology",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/protocol/ITERATION_PROTOCOL.md",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.2",
-      "iteration": "r12",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏"
-    },
-    {
-      "path": "framework/protocol/MEMORY_PROTOCOL.md",
-      "level": "B",
-      "kind": "protocol",
-      "content_version": "1.2",
-      "iteration": "r03",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定"
-    },
-    {
-      "path": "framework/protocol/README.md",
-      "level": "B",
-      "kind": "protocol",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/protocol/templates/FINDINGS.template.md",
-      "level": "B",
-      "kind": "template",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/protocol/templates/HANDOFF.template.md",
-      "level": "B",
-      "kind": "template",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/protocol/templates/TASK_BRIEF.template.md",
-      "level": "B",
-      "kind": "template",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "framework/tools/memory.py",
-      "level": "B",
-      "kind": "framework_tool",
-      "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）/+ 说明字符）",
-      "iteration": "r02",
-      "status": "active",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/INDEX.md",
-      "level": "B",
-      "kind": "index",
-      "content_version": "1.2",
-      "iteration": "r04",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "note": "彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ / round05 计划中）"
-    },
-    {
-      "path": "games/_template/README.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/data/build_scripts/README.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/data/derived/README.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/data/raw/README.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/data/tools/README.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/iterations/round01/TASK_BRIEF.md",
-      "level": "B",
-      "kind": "template_game",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round05/manifest.json",
-      "level": "B",
-      "kind": "manifest",
-      "content_version": "1.0",
-      "iteration": "r05",
-      "note": "",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round11/FINDINGS.md",
-      "level": "B",
-      "kind": "findings",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "r11 结论：F-0042 平台期 / F-0043 代理可观测 / T-048 设计 + 2 项顺带根治",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/HANDOFF.md",
-      "level": "B",
-      "kind": "handoff",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "r11→r12 交接：T-048b 首推 + T-025 仍 blocked + 编码护栏建议",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
-      "level": "B",
-      "kind": "design",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "T-048 L3 组合优化预备：时序 hold-out 评测设计（切分/指标/防泄漏/组合搜索边界/验收护栏，不落 L2）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/TASK_BRIEF.md",
-      "level": "B",
-      "kind": "task_brief",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "r11 任务书：T-023/T-024/T-048（render_task_brief --round 11 --top 3）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round12/FINDINGS.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "r12 研究结论"
-    },
-    {
-      "path": "games/dlt/iterations/round12/HANDOFF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "r12→r13 交接"
-    },
-    {
-      "path": "games/dlt/iterations/round12/TASK_BRIEF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "r12 任务书（T-049/T-030/T-040）"
-    },
-    {
-      "path": "games/dlt/iterations/round13/FINDINGS.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r13",
-      "note": "r13 研究结论"
-    },
-    {
-      "path": "games/dlt/iterations/round13/HANDOFF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r13",
-      "note": "r13 交接"
-    },
-    {
-      "path": "games/dlt/iterations/round13/TASK_BRIEF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r13",
-      "note": "r13 任务书（T-051/T-044/T-045）"
-    },
-    {
-      "path": "games/dlt/iterations/round14/FINDINGS.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "r14 研究结论"
-    },
-    {
-      "path": "games/dlt/iterations/round14/HANDOFF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "r14 交接"
-    },
-    {
-      "path": "games/dlt/iterations/round14/TASK_BRIEF.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "B",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "r14 任务书（T-052 待批准/T-053/T-054）"
-    },
-    {
-      "path": "memory/journal/round05.md",
-      "level": "B",
-      "kind": "journal",
-      "content_version": "1.0",
-      "iteration": "r05",
-      "note": "叙事：R-002 量化不成立 + H-005 证伪",
-      "updated_at": "2026-10-11",
+      "path": "pyproject.toml",
+      "level": "C",
+      "kind": "package_manifest",
+      "version_ref": "project.version",
+      "ref_version": "0.1.0",
+      "note": "包版本",
       "status": "active"
     },
     {
@@ -1828,6 +2377,45 @@
       "content_version": "1.2",
       "iteration": "r03",
       "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "spec/fact.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "evidence 新增 noop_count",
+      "status": "active",
+      "iteration": "r08",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "spec/game_config.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 game_config.config_version",
+      "status": "active"
+    },
+    {
+      "path": "spec/iteration.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 iteration 结构",
+      "status": "active"
+    },
+    {
+      "path": "spec/strategy.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "metric enum 同步为 expected_bonus_given_win",
+      "status": "active",
+      "iteration": "r08",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "spec/version_index.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "note": "schema 自身无版本；约束 versions.index_version",
       "status": "active"
     },
     {
@@ -1928,10 +2516,10 @@
       "level": "B",
       "kind": "code",
       "content_version": null,
-      "note": "r12: 策略同步 ★S 已内置（r11 起），登记轮次同步",
-      "iteration": "r12",
+      "note": "r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteration vs 最新已收尾轮）+ ★T 已落地任务必须勾选；轮号推导改由 delivered_round_dirs（判据=含 manifest.json）",
+      "iteration": "r15",
       "status": "active",
-      "updated_at": "2026-10-11"
+      "updated_at": "2026-10-12"
     },
     {
       "path": "src/spc/versions.py",
@@ -1953,11 +2541,18 @@
       "note": "测试说明（自举计数：合计 333，含 test_structure 8）"
     },
     {
+      "path": "tests/fixtures/shadow/game.yaml",
+      "level": "D",
+      "kind": "test_fixture",
+      "status": "active"
+    },
+    {
       "path": "tests/test_ai_readability.py",
       "level": "B",
       "kind": "test",
-      "note": "P1/P2/B/H/I 测试",
-      "updated_at": "2026-10-11"
+      "note": "P1/P2/B/H/I 测试；★r15: 压缩到期夹具改为真收尾轮（含 manifest.json），对齐『轮号判据=已收尾』",
+      "updated_at": "2026-10-12",
+      "iteration": "r15"
     },
     {
       "path": "tests/test_claim_type.py",
@@ -2039,6 +2634,16 @@
       "status": "active"
     },
     {
+      "path": "tests/test_round_counter_sync.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": "1.0",
+      "iteration": "r15",
+      "note": "★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次号只认已收尾轮 / 双源不一致必报 / 已落地未勾选必报且提及不误报；无需 pytest",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
       "path": "tests/test_round_stall.py",
       "level": "B",
       "kind": "test",
@@ -2085,6 +2690,24 @@
       "iteration": "r14",
       "status": "active",
       "updated_at": "2026-10-11"
+    },
+    {
+      "path": "tools/count_tests.py",
+      "level": "D",
+      "kind": "test_tool",
+      "status": "active",
+      "note": "登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_round_counter_sync",
+      "updated_at": "2026-10-12",
+      "iteration": "r15"
+    },
+    {
+      "path": "tools/finish_round.py",
+      "level": "D",
+      "kind": "utility",
+      "iteration": "r14",
+      "note": "收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inject→validate（渲染后终检）→四件套检查→批准门提示",
+      "updated_at": "2026-10-11",
+      "status": "active"
     },
     {
       "path": "tools/inject_version_lines.py",
@@ -2139,8 +2762,9 @@
       "path": "tools/render_task_brief.py",
       "level": "B",
       "kind": "code",
-      "note": "任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段（X）",
-      "updated_at": "2026-10-11"
+      "note": "任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；★r15: dry-run 不再建目录（makedirs 移入 --write）；轮号只认已收尾轮；无可执行候选时如实输出 0 个，不再把资源缺口型提升为必做",
+      "updated_at": "2026-10-12",
+      "iteration": "r15"
     },
     {
       "path": "tools/render_version_index.py",
@@ -2163,570 +2787,10 @@
       "level": "B",
       "kind": "version_index",
       "content_version": "1.0",
-      "iteration": "r14",
-      "updated_at": "2026-10-11",
+      "iteration": "r15",
+      "updated_at": "2026-10-12",
       "status": "generated",
       "follows_current": true
-    },
-    {
-      "path": "games/_template/game.yaml",
-      "level": "C",
-      "kind": "game_config",
-      "version_ref": "config_version",
-      "ref_version": "2.0",
-      "note": "2026-10-11 与 dlt 同步升至 2.0（features 原语化）",
-      "status": "active"
-    },
-    {
-      "path": "games/_template/strategy/strategy.json",
-      "level": "C",
-      "kind": "strategy",
-      "version_ref": "config_version",
-      "ref_version": "2.0",
-      "note": "模板策略，2026-10-11 随 game.yaml 同步至 2.0",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/game.yaml",
-      "level": "C",
-      "kind": "game_config",
-      "version_ref": "config_version",
-      "ref_version": "2.2",
-      "note": "r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2",
-      "status": "active",
-      "iteration": "r14",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round02/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "version_ref": "inputs.data_version",
-      "ref_version": "dlt_full_2933",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round03/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "version_ref": "inputs.data_version",
-      "ref_version": "dlt_full_2933",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round04/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round07/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "version_ref": "inputs.data_version",
-      "ref_version": "dlt_full_2933",
-      "note": "r07 机器登记",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round08/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "content_version": null,
-      "iteration": "r08",
-      "note": "体系升级批清单（C+X+Y+Z）",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round09/manifest.json",
-      "level": "C",
-      "kind": "iteration_manifest",
-      "content_version": null,
-      "iteration": "r09",
-      "note": "策略量化轮清单",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round11/scripts/apply_r11_facts.py",
-      "level": "C",
-      "kind": "apply_script",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "r11 入库：F-0042/F-0043 新增 + F-0021 caveats 更新 + Q-011/Q-015 answered + TODO done",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.py",
-      "level": "C",
-      "kind": "research_script",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "T-023 效应弱化滚动复验（W=300/500 滚动窗口 + 节假日分时段；→ F-0042）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/scripts/t024_proxy.py",
-      "level": "C",
-      "kind": "research_script",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "T-024 机选占比代理变量（P1 低号注数比 / P2 连号注数比 / P3 偏好基尼 + 变点扫描；→ F-0043）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round12/scripts/t030_effectiveness.py",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "script",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "T-030 三档标准写入"
-    },
-    {
-      "path": "games/dlt/iterations/round12/scripts/t049_holdout.py",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "script",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "T-049 hold-out 评测"
-    },
-    {
-      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.py",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "script",
-      "content_version": "1.0",
-      "iteration": "r13",
-      "note": "T-051 walk-forward 评测"
-    },
-    {
-      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.py",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "script",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "T-053 形态撞号比复验"
-    },
-    {
-      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.py",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "script",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "T-054 walk-forward 每步 CI"
-    },
-    {
-      "path": "games/dlt/strategy/strategy.json",
-      "level": "C",
-      "kind": "contract",
-      "version_ref": "schema_version",
-      "ref_version": "1.4",
-      "note": "r14.1: R-004 落地（用户批准 T-052）；schema 仍 1.4，内容 1.4→1.5",
-      "content_version": "1.5",
-      "iteration": "r14",
-      "status": "active",
-      "consumes": [
-        "F-0001",
-        "F-0002",
-        "F-0003",
-        "F-0004",
-        "F-0006",
-        "F-0008",
-        "F-0009",
-        "F-0011",
-        "F-0012",
-        "F-0017",
-        "F-0019",
-        "F-0020",
-        "F-0021",
-        "F-0022",
-        "F-0023",
-        "F-0024",
-        "F-0025"
-      ],
-      "updated_at": "2026-10-11",
-      "follows_current": true
-    },
-    {
-      "path": "memory/journal/round11.md",
-      "level": "C",
-      "kind": "journal",
-      "content_version": "1.0",
-      "iteration": "r11",
-      "note": "r11 执行日志（含 schema 踩坑序列与 BOM 根治）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "memory/journal/round12.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r12",
-      "note": "r12 执行日志"
-    },
-    {
-      "path": "memory/journal/round13.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r13",
-      "note": "r13 执行日志"
-    },
-    {
-      "path": "memory/journal/round14.md",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "C",
-      "kind": "doc",
-      "content_version": "1.0",
-      "iteration": "r14",
-      "note": "r14 执行日志"
-    },
-    {
-      "path": "pyproject.toml",
-      "level": "C",
-      "kind": "package_manifest",
-      "version_ref": "project.version",
-      "ref_version": "0.1.0",
-      "note": "包版本",
-      "status": "active"
-    },
-    {
-      "path": "spec/fact.schema.json",
-      "level": "C",
-      "kind": "schema",
-      "note": "evidence 新增 noop_count",
-      "status": "active",
-      "iteration": "r08",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "spec/game_config.schema.json",
-      "level": "C",
-      "kind": "schema",
-      "note": "schema 自身无版本；约束 game_config.config_version",
-      "status": "active"
-    },
-    {
-      "path": "spec/iteration.schema.json",
-      "level": "C",
-      "kind": "schema",
-      "note": "schema 自身无版本；约束 iteration 结构",
-      "status": "active"
-    },
-    {
-      "path": "spec/strategy.schema.json",
-      "level": "C",
-      "kind": "schema",
-      "note": "metric enum 同步为 expected_bonus_given_win",
-      "status": "active",
-      "iteration": "r08",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "spec/version_index.schema.json",
-      "level": "C",
-      "kind": "schema",
-      "note": "schema 自身无版本；约束 versions.index_version",
-      "status": "active"
-    },
-    {
-      "path": ".gitignore",
-      "level": "D",
-      "kind": "meta",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/build_scripts/build_derived_v4.py",
-      "level": "D",
-      "kind": "build_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/build_scripts/hash_and_list.py",
-      "level": "D",
-      "kind": "build_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/build_scripts/validate_package_v4.py",
-      "level": "D",
-      "kind": "build_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/01_yearly_stats.csv",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/02_front_number_frequency.csv",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/03_back_number_frequency.csv",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/04_structure_distribution_exact.json",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/05_back_combo_66.csv",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/06_acf_lag1to60.csv",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/07_data_quality_report.json",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/derived/08_rules_epoch_summary.json",
-      "level": "D",
-      "kind": "derived_data",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/raw/dlt_full_2933.csv",
-      "level": "D",
-      "kind": "raw_data",
-      "sha256": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
-      "note": "SHA256 为准，不做内容版本",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/raw/dlt_full_2933.jsonl",
-      "level": "D",
-      "kind": "raw_data",
-      "sha256": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d",
-      "note": "SHA256 为准，不做内容版本",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/_load.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/acf_permutation_test.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/changepoint_refine.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/changepoint_scan.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/consecutive_exact_check.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/exact_tests.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/overdispersion_and_hac.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/data/tools/validate_data.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/iterations/round11/manifest.json",
-      "level": "D",
-      "kind": "manifest",
-      "iteration": "r11",
-      "note": "r11 deliverables（根级）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.json",
-      "level": "D",
-      "kind": "research_output",
-      "iteration": "r11",
-      "note": "T-023 复验结果（34/30 窗序列 + 趋势检验 + 节假日分段）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round11/scripts/t024_proxy.json",
-      "level": "D",
-      "kind": "research_output",
-      "iteration": "r11",
-      "note": "T-024 代理序列 + 变点 + 相关结果",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "games/dlt/iterations/round12/manifest.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "manifest",
-      "content_version": null,
-      "iteration": "r12",
-      "note": "r12 manifest"
-    },
-    {
-      "path": "games/dlt/iterations/round12/scripts/t049_holdout.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "data",
-      "content_version": null,
-      "iteration": "r12",
-      "note": "T-049 结果"
-    },
-    {
-      "path": "games/dlt/iterations/round13/manifest.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "manifest",
-      "content_version": null,
-      "iteration": "r13",
-      "note": "r13 manifest"
-    },
-    {
-      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "data",
-      "content_version": null,
-      "iteration": "r13",
-      "note": "T-051 结果"
-    },
-    {
-      "path": "games/dlt/iterations/round14/manifest.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "manifest",
-      "content_version": null,
-      "iteration": "r14",
-      "note": "r14 manifest"
-    },
-    {
-      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "data",
-      "content_version": null,
-      "iteration": "r14",
-      "note": "T-053 结果"
-    },
-    {
-      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
-      "updated_at": "2026-10-11",
-      "status": "active",
-      "level": "D",
-      "kind": "data",
-      "content_version": null,
-      "iteration": "r14",
-      "note": "T-054 结果"
-    },
-    {
-      "path": "games/dlt/manifest_v4_source.json",
-      "level": "D",
-      "kind": "source_manifest",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/strategy/simulation_results.json",
-      "level": "D",
-      "kind": "analysis_output",
-      "status": "active"
-    },
-    {
-      "path": "games/dlt/strategy/strategy_simulation.py",
-      "level": "D",
-      "kind": "analysis_script",
-      "status": "active",
-      "iteration": "r10",
-      "note": "r10.1：docstring 一等奖概率口径",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "memory/facts/ACTIVE.md",
-      "level": "D",
-      "kind": "report",
-      "iteration": "r06",
-      "note": "当前有效结论清单（与台账分离，compress_memory 生成）",
-      "updated_at": "2026-10-11",
-      "status": "active"
-    },
-    {
-      "path": "tests/fixtures/shadow/game.yaml",
-      "level": "D",
-      "kind": "test_fixture",
-      "status": "active"
-    },
-    {
-      "path": "tools/count_tests.py",
-      "level": "D",
-      "kind": "test_tool",
-      "status": "active",
-      "note": "登记测试文件 + --inject（T-045：tests/README 计数自举注入）",
-      "updated_at": "2026-10-11"
-    },
-    {
-      "path": "tools/finish_round.py",
-      "level": "D",
-      "kind": "utility",
-      "iteration": "r14",
-      "note": "收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inject→validate（渲染后终检）→四件套检查→批准门提示",
-      "updated_at": "2026-10-11",
-      "status": "active"
     }
   ],
   "history": [

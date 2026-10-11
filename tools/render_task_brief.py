@@ -73,12 +73,20 @@ def _parse_todo(root: str) -> list[dict]:
 
 
 def _next_round(root: str) -> int:
+    """下一轮号 = 最新**已收尾**轮（该轮目录含 manifest.json）+ 1。
+
+    ★ r15 根治（A2）：此前按「roundNN 目录是否存在」取 max —— 而本工具自己在
+    dry-run 时就会 makedirs 目标目录（见 main() 旧实现），于是形成自激回路：
+    「跑一次 dry-run → 目录出现 → 下一轮号 +1」。实测两次 dry-run 造出空的
+    round15/round16，validate 的重校准警告随之虚增 2 轮（报「当前 round16」）。
+    判据必须是**已收尾**（有 manifest），不能是**目录存在**。
+    """
     best = 0
     d = os.path.join(root, "games", "dlt", "iterations")
     if os.path.isdir(d):
         for name in os.listdir(d):
             m = re.match(r"^round(\d{2})$", name)
-            if m:
+            if m and os.path.isfile(os.path.join(d, name, "manifest.json")):
                 best = max(best, int(m.group(1)))
     return best + 1
 
@@ -87,9 +95,16 @@ def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_
     if top_n < 1:
         top_n = _DEFAULT_TOP
     # 可执行（无资源依赖）优先进入必做；资源缺口型降为备选（Z：不占轮次预算）
+    #
+    # ★ r15：旧实现在「无可执行候选」时退回 `items[:top_n]` —— 于是把
+    # `external-data` / `unverifiable` 的资源缺口型任务**提升为必做**，
+    # 正面违背 Z 协议（资源缺口不占轮次预算）。待办池被收尾轮消耗到 0 可执行项
+    # 后（r15 勾选 T-052 后正是如此）这条降级路径就会触发，
+    # 而它此前从未被走到，所以一直没暴露。无可执行项就如实说 0 个。
     executable = [it for it in items if not it.get("resource")]
-    top = executable[:top_n] if executable else items[:top_n]
+    top = executable[:top_n]
     resource_waiting = [it for it in items if it.get("resource")]
+    no_executable = not executable
 
     lines = [
         f"# TASK_BRIEF —— round{rnd:02d} 任务书",
@@ -114,6 +129,8 @@ def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_
         "| 排序 | 任务 | 优先级 | 评分 | 说明 |",
         "|---|---|---|---|---|",
     ]
+    if no_executable:
+        lines.append("| — | （无可执行候选） | — | — | 待办池已无非资源缺口型条目 |")
     for i, it in enumerate(top, 1):
         flag = f"⚠ 资源依赖: {it['resource']}" if it.get("resource") else (it["star"] or "")
         lines.append(f"| {i} | {it['tid']} {it['title']} | {it['priority']} | {it['score']} | {flag} |")
@@ -122,6 +139,16 @@ def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_
         "## 本轮必做任务（引用 TODO 原条目）",
         "",
     ]
+    if no_executable:
+        lines += [
+            "**本轮无可执行的非资源缺口任务。** 待办池剩余条目全部挂在"
+            "`external-data` / `unverifiable` 上（见下方备选段）——"
+            "按 Z 协议，资源缺口型不得占用轮次预算，因此本轮不派发研究任务。",
+            "",
+            "处置建议：① 从 `OPEN_QUESTIONS.md` / `HYPOTHESES.md` 派新任务入池；"
+            "② 或做不依赖外部数据的治理/还债项（validate 警告清单即任务源）。",
+            "",
+        ]
     for it in top:
         src = f"`{it['priority']}` 段（评分 {it['score']}）"
         if it.get("resource"):
@@ -192,8 +219,11 @@ def main() -> int:
 
     brief = _render_brief(_ROOT, items, rnd, top_n)
     out = os.path.join(_ROOT, "games", "dlt", "iterations", f"round{rnd:02d}", "TASK_BRIEF.md")
-    os.makedirs(os.path.dirname(out), exist_ok=True)
+    # ★ r15 根治（A1）：makedirs 曾在本函数无条件执行（早于 --write 判断），
+    # 于是 dry-run 也会建出 roundNN 空目录，进而经 _next_round 把轮号推高。
+    # 派生物的产出目录只能在**真的要写**时创建。
     if "--write" in sys.argv:
+        os.makedirs(os.path.dirname(out), exist_ok=True)
         open(out, "w", encoding="utf-8").write(brief)
         print(f"✓ 已写 {os.path.relpath(out, _ROOT)}（必做 {top_n} 条，可执行优先）")
         return 0

@@ -276,20 +276,31 @@ def check_v2_fields(ft: dict, fid: str, rep: ValidationReport) -> None:
                  f"失效结论无需重校准，建议清空")
 
 
-def current_iteration_round(root: str) -> int:
-    """从 games/<game>/iterations/ 目录推断当前轮号（roundNN → NN）。"""
+def delivered_round_dirs(root: str) -> list[tuple[str, int]]:
+    """已收尾轮清单 [(game, NN), ...] —— 判据是**该轮目录含 manifest.json**。
+
+    ★ r15（A2/A3 共用）：轮号不得由「目录存在」推断。空目录（dry-run 残留、
+    手工 mkdir、中断的开轮）会把轮号推高，进而让重校准周期、下一轮号全部错位。
+    收尾轮的唯一判据是 manifest.json —— 它由 finish_round 在收尾时写入。
+    """
+    out: list[tuple[str, int]] = []
     it_dir = os.path.join(root, "games")
-    best = 0
-    if os.path.isdir(it_dir):
-        for g in os.listdir(it_dir):
-            d = os.path.join(it_dir, g, "iterations")
-            if not os.path.isdir(d):
-                continue
-            for name in os.listdir(d):
-                m = re.match(r"^round(\d{2})$", name)
-                if m:
-                    best = max(best, int(m.group(1)))
-    return best
+    if not os.path.isdir(it_dir):
+        return out
+    for g in sorted(os.listdir(it_dir)):
+        d = os.path.join(it_dir, g, "iterations")
+        if not os.path.isdir(d):
+            continue
+        for name in sorted(os.listdir(d)):
+            m = re.match(r"^round(\d{2})$", name)
+            if m and os.path.isfile(os.path.join(d, name, "manifest.json")):
+                out.append((g, int(m.group(1))))
+    return out
+
+
+def current_iteration_round(root: str) -> int:
+    """从 games/<game>/iterations/ 推断当前轮号（roundNN 且已收尾 → NN）。"""
+    return max((n for _, n in delivered_round_dirs(root)), default=0)
 
 
 def check_recalibration(ft: dict, fid: str, root: str, rep: ValidationReport) -> None:
@@ -1880,6 +1891,107 @@ def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
     if checked:
         rep.ok(f"策略同步: {checked} 个策略文档版本均已跟上最新策略更新轮")
 
+def _check_iteration_counter_sync(root: str, rep: ValidationReport) -> None:
+    """★ R（r15 新增，A3）：轮次号双源一致性 —— versions.json 的 `current_iteration`
+    必须等于「最新已收尾轮」（含 manifest.json 的 roundNN）。
+
+    背景：r14.2 把 versions.json 立为轮次的权威源（`follows_current` 依它判定），
+    但 render_task_brief / validate 的重校准检查仍各自**扫目录**取轮号。
+    两个源平时一致，一旦目录里出现空 roundNN（dry-run 残留、中断的开轮），
+    目录源就会静默领先 → 重校准周期、下一轮号、任务书编号全线错位，
+    而权威源一侧毫无反应。这是「同源双向比对盲区」的又一次变形：
+    两边各自自洽，谁也不看对方。
+
+    修法不是删掉其中一边，而是把两边**绑成可校验关系**：
+    权威源是 versions.json，目录扫描降级为被校验方。
+    """
+    vp = os.path.join(root, "versions.json")
+    if not os.path.isfile(vp):
+        return
+    try:
+        d = json.load(open(vp, encoding="utf-8"))
+    except Exception:
+        return
+    declared = (d.get("current_iteration") or "").strip()
+    m = re.match(r"^r(\d{2})$", declared)
+    if not m:
+        rep.warn(f"versions.json 的 current_iteration={declared!r} 不符合 rNN 格式，跳过轮次号对账")
+        return
+    declared_n = int(m.group(1))
+    delivered = delivered_round_dirs(root)
+    if not delivered:
+        return
+    latest = max(n for _, n in delivered)
+    if declared_n == latest:
+        rep.ok(f"轮次号对账: versions.json current_iteration={declared} == 最新已收尾轮 round{latest:02d}")
+        return
+    rep.err(
+        f"轮次号双源不一致：versions.json current_iteration={declared}，"
+        f"但 games/*/iterations/ 最新已收尾轮为 round{latest:02d}。"
+        f"权威源是 versions.json（r14.2 裁定）——"
+        f"若刚收尾：跑 `python tools/bump_iteration.py --write`；"
+        f"若目录里是空壳/中断的开轮：删掉该 roundNN 空目录（收尾轮的判据是含 manifest.json）"
+    )
+
+
+def _check_todo_landed_sync(root: str, rep: ValidationReport) -> None:
+    """★ T（r15 新增，A4）：已落地的策略变更必须在待办池勾选 ——
+    已 `delivered` 轮 manifest 的 `outputs.strategy_landed` 中出现且能解析出 T-nnn 的，
+    `memory/workbench/TODO.md` 里对应条目不得仍是 `- [ ]`。
+
+    背景：T-052（R_new 落地为 R-004）在 r14.1 经用户批准后已实际落地
+    （strategy.json 出现 R-004，grade=B，refs F-0044~F-0047），
+    但 TODO.md 一直保持 `- [ ]`。后果不只是「记错了」：
+    render_task_brief 按 value 排序时 T-052 仍是唯一可执行候选，
+    于是**下一轮任务书会自动推出一个早已完成的任务**——
+    待办池是任务书的唯一输入源，它失真就等于飞轮的输入失真。
+
+    只扫 `strategy_landed` 这一条**专门的落地登记**，不扫 `actual_updates`
+    （那里既有完成记录也有「T-025 external-data 前置降备选」这类提及，
+    泛化扫描会误报）。护栏宁可窄而准，不要宽而噪。
+    """
+    todo_p = os.path.join(root, "memory", "workbench", "TODO.md")
+    if not os.path.isfile(todo_p):
+        return
+    todo = open(todo_p, encoding="utf-8").read()
+    state: dict[str, bool] = {}
+    for mm in re.finditer(r"^- \[( |x)\] \*\*(T-\d{3})\*\*", todo, re.M):
+        state[mm.group(2)] = mm.group(1) == "x"
+
+    landed: dict[str, str] = {}   # tid → 出处轮
+    for g, n in delivered_round_dirs(root):
+        mf = os.path.join(root, "games", g, "iterations", f"round{n:02d}", "manifest.json")
+        try:
+            man = json.load(open(mf, encoding="utf-8"))
+        except Exception:
+            continue
+        if man.get("status") not in ("delivered", "archived"):
+            continue
+        sl = (man.get("outputs") or {}).get("strategy_landed") or []
+        if isinstance(sl, str):
+            sl = [sl]
+        for s in sl:
+            for tid in re.findall(r"T-\d{3}", str(s)):
+                landed.setdefault(tid, f"round{n:02d}")
+
+    if not landed:
+        return
+    bad = [(t, r) for t, r in sorted(landed.items()) if state.get(t) is False]
+    unknown = [t for t in sorted(landed) if t not in state]
+    for tid, rnd in bad:
+        rep.err(
+            f"待办状态滞后：{tid} 已在 {rnd} 落地（manifest `outputs.strategy_landed` 有记录），"
+            f"但 `memory/workbench/TODO.md` 仍是 `- [ ]`。"
+            f"待办池是 render_task_brief 的唯一输入源，滞后会让下一轮任务书重复推出已完成项。"
+            f"请勾选并补落地记录"
+        )
+    for tid in unknown:
+        rep.warn(f"待办池未登记 {tid}（{landed[tid]} manifest 记为已落地）—— 若已废弃请从 TODO 移除或标注")
+    if not bad and not unknown:
+        rep.ok(f"待办落地对账: {len(landed)} 个已落地任务均已在 TODO 勾选"
+               f"（{', '.join(sorted(landed))}）")
+
+
 def _check_compression_freshness(root: str, rep: ValidationReport) -> None:
     """★ I：记忆压缩到期提醒 —— 距上次压缩超过 5 轮 → warning。
 
@@ -2092,6 +2204,8 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_open_questions_consistency(root, rep)  # Q 状态一致性（4 处手动同步根治）
     _check_probability_calibration(root, rep)   # T-050 概率口径标注（r10）
     _check_strategy_sync(root, rep)          # S 策略文档随轮同步（r11 根治）
+    _check_iteration_counter_sync(root, rep)  # R 轮次号双源对账（r15）
+    _check_todo_landed_sync(root, rep)        # T 已落地任务必须勾选（r15）
 
     # 协议文档存在性（软检查）
     docs = [

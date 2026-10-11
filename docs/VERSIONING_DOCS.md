@@ -1,6 +1,6 @@
 ﻿# VERSIONING_DOCS.md — 文档与内容版本规则
 
-> **版本**：`1.4` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.5` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件与 `spec/VERSIONING.md` 的关系：**
@@ -319,6 +319,25 @@ python tools/bump_iteration.py --write --to r15   # 收尾时同时推进 curren
 ⚠️ **顺序不可颠倒**：`bump_iteration → render_* → inject_version_lines → validate`。
 颠倒会先把旧轮次刷进文件头、再改索引，旧值被自洽化后照样全绿 —— 正是本次事故的形态。
 `tools/finish_round.py` 已按此顺序编排。
+
+⚠️ **r15 追加约束：`roundNN/manifest.json` 必须先于 `bump_iteration --to rNN`**。
+r15 新增的 ★R 校验项要求 `current_iteration` == 最新**已收尾轮**（判据 = 含 `manifest.json`）。
+若先 bump 到 r15、再写 manifest，中间态会出现 r15 vs round14 的不一致而报错。
+这条中间态报错是**正确行为**（它在守护权威源），收尾时按下列顺序就不会遇到：
+
+```
+写 roundNN 四件套（含 manifest.json） → bump_iteration --to rNN → render_* → inject → validate
+```
+
+### 6.7 轮次号的唯一判据：已收尾（r15）
+
+轮次号**不得**由 `roundNN` 目录是否存在推断。`tools/render_task_brief.py` 曾把
+`os.makedirs` 写在 `--write` 判断之前，于是 dry-run 也会建出空目录，再经
+`_next_round`（按目录名取 max）把轮号推高 —— 形成「工具自己造的输入反过来改变自己的输出」
+的自激回路。实测两次 dry-run 造出空的 round15/round16，validate 的重校准警告虚增 2 轮。
+
+- 判据：`games/*/iterations/roundNN/manifest.json` 存在（新增 `delivered_round_dirs()`）。
+- 双源对账（★R）：`versions.json` 的 `current_iteration` 是权威源，目录扫描是被校验方。
 
 ---
 

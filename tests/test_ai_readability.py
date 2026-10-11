@@ -173,8 +173,13 @@ def test_handoff_structure() -> None:
 def test_compression_freshness() -> None:
     tmp = tempfile.mkdtemp(prefix="sc_compress_")
     os.makedirs(os.path.join(tmp, "memory", "facts"), exist_ok=True)
-    # 当前轮 = 最大 roundNN 目录（round06）
+    # 当前轮 = 最大**已收尾**轮（round06）。
+    # ★ r15：轮号判据已由「目录存在」改为「含 manifest.json」——空壳目录不再算一轮。
+    # 夹具必须造一个真收尾轮，否则这里测的是过时的假设。
     os.makedirs(os.path.join(tmp, "games", "dlt", "iterations", "round06"), exist_ok=True)
+    with open(os.path.join(tmp, "games", "dlt", "iterations", "round06", "manifest.json"),
+              "w", encoding="utf-8") as f:
+        f.write('{"round": "r06", "status": "delivered", "outputs": {}}\n')
     with open(os.path.join(tmp, "memory", "facts", "ACTIVE.md"), "w", encoding="utf-8") as f:
         f.write("由 compress_memory.py --write 生成 ｜ 当前轮 round06\n")
     rep = V.ValidationReport()

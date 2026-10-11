@@ -1,7 +1,7 @@
 # AI_MAP —— SPC 机器可读地图
 
 
-> **版本**：`1.0` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；
@@ -70,11 +70,12 @@
 - `memory/journal/round12.md` — r12 执行日志
 - `memory/journal/round13.md` — r13 执行日志
 - `memory/journal/round14.md` — r14 执行日志
+- `memory/journal/round15.md` — r15 执行日志（治理轮）
 - `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
-- `memory/workbench/TODO.md` — r14: T-053/T-054 → done，T-052 证据闭合待批准
+- `memory/workbench/TODO.md` — r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08…
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
@@ -88,7 +89,7 @@
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
-- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
+- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
@@ -96,7 +97,7 @@
 - `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_flywheel_health.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_readme_tree.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
-- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
+- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；★r15: dry-run …
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
 
@@ -104,7 +105,7 @@
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
-- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
+- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
@@ -112,13 +113,13 @@
 - `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_flywheel_health.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_readme_tree.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
-- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
+- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；★r15: dry-run …
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
 
 ## 测试
 - `tests/README.md` — 测试说明（自举计数：合计 333，含 test_structure 8）
-- `tests/test_ai_readability.py` — P1/P2/B/H/I 测试
+- `tests/test_ai_readability.py` — P1/P2/B/H/I 测试；★r15: 压缩到期夹具改为真收尾轮（含 manifest.json），对齐『轮号判据=…
 - `tests/test_claim_type.py` — ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest
 - `tests/test_consumes_completeness.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tests/test_core.py` — 代码文件：不写文件内版本行（用 git blame）
@@ -128,6 +129,7 @@
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
 - `tests/test_open_questions_consistency.py` — Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法
 - `tests/test_research_lib.py` — research_lib 原语测试（已知分布验证可复现/正确性/样本不足不硬报）
+- `tests/test_round_counter_sync.py` — ★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次号只认已收尾轮 / 双源不一致必报 / 已落地未…
 - `tests/test_round_stall.py` — 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不误伤 / bump_iteration 能修复；…
 - `tests/test_shadow_game.py`
 - `tests/test_structure.py` — 结构完整性回归测试（P1-2 三道防线）
@@ -144,7 +146,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — r12: 策略同步 ★S 已内置（r11 起），登记轮次同步
+- `src/spc/validate.py` — r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteratio…
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档
@@ -153,4 +155,4 @@
 - `docs/ITERATION_GUIDE.md`
 - `docs/METHODOLOGY.md`
 - `docs/PROPOSAL_SINGLE_TICKET_CORE.md`
-- `docs/VERSIONING_DOCS.md`
+- `docs/VERSIONING_DOCS.md` — r15: §6.2 追加『manifest 先于 bump』顺序约束；新增 §6.7 轮次号唯一判据

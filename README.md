@@ -1,6 +1,6 @@
 ﻿# SPC
 
-> **版本**：`1.16` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -41,7 +41,7 @@
 
 ### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.9`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.9`（轮次 `r14`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.9`（轮次 `r15`，更新 2026-10-12）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -107,7 +107,7 @@ python cli/main.py new-game <game_id>
 │   ├── ITERATION_GUIDE.md  v1.0
 │   ├── METHODOLOGY.md  v1.0
 │   ├── PROPOSAL_SINGLE_TICKET_CORE.md  v1.1
-│   └── VERSIONING_DOCS.md  v1.4
+│   └── VERSIONING_DOCS.md  v1.5      ← r15: §6.2 追加『manifest 先于 bump』顺序约束；…
 ├── framework/
 │   ├── INDEX.md  v1.1
 │   ├── README.md  v1.0
@@ -229,12 +229,17 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← r13 任务书（T-051/T-044/T-045）
 │       │   │   ├── manifest.json  —         ← r13 manifest
 │       │   │   └── scripts/  ← 轮次脚本（2 个）
-│       │   └── round14/
-│       │       ├── FINDINGS.md  v1.0      ← r14 研究结论
-│       │       ├── HANDOFF.md  v1.0      ← r14 交接
-│       │       ├── TASK_BRIEF.md  v1.0      ← r14 任务书（T-052 待批准/T-053/T-054）
-│       │       ├── manifest.json  —         ← r14 manifest
-│       │       └── scripts/  ← 轮次脚本（4 个）
+│       │   ├── round14/
+│       │   │   ├── FINDINGS.md  v1.0      ← r14 研究结论
+│       │   │   ├── HANDOFF.md  v1.0      ← r14 交接
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← r14 任务书（T-052 待批准/T-053/T-054）
+│       │   │   ├── manifest.json  —         ← r14 manifest
+│       │   │   └── scripts/  ← 轮次脚本（4 个）
+│       │   └── round15/
+│       │       ├── FINDINGS.md  v1.0      ← r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 …
+│       │       ├── HANDOFF.md  v1.0      ← r15 交接（含 T-020 未决裁定项）
+│       │       ├── TASK_BRIEF.md  v1.0      ← r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地…
+│       │       └── manifest.json  —         ← r15 manifest
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -261,7 +266,8 @@ python cli/main.py new-game <game_id>
 │   │   ├── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
 │   │   ├── round12.md  v1.0      ← r12 执行日志
 │   │   ├── round13.md  v1.0      ← r13 执行日志
-│   │   └── round14.md  v1.0      ← r14 执行日志
+│   │   ├── round14.md  v1.0      ← r14 执行日志
+│   │   └── round15.md  v1.0      ← r15 执行日志（治理轮）
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
@@ -269,7 +275,7 @@ python cli/main.py new-game <game_id>
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.7      ← r12: Q-008 → answered（open 3→2：Q-00…
-│       └── TODO.md  v2.1      ← r14: T-053/T-054 → done，T-052 证据闭合待…
+│       └── TODO.md  v2.2      ← r15: T-052 → done（r14.1 已落地，此前漏勾；新增…
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
 │   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
@@ -296,11 +302,11 @@ python cli/main.py new-game <game_id>
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —         ← r12: 策略同步 ★S 已内置（r11 起），登记轮次同步
+│       ├── validate.py  —         ← r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R …
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
-│   ├── test_ai_readability.py  —         ← P1/P2/B/H/I 测试
+│   ├── test_ai_readability.py  —         ← P1/P2/B/H/I 测试；★r15: 压缩到期夹具改为真收尾轮（含…
 │   ├── test_claim_type.py  —         ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
 │   ├── test_consumes_completeness.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_core.py  —         ← 代码文件：不写文件内版本行（用 git blame）
@@ -310,6 +316,7 @@ python cli/main.py new-game <game_id>
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
 │   ├── test_open_questions_consistency.py  —         ← Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表act…
 │   ├── test_research_lib.py  —         ← research_lib 原语测试（已知分布验证可复现/正确性/样本不…
+│   ├── test_round_counter_sync.py  v1.0      ← ★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次…
 │   ├── test_round_stall.py  —         ← 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不…
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）

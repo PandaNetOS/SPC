@@ -1,6 +1,6 @@
 ﻿# TODO.md — 待办池（工作记忆）
 
-> **版本**：`2.1` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`2.2` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
@@ -132,6 +132,11 @@
 - [x] **T-020** 逐号偏好权重建模（Q-006 / H-002）
       用 `prize2_winners` 全量回归校准，替代现有单一 α
       产出：`F-0004` 置信度可能从 ★★★☆☆ 提升
+      **⚠ r15 存疑（未改勾选状态，待裁定）**：round08 manifest `actual_updates` 记「TODO.md：T-046/T-047/T-020 → done」，
+      但 round08/HANDOFF.md 下轮表中 T-020 仍列 TODO；且本条**无 `✅ rXX 完成 → F-xxxx` 记录**（与其余已完成条目格式不符），
+      Q-006 至今 `open`，`F-0004` 置信度仍为 ★★★☆☆（established_in=round12，属重校准而非本任务产出）。
+      即：「已勾选」与「产出落地」不一致。本轮只标注、不下结论——
+      需要人工判定是「r08 提前勾错（应回退为 `- [ ]`）」还是「做了但未入库（应补 F-xxxx 与 Q-006 → answered）」。
 
 - [x] **T-021** 销量内生性检验（Q-005）
       Granger + VAR；对比"含销量/不含销量"两版注数模型
@@ -147,10 +152,11 @@
 
 - [x] **T-051** value: 80 ★ r13 首推：L3 规则搜索 v2 —— walk-forward 滚动再训练 + 候选池扩展 ✅ **r13 完成** → F-0045：5 步 walk-forward（150 期评估窗），R_new 正增益步 4/5（80%）、中位增益 +150 万、总增益 +604 万，二次样本外确认 met=True；冷热号避让候选未超 R_new，winner 分布 3/5 归 R_new
 
-- [ ] **T-052** value: 40 ★ r14 候选：R_new（R001_norun_high_mirror）正式落地为 R-004 —— **需用户批准**（策略变更红线）
-      **r14 状态：证据链闭合（F-0044+F-0045 方向一致、F-0046 高区撞号<1 机制证据、F-0047 单步显著 1/5 不确定性已如实标注），仍保持候选，等待用户批准**
-      批准后：strategy.json 新增 R-004（effective_grade=B，引用 F-0044/F-0045/F-0046/F-0047），STRATEGY_GUIDE §2 同步；
-      若用户不批准则保持新候选状态，仅保留证据链
+- [x] **T-052** value: 40 ★ r14 候选：R_new（R001_norun_high_mirror）正式落地为 R-004 ✅ **r14.1 完成（用户已批准）** → strategy.json 新增 R-004（effectiveness_grade=B，引用 F-0044/F-0045/F-0046/F-0047）；STRATEGY_GUIDE v1.8→v1.9 §2 同步；game.yaml config_version 2.1→2.2（+has_mirror_pair 特征原语）；evidence_hash 重算；commit f6dff41
+      **⚠ r15 状态修正**：r14 收尾时本条未勾选（manifest 记 `strategy_landed` 有落地，TODO 仍 `- [ ]`），
+      导致 r15 任务书自动把已完成的 T-052 当成唯一可执行候选。
+      已由新增校验项 ★T（`_check_todo_landed_sync`）捕获并修正——
+      待办池是 `render_task_brief` 的唯一输入源，滞后会直接污染下一轮任务书。
 
 - [x] **T-053** value: 30 P4：F-0041 补强——三连号之外形态复验（CI 宽）✅ **r14 完成** → F-0046：后段 high_zone_ge32 撞号比 0.9117 CI [0.8537,0.9716] 显著<1（高区避让机制证据）；run=2 1.0046 不显著；run>=3 1.2423 CI 宽未达显著（n=96）
 
@@ -159,6 +165,31 @@
 - [x] **T-055** value: 20 P4：README「版本体系」补 build_versions.py 禁用说明（T-044 收尾）✅ **r13 完成**
       README 版本体系小节已补：`tools/build_versions.py --write` 已禁用（防 versions.json 回退），
       权威维护流程=手工登记 + render 五件套 + inject_version_lines
+
+- [x] **T-057** value: 50 ★ r15 治理：dry-run 副作用根治（A1）✅ **r15 完成**
+      `tools/render_task_brief.py` 的 `os.makedirs` 曾写在 `--write` 判断**之前**，
+      于是「只想预览任务书」也会凭空建出 `roundNN/` 空目录。已移入 `--write` 分支。
+      实测：两次 dry-run 造出空的 round15/round16。
+
+- [x] **T-058** value: 50 ★ r15 治理：轮次号只认已收尾轮（A2）✅ **r15 完成**
+      `_next_round`（render_task_brief）/ `current_iteration_round`（validate）曾按
+      `roundNN` 目录名取 max —— 空目录即可推高轮号，与 A1 叠加成自激回路。
+      判据改为「含 `manifest.json`」（新增 `delivered_round_dirs`）。
+      效果：validate 重校准警告由虚增的 7 轮回落为真实的 5 轮，轮号 round16 → round14。
+
+- [x] **T-059** value: 50 ★ r15 治理：轮次号双源对账 ★R（A3）✅ **r15 完成**
+      versions.json `current_iteration` 与「最新已收尾轮」必须相等，否则报错。
+      背景：r14.2 立 versions.json 为权威源，但目录扫描那一路无人校验，两边静默分叉。
+
+- [x] **T-060** value: 50 ★ r15 治理：已落地任务必须勾选 ★T + T-052 对齐（A4）✅ **r15 完成**
+      新增 `_check_todo_landed_sync`：已 delivered 轮 manifest 的 `strategy_landed`
+      中出现的 T-nnn 必须在 TODO 为已完成。只扫 `strategy_landed`（专门的落地登记），
+      不扫 `actual_updates`（含「T-025 external-data 前置降备选」这类提及，泛化会误报）。
+
+- [x] **T-061** value: 40 ★ r15 治理：无可执行候选时不得提升资源缺口型为必做 ✅ **r15 完成**
+      `_render_brief` 旧实现在可执行候选为 0 时退回 `items[:top_n]`，
+      把 `external-data` / `unverifiable` 任务提升为必做，正面违背 Z 协议。
+      该路径此前从未被走到（待办池恒有可执行项），T-052 勾选后才首次触发。
 
 - [ ] **T-025** E6 固定奖加成是否真实发生（Q-016）★ r04 新增 `resource: external-data`
       需三至七等奖实发额（外部数据源）；先做事件计数再谈影响（L10）

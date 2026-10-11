@@ -20,6 +20,7 @@
 | `tests/test_open_questions_consistency.py` | **12**（全绿） | ★ Q 状态一致性：解析归一化 / 头部计数滞后 / 标题缺 ✅ / 优先级表 active 含已清偿 / 状态词非法 |
 | `tests/test_research_lib.py` | **ERR** | 无法解析输出（exit=1）：'(most recent call last):\n  File "D:\\PNOS\\SPC\\tests/test_research_lib.py", line 28, in <module>\n    import numpy as np  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named \'numpy\'\n' |
 | `tests/test_round_stall.py` | **11**（全绿） | ★ 轮次停滞（r14.2）：同源自洽陷阱必须被识破 / 已对齐与未声明活文档不误伤 / bump_iteration 能修复 |
-| **合计** | **456**（全绿） | 无需 pytest，直接 `python tests/test_*.py` |
+| `tests/test_round_counter_sync.py` | **11**（全绿） | ★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次号只认已收尾轮 / 双源不一致必报 / 已落地任务未勾选必报且提及不误报 |
+| **合计** | **467**（全绿） | 无需 pytest，直接 `python tests/test_*.py` |
 
 **计数自举
