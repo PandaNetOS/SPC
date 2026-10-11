@@ -147,7 +147,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round07/scripts/t016_holiday.json` | `1.0` | `r07` | 2026-10-11 | active | T-016 结果 |
 | `games/dlt/iterations/round07/scripts/t016_holiday.py` | `1.0` | `r07` | 2026-10-11 | active | T-016 节假日验证（F-0035） |
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.6` | `r10` | 2026-10-11 | active | r10.1：概率口径修正（一等奖 1/21,425,712 限定）；r07 数据可靠性段 + consumes 补齐 |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.7` | `r11` | 2026-10-11 | active | r11：补 F-0042 平台期（后段不再弱化）+ F-0043 代理确认（R-003 依据稳固）；r10.1 概率口径修正 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.2` | `r11` | 2026-10-11 | active | 43 条（r11 新增 F-0042 效应平台期 / F-0043 机选代理可观测；F-0021 caveats 更新） |
 | `memory/facts/INDEX.md` | `1.5` | `r04` | 2026-10-11 | active | 派生物，由 cli index 生成（32 条） |
@@ -294,7 +294,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
 | `games/dlt/iterations/round07/manifest.json` | `inputs.data_version` | `dlt_full_2933` | r07 机器登记 |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.3` | schema 1.3：convenience/experience/psychology 元数据；R-002 magnitude_pct（r09）；r10.1 A-008 概率口径限定 + evidence_hash 重算 |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.3` | r11：evidence_hash 随 F-0021 caveats/F-0042/F-0043 重算（rehash）；规则无变更；r10 概率口径修正 |
 | `pyproject.toml` | `project.version` | `0.1.0` | 包版本 |
 | `spec/fact.schema.json` | `—` | `—` | evidence 新增 noop_count |
 | `spec/game_config.schema.json` | `—` | `—` | schema 自身无版本；约束 game_config.config_version |

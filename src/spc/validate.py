@@ -1784,6 +1784,71 @@ def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
         rep.ok(f"HANDOFF 模板: {checked} 个已收尾轮 HANDOFF 均结构化")
 
 
+def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
+    """★ S（r11 根治）：策略文档随轮同步 —— 最近一次 strategy_updated=true 的收尾轮，
+    STRATEGY_GUIDE.md 与 strategy.json 的登记轮次必须 >= 该轮，否则说明策略文档漏更新。
+
+    背景（用户多次追问「策略文档漏更新」）：validate 此前只做版本行一致性
+    （文件内 == 登记 == 索引），策略文档不 bump 时三者一致、照样全绿 ——
+    轮次推进后策略依据变化（如 r11 的 F-0042/F-0043）没有机械拦截。
+    本检查把「策略文档版本 >= 最新策略更新轮」变成硬性校验。
+    """
+    it_root = os.path.join(root, "games")
+    if not os.path.isdir(it_root):
+        return
+    latest_by_game: dict[str, int] = {}
+    for g in sorted(os.listdir(it_root)):
+        it_dir = os.path.join(it_root, g, "iterations")
+        if not os.path.isdir(it_dir):
+            continue
+        for name in sorted(os.listdir(it_dir)):
+            mf = os.path.join(it_dir, name, "manifest.json")
+            if not os.path.isfile(mf):
+                continue  # 未收尾轮（当前轮）跳过
+            try:
+                m = json.load(open(mf, encoding="utf-8"))
+            except Exception:
+                continue
+            out = m.get("outputs") or {}
+            if m.get("status") in ("delivered", "archived") and out.get("strategy_updated"):
+                try:
+                    rn = int(name.replace("round", ""))
+                except ValueError:
+                    continue
+                if rn > latest_by_game.get(g, 0):
+                    latest_by_game[g] = rn
+    if not latest_by_game:
+        return
+    vp = os.path.join(root, "versions.json")
+    if not os.path.isfile(vp):
+        return
+    try:
+        v = json.load(open(vp, encoding="utf-8"))
+    except Exception:
+        return
+    entries = v.get("entries", [])
+    checked = 0
+    for g, latest in sorted(latest_by_game.items()):
+        want = f"r{latest:02d}"
+        for path, label in (
+            (f"games/{g}/strategy/STRATEGY_GUIDE.md", "策略说明书 STRATEGY_GUIDE.md"),
+            (f"games/{g}/strategy/strategy.json", "策略契约 strategy.json"),
+        ):
+            e = next((x for x in entries if x.get("path") == path), None)
+            if not e:
+                rep.err(f"策略同步: {label} 未登记 versions.json，无法核对轮次")
+                continue
+            checked += 1
+            it = e.get("iteration") or ""
+            if it != want:
+                rep.err(
+                    f"策略同步: {label} 登记轮次 {it} 落后于最新策略更新轮 {want}"
+                    f" —— round{latest:02d} strategy_updated=true，策略依据有变化，"
+                    f"请同步该轮证据并 bump 登记"
+                )
+    if checked:
+        rep.ok(f"策略同步: {checked} 个策略文档版本均已跟上最新策略更新轮")
+
 def _check_compression_freshness(root: str, rep: ValidationReport) -> None:
     """★ I：记忆压缩到期提醒 —— 距上次压缩超过 5 轮 → warning。
 
@@ -1995,6 +2060,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_critical_numbers(root, rep)          # C2 关键数字一致性
     _check_open_questions_consistency(root, rep)  # Q 状态一致性（4 处手动同步根治）
     _check_probability_calibration(root, rep)   # T-050 概率口径标注（r10）
+    _check_strategy_sync(root, rep)          # S 策略文档随轮同步（r11 根治）
 
     # 协议文档存在性（软检查）
     docs = [

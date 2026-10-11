@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.6`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.7`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.6`（轮次 `r10`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.7`（轮次 `r11`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -220,9 +220,9 @@ python cli/main.py new-game <game_id>
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.6      ← r10.1：概率口径修正（一等奖 1/21,425,712 限定）；r…
+│           ├── STRATEGY_GUIDE.md  v1.7      ← r11：补 F-0042 平台期（后段不再弱化）+ F-0043 代理…
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.3      ← schema 1.3：convenience/experience/p…
+│           ├── strategy.json  v1.3      ← r11：evidence_hash 随 F-0021 caveats/…
 │           └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明
