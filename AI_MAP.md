@@ -64,6 +64,7 @@
 - `memory/journal/round06.md` — r06 叙事（元层轮）
 - `memory/journal/round07.md` — r07 叙事（研究轮）
 - `memory/journal/round08.md` — 体系升级批执行日志
+- `memory/journal/round09.md` — 策略量化轮执行日志
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）

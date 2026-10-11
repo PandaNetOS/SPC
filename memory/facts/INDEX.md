@@ -3,10 +3,10 @@
 > **本文件由 `cli/main.py index` 从 `FACTS.jsonl` 自动生成。请勿手工编辑。**
 > 权威源是 `FACTS.jsonl`（每行一条，受 `spec/fact.schema.json` 约束）。
 
-> **版本**：`1.2` ｜ 轮次 `r07` ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.2` ｜ 轮次 `r08` ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
-**当前状态**：36 条结论 | 33 established / 3 superseded | 生成日期 2026-10-11
+**当前状态**：38 条结论 | 35 established / 3 superseded | 生成日期 2026-10-11
 
 ---
 
@@ -29,14 +29,14 @@
 | F-0013 | dlt | 数据集的 18 组前区组合重复在随机碰撞的合理范围内，不是数据错误 | established | ★★★★☆ | `methodology` | `empirical` | round02 |
 | F-0014 | dlt | 奖金规则已变更 6 次，跨 epoch 直接比较奖金金额会产生无意义结论；但号码结构（前… | established | ★★★★★ | `rules_scope` | `documentary` | round02 |
 | F-0015 | dlt | 【已修正】第 26113 期（2026-10-05）37 注一等奖的单注 239 万元，… | superseded | ★★★★★ | `prize_mechanism` | `empirical` | round02 |
-| F-0016 | dlt | 现行规则（E6，>=26014 期）下『一等奖单期总额封顶 1 亿元』条款从未触发：10… | established | ★★★★★ | `prize_mechanism` | `empirical` | round03 |
-| F-0017 | dlt | 把 1 亿封顶纳入条件份额模拟后，避开连号的期望奖金提升由 121.48%（未计封顶）降… | established | ★★★☆☆ | `prize_mechanism` | `simulation` | round03 |
+| F-0016 | dlt | 现行规则（E6，>=26014 期）下『一等奖单期总额封顶 1 亿元』条款从未触发：10… | established | ★★★★★ | `prize_mechanism` | `empirical` | round09 |
+| F-0017 | dlt | 把 1 亿封顶纳入条件份额模拟后，避开连号的期望奖金提升由 121.48%（未计封顶）降… | established | ★★★☆☆ | `prize_mechanism` | `simulation` | round09 |
 | F-0018 | dlt | F-0003 的撞号效应不依赖均值比：中位数比 1.5 [1.5, 2.0] 与均值比同… | established | ★★★★☆ | `methodology` | `methodological` | round03 |
 | F-0019 | dlt | 2013-08 之前那段数据在『号码分布—中出注数—销售额』三者间不自洽：前区号码分布严… | established | ★★★★☆ | `methodology` | `empirical` | round04 |
 | F-0020 | dlt | F-0003 的分期『衰减过半』是估计量依赖的：均值比口径给出 post/pre = 0… | established | ★★★★☆ | `methodology` | `methodological` | round04 |
 | F-0021 | dlt | 撞号效应的弱化与 F-0006 的 2013-08 号码结构变点同期（滚动窗口 W=30… | established | ★★★☆☆ | `structure_preference` | `empirical` | round04 |
-| F-0022 | dlt | 把 F-0004 的校准口径从全样本 1.3603 改为后段 1.2472 后，未计封顶… | established | ★★★☆☆ | `prize_mechanism` | `simulation` | round04 |
-| F-0023 | dlt | 在可观测的一/二等奖派发口径下不存在稳健的『高期望期』：全局期初奖池分位 top−bot… | established | ★★★★☆ | `prize_mechanism` | `empirical` | round04 |
+| F-0022 | dlt | 把 F-0004 的校准口径从全样本 1.3603 改为后段 1.2472 后，未计封顶… | established | ★★★☆☆ | `prize_mechanism` | `simulation` | round09 |
+| F-0023 | dlt | 在可观测的一/二等奖派发口径下不存在稳健的『高期望期』：全局期初奖池分位 top−bot… | established | ★★★★☆ | `prize_mechanism` | `empirical` | round09 |
 | F-0024 | dlt | 用『派发额/销售额』(r_t) 衡量择时价值会误判：E4 段剔除 2019 后 r_t … | established | ★★★★☆ | `methodology` | `methodological` | round04 |
 | F-0025 | dlt | 后区撞号结构存在但不可靠可利用：后区 66 对的『被选中率』强烈非均匀（过散布 8.72… | established | ★★★★☆ | `structure_preference` | `empirical` | round04 |
 | F-0026 | dlt | 单注、复式、胆拖、倍投、追加五种投注方式在『每元期望回报率』上数学等价（都落在 51% … | established | ★★★★★ | `prize_mechanism` | `analytic` | round05 |
@@ -50,13 +50,15 @@
 | F-0034 | dlt | 本地 CSV 前段数据与外部独立公开源（500.com 历史库，转载自官方开奖公告）10… | established | ★★★★★ | `methodology` | `empirical` | round07 |
 | F-0035 | dlt | 节假日窗口无『连号撞号减弱』证据：春节（农历精确映射正月初一±7天）后段连号注数比 1.… | established | ★★★★☆ | `methodology` | `empirical` | round07 |
 | F-0036 | dlt | 全奖级口径下 P(任中)=0.019572（1/51.1，419335/21425712… | established | ★★★★★ | `prize_mechanism` | `analytic` | round08 |
+| F-0037 | dlt | R-002（禁止完全相同号码）的期望修复增益完成实证量化：m（外部同号注数）取后段一等奖… | established | ★★★★☆ | `methodology` | `empirical` | round09 |
+| F-0038 | dlt | 逐号偏好结构真实存在但精细度高于『生日段』假设：后段逐号相对撞号强度 S_j（1.0=无… | established | ★★★☆☆ | `methodology` | `empirical` | round09 |
 
 ## 按类别
 
 | 类别 | 结论 |
 |---|---|
 | `fairness` | F-0005 · F-0006 · F-0010 · F-0011 |
-| `methodology` | F-0007 · F-0009 · F-0013 · F-0018 · F-0019 · F-0020 · F-0024 · F-0033 · F-0034 · F-0035 |
+| `methodology` | F-0007 · F-0009 · F-0013 · F-0018 · F-0019 · F-0020 · F-0024 · F-0033 · F-0034 · F-0035 · F-0037 · F-0038 |
 | `predictability` | F-0008 |
 | `prize_mechanism` | F-0002 · F-0004 · F-0015 · F-0016 · F-0017 · F-0022 · F-0023 · F-0026 · F-0027 · F-0031 · F-0036 |
 | `probability` | F-0001 |
@@ -71,7 +73,7 @@
 | 证据类型 | 失效方式 | 引用须知 | 结论 |
 |---|---|---|---|
 | `analytic` | 只有**模型定义**错了才会错 | 可当不变量用；但不可拿来『验证』统计结论（L8） | F-0001 · F-0026 · F-0027 · F-0036 |
-| `empirical` | **数据换了 / 时段移位**就会错 | 引用前必看 `data_version` 与 `n_observations` | F-0003 · F-0005 · F-0006 · F-0008 · F-0009 · F-0010 · F-0011 · F-0012 · F-0013 · F-0015 · F-0016 · F-0019 · F-0021 · F-0023 · F-0025 · F-0030 · F-0031 · F-0032 · F-0033 · F-0034 · F-0035 |
+| `empirical` | **数据换了 / 时段移位**就会错 | 引用前必看 `data_version` 与 `n_observations` | F-0003 · F-0005 · F-0006 · F-0008 · F-0009 · F-0010 · F-0011 · F-0012 · F-0013 · F-0015 · F-0016 · F-0019 · F-0021 · F-0023 · F-0025 · F-0030 · F-0031 · F-0032 · F-0033 · F-0034 · F-0035 · F-0037 · F-0038 |
 | `simulation` | **模型假设**变了就会错 | 依赖输入参数；**禁止当作真值引用** | F-0004 · F-0017 · F-0022 · F-0028 · F-0029 |
 | `documentary` | **官方规则文本**变了就会错 | 必须带 `rules_epoch`，脱离 epoch 无意义 | F-0002 · F-0014 |
 | `methodological` | 关于**方法本身**的判断 | 不产效应量；价值全在 caveats 的失效边界 | F-0007 · F-0018 · F-0020 · F-0024 |
@@ -84,11 +86,11 @@
 
 **★★★★☆ 强观测 + 多源交叉确认** — 可用，但须声明适用条件
 
-`F-0003` `F-0005` `F-0006` `F-0008` `F-0009` `F-0011` `F-0012` `F-0013` `F-0018` `F-0019` `F-0020` `F-0023` `F-0024` `F-0025` `F-0031` `F-0033` `F-0035`
+`F-0003` `F-0005` `F-0006` `F-0008` `F-0009` `F-0011` `F-0012` `F-0013` `F-0018` `F-0019` `F-0020` `F-0023` `F-0024` `F-0025` `F-0031` `F-0033` `F-0035` `F-0037`
 
 **★★★☆☆ 依赖模型的估计** — 可用作方向判断，**禁止当作真值引用**
 
-`F-0004` `F-0017` `F-0021` `F-0022` `F-0028` `F-0029` `F-0030`
+`F-0004` `F-0017` `F-0021` `F-0022` `F-0028` `F-0029` `F-0030` `F-0038`
 
 **★★☆☆☆ 弱迹象** — 不可引用
 
@@ -121,6 +123,7 @@
 - **F-0029**（置信度仅 3/5）：同时避开连号（run>=2）与生日号区（max<=31）的覆盖，条件撞号系数由随机基线 1.005 降至 0.425（仅避开连号为 0.47
 - **F-0030**（置信度仅 3/5）：撞号效应的星期交互方向与 H-005 假设相反：后段控制销量后 run×周六 交互显著为负（w1 −0.268，p=0.039；w2 −0.
 - **F-0032**（status=superseded; 置信度仅 2/5）：国庆（9/25-10/10）与元旦（12/26-1/6）窗口的一等奖连号注数比低于基线（国庆 0.72 vs 1.28，元旦 0.73 vs
+- **F-0038**（置信度仅 3/5）：逐号偏好结构真实存在但精细度高于『生日段』假设：后段逐号相对撞号强度 S_j（1.0=无偏好）在号码间有明显分异（如 9/11/19 偏高 
 
 ---
 

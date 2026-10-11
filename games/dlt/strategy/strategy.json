@@ -94,8 +94,11 @@
       "expected_value_impact": {
         "metric": "expected_bonus_given_win",
         "direction": "increase",
-        "magnitude_pct": null,
-        "ci95": null,
+        "magnitude_pct": 65.49,
+        "ci95": [
+          64.86,
+          66.16
+        ],
         "changes_win_probability": false,
         "caveats": [
           "【r06 语义重构（用户批准）】旧 predicate has_duplicated_structure（结构同构）经量化后期望效应与方差理由均不成立（F-0028，Q-012 判据 not_established）—— 故不再 penalize 结构同构。",
@@ -103,7 +106,8 @@
           "predicate has_identical_tickets 为 r06 新增跨注特征（identical_ticket_count >= 1），需**整组号码**上下文（framework/core/portfolio.py 的 judge_cross() 执行）。",
           "本规则的 magnitude_pct 不填单一数字：修复增益依赖组内重复注数 K 与外部同号注数 m，解析式为 (K-1)/(K+m)（m=6 时 K=2 → +14.3%、K=10 → +128.6% 的上限参照）。",
           "不改变中奖概率（4.67e-08 恒定，中任意奖级 0.019572 亦恒定）；长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径 F-0036）。"
-        ]
+        ],
+        "note": "K=10 注相同号码修复为单注的期望增益（后段口径，m=一等奖中出注数经验分布）；K=2 → 20.72% [20.23,21.23]、K=5 → 47.82% [47.09,48.53]（F-0037，round09）"
       },
       "applicable_epochs": []
     },
@@ -413,27 +417,40 @@
     "refs": [
       {
         "ref": "Rogers (1998) The Cognitive Psychology of Lottery Gambling: A Theoretical Review, Journal of Gambling Studies",
-        "maps_to": ["R-003", "A-001", "A-005"],
+        "maps_to": [
+          "R-003",
+          "A-001",
+          "A-005"
+        ],
         "role": "综述：热/冷号码信念、生日号偏好、near-miss 错觉、不现实乐观 —— 大众偏差导致号码拥挤的机制基础。"
       },
       {
         "ref": "Hardoon et al. (2001) Underlying Cognitions in the Selection of Lottery Tickets, Journal of Clinical Psychology",
-        "maps_to": ["R-001"],
+        "maps_to": [
+          "R-001"
+        ],
         "role": "实证：人偏好『看起来随机』的号码 —— 连号形态被回避/少被选，构成 R-001 的撞号依据。"
       },
       {
         "ref": "Suetens, Galbo-Jørgensen & Tyran (2016) Predicting Lotto Numbers, Journal of the European Economic Association",
-        "maps_to": ["A-001"],
+        "maps_to": [
+          "A-001"
+        ],
         "role": "自然实验：赌徒谬误（上期开出后少买 2%）+ 热手谬误（变热后加买 1%/周）—— 追冷热号是大众普遍偏差，已被仓库数据证伪（F-0008）。"
       },
       {
         "ref": "Kahneman & Tversky (1979) Prospect Theory: An Analysis of Decision under Risk, Econometrica",
-        "maps_to": ["disclaimer"],
+        "maps_to": [
+          "disclaimer"
+        ],
         "role": "理论：低概率被高权重（overweighting of small probabilities）—— 解释负期望下仍购买彩票的吸引力。"
       },
       {
         "ref": "Langer (1975) The Illusion of Control, Journal of Personality and Social Psychology",
-        "maps_to": ["R-003", "experience"],
+        "maps_to": [
+          "R-003",
+          "experience"
+        ],
         "role": "实证：控制幻觉 —— 选择/熟悉感（如生日号）提升参与感与信心，是生日号情感依附的来源（experience 的娱乐价值依据）。"
       }
     ]

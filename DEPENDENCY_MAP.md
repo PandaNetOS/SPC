@@ -189,6 +189,16 @@
 - sha256锚→ `games/dlt/iterations/round08/scripts/all_tiers_expectation.py`
 - source→ `games/dlt/iterations/round08/scripts/all_tiers_expectation.py`
 
+## FACTS:F-0037
+- script→ `games/dlt/iterations/round09/scripts/t046_r002_quantify.py`
+- sha256锚→ `games/dlt/iterations/round09/scripts/t046_r002_quantify.py`
+- source→ `games/dlt/iterations/round09/scripts/t046_r002_quantify.py`
+
+## FACTS:F-0038
+- script→ `games/dlt/iterations/round09/scripts/t020_number_weight.py`
+- sha256锚→ `games/dlt/iterations/round09/scripts/t020_number_weight.py`
+- source→ `games/dlt/iterations/round09/scripts/t020_number_weight.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 

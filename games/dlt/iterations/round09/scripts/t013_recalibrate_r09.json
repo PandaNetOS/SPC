@@ -1,0 +1,36 @@
+{
+  "F0016_cap_trigger": {
+    "n_e6": 102,
+    "max_total1_yuan": 97883574.0,
+    "n_triggered": 0,
+    "cap_total_yuan": 100000000.0,
+    "reference": "max 0.9788 亿 / 0 触发",
+    "match": true
+  },
+  "F0017_F0022_anchor": {
+    "w1_median": 6,
+    "payout1_median_yi": 0.4252,
+    "reference_n0": 6,
+    "reference_pool_yi": 0.4252,
+    "match": true
+  },
+  "F0023_pool_prev_er": {
+    "n_e6_ok": 102,
+    "er_diff": 0.0171,
+    "p": 0.311,
+    "reference": "+0.017 / p≈0.27（不显著）",
+    "match": true
+  },
+  "verdict": "维持（recalibrated）——F-0016/F-0017/F-0022/F-0023 的锚点与统计结论在当前数据版本（dlt_full_2933，含 26115）下仍成立。按 SOP 重记校准时间戳；NOOP 语义（noop_count+1，不污染 status/change_type）。",
+  "noop_apply": {
+    "fact_ids": [
+      "F-0016",
+      "F-0017",
+      "F-0022",
+      "F-0023"
+    ],
+    "noop_count": 1,
+    "recalibrated_in": "round09",
+    "note": "T-047 NOOP 原子操作实战：证据不足/数值未变时显式记录『维持』，替代『什么都不写』的隐式状态。"
+  }
+}

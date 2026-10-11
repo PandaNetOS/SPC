@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
 
 > **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -193,17 +193,23 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
 │       │   │   ├── manifest.json  vdlt_full_2933  ← r07 机器登记
 │       │   │   └── scripts/  ← 轮次脚本（9 个）
-│       │   └── round08/
-│       │       ├── FINDINGS.md  v1.0      ← 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四…
-│       │       ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
-│       │       ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
-│       │       └── scripts/  ← 轮次脚本（2 个）
+│       │   ├── round08/
+│       │   │   ├── FINDINGS.md  v1.0      ← 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四…
+│       │   │   ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
+│       │   │   ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
+│       │   │   └── scripts/  ← 轮次脚本（2 个）
+│       │   └── round09/
+│       │       ├── FINDINGS.md  v1.0      ← 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 /…
+│       │       ├── HANDOFF.md  v1.0      ← r09→r10 交接（F-0037/38；遗留 T-021/22/23…
+│       │       ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
+│       │       ├── manifest.json  —         ← 策略量化轮清单
+│       │       └── scripts/  ← 轮次脚本（7 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
 │           ├── STRATEGY_GUIDE.md  v1.5      ← r07：数据可靠性段升级（F-0033/F-0034 根因定位）；co…
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.3      ← ★ r08 口径变更：expected_bonus_given_win…
+│           ├── strategy.json  v1.3      ← schema 1.3：convenience/experience/p…
 │           └── strategy_simulation.py  —
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明
@@ -218,7 +224,8 @@ python cli/main.py new-game <game_id>
 │   │   ├── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
 │   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
 │   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
-│   │   └── round08.md  v1.0      ← 体系升级批执行日志
+│   │   ├── round08.md  v1.0      ← 体系升级批执行日志
+│   │   └── round09.md  v1.0      ← 策略量化轮执行日志
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
@@ -347,7 +354,7 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **36 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
+| 记忆层 | ✅ **38 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
 | `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** + `test_flywheel.py` **20** + `test_ai_readability.py` **25** + `test_consumes_completeness.py` **6** 全绿（无需 pytest，共 **384** 项） |
