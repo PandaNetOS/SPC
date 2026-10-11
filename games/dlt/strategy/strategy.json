@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "game": "dlt",
   "generated_at": "2026-10-11",
   "generated_by": "spc-cli/0.1.0",
@@ -357,10 +357,91 @@
       "confidence": 5
     }
   ],
+  "convenience": {
+    "positioning": "可行域约束/代价变量（非收益变量）：五种投注方式（单注/复式/胆拖/倍投/追加）每元期望回报率数学等价（F-0026 ★5，均落在 51% 返奖率内）；便利性只影响购买操作成本、票面复杂度与兑奖便利，不改变 ROI。策略默认选便利性最优解：单式多注（如 10 注×2 元一张票）。",
+    "is_decision_variable": true,
+    "affects_expected_return": false,
+    "modes": [
+      {
+        "id": "single",
+        "name": "单注",
+        "rating": "high",
+        "note": "一张票 N 行，操作最简、兑奖直观；策略默认形态（配合 R-001/R-002/R-003 生成 N 注分散号码）。"
+      },
+      {
+        "id": "compound",
+        "name": "复式",
+        "rating": "medium",
+        "note": "选号展开为多注（如 6+2=12 注 24 元）；票面复杂、金额大、兑奖需按展开核对；同预算下期望与单式等价（F-0026），仅方差更小。"
+      },
+      {
+        "id": "dan_tuo",
+        "name": "胆拖",
+        "rating": "low",
+        "note": "胆码+拖码组合展开；操作最复杂、易出错，便利性最差；期望与复式等价（F-0026）。"
+      },
+      {
+        "id": "multiplier",
+        "name": "倍投",
+        "rating": "high",
+        "note": "操作简单（同注 K 倍），但 K 注相同号码=自我摊薄（F-0027 ★5，K=10 每元回报仅 43.8%），触发 R-002 排除，便利性再高也不应采用。"
+      },
+      {
+        "id": "extra",
+        "name": "追加",
+        "rating": "high",
+        "note": "+1 元操作简单，但只参与一二等浮动奖、独立口径 ROI ≈ −63%（比基本注 −49% 更差），只提高方差；不推荐。"
+      }
+    ]
+  },
+  "experience": {
+    "positioning": "情绪体验维度（非收益变量）：购彩效用 = 期待效用（开奖前，anticipation）+ 结果愉悦度（开奖后，= f(奖级) − 预期基线）。策略通过『预期校准』优化愉悦度——把基线调到现实，中奖时超预期更喜、不中时少失落（anticipation-disappointment utility 模型）。",
+    "affects_expected_return": false,
+    "anticipation": {
+      "model": "anticipation-disappointment utility（He, Dyer & Butler 2018, J. Multi-Criteria Decision Analysis；anticipatory utility，Loewenstein 1987）",
+      "design": "每周小额（如 10 注/期）→ 每周一次期待仪式，期待频率=愉悦频率；一次性大额 → 期待集中、落差更大。"
+    },
+    "expectation_calibration": {
+      "base_line": "中奖多为小额固定奖（三~七等，占全奖级期望 34.98% 且与选号无关）；一等奖概率恒为 1/21,425,712。",
+      "rule": "把预期基线设在『大概率中小额』而非『大奖幻想』：中 5 元=超预期小确幸，不中=轻度失落而非深度失望。CLI 每次生成号码时展示『现实预期』行。"
+    }
+  },
+  "psychology": {
+    "positioning": "外部学术锚点（非仓库数据核验结论，不改变策略数字）：解释『大众选号偏好造成号码拥挤』的机制，支撑 R-001/R-003 撞号避让与 A-001~A-005 排除清单。仅供机制理解与可信度参考，不得当作用户可独立核验的证据。",
+    "is_external_evidence": true,
+    "affects_expected_return": false,
+    "refs": [
+      {
+        "ref": "Rogers (1998) The Cognitive Psychology of Lottery Gambling: A Theoretical Review, Journal of Gambling Studies",
+        "maps_to": ["R-003", "A-001", "A-005"],
+        "role": "综述：热/冷号码信念、生日号偏好、near-miss 错觉、不现实乐观 —— 大众偏差导致号码拥挤的机制基础。"
+      },
+      {
+        "ref": "Hardoon et al. (2001) Underlying Cognitions in the Selection of Lottery Tickets, Journal of Clinical Psychology",
+        "maps_to": ["R-001"],
+        "role": "实证：人偏好『看起来随机』的号码 —— 连号形态被回避/少被选，构成 R-001 的撞号依据。"
+      },
+      {
+        "ref": "Suetens, Galbo-Jørgensen & Tyran (2016) Predicting Lotto Numbers, Journal of the European Economic Association",
+        "maps_to": ["A-001"],
+        "role": "自然实验：赌徒谬误（上期开出后少买 2%）+ 热手谬误（变热后加买 1%/周）—— 追冷热号是大众普遍偏差，已被仓库数据证伪（F-0008）。"
+      },
+      {
+        "ref": "Kahneman & Tversky (1979) Prospect Theory: An Analysis of Decision under Risk, Econometrica",
+        "maps_to": ["disclaimer"],
+        "role": "理论：低概率被高权重（overweighting of small probabilities）—— 解释负期望下仍购买彩票的吸引力。"
+      },
+      {
+        "ref": "Langer (1975) The Illusion of Control, Journal of Personality and Social Psychology",
+        "maps_to": ["R-003", "experience"],
+        "role": "实证：控制幻觉 —— 选择/熟悉感（如生日号）提升参与感与信心，是生日号情感依附的来源（experience 的娱乐价值依据）。"
+      }
+    ]
+  },
   "provenance": {
     "iteration": "round06",
     "generator": "apply_r06_strategy.py (user-approved)",
     "evidence_hash": "151d720cf5e6029e866e92f1983a26a9bc90e86950731602134a9a636a339581",
-    "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。"
+    "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。 ★ 元数据增强（非研究轮）：schema_version 1.2→1.3，新增 convenience（购彩便利性）/ experience（情绪体验与预期校准）/ psychology（心理学外部锚点）三组元数据；均为非收益变量（affects_expected_return=false），不改变策略数字与 evidence_hash。"
   }
 }

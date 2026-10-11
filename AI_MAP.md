@@ -114,6 +114,7 @@
 - `tests/test_cross_scope.py` — ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需 pytest
 - `tests/test_evidence_anchor.py` — ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest
 - `tests/test_flywheel.py` — K/D1/D2/C/F 测试（无需 pytest）
+- `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
 - `tests/test_shadow_game.py`
 - `tests/test_structure.py` — 结构完整性回归测试（P1-2 三道防线）
 

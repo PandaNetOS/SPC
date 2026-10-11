@@ -270,6 +270,12 @@ def cmd_strategy(args) -> int:
         print(rep.render())
         return 1
     print("✓ 策略校验通过")
+
+    # 元数据字段摘要（schema 1.3：convenience / experience / psychology）
+    for key in ("convenience", "experience", "psychology"):
+        meta = st.get(key)
+        if meta and meta.get("positioning"):
+            print(f"✓ {key}: {meta['positioning'][:90]}…")
     return 0
 
 
@@ -519,7 +525,36 @@ def cmd_pick(args) -> int:
     print()
     print("⚠️ 本命令不改变中奖概率（恒为 1/T）。产出的号码只是满足规则，")
     print("   不代表更容易中奖。请理性购彩，量力而行。")
+
+    # 现实预期校准（experience 维度，schema 1.3）
+    _print_expectation_calibration(args.game, len(res))
     return 0
+
+
+def _print_expectation_calibration(game: str, n: int) -> None:
+    """按 strategy.json 的 experience 元数据输出『现实预期』行。
+
+    概率用 boundary.any_prize_probability 动态计算（避免硬编码口径），
+    文案来自 experience.expectation_calibration；任一环节缺失则静默跳过。
+    """
+    try:
+        from spc.strategy import load_strategy
+
+        st = load_strategy(game, _ROOT, strict=False)
+        exp = st.get("experience") or {}
+        cal = exp.get("expectation_calibration") or {}
+        p_any = (st.get("boundary") or {}).get("any_prize_probability")
+        if not p_any or not cal:
+            return
+        p_at_least_one = 1 - (1 - p_any) ** n
+        print()
+        print(f"🎯 现实预期（{n} 注）：至少中一奖 ≈ {p_at_least_one:.1%}")
+        if cal.get("base_line"):
+            print(f"   基线：{cal['base_line']}")
+        if cal.get("rule"):
+            print(f"   校准：{cal['rule']}")
+    except Exception:  # noqa: BLE001 —— 预期校准是增强展示，失败不阻断
+        return
 
 
 # ---------------------------------------------------------------- eval

@@ -1697,7 +1697,7 @@
       "level": "C",
       "kind": "strategy",
       "version_ref": "schema_version",
-      "ref_version": "1.2",
+      "ref_version": "1.3",
       "note": "★ r08 口径变更：expected_bonus_given_win 改为全奖级口径；净期望 -0.98→-1.7275；R-001/R-003 幅度换算",
       "content_version": "1.3",
       "iteration": "r08",
@@ -1963,6 +1963,16 @@
       "content_version": "1.0",
       "iteration": "r08",
       "note": "全奖级口径输出（F-0036 的派生产物）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_meta_variables.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI 展示测试",
       "updated_at": "2026-10-11",
       "status": "active"
     }

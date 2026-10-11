@@ -1,4 +1,4 @@
-﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿# SPC
 
 > **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -255,6 +255,7 @@ python cli/main.py new-game <game_id>
 │   ├── test_cross_scope.py  —         ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
 │   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
 │   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
+│   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
