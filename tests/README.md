@@ -13,6 +13,8 @@
 | `test_evidence_anchor.py` | **32**（全绿） | ★ 证据锚定：漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等 |
 | `test_shadow_game.py` | **69**（全绿） | ★ 影子彩种：第二彩种全链路跑通 + 铁律扫描（`framework/` 与 `src/` 无 dlt 痕迹）+ 扫描器自检 |
 | `test_structure.py` | **8**（全绿） | ★ 结构完整性（P1-2 根治）：目录树 = 派生物防手改 / 双向登记真的会拦 / 裁剪不误伤 / scripts 聚合 |
+| `test_flywheel.py` | **20**（全绿） | ★ r06 飞轮升级：K 健康度统计 / D1 置信度校准 / D2 矛盾检测（方向+范畴）/ C 依赖图 / F 增量校验冒烟 |
+| `test_ai_readability.py` | **25**（全绿） | ★ r06 AI 可读性：P1 机器地图派生物 / P2 入口完整性 / B 任务书评分 / H 交接模板 / I 压缩到期 |
 
 **计数自举**：上表每行的项数是**运行时**计数（大量 `check()` 在循环内，
 静态行数不等于实际断言数）。权威来源是 `python tools/count_tests.py`
@@ -111,6 +113,12 @@ python tests/test_shadow_game.py
 
 # 结构完整性回归测试（8 项；目录树派生物防手改）
 python tests/test_structure.py
+
+# 飞轮升级测试（20 项；K 健康度 / D1 校准 / D2 矛盾检测 / C 依赖图 / F 增量）
+python tests/test_flywheel.py
+
+# AI 可读性测试（25 项；P1 机器地图 / P2 入口完整性 / B 任务书 / H / I）
+python tests/test_ai_readability.py
 
 # 一次性抓取全部测试通过计数（自举，避免手写数字漂移）
 python tools/count_tests.py

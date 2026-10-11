@@ -36,6 +36,8 @@ TEST_FILES = [
     "tests/test_evidence_anchor.py",
     "tests/test_shadow_game.py",
     "tests/test_structure.py",
+    "tests/test_flywheel.py",
+    "tests/test_ai_readability.py",
 ]
 
 _LINE_RE = re.compile(r"通过\s+(\d+)\s+失败\s+(\d+)")

@@ -45,6 +45,30 @@ MUTEX_PAIRS = [
     ("提高", "降低"),
     ("正相关", "负相关"),
     ("有利", "不利"),
+    ("不存在", "存在"),
+    ("不显著", "显著"),
+    ("弱于", "强于"),
+    ("均匀", "偏好"),
+    ("不可利用", "可利用"),
+    ("无效应", "有效应"),
+    ("等于", "不等于"),
+    ("更多", "更少"),
+]
+
+# D2 增强：方向冲突对（同一主题内正/负方向断言互斥）
+_DIRECTION_PAIRS = [
+    ("提高", "降低"), ("上升", "下降"), ("增加", "减少"),
+    ("正相关", "负相关"), ("有利", "不利"), ("更强", "更弱"),
+    ("更热", "更冷"), ("更高", "更低"), ("显著", "不显著"),
+]
+
+# D2 增强：核心主题词（启发式词典，不引 embedding）
+# 新结论与同主题 active F 若 claim_type 相同且方向相反 → 疑似矛盾
+_TOPIC_TERMS = [
+    "连号", "生日", "星期", "奖池", "复式", "胆拖", "倍投", "追加",
+    "凯利", "封顶", "销售额", "机选", "开奖", "奇偶", "后区", "前区",
+    "撞号", "中奖", "返奖", "期望", "均衡", "热号", "冷号", "春节",
+    "节假日", "周六", "周一", "周三", "一等奖", "二等奖", "翻倍",
 ]
 
 
@@ -99,6 +123,70 @@ def gate_filter(fact: dict, active: list[dict]) -> list[str]:
 
 # ---------------------------------------------------------------- Judge 闸
 
+def _semantic_conflict(fact: dict, active: list[dict]) -> list[str]:
+    """D2 增强：结构化矛盾检测（不引 embedding，关键词/反模式启发式）。
+
+    三维检测：
+      1. 方向冲突 —— 同主题下新结论与 active F 含相反方向词（更强/更弱、提高/降低…）
+      2. 范畴断言冲突 —— 新结论称「提高/改变中奖概率」，违反红线（F-0001）
+      3. 主题重复反向 —— 同 claim_type、同主题、方向相反且都有证据 → 冲突
+
+    依据：Wright（arXiv 2506.17331）禁止自欺 —— 新结论与既有结论的矛盾
+    必须显式可见（走 revision 取代链，而非悄悄并存）；TiM merge 操作。
+    """
+    msgs: list[str] = []
+    claim = fact.get("claim", "") or ""
+    ct = fact.get("claim_type")
+    topics = [t for t in _TOPIC_TERMS if t in claim]
+
+    def _dirs(text: str) -> set[str]:
+        return {w for w, _ in _DIRECTION_PAIRS if w in text} | \
+               {w for _, w in _DIRECTION_PAIRS if w in text}
+
+    def _opposed(nd: set[str], ad: set[str]) -> bool:
+        for w in nd:
+            opp = {w2 for w1, w2 in _DIRECTION_PAIRS if w1 == w} | \
+                  {w1 for w1, w2 in _DIRECTION_PAIRS if w2 == w}
+            if opp & ad:
+                return True
+        return False
+
+    # 1+3. 同主题方向冲突（含同 claim_type 反向强化提示）
+    for a in active:
+        if a.get("id") == fact.get("id"):
+            continue
+        aclaim = a.get("claim", "") or ""
+        shared = set(topics) & {t for t in _TOPIC_TERMS if t in aclaim}
+        if not shared:
+            continue
+        nd = _dirs(claim)
+        ad = _dirs(aclaim)
+        if nd and ad and _opposed(nd, ad):
+            msgs.append(
+                f"[Judge] 与 {a['id']} 疑似矛盾（同主题「{'/'.join(sorted(shared))}」，"
+                f"方向词 {sorted(nd)} vs {sorted(ad)}）—— 请人工核验或走 revision 取代链"
+            )
+            if a.get("claim_type") == ct:
+                msgs.append(
+                    f"[Judge] 与 {a['id']} 同 claim_type({ct}) 同主题但方向相反"
+                    f"（{sorted(nd)} vs {sorted(ad)}）—— 必须显式 revision，不得并存"
+                )
+
+    # 2. 范畴断言冲突（红线：任何结论不得提高/改变中奖概率）
+    raises_prob = ("提高中奖概率" in claim or "增加中奖概率" in claim or
+                   ("改变中奖概率" in claim and "不改变" not in claim
+                    and "不能改变" not in claim))
+    if raises_prob:
+        for a in active:
+            aclaim = a.get("claim", "") or ""
+            if "中奖概率" in aclaim and ("不能改变" in aclaim or "不改变" in aclaim):
+                msgs.append(
+                    f"[Judge] 与 {a['id']} 冲突：新结论声称「提高/改变中奖概率」，"
+                    f"违反红线（任何选号方式都不能改变单注的中奖概率）"
+                )
+    return msgs
+
+
 def gate_judge(fact: dict, active: list[dict]) -> list[str]:
     msgs: list[str] = []
     ct = fact.get("claim_type")
@@ -147,7 +235,7 @@ def gate_judge(fact: dict, active: list[dict]) -> list[str]:
         if (not isinstance(eff, dict)) or (ci is None and p is None):
             msgs.append("[Judge] empirical/simulation 缺效应量支撑 —— 结论无法复核")
 
-    # 矛盾检测（粗粒度互斥词）
+    # 矛盾检测（D2 增强：互斥词 + 结构化的方向/主题/范畴三维检测）
     claim = fact.get("claim", "")
     for w1, w2 in MUTEX_PAIRS:
         if w1 in claim:
@@ -157,6 +245,7 @@ def gate_judge(fact: dict, active: list[dict]) -> list[str]:
                         f"[Judge] 与 {a['id']} 疑似矛盾（新结论含「{w1}」、"
                         f"旧结论含「{w2}」）—— 请人工核验或走 revision 取代链"
                     )
+    msgs.extend(_semantic_conflict(fact, active))
 
     if not msgs:
         msgs.append("[Judge] claim_type 结构 / 口径 / 统计判据全部通过")

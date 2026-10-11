@@ -46,6 +46,7 @@ from spc.validate import (  # noqa: E402
     validate_all,
     validate_facts,
     validate_game,
+    validate_incremental,
     validate_iterations,
     validate_strategy,
 )
@@ -75,6 +76,9 @@ def cmd_validate(args) -> int:
         rep = validate_game(args.game, _ROOT)
         validate_strategy(args.game, _ROOT, rep)
         validate_iterations(args.game, _ROOT, rep)
+    elif args.incremental:
+        # ★ F：增量校验 —— 只跑结构与派生物检查（新增文件场景最快路径）
+        rep = validate_incremental(_ROOT)
     else:
         rep = validate_all(_ROOT, verbose=args.verbose)
 
@@ -599,6 +603,8 @@ def build_parser() -> argparse.ArgumentParser:
                     help="全量校验（默认行为）")
     sp.add_argument("--facts", action="store_true", help="只校验结论台账")
     sp.add_argument("--game", metavar="ID", help="只校验某彩种（含 strategy 与 iterations）")
+    sp.add_argument("--incremental", action="store_true",
+                    help="★ F 增量校验：只跑结构与派生物检查（最快路径）")
     sp.add_argument("-v", "--verbose", action="store_true", help="打印通过项")
     sp.set_defaults(func=cmd_validate)
 

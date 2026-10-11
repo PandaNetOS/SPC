@@ -1369,6 +1369,309 @@ def _check_readme_tree_rendered(root: str, rep: ValidationReport) -> None:
         )
 
 
+# ---------------------------------------------------------------- 全局升级（r06 批量实施）
+
+# P2 —— AI 入口完整性锚表（AI_CONTEXT 必须包含的静态锚点）
+_AI_ENTRY_STATIC_ANCHORS = [
+    ("AI_CONTEXT.md", "expected_bonus_given_win", "唯一可优化量（红线 3）"),
+    ("AI_CONTEXT.md", "21,425,712", "单注组合总数（§3）"),
+    ("AI_CONTEXT.md", "4.667289469773513e-08", "一等奖概率（§3）"),
+    ("AI_CONTEXT.md", "三条红线", "红线章节（§1）"),
+    ("AI_CONTEXT.md", "judge_portfolio", "跨注层入口（§8）"),
+    ("AI_CONTEXT.md", "LESSONS.md", "方法论纪律入口（§4）"),
+    ("AI_CONTEXT.md", "五个版本号并存", "版本意识（头部）"),
+    ("AI_CONTEXT.md", "caveats", "结论减损项纪律（§6）"),
+]
+
+
+def _check_ai_entry_completeness(root: str, rep: ValidationReport) -> None:
+    """★ P2：AI 入口完整性 —— 关键问题锚点必须存在于入口文档。
+
+    依据：DocAgent（ACL 2025）文档质量按 Completeness/Helpfulness/Truthfulness
+    可测；Wright 禁止自欺 —— 入口与实现脱节是系统自欺，应被校验拦截。
+    设计：静态锚表 + 动态锚（从 strategy/game.yaml 读当前值，对照入口文档，
+    防"实现变了文档没改"）。
+    """
+    cp = os.path.join(root, "AI_CONTEXT.md")
+    if not os.path.exists(cp):
+        rep.err("AI 入口完整性: AI_CONTEXT.md 缺失（P2 检查无法执行）")
+        return
+    ctx = open(cp, encoding="utf-8").read()
+
+    anchors: list[tuple[str, str]] = [  # (text, label)
+        (txt, label) for _f, txt, label in _AI_ENTRY_STATIC_ANCHORS
+    ]
+    # 动态锚：strategy 的唯一可优化量（彩种目录动态发现，不硬编码）
+    gd = os.path.join(root, "games")
+    first_game = None
+    if os.path.isdir(gd):
+        for _n in sorted(os.listdir(gd)):
+            if os.path.isfile(os.path.join(gd, _n, "game.yaml")):
+                first_game = _n
+                break
+    if first_game:
+        sp = os.path.join(root, "games", first_game, "strategy", "strategy.json")
+        if os.path.exists(sp):
+            try:
+                with open(sp, encoding="utf-8") as f:
+                    st = json.load(f)
+                bd = st.get("boundary") or {}
+                target = bd.get("optimizable_target")
+                if target:
+                    anchors.append((target, "strategy.boundary.optimizable_target（动态）"))
+            except Exception:  # noqa: BLE001
+                pass
+        # 动态锚：game.yaml 的数据版本字面量
+        gp = os.path.join(root, "games", first_game, "game.yaml")
+        if os.path.exists(gp):
+            try:
+                gtxt = open(gp, encoding="utf-8").read()
+                for dv in re.findall(r"[a-z]{2,4}_full_\d{3,4}", gtxt):
+                    anchors.append((dv, "game.yaml 数据版本（动态）"))
+            except Exception:  # noqa: BLE001
+                pass
+
+    missing = [(t, label) for t, label in anchors if t not in ctx]
+    if missing:
+        for t, label in missing[:8]:
+            rep.err(
+                f"AI 入口完整性: AI_CONTEXT.md 缺少关键锚 `{t}`"
+                f"（{label}）—— 入口与实现脱节，须同步后重渲染"
+            )
+    else:
+        rep.ok(
+            f"AI 入口完整性: {len(anchors)} 个关键锚（含 {len(anchors) - 8} 个动态锚）"
+            f"全部存在于 AI_CONTEXT.md"
+        )
+
+
+def _check_ai_map_rendered(root: str, rep: ValidationReport) -> None:
+    """★ P1：AI_MAP.md = 派生物，必须与 render_ai_map(versions.json) 逐字一致。"""
+    rp = os.path.join(root, "AI_MAP.md")
+    if not os.path.exists(rp):
+        rep.err("AI_MAP.md 缺失——运行 `python tools/render_ai_map.py --write`")
+        return
+    try:
+        from .ai_map import load_versions as av_load, render_ai_map
+        expected = render_ai_map(av_load(root)["entries"], root).strip()
+    except Exception as e:  # noqa: BLE001
+        rep.err(f"AI_MAP 渲染失败: {e}")
+        return
+    actual = open(rp, encoding="utf-8").read().strip()
+    if actual == expected:
+        rep.ok("AI_MAP: 为派生物且与 versions.json 一致（render_ai_map --write 生成）")
+    else:
+        rep.err(
+            "AI_MAP: 与 versions.json 派生物不一致——请运行 "
+            "`python tools/render_ai_map.py --write` 重新生成，勿手改"
+        )
+
+
+def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
+    """★ H：HANDOFF 模板化 —— 已收尾轮（有 manifest.json）必须含结构化交接。
+
+    依据：Anthropic Effective Harnesses —— 为下一会话留下 clear artifacts；
+    DOLPHIN —— 反馈闭环需要结构化的交接物。
+    """
+    it_dir = os.path.join(root, "games")
+    if not os.path.isdir(it_dir):
+        return
+    it_dirs: list[str] = []
+    for g in sorted(os.listdir(it_dir)):
+        d = os.path.join(it_dir, g, "iterations")
+        if os.path.isdir(d):
+            it_dirs.append(d)
+    checked = 0
+    for d in it_dirs:
+        for name in sorted(os.listdir(d)):
+            mf = os.path.join(d, name, "manifest.json")
+            if not os.path.isfile(mf):
+                continue  # 未收尾轮（当前轮）跳过
+            checked += 1
+            hp = os.path.join(d, name, "HANDOFF.md")
+            if not os.path.exists(hp):
+                rep.err(f"HANDOFF 模板: {name} 有 manifest.json 但缺 HANDOFF.md（收尾不完整）")
+                continue
+            text = open(hp, encoding="utf-8").read()
+            n_h2 = sum(1 for ln in text.split("\n") if ln.startswith("## "))
+            keywords = ("结论", "遗留", "未决", "下轮", "建议", "风险")
+            hits = [k for k in keywords if k in text]
+            if n_h2 < 4 or len(hits) < 3:
+                rep.err(
+                    f"HANDOFF 模板: {name} 未结构化（{n_h2} 个 ## 段，命中 {len(hits)}/6 关键词）"
+                    f"—— 应含结论/遗留/下轮建议等固定段，供下轮 AI 直接解析"
+                )
+    if checked:
+        rep.ok(f"HANDOFF 模板: {checked} 个已收尾轮 HANDOFF 均结构化")
+
+
+def _check_compression_freshness(root: str, rep: ValidationReport) -> None:
+    """★ I：记忆压缩到期提醒 —— 距上次压缩超过 5 轮 → warning。
+
+    依据：战略遗忘（IterResearch/MEM1）、SAGE（Ebbinghaus 遗忘曲线）——
+    记忆膨胀降信噪比，到期不压缩必须被看见。
+    """
+    ap = os.path.join(root, "memory", "facts", "ACTIVE.md")
+    if not os.path.exists(ap):
+        return
+    text = open(ap, encoding="utf-8").read()
+    m = re.search(r"当前轮 round(\d{2})", text)
+    if not m:
+        return
+    compressed_round = int(m.group(1))
+    cur = current_iteration_round(root)
+    gap = cur - compressed_round
+    if gap > 5:
+        rep.warn(
+            f"记忆压缩: 距上次压缩已 {gap} 轮（round{compressed_round:02d} → round{cur:02d}）"
+            f"—— 运行 `python framework/tools/compress_memory.py --write`"
+        )
+    else:
+        rep.ok(f"记忆压缩: 距上次压缩 {gap} 轮（≤5，正常）")
+
+
+def _check_flywheel_health(root: str, rep: ValidationReport) -> None:
+    """★ K：飞轮仪表盘 = 派生物，与 collect_metrics 渲染结果一致。"""
+    rp = os.path.join(root, "FLYWHEEL_HEALTH.md")
+    if not os.path.exists(rp):
+        rep.err("FLYWHEEL_HEALTH.md 缺失——运行 `python tools/render_flywheel_health.py --write`")
+        return
+    try:
+        from .flywheel import collect_metrics, render_health
+        expected = render_health(collect_metrics(root)).strip()
+    except Exception as e:  # noqa: BLE001
+        rep.err(f"FLYWHEEL_HEALTH 渲染失败: {e}")
+        return
+    actual = open(rp, encoding="utf-8").read().strip()
+    if actual == expected:
+        rep.ok("FLYWHEEL_HEALTH: 为派生物且与 FACTS 台账一致")
+    else:
+        rep.err(
+            "FLYWHEEL_HEALTH: 与台账派生物不一致——请运行 "
+            "`python tools/render_flywheel_health.py --write` 重新生成"
+        )
+
+
+def _check_calibration(root: str, rep: ValidationReport) -> None:
+    """★ D1：置信度校准 —— 高置信度（4-5★）推翻率高于低置信度（1-2★）→ warning。
+
+    依据：confidence calibration；AIDE²（reward hacking 55%→32% 可测）——
+    置信度与存活率系统性失配 = 置信度虚高，须被看见。样本 <3 跳过（避免误报）。
+    """
+    try:
+        from .flywheel import collect_metrics
+        m = collect_metrics(root)
+    except Exception as e:  # noqa: BLE001
+        rep.warn(f"置信度校准: 统计失败（{e}）")
+        return
+    hi = sum(c["dead"] for c, c2 in m["by_confidence"].items() for c2 in ())
+    bc = m["by_confidence"]
+    hi_t = sum(cell["total"] for c, cell in bc.items() if c >= 4)
+    lo_t = sum(cell["total"] for c, cell in bc.items() if c <= 2)
+    if hi_t < 3 or lo_t < 3:
+        rep.ok(f"置信度校准: 高{hi_t}/低{lo_t} 置信度样本不足（<3），不做失配判定")
+        return
+    hi_d = sum(cell["dead"] for c, cell in bc.items() if c >= 4)
+    lo_d = sum(cell["dead"] for c, cell in bc.items() if c <= 2)
+    hi_r, lo_r = hi_d / hi_t, lo_d / lo_t
+    if hi_r > lo_r:
+        rep.warn(
+            f"置信度校准: 高置信度（4-5★）推翻率 {hi_r:.0%} > 低置信度（1-2★）{lo_r:.0%}"
+            f"—— 置信度可能系统性虚高；运行 `python tools/report_calibration.py` 查看分层"
+        )
+    else:
+        rep.ok(
+            f"置信度校准: 高置信度推翻率 {hi_r:.0%} ≤ 低置信度 {lo_r:.0%}（匹配）"
+        )
+
+
+def _check_dependency_map(root: str, rep: ValidationReport) -> None:
+    """★ C：DEPENDENCY_MAP = 派生物，与显式引用关系渲染结果一致。"""
+    rp = os.path.join(root, "DEPENDENCY_MAP.md")
+    if not os.path.exists(rp):
+        rep.err("DEPENDENCY_MAP.md 缺失——运行 `python tools/render_dependency_map.py --write`")
+        return
+    try:
+        from .depmap import render_dependency_map
+        expected = render_dependency_map(root).strip()
+    except Exception as e:  # noqa: BLE001
+        rep.err(f"DEPENDENCY_MAP 渲染失败: {e}")
+        return
+    actual = open(rp, encoding="utf-8").read().strip()
+    if actual == expected:
+        rep.ok("DEPENDENCY_MAP: 为派生物且与显式引用一致")
+    else:
+        rep.err(
+            "DEPENDENCY_MAP: 与引用关系派生物不一致——请运行 "
+            "`python tools/render_dependency_map.py --write` 重新生成"
+        )
+
+
+def _check_critical_numbers(root: str, rep: ValidationReport) -> None:
+    """★ C2：关键数字跨文件一致 —— 解析事实（组合数/一等奖概率）必须在
+    台账与速览文档中一致出现。
+
+    依据：tests/README「结论数字与 game.yaml 重算结果一致」暂缓项 ——
+    4.667e-08 出现在 FACTS/文档多处，一处改错现有校验不报警。
+    """
+    fp = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    if not os.path.exists(fp):
+        return
+    claim = ""
+    with open(fp, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:  # noqa: BLE001
+                continue
+            if d.get("id") == "F-0001" and d.get("status") != "superseded":
+                claim = d.get("claim") or ""
+                break
+    if not claim:
+        return
+    m_int = re.search(r"\d{1,3}(?:,\d{3})+", claim)      # 21,425,712
+    m_float = re.search(r"\d\.\d+e-\d+", claim)           # 4.667289469773513e-08
+    numbers = [m.group(0) for m in (m_int, m_float) if m]
+    if not numbers:
+        rep.ok("关键数字: F-0001 无可提取的解析数字，跳过")
+        return
+    bad: list[str] = []
+    for rel in ("AI_CONTEXT.md", "README.md"):
+        p = os.path.join(root, rel)
+        if not os.path.exists(p):
+            continue
+        text = open(p, encoding="utf-8").read()
+        for n in numbers:
+            if n not in text:
+                bad.append(f"{rel} 缺少 `{n}`（F-0001 有）")
+    if bad:
+        for b in bad:
+            rep.err(f"关键数字一致性: {b}")
+    else:
+        rep.ok(f"关键数字一致性: F-0001 的 {len(numbers)} 个解析数字"
+               f"在 AI_CONTEXT/README 一致出现")
+
+
+def validate_incremental(root: str | None = None) -> ValidationReport:
+    """★ F：增量校验 —— 只跑结构与派生物检查（新增文件场景最快路径）。
+
+    依据：IncrConsist —— 原子操作 + 分层不变量，校验范围收敛到受编辑邻域；
+    规模增长后全量 validate 不再是每步必跑项。
+    """
+    root = root or _ROOT
+    rep = ValidationReport()
+    _check_structure_completeness(root, rep)
+    _check_readme_tree_rendered(root, rep)
+    _check_ai_map_rendered(root, rep)
+    _check_flywheel_health(root, rep)
+    _check_dependency_map(root, rep)
+    validate_versions(root, rep)
+    return rep
+
+
 # ---------------------------------------------------------------- all
 
 def validate_all(repo_root: str | None = None, verbose: bool = False) -> ValidationReport:
@@ -1401,6 +1704,16 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     # 结构完整性（P1-2 根治）：受管文件双向登记 + README 目录树为派生物
     _check_structure_completeness(root, rep)
     _check_readme_tree_rendered(root, rep)
+
+    # 全局升级 r06 新增（P0-P4 批次落地后的机械护栏）
+    _check_ai_map_rendered(root, rep)           # P1 机器地图派生物
+    _check_ai_entry_completeness(root, rep)     # P2 入口完整性
+    _check_handoff_structure(root, rep)         # H 交接模板化
+    _check_compression_freshness(root, rep)     # I 压缩到期
+    _check_flywheel_health(root, rep)           # K 飞轮仪表盘
+    _check_calibration(root, rep)               # D1 置信度校准
+    _check_dependency_map(root, rep)            # C 依赖图
+    _check_critical_numbers(root, rep)          # C2 关键数字一致性
 
     # 协议文档存在性（软检查）
     docs = [

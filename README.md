@@ -91,6 +91,10 @@ python cli/main.py new-game <game_id>
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
 ├── README.md  v1.14     ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
+├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
+├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
+├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
+├── FLYWHEEL_HEALTH.md  v1.0      ← 飞轮健康度仪表盘（派生物，render_flywheel_health…
 ├── cli/
 │   └── main.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── docs/
@@ -172,6 +176,9 @@ python cli/main.py new-game <game_id>
 │       │   │   └── scripts/  ← 轮次脚本（7 个）
 │       │   └── round06/
 │       │       ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
+│       │       ├── research/
+│       │       │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
+│       │       │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
 │       │       └── scripts/  ← 轮次脚本（13 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
@@ -211,8 +218,11 @@ python cli/main.py new-game <game_id>
 │   ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   └── spc/
 │       ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── ai_map.py  —         ← AI_MAP 生成源（llms.txt 式机器地图）
 │       ├── api.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── depmap.py  —         ← 跨文件依赖图生成源（C）
 │       ├── evidence.py  —         ← ★ 证据锚定：sha256_file / fact_anchor / …
+│       ├── flywheel.py  —         ← 飞轮健康度统计 + 置信度校准（K/D1）
 │       ├── game.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
@@ -221,18 +231,26 @@ python cli/main.py new-game <game_id>
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
+│   ├── test_ai_readability.py  —         ← P1/P2/B/H/I 测试
 │   ├── test_claim_type.py  —         ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
 │   ├── test_core.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_cross_scope.py  —         ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
 │   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
+│   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── count_tests.py  —
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
+    ├── render_ai_map.py  —         ← AI_MAP.md 渲染器（--write 写回）
+    ├── render_dependency_map.py  —         ← DEPENDENCY_MAP.md 渲染器
+    ├── render_flywheel_health.py  —         ← FLYWHEEL_HEALTH.md 渲染器
     ├── render_readme_tree.py  —         ← 目录树渲染 CLI（--write 写回 README）
-    └── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    ├── render_task_brief.py  —         ← 下轮任务书生成器（B+G 价值评分）
+    ├── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    └── report_calibration.py  —         ← 置信度校准报告（D1）
 ```
 
 > **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
@@ -301,7 +319,7 @@ python cli/main.py new-game <game_id>
 | 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
-| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** 全绿（无需 pytest，共 **333** 项） |
+| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** + `test_flywheel.py` **20** + `test_ai_readability.py` **25** 全绿（无需 pytest，共 **378** 项） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**167 条**登记（A=66 B=60 C=13 D=28），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）
