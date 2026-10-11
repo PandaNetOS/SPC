@@ -79,21 +79,20 @@ def main() -> int:
         return 0
 
     new_lines = lines[:start] + ["```", new_tree, "```"]
-    # 在代码块后维护派生物注记（紧跟代码块结束行之后插入，若不存在）
+    # 注记维护：删除代码块后**所有**派生物注记行（历史上因前导空行导致
+    # 每次 --write 追加一个，累计 5 个重复），折叠邻接空行后统一插入一个。
     tail = lines[end + 1:]
-    idx = 0
-    while idx < len(tail) and tail[idx].strip().startswith(">"):
-        if "派生物" in tail[idx]:
-            tail[idx] = _DERIVED_NOTE
-            has_note = True
-            break
-        idx += 1
-    else:
-        has_note = False
-    if not has_note:
-        tail.insert(0, "")
-        tail.insert(1, _DERIVED_NOTE)
-    new_lines.extend(tail)
+    cleaned: list[str] = []
+    for ln in tail:
+        if "派生物" in ln:
+            continue
+        if cleaned and cleaned[-1].strip() == "" and ln.strip() == "":
+            continue  # 折叠连续空行
+        cleaned.append(ln)
+    while cleaned and cleaned[0].strip() == "":
+        cleaned.pop(0)
+    new_tail = ["", _DERIVED_NOTE, ""] + cleaned
+    new_lines.extend(new_tail)
     open(rp, "w", encoding="utf-8").write("\n".join(new_lines))
     print(f"✓ 已写回 README.md（目录树 {len(new_tree.splitlines())} 行 + 派生物注记）")
     return 0

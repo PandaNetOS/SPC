@@ -86,13 +86,13 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-├── pyproject.toml  v0.1.0  ← 包版本
-├── AI_CONTEXT.md  v1.5  ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
-├── VERSION_INDEX.md  v1.0  ← 版本索引（人读），权威源是 versions.json
+├── pyproject.toml  v0.1.0    ← 包版本
+├── AI_CONTEXT.md  v1.5      ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
+├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.14  ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
+├── README.md  v1.14     ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
 ├── cli/
-│   └── main.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   └── main.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── docs/
 │   ├── ARCHITECTURE.md  v1.1
 │   ├── CONSUMING.md  v1.1
@@ -105,143 +105,135 @@ python cli/main.py new-game <game_id>
 │   ├── README.md  v1.0
 │   ├── core/
 │   │   ├── README.md  v1.1
-│   │   ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   │   ├── evaluate.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   │   ├── features.py  —  ← 新增跨注原语 duplicate_ticket_count / dup…
-│   │   ├── game_util.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   │   ├── generate.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   │   ├── judge.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   │   ├── portfolio.py  —  ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
-│   │   └── ticket.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── evaluate.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── features.py  —         ← 新增跨注原语 duplicate_ticket_count / dup…
+│   │   ├── game_util.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── generate.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── judge.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   │   ├── portfolio.py  —         ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
+│   │   └── ticket.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── methodology/
 │   │   ├── MATH_BOUNDARY.md  v1.0
 │   │   └── STATISTICAL_DISCIPLINE.md  v1.0
 │   ├── protocol/
 │   │   ├── ITERATION_PROTOCOL.md  v1.1
-│   │   ├── MEMORY_PROTOCOL.md  v1.2  ← r03 框架迭代：新增 §1.7 claim_type 证据类型 + …
+│   │   ├── MEMORY_PROTOCOL.md  v1.2      ← r03 框架迭代：新增 §1.7 claim_type 证据类型 + …
 │   │   └── README.md  v1.0
 │   └── tools/
-│       ├── compress_memory.py  v1.0  ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
-│       ├── ingate.py  v1.0  ← 入库三闸门（filter/judge/manager，LSTM-MAS…
-│       └── memory.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── compress_memory.py  v1.0      ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
+│       ├── ingate.py  v1.0      ← 入库三闸门（filter/judge/manager，LSTM-MAS…
+│       └── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── games/
-│   ├── INDEX.md  v1.2  ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
+│   ├── INDEX.md  v1.2      ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
 │   ├── _template/
 │   │   ├── README.md  —
-│   │   ├── game.yaml  v2.0  ← 2026-10-11 与 dlt 同步升至 2.0（features …
+│   │   ├── game.yaml  v2.0      ← 2026-10-11 与 dlt 同步升至 2.0（features …
 │   │   ├── iterations/
 │   │   │   └── round01/
 │   │   │       └── TASK_BRIEF.md  —
 │   │   └── strategy/
-│   │       └── strategy.json  v2.0  ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
+│   │       └── strategy.json  v2.0      ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
 │   └── dlt/
-│       ├── game.yaml  v2.1  ← 跨注特征 3→5（新增 identical_ticket_count …
+│       ├── game.yaml  v2.1      ← 跨注特征 3→5（新增 identical_ticket_count …
 │       ├── iterations/
 │       │   ├── round02/
-│       │   │   ├── FINDINGS.md  v1.0  ← 整理入库轮发现
-│       │   │   ├── HANDOFF.md  v1.0  ← r02→r03 交接
+│       │   │   ├── FINDINGS.md  v1.0      ← 整理入库轮发现
+│       │   │   ├── HANDOFF.md  v1.0      ← r02→r03 交接
 │       │   │   ├── PRIORITY_TASKS.md  v1.0
-│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付
-│       │   │   ├── known_errors.md  v1.0  ← E1~E9 避坑手册
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
+│       │   │   ├── known_errors.md  v1.0      ← E1~E9 避坑手册
 │       │   │   ├── legacy_findings/
-│       │   │   │   ├── README.md  v1.0  ← 归档，设使用门槛
+│       │   │   │   ├── README.md  v1.0      ← 归档，设使用门槛
 │       │   │   │   ├── _round3_reference/
-│       │   │   │   │   └── round3_independent_review.html  v1.0  ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_deep_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_glm_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_main_report.md  v1.0  ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   └── round2_verify_analysis.txt  v1.0  ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   │   └── round3_independent_review.html  v1.0      ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_deep_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_glm_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   ├── round2_main_report.md  v1.0      ← 历史归档，设使用门槛（防锚定）
+│       │   │   │   └── round2_verify_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
 │       │   │   └── manifest.json  vdlt_full_2933
 │       │   ├── round03/
-│       │   │   ├── FINDINGS.md  v1.0  ← 复核轮发现（含自我纠错）
-│       │   │   ├── HANDOFF.md  v1.0  ← r03→r04 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付
+│       │   │   ├── FINDINGS.md  v1.0      ← 复核轮发现（含自我纠错）
+│       │   │   ├── HANDOFF.md  v1.0      ← r03→r04 交接
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
 │       │   │   ├── manifest.json  vdlt_full_2933
 │       │   │   └── scripts/  ← 轮次脚本（8 个）
 │       │   ├── round04/
 │       │   │   ├── FINDINGS.md  v1.0
 │       │   │   ├── HANDOFF.md  v1.0
-│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付（round04 执行完毕）
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round04 执行完毕）
 │       │   │   ├── manifest.json  —
 │       │   │   └── scripts/  ← 轮次脚本（8 个）
 │       │   ├── round05/
-│       │   │   ├── FINDINGS.md  v1.0  ← 投注方式数学层 + R-002 量化 + 时间因素证伪
-│       │   │   ├── HANDOFF.md  v1.0  ← r05→r06 交接；策略变更待用户批准
-│       │   │   ├── TASK_BRIEF.md  v1.0  ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
+│       │   │   ├── FINDINGS.md  v1.0      ← 投注方式数学层 + R-002 量化 + 时间因素证伪
+│       │   │   ├── HANDOFF.md  v1.0      ← r05→r06 交接；策略变更待用户批准
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
 │       │   │   ├── manifest.json  v1.0
 │       │   │   └── scripts/  ← 轮次脚本（7 个）
 │       │   └── round06/
-│       │       ├── TASK_BRIEF.md  v1.0  ← 由 round05 HANDOFF 转写（planned；T-201 …
+│       │       ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
 │       │       └── scripts/  ← 轮次脚本（13 个）
 │       ├── manifest_v4_source.json  —
-│       ├── rules_history.md  v1.1  ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
+│       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.4  ← r06：R-002 重构 + R-003 新增；§7 参考表格加超链接
+│           ├── STRATEGY_GUIDE.md  v1.4      ← r06：R-002 重构 + R-003 新增；§7 参考表格加超链接
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.3  ← r06（用户批准）：R-002 → exclude + 禁止完全相同号…
+│           ├── strategy.json  v1.3      ← r06（用户批准）：R-002 → exclude + 禁止完全相同号…
 │           └── strategy_simulation.py  —
 ├── memory/
-│   ├── INDEX.md  v1.0  ← 记忆层说明
+│   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
-│   │   ├── ACTIVE.md  —  ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.5  ← 32 条结论（F-0001~F-0032；F-0015/F-0007 …
-│   │   └── INDEX.md  v1.5  ← 派生物，由 cli index 生成（32 条）
+│   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
+│   │   ├── FACTS.jsonl  v1.5      ← 32 条结论（F-0001~F-0032；F-0015/F-0007 …
+│   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
-│   │   ├── round02.md  v1.0  ← 整理入库轮
-│   │   ├── round03.md  v1.0  ← 复核轮（含 1 次自我纠错）
+│   │   ├── round02.md  v1.0      ← 整理入库轮
+│   │   ├── round03.md  v1.0      ← 复核轮（含 1 次自我纠错）
 │   │   ├── round04.md  v1.0
-│   │   └── round05.md  v1.0  ← 叙事：R-002 量化不成立 + H-005 证伪
+│   │   └── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
 │   ├── lessons/
-│   │   └── LESSONS.md  v1.2  ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
+│   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
-│   │   └── ITERATION_SOP_v2.md  v1.1  ← 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道…
+│   │   └── ITERATION_SOP_v2.md  v1.1      ← 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道…
 │   └── workbench/
-│       ├── HYPOTHESES.md  v1.2  ← H-001~H-006；r04：H-004 被 F-0023 推翻；r…
-│       ├── OPEN_QUESTIONS.md  v1.4  ← 15 问，7 answered（Q-001/Q-002/Q-004 r…
-│       └── TODO.md  v1.6  ← r05 清算 T-011/T-202/T-205/T-206；新增 T…
+│       ├── HYPOTHESES.md  v1.2      ← H-001~H-006；r04：H-004 被 F-0023 推翻；r…
+│       ├── OPEN_QUESTIONS.md  v1.4      ← 15 问，7 answered（Q-001/Q-002/Q-004 r…
+│       └── TODO.md  v1.6      ← r05 清算 T-011/T-202/T-205/T-206；新增 T…
 ├── spec/
 │   ├── README.md  v1.0
 │   ├── VERSIONING.md  v1.2
-│   ├── fact.schema.json  —  ← v2.0：新增 confidence_grade（GRADE）/ ch…
-│   ├── game_config.schema.json  —  ← schema 自身无版本；约束 game_config.config_…
-│   ├── iteration.schema.json  —  ← schema 自身无版本；约束 iteration 结构
-│   ├── strategy.schema.json  —  ← schema 自身无版本；约束 strategy.schema_ver…
-│   └── version_index.schema.json  —  ← schema 自身无版本；约束 versions.index_vers…
+│   ├── fact.schema.json  —         ← v2.0：新增 confidence_grade（GRADE）/ ch…
+│   ├── game_config.schema.json  —         ← schema 自身无版本；约束 game_config.config_…
+│   ├── iteration.schema.json  —         ← schema 自身无版本；约束 iteration 结构
+│   ├── strategy.schema.json  —         ← schema 自身无版本；约束 strategy.schema_ver…
+│   └── version_index.schema.json  —         ← schema 自身无版本；约束 versions.index_vers…
 ├── src/
-│   ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   └── spc/
-│       ├── __init__.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│       ├── api.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│       ├── evidence.py  —  ← ★ 证据锚定：sha256_file / fact_anchor / …
-│       ├── game.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│       ├── memory.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│       ├── strategy.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│       ├── tree.py  —  ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —  ← v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环…
-│       └── versions.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── api.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── evidence.py  —         ← ★ 证据锚定：sha256_file / fact_anchor / …
+│       ├── game.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
+│       ├── validate.py  —         ← v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环…
+│       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
-│   ├── README.md  v1.5  ← 测试说明（自举计数：合计 333，含 test_structure 8）
-│   ├── test_claim_type.py  —  ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
-│   ├── test_core.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-│   ├── test_cross_scope.py  —  ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
-│   ├── test_evidence_anchor.py  —  ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
+│   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
+│   ├── test_claim_type.py  —         ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
+│   ├── test_core.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── test_cross_scope.py  —         ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
+│   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
 │   ├── test_shadow_game.py  v1.0
-│   └── test_structure.py  —  ← 结构完整性回归测试（P1-2 三道防线）
+│   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
-    ├── build_versions.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+    ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── count_tests.py  —
-    ├── inject_version_lines.py  —  ← 代码文件：不写文件内版本行（用 git blame）
-    ├── render_readme_tree.py  —  ← 目录树渲染 CLI（--write 写回 README）
-    └── render_version_index.py  —  ← 代码文件：不写文件内版本行（用 git blame）
+    ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    ├── render_readme_tree.py  —         ← 目录树渲染 CLI（--write 写回 README）
+    └── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ```
-
-> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
-
-> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
-
-> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
-
-> **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
 
 > **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
 

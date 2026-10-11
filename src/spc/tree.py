@@ -40,6 +40,7 @@ _TOP_ORDER = [
 ]
 
 _NOTE_MAX = 36
+_VER_COL = 8  # 版本列定宽（等宽字体下 ← 注释列对齐）
 
 
 def load_versions(root: str) -> dict:
@@ -140,10 +141,10 @@ def _render_lines(nodes: dict, prefix: str = "") -> list[str]:
             pad = name.ljust(max_w)
             ann = _annotation(node)
             note = _note(node)
-            tail = f"  {ann}" if ann else ""
+            row = f"{prefix}{branch}{pad}  {ann.ljust(_VER_COL)}"
             if note:
-                tail += f"  {note}"
-            lines.append(f"{prefix}{branch}{pad}{tail}")
+                row += f"  {note}"
+            lines.append(row.rstrip())
     return lines
 
 
@@ -183,10 +184,10 @@ def render_tree(entries: list[dict]) -> str:
             pad = name.ljust(max_w)
             ann = _annotation(node)
             note = _note(node)
-            tail = f"  {ann}" if ann else ""
+            row = f"{branch}{pad}  {ann.ljust(_VER_COL)}"
             if note:
-                tail += f"  {note}"
-            lines.append(f"{branch}{pad}{tail}")
+                row += f"  {note}"
+            lines.append(row.rstrip())
     return "\n".join(lines)
 
 
