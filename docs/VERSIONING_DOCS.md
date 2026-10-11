@@ -1,6 +1,6 @@
-﻿# VERSIONING_DOCS.md — 文档与内容版本规则
+# VERSIONING_DOCS.md — 文档与内容版本规则
 
-> **版本**：`1.4` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件与 `spec/VERSIONING.md` 的关系：**
@@ -199,19 +199,14 @@ versions.json  ──生成──>  VERSION_INDEX.md   （人读，claude 用）
 ### 6.2 一轮迭代结束时的固定动作
 
 ```bash
-# 1. 活文档轮次对齐（r14.2 新增；必须在渲染之前，见 §6.6）
-python tools/bump_iteration.py --write --to rNN
-# 2. 更新 versions.json（改 CONTENT_VERSIONS 或直接编辑 JSON）
-# 3. 重新生成索引
+# 1. 更新 versions.json（改 CONTENT_VERSIONS 或直接编辑 JSON）
+# 2. 重新生成索引
 python tools/render_version_index.py --write
-# 4. 版本一致性检查
+# 3. 版本一致性检查
 python cli/main.py versions
-# 5. 全量校验（含版本检查）
+# 4. 全量校验（含版本检查）
 python cli/main.py validate --all -v
 ```
-
-> 实际收尾直接跑 `python tools/finish_round.py`，它已按
-> `bump → render_* → inject → validate` 的正确顺序编排。
 
 ### 6.3 下游新鲜度：`consumes` 声明（r03 新增）
 
@@ -277,48 +272,9 @@ _COUNT_LABEL_FILES = ("games/INDEX.md", "AI_CONTEXT.md", "README.md", "memory/IN
 | **改内容但不升版本** | **索引记录的是错的 —— 比没有索引更坏** |
 | **引用了结论却不写 `consumes`** | 上游结论被推翻时下游沉默，无人察觉（见 §6.3） |
 | **速览表里的结论数不随台账更新** | 读者拿到过期计数（见 §6.4） |
-| **先 render/inject、再改 versions.json 的轮次** | 旧轮次被刷进文件头并自洽化，校验全绿但头部仍过期（见 §6.6） |
 | 把轮次编码进版本号 | 假升级（见 §2） |
 | 给 D 级数据加版本号 | 与 SHA256 双重记账 |
 | 版本行写成其他格式 | 正则提取失败，一致性检查失效 |
-
-### 6.6 轮次停滞：`follows_current` 声明（r14.2 新增）
-
-**版本号自洽 ≠ 轮次跟得上。** —— 与 §6.3 同族的**第二个**真实事故。
-
-r14 实测：`README.md` 头部写 `轮次 r12`，而权威 `current_iteration = r14`，
-**validate 104 项全绿**。原因不是检查写错，是**检查缺了一类判据**：
-
-```
-校验器只做「文件内版本行 ↔ versions.json 条目」的同源双向比对，
-current_iteration 只作为 stats 打印、从不参与判定。
-  条目停在 r12
-    → inject_version_lines 照抄 r12 写进文件头
-      → 两边一致 → 全绿
-抓得住 A≠B，抓不住 A、B 一起过时。
-```
-
-**机制**：活文档在 `versions.json` 显式声明 `follows_current: true`，
-校验器即要求其 `iteration` **必须等于** `current_iteration`，否则**报错**（不是 warning —— warning 可被忽略）。
-
-| 该标 `true` | 不该标 |
-|---|---|
-| 入口 / 速览 / 索引 / 策略 / 事实库等**每轮必更或必复核**者：`README.md`、`AI_CONTEXT.md`、`AI_MAP.md`、`DEPENDENCY_MAP.md`、`FLYWHEEL_HEALTH.md`、`VERSION_INDEX.md`、`versions.json`、`OPEN_QUESTIONS.md`、`TODO.md`、`FACTS.jsonl`、`STRATEGY_GUIDE.md`、`strategy.json` | 轮次产物（`roundNN/*`）与 `memory/journal/` —— 它们的轮次**天生属于产出那一轮**，强制对齐会抹掉真实信息；长期稳定的文档 —— 标了会每轮被迫假升级 |
-
-**为什么不做「落后 N 轮就告警」的泛化规则**：实测一次刷出 26 条（限 `.md` 时）
-／69 条（含代码）**无操作价值**的告警，会淹没真正的错误信号
-（本仓库常态仅十余条警告）。防停滞**只认显式声明**。
-
-**修复端**：
-
-```bash
-python tools/bump_iteration.py --write            # 对齐到当前轮
-python tools/bump_iteration.py --write --to r15   # 收尾时同时推进 current_iteration
-```
-
-⚠️ **顺序不可颠倒**：`bump_iteration → render_* → inject_version_lines → validate`。
-颠倒会先把旧轮次刷进文件头、再改索引，旧值被自洽化后照样全绿 —— 正是本次事故的形态。
-`tools/finish_round.py` 已按此顺序编排。
 
 ---
 

@@ -914,13 +914,6 @@ def validate_versions(repo_root: str | None = None,
         rep.ok(f"framework_version = {s.get('framework_version')}，"
                f"index_version = {s.get('index_version')}，"
                f"project_version = {s.get('project_version')}")
-        # ★ 轮次停滞（r14.2）：current_iteration 首次作为判据而非仅供打印
-        n_follow = (s.get("follows_current_ok") or 0) + (s.get("follows_current_lagging") or 0)
-        if n_follow:
-            rep.ok(
-                f"轮次停滞: {n_follow} 个活文档（follows_current）均对齐 "
-                f"{s.get('current_iteration')}"
-            )
 
     # 顶层版本必须等于 pyproject 的 project.version（单一事实来源）
     _check_project_version(root, s.get("project_version"), rep)
@@ -1792,21 +1785,13 @@ def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
 
 
 def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
-    """★ S（r11 根治 / r14.2 泛化）：策略文档随轮同步 —— 最近一次 strategy_updated=true 的收尾轮，
-    该彩种 STRATEGY_GUIDE.md 与 strategy.json 的登记轮次必须 >= 该轮，否则说明策略文档漏更新。
+    """★ S（r11 根治）：策略文档随轮同步 —— 最近一次 strategy_updated=true 的收尾轮，
+    STRATEGY_GUIDE.md 与 strategy.json 的登记轮次必须 >= 该轮，否则说明策略文档漏更新。
 
     背景（用户多次追问「策略文档漏更新」）：validate 此前只做版本行一致性
     （文件内 == 登记 == 索引），策略文档不 bump 时三者一致、照样全绿 ——
     轮次推进后策略依据变化（如 r11 的 F-0042/F-0043）没有机械拦截。
     本检查把「策略文档版本 >= 最新策略更新轮」变成硬性校验。
-
-    r14.2 泛化：目标**不再硬编码两个字面量路径**，改由 versions.json 的登记派生
-    （`games/<game>/strategy/` 下的说明书与契约）—— 新增彩种自动纳入护栏。
-    这是同一个病灶的第二次复发：r11 只治了当时想到的两个文件，
-    README/AI_CONTEXT 等落在护栏外，r14 才暴露。护栏必须由登记驱动，不能由清单驱动。
-
-    已标 `follows_current=true` 的条目在此跳过：它们由更严的「轮次停滞检查」
-    （iteration 必须 == current_iteration）覆盖，避免同一个问题报两遍。
     """
     it_root = os.path.join(root, "games")
     if not os.path.isdir(it_root):
@@ -1842,41 +1827,25 @@ def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
     except Exception:
         return
     entries = v.get("entries", [])
-    by_path = {x.get("path"): x for x in entries}
-
-    # 未登记检查：有 strategy_updated 收尾轮的彩种，两份策略文件必须在索引里
-    for g, latest in sorted(latest_by_game.items()):
-        for fn, label in (("STRATEGY_GUIDE.md", "策略说明书 STRATEGY_GUIDE.md"),
-                          ("strategy.json", "策略契约 strategy.json")):
-            path = f"games/{g}/strategy/{fn}"
-            if path not in by_path:
-                rep.err(f"策略同步: {label}（{path}）未登记 versions.json，无法核对轮次")
-
-    # 轮次判据：目标由登记派生（r14.2），不再硬编码路径清单
-    re_target = re.compile(r"^games/([^/]+)/strategy/(STRATEGY_GUIDE\.md|strategy\.json)$")
     checked = 0
-    for e in entries:
-        path = e.get("path") or ""
-        m = re_target.match(path)
-        if not m:
-            continue
-        if e.get("follows_current"):
-            continue  # 已由更严的轮次停滞检查覆盖，不重复报
-        g, fn = m.group(1), m.group(2)
-        latest = latest_by_game.get(g)
-        if not latest:
-            continue  # 该彩种尚无 strategy_updated 的收尾轮
-        label = ("策略说明书 STRATEGY_GUIDE.md" if fn.endswith(".md")
-                 else "策略契约 strategy.json")
+    for g, latest in sorted(latest_by_game.items()):
         want = f"r{latest:02d}"
-        checked += 1
-        it = e.get("iteration") or ""
-        if it != want:
-            rep.err(
-                f"策略同步: {label}（{path}）登记轮次 {it} 落后于最新策略更新轮 {want}"
-                f" —— round{latest:02d} strategy_updated=true，策略依据有变化，"
-                f"请同步该轮证据并 bump 登记"
-            )
+        for path, label in (
+            (f"games/{g}/strategy/STRATEGY_GUIDE.md", "策略说明书 STRATEGY_GUIDE.md"),
+            (f"games/{g}/strategy/strategy.json", "策略契约 strategy.json"),
+        ):
+            e = next((x for x in entries if x.get("path") == path), None)
+            if not e:
+                rep.err(f"策略同步: {label} 未登记 versions.json，无法核对轮次")
+                continue
+            checked += 1
+            it = e.get("iteration") or ""
+            if it != want:
+                rep.err(
+                    f"策略同步: {label} 登记轮次 {it} 落后于最新策略更新轮 {want}"
+                    f" —— round{latest:02d} strategy_updated=true，策略依据有变化，"
+                    f"请同步该轮证据并 bump 登记"
+                )
     if checked:
         rep.ok(f"策略同步: {checked} 个策略文档版本均已跟上最新策略更新轮")
 

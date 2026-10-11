@@ -1,7 +1,7 @@
 # AI_MAP —— SPC 机器可读地图
 
 
-> **版本**：`1.0` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；
@@ -87,9 +87,8 @@
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
-- `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
-- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
+- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
@@ -103,9 +102,8 @@
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
-- `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
-- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
+- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
@@ -128,7 +126,6 @@
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
 - `tests/test_open_questions_consistency.py` — Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法
 - `tests/test_research_lib.py` — research_lib 原语测试（已知分布验证可复现/正确性/样本不足不硬报）
-- `tests/test_round_stall.py` — 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不误伤 / bump_iteration 能修复；…
 - `tests/test_shadow_game.py`
 - `tests/test_structure.py` — 结构完整性回归测试（P1-2 三道防线）
 

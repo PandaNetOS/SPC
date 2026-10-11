@@ -3,16 +3,12 @@
 
 把 SOP §8 收尾清单里可机械化的步骤一键化：
   §8.2  rehash --strategy（FACTS 变更后证据摘要重算）
+  §8.3  validate --all（必须全绿，否则退出 1 并列出错误）
   §8.5  count_tests --inject（T-045：测试计数自动注入 tests/README.md）
-  §8.7  bump_iteration --write（r14.2：活文档轮次对齐 current_iteration）
-  §8.9  render_readme_tree / render_version_index / render_ai_map /
-        render_dependency_map / render_flywheel_health --write
-        + inject_version_lines --write
-  §8.3  validate --all（**渲染后终检**：派生物都是文件，放在渲染前会漏检）
+  §8.6  render_readme_tree --write（README 目录树 = 派生物，禁手改）
+  §8.9  render_version_index / render_ai_map / render_dependency_map /
+        render_flywheel_health --write + inject_version_lines --write
   四件套存在性检查（FINDINGS / HANDOFF / manifest / journal）
-
-⚠️ 顺序不可颠倒：bump_iteration → render_* → inject_version_lines → validate。
-   颠倒会先把旧轮次刷进文件头、再改索引，旧值被自洽化后照样全绿（r14.2 事故形态）。
 
 不可自动化（脚本只检查/提示，不代做）：
   - 三闸门 Add（研究轮执行，结论由 Agent 撰写）
@@ -104,28 +100,26 @@ def main() -> int:
     problems = []
 
     # 1. rehash（FACTS 变更后证据摘要重算）
-    print("\n[1/7] rehash --strategy（证据摘要重算）")
+    print("\n[1/6] rehash --strategy（证据摘要重算）")
     if dry:
         print("    （dry-run 跳过）")
     elif _run("cli/main.py", ["rehash", "--strategy"]) != 0:
         problems.append("rehash --strategy 失败")
 
     # 2. 测试计数注入（T-045：文档计数 = 实跑结果）
-    print("\n[2/7] count_tests --inject（tests/README.md 计数自举注入）")
+    print("\n[2/6] count_tests --inject（tests/README.md 计数自举注入）")
     if dry:
         print("    （dry-run 跳过）")
     elif _run("tools/count_tests.py", ["--inject"]) != 0:
         problems.append("count_tests --inject 失败（有测试失败）")
 
-    # 3. 轮次对齐（r14.2：先改索引，再渲染 —— 顺序反了会把旧值自洽化）
-    print(f"\n[3/7] bump_iteration --write（活文档轮次对齐 r{rnd:02d}）")
-    if dry:
-        print("    （dry-run 跳过）")
-    elif _run("tools/bump_iteration.py", ["--write", "--to", f"r{rnd:02d}"]) != 0:
-        problems.append("bump_iteration --write 失败")
+    # 3. validate --all（全绿才继续）
+    print("\n[3/6] validate --all（契约校验，必须全绿）")
+    if _run("cli/main.py", ["validate", "--all"]) != 0:
+        problems.append("validate --all 未全绿（修复后重跑）")
 
     # 4. 渲染流水线（派生物全部重新生成）
-    print("\n[4/7] 渲染流水线（README 树 / VERSION_INDEX / AI_MAP / 依赖图 / 飞轮 + 版本行注入）")
+    print("\n[4/6] 渲染流水线（README 树 / VERSION_INDEX / AI_MAP / 依赖图 / 飞轮 + 版本行注入）")
     if dry:
         print("    （dry-run 跳过）")
     else:
@@ -138,13 +132,8 @@ def main() -> int:
         if rc != 0:
             problems.append("inject_version_lines --write 失败")
 
-    # 5. validate --all（渲染后终检：派生物本身也是文件，渲染前校验会漏）
-    print("\n[5/7] validate --all（渲染后终检，必须全绿）")
-    if _run("cli/main.py", ["validate", "--all"]) != 0:
-        problems.append("validate --all 未全绿（修复后重跑）")
-
-    # 6. 四件套存在性
-    print("\n[6/7] 四件套检查")
+    # 5. 四件套存在性
+    print("\n[5/6] 四件套检查")
     missing = _check_four_pieces(_ROOT, rnd)
     if missing:
         problems.append(f"四件套缺失：{', '.join(missing)}（研究轮撰写后重跑）")
@@ -152,8 +141,8 @@ def main() -> int:
     else:
         print("    ✓ FINDINGS / HANDOFF / manifest / journal 均存在")
 
-    # 7. 批准门提示
-    print("\n[7/7] 批准门提示（用户确认后才提交推送）")
+    # 6. 批准门提示
+    print("\n[6/6] 批准门提示（用户确认后才提交推送）")
     print(_git_summary(_ROOT))
 
     if problems:

@@ -224,47 +224,6 @@ def verify_versions(repo_root: str) -> dict:
             else:
                 n_c_ok += 1
 
-    # ---- 1.5 轮次停滞检查（r14.2 根治）：活文档 iteration 必须 == current_iteration
-    #
-    # 背景（README 头部版本行滞后事故的通用形态）：此前全部检查都是
-    # 「文件内版本行 ↔ 索引条目」的**同源双向比对**，而 current_iteration
-    # 只作为 stats 打印、从不参与判定。于是索引条目一旦过期，
-    # inject_version_lines.py 会照抄过期值写进文件头 —— 两边一致、照样全绿。
-    # 校验器抓得住 A≠B，抓不住 A、B 一起过时。这里补上后者。
-    cur = d.get("current_iteration")
-    n_follow_ok = 0
-    n_follow_lag = 0
-    if cur:
-        for e in entries:
-            path = e.get("path") or ""
-            it = e.get("iteration") or ""
-            if not it:
-                continue
-
-            if e.get("follows_current"):
-                # 活文档：硬性判据，落后即错（不是 warning —— warning 可被忽略）
-                if it == cur:
-                    n_follow_ok += 1
-                else:
-                    n_follow_lag += 1
-                    errors.append(
-                        f"{path}: 轮次停滞 —— 活文档登记轮次 {it} 落后于 "
-                        f"current_iteration {cur}（follows_current=true）。"
-                        f"跑 `python tools/bump_iteration.py --write` 对齐；"
-                        f"若内容有实质变更，请同时提升 content_version"
-                    )
-                continue
-
-            # 未标 follows_current 的条目**不做**「落后 N 轮」的泛化告警。
-            #
-            # 实测（r14.2）：这样做会一次性刷出 26 条（限 .md 后）／69 条（含代码）
-            # 无操作价值的告警 —— 稳定文档的 iteration 语义本就是「创建/上次产出轮次」，
-            # 落后不等于错；轮次产物（roundNN/*）与 journal 更是天生属于产出那一轮。
-            # 警告一旦失去可操作性，就会淹没真正的错误信号（本仓库常态仅十余条警告）。
-            # 故防停滞**只认显式声明**：想要护栏就在 versions.json 标 follows_current=true。
-    else:
-        warnings.append("versions.json 缺 current_iteration，跳过轮次停滞检查")
-
     # ---- 2. VERSION_INDEX.md 必须是 versions.json 的最新派生物
     vi = os.path.join(repo_root, "VERSION_INDEX.md")
     if not os.path.exists(vi):
@@ -366,8 +325,6 @@ def verify_versions(repo_root: str) -> dict:
         "readme_version_tags_bad": n_readme_bad,
         "readme_version_tags_skip": n_readme_skip,
         "missing_files": n_missing,
-        "follows_current_ok": n_follow_ok,
-        "follows_current_lagging": n_follow_lag,
         "index_version": d.get("index_version"),
         "framework_version": fv,
         "project_version": d.get("project_version"),

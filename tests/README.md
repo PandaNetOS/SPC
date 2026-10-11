@@ -18,8 +18,7 @@
 | `tests/test_consumes_completeness.py` | **6**（全绿） | ★ 下游声明完整性：逆向检查（正文引用未声明即拦截）真的会拦 |
 | `tests/test_meta_variables.py` | **44**（全绿） | ★ schema 1.3 元数据：convenience/experience/psychology 结构 + 红线恒值 + CLI 展示 |
 | `tests/test_open_questions_consistency.py` | **12**（全绿） | ★ Q 状态一致性：解析归一化 / 头部计数滞后 / 标题缺 ✅ / 优先级表 active 含已清偿 / 状态词非法 |
-| `tests/test_research_lib.py` | **ERR** | 无法解析输出（exit=1）：'(most recent call last):\n  File "D:\\PNOS\\SPC\\tests/test_research_lib.py", line 28, in <module>\n    import numpy as np  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named \'numpy\'\n' |
-| `tests/test_round_stall.py` | **11**（全绿） | ★ 轮次停滞（r14.2）：同源自洽陷阱必须被识破 / 已对齐与未声明活文档不误伤 / bump_iteration 能修复 |
-| **合计** | **456**（全绿） | 无需 pytest，直接 `python tests/test_*.py` |
+| `tests/test_research_lib.py` | **18**（全绿） | ★ 研究资本化（Y）：bootstrap/比率/Wilson 原语已知分布验证 + 分期稳健性判定 + 样本不足不硬报 |
+| **合计** | **463**（全绿） | 无需 pytest，直接 `python tests/test_*.py` |
 
 **计数自举
