@@ -91,7 +91,8 @@ def collect_metrics(root: str | None = None) -> dict:
     }
 
 
-def render_health(metrics: dict, round_label: str = "r06") -> str:
+def render_health(metrics: dict, round_label: str = "r06",
+                  root: str | None = None) -> str:
     """渲染 FLYWHEEL_HEALTH.md（派生物）。"""
     m = metrics
     rows = []
@@ -109,10 +110,15 @@ def render_health(metrics: dict, round_label: str = "r06") -> str:
         conf_rows.append(f"| {c}★ | {cell['total']} | {cell['dead']} | {rate:.0%} |")
     conf_txt = "\n".join(conf_rows) or "| — | 0 | 0 | — |"
     type_rows = "\n".join(f"| {k} | {v} |" for k, v in m["by_type"].items())
+    # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
+    vl = ""
+    if root:
+        from .versions import registered_version, version_line
+        cv, it, upd = registered_version(root, "FLYWHEEL_HEALTH.md")
+        if cv:
+            vl = "\n\n" + version_line(cv, it, upd) + "\n"
     return f"""# FLYWHEEL_HEALTH —— 迭代飞轮健康度
-
-> **版本**：`1.0` ｜ 轮次 `{round_label}` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
-
+{vl}
 > **本文件是派生物**：由 `tools/render_flywheel_health.py` 从 FACTS.jsonl 统计生成；
 > 结论变更后运行 `--write` 同步，勿手改。｜ 统计轮 {round_label}
 

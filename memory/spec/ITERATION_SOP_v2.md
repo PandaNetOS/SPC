@@ -1,6 +1,7 @@
-# ITERATION_SOP_v2 —— 证据门控式迭代规范（v2.0）
+﻿# ITERATION_SOP_v2 —— 证据门控式迭代规范（v2.0）
 
-> **版本**：`1.2` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > 本文件是 SPC 自我迭代的 v2.0 操作规范：**记忆分层、入库门控、
 > 矛盾双通道、一致性不变量、重校准与记忆压缩**。由 v1（`framework/protocol/ITERATION_PROTOCOL.md`）
@@ -109,3 +110,8 @@ revision 必须落到 status ∈ {superseded, refuted}（validate 强制）。
    （证据升级、口径注记、表述精确化）—— 增强型证据不会自动触发版本 bump，
    需要人工确认并同步 bump；正文新增 `F-xxxx` 引用时，同步登记 consumes
    （validate 逆向检查会拦截遗漏，见 `src/spc/validate.py::_check_consumes_completeness`）。
+9. **统一注入版本行**：所有渲染（render_readme_tree / render_version_index /
+   render_ai_map / render_flywheel_health / render_dependency_map --write）之后，
+   运行 `python tools/inject_version_lines.py --write` 把登记版本统一写进各文档头部。
+   **版本行一律由注入器/生成器从 versions.json 写，禁止手写**；改了登记就重跑注入，
+   validate 的版本一致性检查会拦截漏跑（`src/spc/versions.py`）。

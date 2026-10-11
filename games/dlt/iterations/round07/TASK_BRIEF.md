@@ -1,8 +1,7 @@
-# TASK_BRIEF —— round07 任务书
+﻿# TASK_BRIEF —— round07 任务书
 
 > **版本**：`1.0` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
-> 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成
-> （派生物草稿，人工确认后可改）。评分依据：TODO 条目 value / P 级 / ★首推。
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ## 本轮候选（按评分排序 TOP3）
 

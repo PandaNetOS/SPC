@@ -22,7 +22,7 @@ from spc.flywheel import collect_metrics, render_health  # noqa: E402
 def main() -> int:
     write = "--write" in sys.argv
     rp = os.path.join(_ROOT, "FLYWHEEL_HEALTH.md")
-    new = render_health(collect_metrics(_ROOT))
+    new = render_health(collect_metrics(_ROOT), root=_ROOT)
 
     if os.path.exists(rp):
         old = open(rp, encoding="utf-8").read()

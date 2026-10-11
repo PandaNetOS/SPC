@@ -25,6 +25,7 @@ if __name__ == "__main__":
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
+sys.path.insert(0, os.path.join(_ROOT, "src"))
 
 # 版本行标记（用于识别已有版本行，便于幂等更新）
 MARK = "> **版本**："
@@ -39,10 +40,15 @@ SKIP = {
 
 
 def make_line(cv: str, it: str, updated: str) -> str:
-    return (
-        f"{MARK}`{cv}` ｜ 轮次 `{it}` ｜ 更新 {updated} ｜ 权威源 `VERSION_INDEX.md`\n"
-        f"> 版本规则见 `docs/VERSIONING_DOCS.md`"
-    )
+    """版本行格式单一来源 = src/spc/versions.py::version_line。"""
+    try:
+        from spc.versions import version_line
+        return version_line(cv, it, updated)
+    except ImportError:  # 无 src 环境的退化：本地同格式兜底
+        return (
+            f"{MARK}`{cv}` ｜ 轮次 `{it}` ｜ 更新 {updated} ｜ 权威源 `VERSION_INDEX.md`\n"
+            f"> 版本规则见 `docs/VERSIONING_DOCS.md`"
+        )
 
 
 def inject(text: str, line: str) -> tuple[str, str]:
@@ -105,14 +111,16 @@ def main() -> int:
     stats = {"inserted": 0, "updated": 0, "unchanged": 0, "no-h1": 0}
     for e in sorted(targets, key=lambda x: x["path"]):
         p = os.path.join(_ROOT, e["path"])
-        text = open(p, encoding="utf-8").read()
+        # utf-8-sig：README 等文件带 BOM，普通 utf-8 会让 `# ` 标题识别失败
+        text = open(p, encoding="utf-8-sig").read()
         line = make_line(e["content_version"], e.get("iteration") or "", e.get("updated_at") or "")
         ntext, act = inject(text, line)
         stats[act] = stats.get(act, 0) + 1
         icon = {"inserted": "+", "updated": "~", "unchanged": "=", "no-h1": "!"}.get(act, "?")
         print(f"  {icon} {e['path']}" + ("" if act != "no-h1" else "   ⚠️ 无 H1 标题"))
         if args.write and act in ("inserted", "updated"):
-            with open(p, "w", encoding="utf-8", newline="\n") as f:
+            # 写回保持 utf-8-sig（保留/兼容 BOM）
+            with open(p, "w", encoding="utf-8-sig", newline="\n") as f:
                 f.write(ntext)
 
     print()

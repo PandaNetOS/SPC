@@ -1,5 +1,5 @@
 {
-  "index_version": "1.8",
+  "index_version": "2.0",
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
   "current_iteration": "r07",
@@ -956,9 +956,9 @@
       "path": "memory/spec/ITERATION_SOP_v2.md",
       "level": "A",
       "kind": "doc",
-      "content_version": "1.2",
+      "content_version": "1.3",
       "iteration": "r07",
-      "note": "r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）",
+      "note": "r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1006,11 +1006,11 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.14",
-      "iteration": "r06",
+      "content_version": "1.15",
+      "iteration": "r07",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）、32 条结论、159 条登记"
+      "note": "仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）+ r07 修复轮（下游声明完整性）；35 条结论、212 条登记"
     },
     {
       "path": "VERSION_INDEX.md",

@@ -152,8 +152,13 @@ def render_dependency_map(root: str | None = None) -> str:
     lines = [
         "# DEPENDENCY_MAP —— 跨文件依赖图",
         "",
-        "> **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`",
-        "",
+    ]
+    # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
+    from .versions import registered_version, version_line
+    cv, it, upd = registered_version(root, "DEPENDENCY_MAP.md")
+    if cv:
+        lines += ["", version_line(cv, it, upd), ""]
+    lines += [
         "> **本文件是派生物**：由 `tools/render_dependency_map.py` 从 strategy.json /",
         "> FACTS.jsonl / game.yaml / versions.json 显式引用关系生成；改动后运行",
         "> `--write` 同步，勿手改。",

@@ -1,6 +1,8 @@
 # DEPENDENCY_MAP —— 跨文件依赖图
 
+
 > **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_dependency_map.py` 从 strategy.json /
 > FACTS.jsonl / game.yaml / versions.json 显式引用关系生成；改动后运行

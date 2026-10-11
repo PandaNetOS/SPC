@@ -25,6 +25,7 @@ import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
+sys.path.insert(0, os.path.join(_ROOT, "src"))
 
 _BASE_BY_PRIORITY = {"P0": 100, "P1": 80, "P2": 60, "P3": 40, "P4": 20}
 _PRIORITY_RE = re.compile(r"^##\s*(P[0-4])")
@@ -77,10 +78,20 @@ def _render_brief(root: str, items: list[dict], rnd: int) -> str:
     lines = [
         f"# TASK_BRIEF —— round{rnd:02d} 任务书",
         "",
-        f"> **版本**：`1.0` ｜ 轮次 `r{rnd:02d}` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`",
         "> 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成",
         "> （派生物草稿，人工确认后可改）。评分依据：TODO 条目 value / P 级 / ★首推。",
         "",
+    ]
+    # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
+    try:
+        from spc.versions import registered_version, version_line
+        path = f"games/dlt/iterations/round{rnd:02d}/TASK_BRIEF.md"
+        cv, it, upd = registered_version(root, path)
+        if cv:
+            lines += ["", version_line(cv, it, upd), ""]
+    except ImportError:  # noqa: S110
+        pass
+    lines += [
         "## 本轮候选（按评分排序 TOP3）",
         "",
         "| 排序 | 任务 | 优先级 | 评分 | 说明 |",

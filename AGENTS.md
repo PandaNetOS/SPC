@@ -1,6 +1,7 @@
-# AGENTS.md —— SPC 操作规则（给 AI 的极简入口）
+﻿# AGENTS.md —— SPC 操作规则（给 AI 的极简入口）
 
 > **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 SPC：彩票投注策略研究框架（自我迭代），研究结论输出为机器可读策略规则。
 **深度入口先读 `AI_CONTEXT.md`**（约 10 分钟）；机器地图 `AI_MAP.md`；

@@ -142,8 +142,13 @@ def render_ai_map(entries: list[dict], root: str | None = None) -> str:
     out = [
         "# AI_MAP —— SPC 机器可读地图",
         "",
-        "> **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`",
-        "",
+    ]
+    # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
+    from .versions import registered_version, version_line
+    cv, it, upd = registered_version(root or os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "AI_MAP.md")
+    if cv:
+        out += ["", version_line(cv, it, upd), ""]
+    out += [
         "> **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；",
         "> 新增文件登记 versions.json 后运行 `--write` 同步，勿手改。",
         "",

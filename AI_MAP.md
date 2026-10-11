@@ -1,6 +1,8 @@
 # AI_MAP —— SPC 机器可读地图
 
+
 > **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；
 > 新增文件登记 versions.json 后运行 `--write` 同步，勿手改。
@@ -12,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-005 证伪、32 条结论
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）、32 条结论、1…
+- `README.md` — 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）+ r07 修复轮…
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -62,7 +64,7 @@
 - `memory/journal/round06.md` — r06 叙事（元层轮）
 - `memory/journal/round07.md` — r07 叙事（研究轮）
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
-- `memory/spec/ITERATION_SOP_v2.md` — r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）
+- `memory/spec/ITERATION_SOP_v2.md` — r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写）
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
 - `memory/workbench/TODO.md` — T-014/T-015/T-016 已交付

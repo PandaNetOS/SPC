@@ -1,6 +1,8 @@
 # FLYWHEEL_HEALTH —— 迭代飞轮健康度
 
+
 > **版本**：`1.0` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_flywheel_health.py` 从 FACTS.jsonl 统计生成；
 > 结论变更后运行 `--write` 同步，勿手改。｜ 统计轮 r06

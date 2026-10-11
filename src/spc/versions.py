@@ -29,6 +29,33 @@ _VERSION_LINE_RE = re.compile(
     re.MULTILINE,
 )
 
+# 版本行是仓库级**单一格式来源**：所有生成器（ai_map/depmap/flywheel/
+# render_task_brief）与 tools/inject_version_lines.py 都必须用它，
+# 禁止在任何地方手写或硬编码版本行格式。
+VERSION_LINE_MARK = "> **版本**："
+
+
+def version_line(cv: str, it: str, updated: str) -> str:
+    """生成标准版本行（两行：版本行 + 版本规则见）。"""
+    return (
+        f"{VERSION_LINE_MARK}`{cv}` ｜ 轮次 `{it}` ｜ 更新 {updated} ｜ 权威源 `VERSION_INDEX.md`\n"
+        f"> 版本规则见 `docs/VERSIONING_DOCS.md`"
+    )
+
+
+def registered_version(root: str, path: str) -> tuple[str | None, str, str]:
+    """从 versions.json 取某登记条目的 (content_version, iteration, updated_at)。
+
+    供各生成器写头部版本行使用（版本行单一来源 = 登记）。
+    """
+    try:
+        d = load_versions(root)
+        e = next(x for x in d["entries"] if x["path"] == path)
+        return (e.get("content_version"), e.get("iteration") or "",
+                e.get("updated_at") or "")
+    except (VersionsError, StopIteration):
+        return None, "", ""
+
 
 class VersionsError(Exception):
     """版本索引相关错误。"""

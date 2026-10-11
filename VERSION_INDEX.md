@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`1.8` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r07` ｜ **生成日期**：2026-10-11
+**索引版本**：`2.0` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r07` ｜ **生成日期**：2026-10-11
 
 ---
 
@@ -157,7 +157,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `memory/journal/round06.md` | `1.0` | `r06` | 2026-10-11 | active | r06 叙事（元层轮） |
 | `memory/journal/round07.md` | `1.0` | `r07` | 2026-10-11 | active | r07 叙事（研究轮） |
 | `memory/lessons/LESSONS.md` | `1.2` | `r04` | 2026-10-11 | active | L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例） |
-| `memory/spec/ITERATION_SOP_v2.md` | `1.2` | `r07` | 2026-10-11 | active | r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查） |
+| `memory/spec/ITERATION_SOP_v2.md` | `1.3` | `r07` | 2026-10-11 | active | r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写） |
 | `memory/workbench/HYPOTHESES.md` | `1.2` | `r07` | 2026-10-11 | active | H-001~H-006（H-006 refuted） |
 | `memory/workbench/OPEN_QUESTIONS.md` | `1.4` | `r07` | 2026-10-11 | active | 11 问，5 answered（Q-001/002/004/013/014） |
 | `memory/workbench/TODO.md` | `1.6` | `r07` | 2026-10-11 | active | T-014/T-015/T-016 已交付 |
@@ -167,7 +167,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | 路径 | 版本 | 轮次 | 状态 | 备注 |
 |---|---|---|---|---|
 | `AI_CONTEXT.md` | `1.5` | `r05` | active | 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-005 证伪、32 条结论 |
-| `README.md` | `1.14` | `r06` | active | 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）、32 条结论、159 条登记 |
+| `README.md` | `1.15` | `r07` | active | 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）+ r07 修复轮（下游声明完整性）；35 条结论、212 条登记 |
 | `VERSION_INDEX.md` | `1.0` | `r02` | active | 版本索引（人读），权威源是 versions.json |
 | `cli/main.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `docs/ARCHITECTURE.md` | `1.1` | `r03` | active |  |

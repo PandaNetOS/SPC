@@ -1,6 +1,6 @@
-﻿# SPC
+﻿﻿# SPC
 
-> **版本**：`1.14` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -57,6 +57,10 @@
 
 ```bash
 # 依赖
+
+> **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 pip install pyyaml jsonschema numpy pandas
 
 # 仓库概览
@@ -90,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.14     ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
+├── README.md  v1.15     ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -212,7 +216,7 @@ python cli/main.py new-game <game_id>
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
-│   │   └── ITERATION_SOP_v2.md  v1.2      ← r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）
+│   │   └── ITERATION_SOP_v2.md  v1.3      ← r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：in…
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…

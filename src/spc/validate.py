@@ -1606,7 +1606,7 @@ def _check_flywheel_health(root: str, rep: ValidationReport) -> None:
         return
     try:
         from .flywheel import collect_metrics, render_health
-        expected = render_health(collect_metrics(root)).strip()
+        expected = render_health(collect_metrics(root), root=root).strip()
     except Exception as e:  # noqa: BLE001
         rep.err(f"FLYWHEEL_HEALTH 渲染失败: {e}")
         return
