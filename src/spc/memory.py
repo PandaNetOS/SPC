@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.memory — 记忆层接口
+"""spc.memory — 记忆层接口
 
 本模块是 `framework/tools/memory.py` 的再导出 + 面向仓库的便捷封装。
 
 分工：
   - `framework/tools/memory.py` —— 通用实现（彩种无关，可被外部复用）
-  - `src/smartpickcore/memory.py` —— 本仓库的绑定（自动定位仓库根）
+  - `src/spc/memory.py` —— 本仓库的绑定（自动定位仓库根）
 
 用法：
-    from smartpickcore.memory import Memory
+    from spc.memory import Memory
     mem = Memory()               # 自动定位仓库根
     mem.load_facts()
 """

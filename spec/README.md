@@ -58,7 +58,7 @@ python cli/main.py validate --all
 或直接：
 
 ```bash
-python -c "from src.smartpickcore.validate import validate_all; validate_all()"
+python -c "from src.SPC.validate import validate_all; validate_all()"
 ```
 
 校验器会检查：schema 合规、外键引用存在（`evidence_refs` → `FACTS.jsonl`）、

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.strategy — 策略生成与消费
+"""spc.strategy — 策略生成与消费
 
 两个方向：
   1. **生成**（本仓库内部）：`build_strategy(game)` 从 FACTS + game.yaml 组装 strategy.json
@@ -12,13 +12,13 @@
 
 用法：
     # 外部消费者
-    from smartpickcore.strategy import load_strategy
+    from spc.strategy import load_strategy
     st = load_strategy("dlt")
     for r in st["rules"]:
         print(r["statement"])
 
     # 内部生成
-    from smartpickcore.strategy import build_strategy
+    from spc.strategy import build_strategy
     st = build_strategy("dlt")
 """
 from __future__ import annotations
@@ -238,7 +238,7 @@ def build_strategy(game: str, repo_root: str | None = None,
         "n_draws"
     ) and f"{game}_full_{cfg['data']['raw']['n_draws']}" or st.get("data_version")
     st["rules_epoch"] = (cfg.get("prize_model") or {}).get("current_epoch")
-    st["generated_by"] = generator or st.get("generated_by") or "smartpickcore"
+    st["generated_by"] = generator or st.get("generated_by") or "spc"
 
     prov = st.setdefault("provenance", {})
     if iteration:

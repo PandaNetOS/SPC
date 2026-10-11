@@ -2,7 +2,7 @@
 """sync_r05_versions.py — 同步工作台文件版本行 + README 树标注 + versions.json iteration。"""
 import io, sys, os, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-ROOT = r"D:\PNOS\smartpickcore"
+ROOT = r"D:\PNOS\SPC"
 
 # 1) 文件头版本行
 patch = {

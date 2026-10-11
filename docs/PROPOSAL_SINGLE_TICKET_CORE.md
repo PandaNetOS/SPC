@@ -200,7 +200,7 @@ def spread_penalty(cfg, tickets, rules) -> float:
 **依赖方向（不可逆）**：
 
 ```
-cli/  →  src/smartpickcore/  →  framework/core/  →  (无依赖)
+cli/  →  src/spc/  →  framework/core/  →  (无依赖)
                                       ↑
                             games/<id>/game.yaml（仅作数据输入）
 ```
@@ -217,7 +217,7 @@ cli/  →  src/smartpickcore/  →  framework/core/  →  (无依赖)
 | `spec/game_config.schema.json` | `features[]` 增加 `primitive`/`args`，`formula` 降为可选的人类可读注释 | ⚠️ **是** |
 | `spec/strategy.schema.json` | `predicate` 加 pattern 约束 | ✅ 否（收紧，现有值合规） |
 | `framework/core/*.py` | **新建** 5 个模块 | 新增 |
-| `src/smartpickcore/api.py` | 加 `SmartPick.evaluate()/judge()/pick()` | 新增 |
+| `src/spc/api.py` | 加 `SmartPick.evaluate()/judge()/pick()` | 新增 |
 | `cli/main.py` | 加 `pick` / `eval` 命令 | 新增 |
 | `docs/CONSUMING.md` | 改写 §"predicate 是给人看的字符串" | ⚠️ 是（立场变更） |
 | `spec/VERSIONING.md` | 记 `game_config` 主版本 2.0 | 新增条目 |

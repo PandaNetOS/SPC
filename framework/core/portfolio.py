@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.portfolio — 一组注（**跨注层一等公民**）
+"""spc.core.portfolio — 一组注（**跨注层一等公民**）
 
 ## 为什么需要这个模块
 

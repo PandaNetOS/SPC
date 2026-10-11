@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/version_index.schema.json",
+  "$id": "https://github.com/PandaNetOS/SPC/spec/version_index.schema.json",
   "title": "VersionIndex（仓库版本索引 versions.json）",
   "description": "全仓库内容版本登记表。权威源是 versions.json；VERSION_INDEX.md 是它的人读派生物。用于让 AI 与工具一望即知『每份结论性内容的版本、产出轮次、更新日』。",
   "type": "object",
@@ -33,7 +33,7 @@
     "project_version": {
       "type": ["string", "null"],
       "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
-      "description": "★ smartpickcore 顶层（release）版本 = 包版本，源自 pyproject.toml 的 project.version。代表『发布给用户用的整体版本』，与 framework_version（框架演进）／index_version（索引结构）解耦。校验器会核对它 == pyproject 的 project.version。"
+      "description": "★ SPC 顶层（release）版本 = 包版本，源自 pyproject.toml 的 project.version。代表『发布给用户用的整体版本』，与 framework_version（框架演进）／index_version（索引结构）解耦。校验器会核对它 == pyproject 的 project.version。"
     },
     "levels": {
       "type": "object",

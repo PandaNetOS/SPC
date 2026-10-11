@@ -1,6 +1,6 @@
 {
   "index_version": "1.2",
-  "repo": "PandaNetOS/smartpickcore",
+  "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
   "current_iteration": "r05",
   "framework_version": "1.1",
@@ -841,7 +841,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/__init__.py",
+      "path": "src/spc/__init__.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -850,7 +850,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/api.py",
+      "path": "src/spc/api.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -859,7 +859,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/evidence.py",
+      "path": "src/spc/evidence.py",
       "level": "B",
       "kind": "library",
       "iteration": "r03",
@@ -867,7 +867,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/game.py",
+      "path": "src/spc/game.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -876,7 +876,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/memory.py",
+      "path": "src/spc/memory.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -885,7 +885,7 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/strategy.py",
+      "path": "src/spc/strategy.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -894,16 +894,17 @@
       "status": "active"
     },
     {
-      "path": "src/smartpickcore/validate.py",
+      "path": "src/spc/validate.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
+      "note": "v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环检测 + grade/change_type 校验 + 动态锚点重校准检查 + 策略-证据一致性",
+      "iteration": "r06",
+      "status": "active",
+      "updated_at": "2026-10-11"
     },
     {
-      "path": "src/smartpickcore/versions.py",
+      "path": "src/spc/versions.py",
       "level": "B",
       "kind": "library",
       "content_version": null,
@@ -1093,8 +1094,10 @@
       "path": "spec/fact.schema.json",
       "level": "C",
       "kind": "schema",
-      "note": "schema 自身无版本；约束 fact.schema_version",
-      "status": "active"
+      "note": "v2.0：新增 confidence_grade（GRADE）/ change_type（update-revision）/ valid_until / recalibrate_every",
+      "status": "active",
+      "iteration": "r06",
+      "updated_at": "2026-10-11"
     },
     {
       "path": "spec/game_config.schema.json",
@@ -1437,6 +1440,85 @@
       "content_version": "1.0",
       "iteration": "r06",
       "note": "探查原语与结论原文",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/tools/ingate.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "入库三闸门（filter/judge/manager，LSTM-MAS 依据）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "framework/tools/compress_memory.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/spec/ITERATION_SOP_v2.md",
+      "level": "A",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/facts/ACTIVE.md",
+      "level": "D",
+      "kind": "report",
+      "iteration": "r06",
+      "note": "当前有效结论清单（与台账分离，compress_memory 生成）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/add_v2_fields.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "FACTS v2.0 字段迁移（grade/change_type/有效期）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/smoke_ingate.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "三闸门自测（缺陷→拒绝 / 合法→入库）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/probe_v2.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "v2.0 实施前的 FACTS/结构探查",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round06/scripts/sync_v2_versions.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r06",
+      "note": "v2.0 版本登记与 README 同步",
       "updated_at": "2026-10-11",
       "status": "active"
     }

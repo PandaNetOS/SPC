@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "smartpickcore"
+name = "spc"
 version = "0.1.0"
 description = "PandaNetOS 智能选号核心 —— 通用彩票投注策略研究框架 + 策略输出"
 readme = "README.md"
@@ -37,7 +37,7 @@ dev = ["jsonschema>=4.0", "pyyaml>=6.0", "numpy>=1.24", "pandas>=2.0"]
 # 保留上面的 pytest 仅供未来接入 CI 时使用。
 
 [project.scripts]
-smartpickcore = "cli.main:main"
+spc = "cli.main:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -45,8 +45,8 @@ py-modules = []
 
 [tool.setuptools.packages.find]
 where = ["src", "framework"]
-include = ["smartpickcore*", "core*"]
+include = ["spc*", "core*"]
 
 # 非 Python 资源随包分发：契约与彩种配置是运行期必需的
 [tool.setuptools.package-data]
-smartpickcore = ["py.typed"]
+spc = ["py.typed"]

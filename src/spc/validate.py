@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.validate — 契约校验器
+"""spc.validate — 契约校验器
 
 校验四类对象（受 spec/*.schema.json 约束）：
   1. game.yaml            → game_config.schema.json
@@ -16,7 +16,7 @@
   - supersedes ↔ superseded_by 双向一致
 
 用法：
-    from smartpickcore.validate import validate_all
+    from spc.validate import validate_all
     errs = validate_all()
     if errs: ...
 """
@@ -220,6 +220,120 @@ def validate_game(game: str, repo_root: str | None = None,
     return rep
 
 
+# ---------------------------------------------------------------- v2.0 增强
+
+# confidence(0-5) → GRADE grade 的映射（仅允许因降级理由低于映射值，不得高于）
+GRADE_FROM_CONFIDENCE = {5: "high", 4: "high", 3: "moderate", 2: "low", 1: "low"}
+GRADE_ORDER = {"insufficient": 0, "low": 1, "moderate": 2, "high": 3}
+
+
+def check_v2_fields(ft: dict, fid: str, rep: ValidationReport) -> None:
+    """v2.0 字段检查：confidence_grade / change_type / valid_until / recalibrate_every。
+
+    - confidence_grade 必须在枚举内，且不得『高于』confidence 数值的映射档
+      （只能因 GRADE 五维降级理由低于映射值 —— 不允许自我拔高）。
+    - change_type 必须在枚举内（initial / update / revision）。
+    - valid_until 格式为 YYYY-MM-DD 或 null。
+    - recalibrate_every 为 ≥1 整数或 null。
+    """
+    conf = ft.get("confidence")
+    grade = ft.get("confidence_grade")
+    if grade is None:
+        rep.err(f"FACT {fid}: 缺 confidence_grade（v2.0 必填）")
+    elif grade not in GRADE_ORDER:
+        rep.err(f"FACT {fid}: confidence_grade={grade!r} 不在枚举内"
+                f"（high/moderate/low/insufficient）")
+    elif conf is not None and grade in GRADE_ORDER and conf in GRADE_FROM_CONFIDENCE:
+        allowed_max = GRADE_ORDER[GRADE_FROM_CONFIDENCE[conf]]
+        if GRADE_ORDER[grade] > allowed_max:
+            rep.err(
+                f"FACT {fid}: confidence_grade={grade!r} 高于 confidence={conf}"
+                f" 的映射档 {GRADE_FROM_CONFIDENCE[conf]!r}"
+                f" —— 只允许因降级理由低于映射值，不允许自我拔高"
+            )
+
+    ct = ft.get("change_type")
+    if ct is None:
+        rep.err(f"FACT {fid}: 缺 change_type（v2.0 必填，initial/update/revision）")
+    elif ct not in ("initial", "update", "revision"):
+        rep.err(f"FACT {fid}: change_type={ct!r} 不在枚举内"
+                f"（initial=首立 / update=世界变了走重校准 / revision=信念错了走取代）")
+    if ct == "revision" and ft.get("status") not in ("superseded", "refuted"):
+        rep.err(f"FACT {fid}: change_type=revision 但 status={ft.get('status')!r}"
+                f"（revision 必须落到 superseded / refuted）")
+
+    vu = ft.get("valid_until")
+    if vu is not None and not re.match(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$", str(vu)):
+        rep.err(f"FACT {fid}: valid_until={vu!r} 格式非法（应为 YYYY-MM-DD 或 null）")
+
+    re_ = ft.get("recalibrate_every")
+    if re_ is not None and (not isinstance(re_, int) or re_ < 1):
+        rep.err(f"FACT {fid}: recalibrate_every={re_!r} 应为 ≥1 整数或 null")
+    if re_ is not None and ft.get("status") == "superseded":
+        rep.warn(f"FACT {fid}: 已 superseded 但仍标 recalibrate_every —— "
+                 f"失效结论无需重校准，建议清空")
+
+
+def current_iteration_round(root: str) -> int:
+    """从 games/<game>/iterations/ 目录推断当前轮号（roundNN → NN）。"""
+    it_dir = os.path.join(root, "games")
+    best = 0
+    if os.path.isdir(it_dir):
+        for g in os.listdir(it_dir):
+            d = os.path.join(it_dir, g, "iterations")
+            if not os.path.isdir(d):
+                continue
+            for name in os.listdir(d):
+                m = re.match(r"^round(\d{2})$", name)
+                if m:
+                    best = max(best, int(m.group(1)))
+    return best
+
+
+def check_recalibration(ft: dict, fid: str, root: str, rep: ValidationReport) -> None:
+    """v2.0 重校准检查：动态锚点结论 established_in + N 轮后须重验锚点。
+
+    对应 Katsuno & Mendelzon 的 update 通道：奖池/封顶/E6 锚点随开奖变化，
+    结论本身没错、但支撑它的数字会过时 —— 过期应被看见（warning），
+    由轮次收尾时统一走『重校准流程』而非静默沿用。
+    """
+    n = ft.get("recalibrate_every")
+    if not n:
+        return
+    est = ft.get("established_in") or ""
+    m = re.match(r"^round(\d{2})$", est)
+    if not m:
+        return
+    est_round = int(m.group(1))
+    cur = current_iteration_round(root)
+    if cur - est_round >= n:
+        rep.warn(
+            f"FACT {fid}: 动态锚点结论已 {cur - est_round} 轮未重校准"
+            f"（established_in={est}，周期 {n} 轮，当前 round{cur:02d}）"
+            f" —— 请核验奖池/封顶/锚点数值是否仍成立；"
+            f"成立则维持并重记，否则走 update 通道（标 change_type=update，旧记录保留）"
+        )
+
+
+def check_supersede_cycles(by_id: dict[str, dict], rep: ValidationReport) -> None:
+    """INV3 全局一致性：取代链（supersedes →）不得成环。
+
+    若 A supersedes B 且 B 的取代链最终回到 A，双向一致性检查也会通过，
+    但整条链自相矛盾 —— 环的存在意味着『谁取代谁』不可判定。
+    """
+    for fid, ft in by_id.items():
+        seen: set[str] = set()
+        cur: str | None = fid
+        while cur:
+            if cur in seen:
+                chain = " → ".join(seen | {cur})
+                rep.err(f"FACT {fid}: 取代链成环 [{chain}] —— supersedes 关系自相矛盾")
+                break
+            seen.add(cur)
+            nxt = by_id[cur].get("supersedes")
+            cur = nxt if nxt in by_id else None
+
+
 # ---------------------------------------------------------------- facts
 
 # ★ claim_type：结论的『证据类型』。判据是『它会在什么情况下变错』，
@@ -412,6 +526,12 @@ def validate_facts(repo_root: str | None = None,
         # ★ claim_type 结构性约束
         check_claim_type(ft, fid, rep)
 
+        # ★ v2.0 字段：grade / change_type / valid_until / recalibrate_every
+        check_v2_fields(ft, fid, rep)
+
+        # ★ v2.0 重校准：动态锚点结论按轮数到期检查（update 通道）
+        check_recalibration(ft, fid, root, rep)
+
     # 双向取代一致性
     for fid, ft in by_id.items():
         sb, ss = ft.get("superseded_by"), ft.get("supersedes")
@@ -438,6 +558,9 @@ def validate_facts(repo_root: str | None = None,
                 )
         if ft.get("status") == "superseded" and not sb:
             rep.err(f"FACT {fid}: status=superseded 但未填 superseded_by")
+
+    # ★ INV3：取代链无环
+    check_supersede_cycles(by_id, rep)
 
     dist: dict[str, int] = {}
     for ft in facts:
@@ -509,8 +632,13 @@ def validate_strategy(game: str, repo_root: str | None = None,
             f"{bd.get('optimizable_target')!r}，只能是 'expected_bonus_given_win'"
         )
 
-    # evidence_refs 外键
+    # evidence_refs 外键 + INV2（v2.0：策略不得建立在被推翻的结论上）
     fact_ids = load_fact_ids(root)
+    try:
+        from .evidence import load_facts  # noqa: PLC0415
+        fact_status = {f["id"]: f.get("status") for f in load_facts(root)}
+    except Exception:  # noqa: BLE001
+        fact_status = {}
     for rule in st.get("rules", []):
         rid = rule.get("id", "?")
         refs = rule.get("evidence_refs") or []
@@ -519,6 +647,21 @@ def validate_strategy(game: str, repo_root: str | None = None,
         for r in refs:
             if r not in fact_ids:
                 rep.err(f"strategy[{game}].{rid}: evidence_refs 指向不存在的结论 {r}")
+                continue
+            st_ = fact_status.get(r)
+            if st_ in ("superseded", "refuted"):
+                rep.err(
+                    f"strategy[{game}].{rid}: evidence_refs 指向已被推翻的结论 {r}"
+                    f"（status={st_}）—— INV2：策略规则不得建立在被取代/证伪的结论上，"
+                    f"应改引其取代者（superseded_by）或更新规则"
+                )
+        # ★ P1-3 策略-证据一致性：每条规则至少 1 条 established 支撑
+        active = [r for r in refs if fact_status.get(r) == "established"]
+        if not active and refs:
+            rep.err(
+                f"strategy[{game}].{rid}: 引用集合中无 established 结论"
+                f"（{refs}）—— 策略不得只建立在 tentative/失效证据上"
+            )
         evi = rule.get("expected_value_impact") or {}
         if evi.get("changes_win_probability") is not False:
             rep.err(

@@ -12,7 +12,7 @@
 用法：
     from framework.tools.memory import Memory
 
-    mem = Memory("D:/PNOS/smartpickcore")
+    mem = Memory("D:/PNOS/spc")
     mem.load_facts()
     mem.add_fact({...})                   # 追加新结论
     mem.supersede("F-0007", "F-0006")     # 建立取代关系（双向）

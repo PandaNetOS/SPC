@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core — 框架计算核心（**彩种无关**）
+"""spc.core — 框架计算核心（**彩种无关**）
 
 ## 本包的铁律
 
@@ -11,7 +11,7 @@
 ✓ 只从传入的 cfg（= game.yaml 解析结果）读取参数
 ```
 
-`src/smartpickcore/game.py` 已在做「由 `machine.zones` 机械算 T」。
+`src/spc/game.py` 已在做「由 `machine.zones` 机械算 T」。
 本包把同一思路**从号码空间级下沉到单注级**：
 
 ```
@@ -35,7 +35,7 @@
 ## 依赖方向
 
 ```
-cli/  →  src/smartpickcore/  →  framework/core/  →  (stdlib)
+cli/  →  src/spc/  →  framework/core/  →  (stdlib)
                                       ↑
                           games/<id>/game.yaml（仅作数据输入）
 ```

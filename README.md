@@ -1,4 +1,4 @@
-# smartpickcore
+﻿# SPC
 
 > **版本**：`1.14` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -86,7 +86,7 @@ python cli/main.py new-game <game_id>
 ## 目录结构
 
 ```
-├── pyproject.toml          v0.1.0   ← 顶层版本（release）= smartpickcore 整体版本，源自 project.version
+├── pyproject.toml          v0.1.0   ← 顶层版本（release）= SPC 整体版本，源自 project.version
 ├── AI_CONTEXT.md          v1.4   ← 单一入口。AI 与人都从这里进
 ├── VERSION_INDEX.md       v1.0   ← 版本总索引（派生物，AI 先读这里）
 ├── versions.json          v1.0   ← 版本权威源（所有版本字段的唯一事实来源）
@@ -125,7 +125,7 @@ python cli/main.py new-game <game_id>
 │   │   └── STATISTICAL_DISCIPLINE.md
 │   └── tools/
 │       └── memory.py                 ← 记忆读写库（彩种无关）
-├── src/smartpickcore/            ← 库代码（8 模块）
+├── src/spc/            ← 库代码（8 模块）
 │   ├── __init__.py
 │   ├── game.py                     ← 彩种加载
 │   ├── memory.py                   ← 结论 / FACTS 读写
@@ -205,7 +205,7 @@ python cli/main.py new-game <game_id>
 ```
 
 > **版本号标注规则**：`vX.Y` = 该文件当前 `content_version`；`—` = 该文件不单独版本化
-> （B 级 `.py` 只登记索引）。例外：`pyproject.toml` 的 `v0.1.0` 标的是 **smartpickcore 整体 release 版本**（`project_version`），不是 `content_version`。完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)。
+> （B 级 `.py` 只登记索引）。例外：`pyproject.toml` 的 `v0.1.0` 标的是 **SPC 整体 release 版本**（`project_version`），不是 `content_version`。完整清单见 [`VERSION_INDEX.md`](VERSION_INDEX.md)。
 >
 > **文件名本身不带版本号** —— 版本号在**文件头部版本行**与**本索引**里维护。
 > 原因：改名会让所有指向它的链接失效、`git log` 追不到历史。详见
@@ -265,11 +265,11 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿** |
+| 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
 | `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **325** 项） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**159 条**登记（A=59 B=60 C=13 D=27），版本行全部一致 |
+| 版本体系 | ✅ A/B/C/D 四级分区，**167 条**登记（A=66 B=60 C=13 D=28），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）
 

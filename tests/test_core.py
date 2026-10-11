@@ -442,7 +442,7 @@ def test_versions() -> None:
     section("9. 版本索引一致性")
 
     import re as _re
-    from smartpickcore.versions import (
+    from spc.versions import (
         VersionsError,
         load_versions,
         verify_versions,
@@ -511,7 +511,7 @@ def test_versions() -> None:
     declared = [e for e in d["entries"] if e.get("consumes")]
     check(len(declared) >= 1, f"至少 1 个条目声明了 consumes（实有 {len(declared)} 个）")
 
-    from smartpickcore.validate import load_fact_ids
+    from spc.validate import load_fact_ids
     fact_ids = load_fact_ids(_ROOT)
     dangling: list[str] = []
     for e in declared:
@@ -526,7 +526,7 @@ def test_versions() -> None:
     # 且对声明为 historical 的正当沿革引用不告警（避免噪音淹没真实问题）。
     import json as _json
     import tempfile, os as _os
-    from smartpickcore.validate import (
+    from spc.validate import (
         _check_consumes_freshness,
         _check_readme_tree_versions,
         ValidationReport,
@@ -596,7 +596,7 @@ def test_versions() -> None:
     check(not rep_tree_ok.errors, "目录树标注一致时不报错")
 
     # ★ 速览计数机制（r03 新增）：手工速览表的「N 条结论」必须等于台账条数
-    from smartpickcore.validate import _check_summary_counts
+    from spc.validate import _check_summary_counts
 
     cnt = _FakeReport()
     _check_summary_counts(_ROOT, cnt)
@@ -627,7 +627,7 @@ def test_versions() -> None:
 # ================================================================ 主流程
 
 def main() -> int:
-    print("smartpickcore — 框架核心测试")
+    print("spc — 框架核心测试")
     print(f"仓库根: {_ROOT}")
     print(f"game.yaml: dlt（config_version {CFG.get('config_version')}）")
 

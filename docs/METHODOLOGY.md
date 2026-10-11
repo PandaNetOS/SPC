@@ -1,4 +1,4 @@
-# smartpickcore — 方法论文档
+# SPC — 方法论文档
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`

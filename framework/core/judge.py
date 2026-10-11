@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.judge — `machine_rule.predicate` 的受限 DSL 求值器
+"""spc.core.judge — `machine_rule.predicate` 的受限 DSL 求值器
 
 ## 这个模块存在的理由
 

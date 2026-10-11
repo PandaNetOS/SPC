@@ -20,7 +20,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                     "..", "..", "..", "..", ".."))
 sys.path.insert(0, os.path.join(ROOT, "src"))
-from smartpickcore.evidence import evidence_digest   # noqa: E402
+from spc.evidence import evidence_digest   # noqa: E402
 
 ST = os.path.join(ROOT, "games", "dlt", "strategy", "strategy.json")
 FACTS = os.path.join(ROOT, "memory", "facts", "FACTS.jsonl")

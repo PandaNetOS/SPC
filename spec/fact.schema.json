@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/fact.schema.json",
+  "$id": "https://github.com/PandaNetOS/SPC/spec/fact.schema.json",
   "title": "Fact（结论台账条目）",
   "description": "一条可追溯、可被推翻的研究结论。FACTS.jsonl 每行一条。这是仓库记忆层的权威源：任何策略规则若要引用证据，必须外键指向本 schema 的 id。",
   "type": "object",
@@ -53,6 +53,26 @@
       "type": "string",
       "maxLength": 400,
       "description": "为何是这一档。建议写清楚是『解析可证』『观测+CI』还是『模型估计』——三者不可混淆。"
+    },
+    "confidence_grade": {
+      "type": "string",
+      "enum": ["high", "moderate", "low", "insufficient"],
+      "description": "★ v2.0 新增。GRADE 式证据置信度（简化版），由 confidence 数值映射并允许人工按五维降级微调：5→high、4→high、3→moderate、2→low、1→low（证据不足且明确的标 insufficient）。五维降级因素（GRADE/Balshem 2011）：偏倚风险（如 nocap/cap 双口径）、不精确（样本小）、不一致、间接性、发表偏倚。validate 会检查该值在映射允许区间内（只能因降级理由低于映射值，不得高于）。"
+    },
+    "change_type": {
+      "type": "string",
+      "enum": ["initial", "update", "revision"],
+      "description": "★ v2.0 新增（Katsuno & Mendelzon 1991：更新≠修订）。initial=首次确立；update=『世界变了』（奖池/E6 锚点/封顶等动态锚点重校准，旧记录保留为历史、不代表信念错了）；revision=『信念错了』（被证伪或取代，走 superseded/refuted）。二者流程不同：update 触发重校准，revision 触发取代链。"
+    },
+    "valid_until": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "★ v2.0 新增。显式过期日（可选）：依赖动态锚点（奖池/封顶/锚点值）的结论到该日后自动视为待重校准（validate 报 warning）。不依赖动态锚点的结论填 null。"
+    },
+    "recalibrate_every": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "★ v2.0 新增。动态锚点类结论的重校准周期（轮数）：每 N 轮需重验锚点数值是否仍成立（validate 按 established_in + N 与当前轮比较报 warning）。不依赖动态锚点的结论填 null。"
     },
     "category": {
       "type": "string",

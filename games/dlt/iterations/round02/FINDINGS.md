@@ -185,8 +185,8 @@ cd games/dlt/strategy && python strategy_simulation.py
 | 脚本 | 产出 | 状态 |
 |---|---|---|
 | `framework/tools/memory.py` | 记忆读写库 | ✅ 可运行 |
-| `src/smartpickcore/validate.py` | 契约校验器 | ✅ 可运行 |
-| `src/smartpickcore/game.py` | 号码空间计算 | ✅ 可运行（T=21,425,712 验证通过） |
+| `src/spc/validate.py` | 契约校验器 | ✅ 可运行 |
+| `src/spc/game.py` | 号码空间计算 | ✅ 可运行（T=21,425,712 验证通过） |
 | `cli/main.py` | CLI（9 个命令） | ✅ 全部可运行 |
 | `games/dlt/data/tools/*.py` | v4 统计脚本（路径已修正） | ⚠️ 未在本轮重跑（依赖完整统计环境） |
 | `games/dlt/strategy/strategy_simulation.py` | v4 模拟脚本（路径需修正） | ⚠️ 未在本轮重跑 |

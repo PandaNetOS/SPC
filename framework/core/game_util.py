@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.game_util — 由 game.yaml 的 machine 段驱动的基础计算
+"""spc.core.game_util — 由 game.yaml 的 machine 段驱动的基础计算
 
 **彩种无关**：不出现任何号码池常量、区名、特征名。
 一切从传入的 cfg 读取。
 
-与 `src/smartpickcore/game.py` 的区别：
+与 `src/spc/game.py` 的区别：
 
-| | `src/smartpickcore/game.py` | 本模块 |
+| | `src/spc/game.py` | 本模块 |
 |---|---|---|
 | 职责 | **装载** `game.yaml` + 最小结构校验 + schema 校验入口 | **纯计算**：区定义解析、编号空间、特征声明解析 |
 | 依赖 | 需要 PyYAML 读文件 | 只吃 dict，可用性更广 |

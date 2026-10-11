@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "game": "dlt",
   "generated_at": "2026-10-11",
-  "generated_by": "smartpickcore-cli/0.1.0",
+  "generated_by": "spc-cli/0.1.0",
   "data_version": "dlt_full_2933",
   "rules_epoch": "E6",
   "disclaimer": {

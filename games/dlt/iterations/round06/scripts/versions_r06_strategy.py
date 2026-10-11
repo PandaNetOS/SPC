@@ -14,7 +14,7 @@
 """
 import io, sys, os, json, re
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-ROOT = r"D:\PNOS\smartpickcore"
+ROOT = r"D:\PNOS\SPC"
 TODAY = "2026-10-11"
 
 # ---- 1. versions.json

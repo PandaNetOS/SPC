@@ -319,7 +319,7 @@ def main() -> int:
 
     out = {
         "index_version": "1.0",
-        "repo": "PandaNetOS/smartpickcore",
+        "repo": "PandaNetOS/SPC",
         "generated_at": TODAY,
         "current_iteration": "r03",
         "framework_version": FRAMEWORK_VERSION,

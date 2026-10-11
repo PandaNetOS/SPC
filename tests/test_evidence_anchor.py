@@ -30,7 +30,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
-from smartpickcore.evidence import (  # noqa: E402
+from spc.evidence import (  # noqa: E402
     ANCHOR_FIELDS,
     evidence_digest,
     fact_anchor,
@@ -38,7 +38,7 @@ from smartpickcore.evidence import (  # noqa: E402
     sha256_file,
     sha256_text,
 )
-from smartpickcore.validate import (  # noqa: E402
+from spc.validate import (  # noqa: E402
     ValidationReport,
     check_source_anchor,
     validate_facts,

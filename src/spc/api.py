@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.api — 高层门面
+"""spc.api — 高层门面
 
 面向两类用户的统一入口：
 

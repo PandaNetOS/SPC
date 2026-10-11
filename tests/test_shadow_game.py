@@ -80,8 +80,8 @@ from core.game_util import (  # noqa: E402
     zone_keys,
 )
 from core.judge import PredicateError  # noqa: E402
-from smartpickcore import validate as V  # noqa: E402
-from smartpickcore.game import (  # noqa: E402
+from spc import validate as V  # noqa: E402
+from spc.game import (  # noqa: E402
     compute_space,
     list_games,
     load_game_config,
@@ -493,7 +493,7 @@ def test_iron_law() -> None:
 
     packages = [
         os.path.join(_ROOT, "framework", "core"),
-        os.path.join(_ROOT, "src", "smartpickcore"),
+        os.path.join(_ROOT, "src", "spc"),
     ]
     strs: set[str] = set()
     ints: set[int] = set()
@@ -510,7 +510,7 @@ def test_iron_law() -> None:
         "front_sum", "back_sum", "front_span",
     }
     hit = sorted(forbidden_str & strs)
-    check(not hit, f"framework/core + src/smartpickcore 代码里不含 dlt 专有字符串"
+    check(not hit, f"framework/core + src/spc 代码里不含 dlt 专有字符串"
                    + ("" if not hit else f"：{hit}"))
 
     # 号码池常量。为什么只查这三个：2 / 5 这类小整数在 `len(s) < 2`、

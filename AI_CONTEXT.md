@@ -56,7 +56,7 @@
 ## 2. 目录地图
 
 ```
-smartpickcore/
+SPC/
 ├── AI_CONTEXT.md          ← 你在这里（单一入口）
 ├── VERSION_INDEX.md       ★ 版本索引（先读 §0，知道「我读的是哪一版」）
 ├── versions.json             版本索引的机器可读镜像
@@ -89,7 +89,7 @@ smartpickcore/
 │       ├── iterations/    round01/ round02/ round03/ round04/ round05/
 │       └── strategy/      strategy.json（对外输出）+ STRATEGY_GUIDE.md（★ 人话版）
 │                           + 模拟脚本与结果
-├── src/smartpickcore/     库代码（api / memory / strategy / validate / versions）
+├── src/SPC/     库代码（api / memory / strategy / validate / versions）
 ├── cli/main.py            命令行入口（13 个命令）
 ├── tools/                 仓库维护脚本（版本索引：build / render / inject）
 ├── tests/                 test_core.py（117 项，无需 pytest）
@@ -365,7 +365,7 @@ python cli/main.py pick --game dlt -n 10 --seed 20261011
 python cli/main.py eval --game dlt --ticket "03 11 17 24 32 + 04 09"
 ```
 
-### 库接口（`from smartpickcore.api import SmartPick`）
+### 库接口（`from SPC.api import SmartPick`）
 
 ```python
 sp = SmartPick("dlt")

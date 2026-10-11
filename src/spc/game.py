@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.game — 彩种配置装载与号码空间计算
+"""spc.game — 彩种配置装载与号码空间计算
 
 **本模块不含任何具体彩种参数。** 一切从 games/<id>/game.yaml 读取。
 

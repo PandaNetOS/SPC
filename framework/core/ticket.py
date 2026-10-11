@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.ticket — 一注号码（彩种无关的一等公民）
+"""spc.core.ticket — 一注号码（彩种无关的一等公民）
 
 ## 为什么需要这个类
 

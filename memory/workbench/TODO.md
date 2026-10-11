@@ -134,7 +134,7 @@
       `memory/facts/INDEX.md` 由 CLI 生成（`v1.2`，勿手改）。本条为误报，清账。
 
 - [x] **T-042** 校验器增强：证据哈希 ✅ **r03 框架迭代·提案 C 已落地**
-      `src/smartpickcore/evidence.py` 双锚定（事实级 `evidence.source_sha256` + 策略级 `provenance.evidence_hash`）；
+      `src/spc/evidence.py` 双锚定（事实级 `evidence.source_sha256` + 策略级 `provenance.evidence_hash`）；
       `validate.py` 检出证据文件变更；新增 `cli/main.py rehash` 重基线。对应 commit 已推送。
 
 - [x] **T-043** 教训库补充 L10–L12 ✅ r03 已落地（`LESSONS.md` 1.0 → 1.1）

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/strategy.schema.json",
+  "$id": "https://github.com/PandaNetOS/SPC/spec/strategy.schema.json",
   "title": "Strategy（彩种策略建议规则集）",
   "description": "本仓库对外输出的唯一稳定契约。其他工具（选号器、前端、Agent）消费此结构，不应直接读取 games/ 内部实现。字段只增不删；破坏性变更须提升 schema_version 主版本。",
   "type": "object",
@@ -33,7 +33,7 @@
     },
     "generated_by": {
       "type": ["string", "null"],
-      "description": "生成器与版本，如 smartpickcore-cli/0.1.0。"
+      "description": "生成器与版本，如 SPC-cli/0.1.0。"
     },
     "data_version": {
       "type": "string",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/PandaNetOS/smartpickcore/spec/iteration.schema.json",
+  "$id": "https://github.com/PandaNetOS/SPC/spec/iteration.schema.json",
   "title": "Iteration（迭代轮次 manifest）",
   "description": "每轮研究的元数据与状态。这是『自我迭代』的机器可读骨架：AI 读上一轮的 HANDOFF，写下一轮的 TASK_BRIEF，并用本文件登记。",
   "type": "object",

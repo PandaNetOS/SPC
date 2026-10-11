@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.evidence — 证据锚定：把结论与它引用的文件/数字用哈希绑在一起
+"""spc.evidence — 证据锚定：把结论与它引用的文件/数字用哈希绑在一起
 
 ## 解决什么
 

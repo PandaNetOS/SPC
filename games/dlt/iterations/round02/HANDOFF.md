@@ -234,7 +234,7 @@ python cli/main.py validate --all -v
 | `games/dlt/strategy/simulation_results.json` | 模拟证据 |
 | `games/dlt/iterations/round02/*` | 本文件 + FINDINGS + PRIORITY_TASKS + known_errors + legacy_findings |
 | `games/dlt/iterations/round03/{TASK_BRIEF,manifest}.json` | 下一轮 |
-| `src/smartpickcore/*` | 库代码（validate / memory / strategy / game / api） |
+| `src/spc/*` | 库代码（validate / memory / strategy / game / api） |
 | `cli/main.py` | CLI（9 命令） |
 | `tests/README.md` | 测试规划 |
 | `docs/{ARCHITECTURE,CONSUMING,ITERATION_GUIDE}.md` | 文档 |

@@ -15,7 +15,7 @@
 """
 import json, io, sys, os
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-os.chdir(r"D:\PNOS\smartpickcore")
+os.chdir(r"D:\PNOS\SPC")
 
 PATH = "games/dlt/strategy/strategy.json"
 d = json.load(open(PATH, encoding="utf-8"))
@@ -87,7 +87,7 @@ d.setdefault("provenance", {})
 d["provenance"]["iteration"] = "round03"
 d["generated_at"] = "2026-10-11"
 if d.get("generated_by"):
-    d["generated_by"] = "smartpickcore-cli/0.1.0"
+    d["generated_by"] = "spc-cli/0.1.0"
 print("[fix] provenance.iteration = round03, generated_at = 2026-10-11")
 
 # ---- 写回 ----

@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "game": "shadow",
   "generated_at": "2026-10-11",
-  "generated_by": "smartpickcore-tests/fixtures（人工夹具，非 CLI 生成）",
+  "generated_by": "spc-tests/fixtures（人工夹具，非 CLI 生成）",
   "data_version": "shadow_fixture_3",
   "rules_epoch": "S1",
   "disclaimer": {

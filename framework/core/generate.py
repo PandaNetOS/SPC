@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.generate — 通用号码生成器（彩种无关）
+"""spc.core.generate — 通用号码生成器（彩种无关）
 
 ## 为什么在这里（而不是交给消费方）
 

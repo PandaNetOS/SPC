@@ -64,7 +64,7 @@ def gen() -> str:
     out.append("| `data_version` | 用了**哪份数据** | `data/raw/` | `game.yaml` / manifest |")
     out.append(f"| **`content_version`** ★ | **这份内容改过几版** | **每份内容自己** | **文件内版本行 + 本索引** |")
     out.append(f"| **`framework_version`** ★ | **框架层改过几版** | **`framework/`** | **本索引** |")
-    out.append(f"| **`project_version`** ★ | **smartpickcore 整体 release 版本** | **整个包** | **本索引 + pyproject.toml** |")
+    out.append(f"| **`project_version`** ★ | **SPC 整体 release 版本** | **整个包** | **本索引 + pyproject.toml** |")
     out.append("")
     out.append("★ = 本次（2026-10-11）新引入。此前全仓库**没有**「内容版本」与「框架版本」的概念。")
     out.append("")

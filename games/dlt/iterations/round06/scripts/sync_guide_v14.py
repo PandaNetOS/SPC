@@ -2,7 +2,7 @@
 """sync_guide_v14.py — STRATEGY_GUIDE §7 超链接后的版本同步（1.3 → 1.4）。"""
 import io, sys, os, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-ROOT = r"D:\PNOS\smartpickcore"
+ROOT = r"D:\PNOS\SPC"
 
 vp = os.path.join(ROOT, "versions.json")
 v = json.load(open(vp, encoding="utf-8"))

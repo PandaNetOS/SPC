@@ -161,7 +161,7 @@ round03 的 TASK_BRIEF 选题
 策略那边的 `evidence_hash` 就会变，于是"策略与证据脱节"变成**可检出的错误**，
 而不是靠人记得回来复查。
 
-**规范视图只取 8 个字段**（`src/smartpickcore/evidence.py` 的 `ANCHOR_FIELDS`）：
+**规范视图只取 8 个字段**（`src/SPC/evidence.py` 的 `ANCHOR_FIELDS`）：
 `id` / `claim` / `status` / `confidence` / `claim_type` /
 `superseded_by` / `evidence.effect` / `caveats`。
 

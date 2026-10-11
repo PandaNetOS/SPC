@@ -7,7 +7,7 @@
 """
 import io, sys, os, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-ROOT = r"D:\PNOS\smartpickcore"
+ROOT = r"D:\PNOS\SPC"
 sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, os.path.join(ROOT, "framework"))
 

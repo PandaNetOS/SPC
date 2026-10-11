@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore — 彩票投注策略研究框架
+"""spc — 彩票投注策略研究框架
 
 两种用户：
   1. AI 分析者（每轮迭代）—— 用 memory / game 模块读写结论与数据
@@ -11,7 +11,7 @@
   - 红线强制：affects_win_probability 恒为 False
 
 快速开始：
-    from smartpickcore.api import SmartPick
+    from spc.api import SmartPick
 
     sp = SmartPick.for_game("dlt")
     print(sp.boundary())
@@ -45,7 +45,7 @@ def repo_root(start: str | None = None) -> str:
         if parent == cur:
             break
         cur = parent
-    # 兜底：src/smartpickcore/ → 仓库根
+    # 兜底：src/spc/ → 仓库根
     return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 

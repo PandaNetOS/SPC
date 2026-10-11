@@ -115,7 +115,7 @@ def load(games_root: str, game: str, strict: bool = True) -> dict:
     return s
 ```
 
-本仓库提供等价实现：`from smartpickcore.strategy import load_strategy`。
+本仓库提供等价实现：`from SPC.strategy import load_strategy`。
 
 ## 6. 如何用规则做选号
 

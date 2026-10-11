@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""cli/main.py — smartpickcore 命令行入口
+"""cli/main.py — spc 命令行入口
 
 命令：
     validate   校验契约（schema / 红线 / 外键 / 双向取代 / 文件存在性 / 版本一致性）
@@ -39,10 +39,10 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
-from smartpickcore import __version__  # noqa: E402
-from smartpickcore.api import SmartPick  # noqa: E402
-from smartpickcore.memory import Memory  # noqa: E402
-from smartpickcore.validate import (  # noqa: E402
+from spc import __version__  # noqa: E402
+from spc.api import SmartPick  # noqa: E402
+from spc.memory import Memory  # noqa: E402
+from spc.validate import (  # noqa: E402
     validate_all,
     validate_facts,
     validate_game,
@@ -109,7 +109,7 @@ def cmd_rehash(args) -> int:
     """
     import json
 
-    from smartpickcore.evidence import (
+    from spc.evidence import (
         evidence_digest,
         load_facts,
         sha256_file,
@@ -184,7 +184,7 @@ def cmd_rehash(args) -> int:
 
 def cmd_versions(args) -> int:
     """版本一致性检查。"""
-    from smartpickcore.versions import (
+    from spc.versions import (
         VersionsError,
         render_versions_summary,
         verify_versions,
@@ -235,11 +235,11 @@ def cmd_versions(args) -> int:
 # ---------------------------------------------------------------- strategy
 
 def cmd_strategy(args) -> int:
-    from smartpickcore.strategy import StrategyError, build_strategy
+    from spc.strategy import StrategyError, build_strategy
 
     try:
         st = build_strategy(args.game, _ROOT, iteration=args.iteration,
-                            generator=f"smartpickcore-cli/{__version__}")
+                            generator=f"spc-cli/{__version__}")
     except StrategyError as e:
         print(f"✗ {e}")
         return 1
@@ -371,7 +371,7 @@ def cmd_todo(args) -> int:
 # ---------------------------------------------------------------- info
 
 def cmd_info(args) -> int:
-    print(f"smartpickcore {__version__}")
+    print(f"spc {__version__}")
     print(f"仓库根: {_ROOT}")
     print()
 
@@ -472,7 +472,7 @@ def cmd_pick(args) -> int:
         return 0
 
     # 表头
-    print(f"smartpickcore pick — game={args.game}  n={len(res)}"
+    print(f"spc pick — game={args.game}  n={len(res)}"
           f"  seed={args.seed if args.seed is not None else '随机'}")
     print()
 
@@ -586,7 +586,7 @@ def cmd_eval(args) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="smartpickcore",
+        prog="spc",
         description="彩票投注策略研究框架 CLI",
         epilog="未实现的命令会明确报错，不会静默成功。",
     )

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""smartpickcore.core.features — 特征原语库（彩种无关）
+"""spc.core.features — 特征原语库（彩种无关）
 
 ## 这是什么
 

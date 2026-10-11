@@ -127,7 +127,7 @@ H-005 假设「周六（销量最高）撞号更强」，数据给出**相反方
 
 - Python：`C:/Users/panda/.workbuddy/binaries/python/versions/3.13.12/python.exe`，
   需 `PYTHONPATH=C:/Users/panda/.workbuddy/binaries/python/envs/default/Lib/site-packages`（pandas/numpy/scipy/statsmodels）。
-- 运行目录：`D:\PNOS\smartpickcore`（脚本内相对路径锚定）。
+- 运行目录：`D:\PNOS\SPC`（脚本内相对路径锚定）。
 - 随机种子 `20261011` 统一。
 
 ---
