@@ -2,7 +2,7 @@
   "index_version": "2.0",
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
-  "current_iteration": "r13",
+  "current_iteration": "r14",
   "framework_version": "1.1",
   "project_version": "0.1.0",
   "levels": {
@@ -1149,9 +1149,9 @@
       "path": "memory/facts/FACTS.jsonl",
       "level": "A",
       "kind": "facts",
-      "content_version": "1.4",
-      "iteration": "r13",
-      "note": "r13: +F-0045（walk-forward 二次确认，R_new B 档闭合）；FACTS 44→45",
+      "content_version": "1.5",
+      "iteration": "r14",
+      "note": "r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1288,9 +1288,9 @@
       "path": "memory/workbench/TODO.md",
       "level": "A",
       "kind": "doc",
-      "content_version": "2.0",
-      "iteration": "r13",
-      "note": "r13: T-051/T-044/T-045/T-055 → done，新增 T-052/T-053/T-054",
+      "content_version": "2.1",
+      "iteration": "r14",
+      "note": "r14: T-053/T-054 → done，T-052 证据闭合待批准",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1312,7 +1312,7 @@
       "iteration": "r12",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "← 速览区 45 条结论 / open 2 / r12 彩种行"
+      "note": "← 速览区 47 条结论 / open 2 / r12 彩种行"
     },
     {
       "path": "VERSION_INDEX.md",
@@ -1721,6 +1721,36 @@
       "content_version": "1.0",
       "iteration": "r13",
       "note": "r13 任务书（T-051/T-044/T-045）"
+    },
+    {
+      "path": "games/dlt/iterations/round14/FINDINGS.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 研究结论"
+    },
+    {
+      "path": "games/dlt/iterations/round14/HANDOFF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 交接"
+    },
+    {
+      "path": "games/dlt/iterations/round14/TASK_BRIEF.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 任务书（T-052 待批准/T-053/T-054）"
     },
     {
       "path": "memory/journal/round05.md",
@@ -2246,6 +2276,26 @@
       "note": "T-051 walk-forward 评测"
     },
     {
+      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "T-053 形态撞号比复验"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.py",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "T-054 walk-forward 每步 CI"
+    },
+    {
       "path": "games/dlt/strategy/strategy.json",
       "level": "C",
       "kind": "contract",
@@ -2304,6 +2354,16 @@
       "content_version": "1.0",
       "iteration": "r13",
       "note": "r13 执行日志"
+    },
+    {
+      "path": "memory/journal/round14.md",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r14",
+      "note": "r14 执行日志"
     },
     {
       "path": "pyproject.toml",
@@ -2552,6 +2612,36 @@
       "content_version": null,
       "iteration": "r13",
       "note": "T-051 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round14/manifest.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "r14 manifest"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "T-053 结果"
+    },
+    {
+      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
+      "updated_at": "2026-10-11",
+      "status": "active",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r14",
+      "note": "T-054 结果"
     },
     {
       "path": "games/dlt/manifest_v4_source.json",

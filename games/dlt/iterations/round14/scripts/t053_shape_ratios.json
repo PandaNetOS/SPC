@@ -1,0 +1,82 @@
+{
+  "round": "round14",
+  "task": "T-053",
+  "data_version": "dlt_full_2933",
+  "scope": "后段 1973 期（2013-08-28 起，F-0006 变点后稳健口径）",
+  "method": "run 细分（run=2 / run>=3）+ 形态枚举；条件撞号比 ratio=mean(w1|形态)/mean(w1|全部)，bootstrap B=2000",
+  "shapes": {
+    "run_eq_2": {
+      "n": 864,
+      "ratio": 1.0046,
+      "ci95": [
+        0.9463,
+        1.0667
+      ],
+      "significant_gt1": false
+    },
+    "run_ge_3": {
+      "n": 96,
+      "ratio": 1.2423,
+      "ci95": [
+        0.9604,
+        1.6143
+      ],
+      "significant_gt1": false
+    },
+    "all_odd": {
+      "n": 47,
+      "ratio": 1.3519,
+      "ci95": [
+        0.8823,
+        1.9805
+      ],
+      "significant_gt1": false
+    },
+    "all_even": {
+      "n": 36,
+      "ratio": 0.8054,
+      "ci95": [
+        0.5855,
+        1.055
+      ],
+      "significant_gt1": false
+    },
+    "mirror_pair": {
+      "n": 739,
+      "ratio": 1.0089,
+      "ci95": [
+        0.9378,
+        1.0867
+      ],
+      "significant_gt1": false
+    },
+    "low_zone_le20": {
+      "n": 122,
+      "ratio": 1.0821,
+      "ci95": [
+        0.871,
+        1.3212
+      ],
+      "significant_gt1": false
+    },
+    "high_zone_ge32": {
+      "n": 918,
+      "ratio": 0.9117,
+      "ci95": [
+        0.8537,
+        0.9716
+      ],
+      "significant_gt1": false
+    }
+  },
+  "interpretation": {
+    "run_ge_3": "若显著（CI 下界>1）：与 F-0041 等差 1 三连显著一致，撞号溢价集中于最长连号",
+    "run_eq_2": "若不显著：连号溢价只在三连及以上，两连人群密度未见系统性撞号",
+    "all_odd/all_even/mirror/low/high": "F-0041 均不显著的形态在后段复验，防变点后漂移"
+  },
+  "caveats": [
+    "ratio 口径 = 中奖注数密度比（F-0003 同族），不改变任一奖级中奖概率（红线）",
+    "后段口径与 F-0041 全样本口径可比性：F-0041 用全 2933 期，本脚本用后段 1973 期（稳健口径）",
+    "形态 n<20 不估（样本不足）"
+  ]
+}

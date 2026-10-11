@@ -1,6 +1,6 @@
 ﻿# TODO.md — 待办池（工作记忆）
 
-> **版本**：`2.0` ｜ 轮次 `r13` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`2.1` ｜ 轮次 `r14` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：跨轮次的任务池。`OPEN_QUESTIONS.md` 是"要回答什么"，
@@ -148,14 +148,13 @@
 - [x] **T-051** value: 80 ★ r13 首推：L3 规则搜索 v2 —— walk-forward 滚动再训练 + 候选池扩展 ✅ **r13 完成** → F-0045：5 步 walk-forward（150 期评估窗），R_new 正增益步 4/5（80%）、中位增益 +150 万、总增益 +604 万，二次样本外确认 met=True；冷热号避让候选未超 R_new，winner 分布 3/5 归 R_new
 
 - [ ] **T-052** value: 40 ★ r14 候选：R_new（R001_norun_high_mirror）正式落地为 R-004 —— **需用户批准**（策略变更红线）
-      批准后：strategy.json 新增 R-004（effective_grade=B，引用 F-0044/F-0045），STRATEGY_GUIDE §2 同步；
-      若用户不批准则保持新候选状态，仅保留 F-0044/F-0045 证据链
+      **r14 状态：证据链闭合（F-0044+F-0045 方向一致、F-0046 高区撞号<1 机制证据、F-0047 单步显著 1/5 不确定性已如实标注），仍保持候选，等待用户批准**
+      批准后：strategy.json 新增 R-004（effective_grade=B，引用 F-0044/F-0045/F-0046/F-0047），STRATEGY_GUIDE §2 同步；
+      若用户不批准则保持新候选状态，仅保留证据链
 
-- [ ] **T-053** value: 30 P4：F-0041 补强——三连号之外形态复验（CI 宽）
-      r09 遗留：run>=3 形态样本少导致 CI 宽；扩展复验连号相邻形态（如 12-14 间隔形态）并评估是否入 avoid_list
+- [x] **T-053** value: 30 P4：F-0041 补强——三连号之外形态复验（CI 宽）✅ **r14 完成** → F-0046：后段 high_zone_ge32 撞号比 0.9117 CI [0.8537,0.9716] 显著<1（高区避让机制证据）；run=2 1.0046 不显著；run>=3 1.2423 CI 宽未达显著（n=96）
 
-- [ ] **T-054** value: 30 P4：walk-forward 每步 bootstrap CI（当前单步仅点估计）
-      r13 T-051 遗留：第 5 步命中不足 20 期不估 cf；给每步加期重抽样 CI，跨步汇总时体现不确定性
+- [x] **T-054** value: 30 P4：walk-forward 每步 bootstrap CI（当前单步仅点估计）✅ **r14 完成** → F-0047：单步显著正增益 1/5（step3 CI [594,906,2,913,333]），CI 宽源于小窗命中样本；F-0045 判据补不确定性限定
 
 - [x] **T-055** value: 20 P4：README「版本体系」补 build_versions.py 禁用说明（T-044 收尾）✅ **r13 完成**
       README 版本体系小节已补：`tools/build_versions.py --write` 已禁用（防 versions.json 回退），

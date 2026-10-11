@@ -1,0 +1,93 @@
+{
+  "round": "round14",
+  "task": "T-054",
+  "data_version": "dlt_full_2933",
+  "method": "复用 T-051 滚动结构（训练窗 1183 起步、步进 150、评估紧邻 150 期窗）；每步期重抽样 B=1000",
+  "steps": [
+    {
+      "step": 1,
+      "eval_range": [
+        1183,
+        1333
+      ],
+      "eval_start_date": "2021-07-10",
+      "r_new_gain_point_yuan": 1236397.16,
+      "gain_ci95_yuan": [
+        -1249450.3,
+        2913333.33
+      ],
+      "n_boot": 1000,
+      "significant_gt0": false
+    },
+    {
+      "step": 2,
+      "eval_range": [
+        1333,
+        1483
+      ],
+      "eval_start_date": "2022-07-11",
+      "r_new_gain_point_yuan": 126547.62,
+      "gain_ci95_yuan": [
+        -1753906.84,
+        2913333.33
+      ],
+      "n_boot": 1000,
+      "significant_gt0": false
+    },
+    {
+      "step": 3,
+      "eval_range": [
+        1483,
+        1633
+      ],
+      "eval_start_date": "2023-07-10",
+      "r_new_gain_point_yuan": 2913333.33,
+      "gain_ci95_yuan": [
+        594906.28,
+        2913333.33
+      ],
+      "n_boot": 1000,
+      "significant_gt0": true
+    },
+    {
+      "step": 4,
+      "eval_range": [
+        1633,
+        1783
+      ],
+      "eval_start_date": "2024-07-08",
+      "r_new_gain_point_yuan": 1765367.41,
+      "gain_ci95_yuan": [
+        -406326.66,
+        2913333.33
+      ],
+      "n_boot": 1000,
+      "significant_gt0": false
+    },
+    {
+      "step": 5,
+      "eval_range": [
+        1783,
+        1933
+      ],
+      "eval_start_date": "2025-07-07",
+      "r_new_gain_point_yuan": 692918.52,
+      "gain_ci95_yuan": [
+        -1429977.55,
+        2913333.33
+      ],
+      "n_boot": 1000,
+      "significant_gt0": false
+    }
+  ],
+  "summary": {
+    "n_steps": 5,
+    "n_significant_positive": 1,
+    "share": 0.2
+  },
+  "caveats": [
+    "bootstrap 按期重抽样（同 T-049）；单步窗口 150 期，R_new 命中约 20 期，CI 宽度反映小样本现实",
+    "增益口径 = 中奖时期望奖金（含 1 亿封顶），不改变任一奖级中奖概率（红线）",
+    "显著>0 判据：95% CI 下界 >0"
+  ]
+}

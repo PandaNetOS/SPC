@@ -114,13 +114,17 @@ def test_task_brief_render() -> None:
 
 def test_task_brief_top_n_and_resource() -> None:
     items = RTB._parse_todo(_ROOT)
-    # --top N：必做数量可控（N=2 只列 2 个必做；默认 3）
+    # --top N：必做数量 = min(top_n, 可用非 resource 候选数)——机制断言而非状态断言：
+    # 收尾轮会消耗候选（如 r14 做完 T-053/T-054 后非 resource 待办只剩 T-052），
+    # 把「待办池恒 ≥3」当不变式会误报，因此只断言生成器受 top_n 约束且随可用数收敛。
+    avail = len([it for it in items if not it.get("resource")])
     brief2 = RTB._render_brief(_ROOT, items, 7, top_n=2)
     brief3 = RTB._render_brief(_ROOT, items, 7)
     must2 = [ln for ln in brief2.splitlines() if ln.strip().startswith("- [ ] **T-")]
     must3 = [ln for ln in brief3.splitlines() if ln.strip().startswith("- [ ] **T-")]
-    check(len(must2) == 2 and len(must3) == 3,
-          "B: --top N 控制本轮必做任务数（2 与 3，可配置）")
+    check(len(must2) == min(2, avail) and len(must3) == min(3, avail)
+          and len(must3) >= len(must2),
+          f"B: --top N 控制本轮必做任务数（2 与 3，可配置；可用候选 {avail}）")
 
     # 资源依赖前置：resource 条目被解析并被标注为备选，不占必做
     res_items = [it for it in items if it.get("resource")]

@@ -234,6 +234,16 @@
 - sha256锚→ `games/dlt/iterations/round13/scripts/t051_walkforward.py`
 - source→ `games/dlt/iterations/round13/scripts/t051_walkforward.py`
 
+## FACTS:F-0046
+- script→ `games/dlt/iterations/round14/scripts/t053_shape_ratios.py`
+- sha256锚→ `games/dlt/iterations/round14/scripts/t053_shape_ratios.py`
+- source→ `games/dlt/iterations/round14/scripts/t053_shape_ratios.py`
+
+## FACTS:F-0047
+- script→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
+- sha256锚→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
+- source→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 
