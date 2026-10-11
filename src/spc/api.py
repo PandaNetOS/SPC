@@ -259,7 +259,7 @@ class SmartPick:
     ) -> Any:
         """生成 n 注合规号码。
 
-        ⚠️ **本方法不改变中奖概率**（恒为 1/T）。它只保证产出的号码
+        ⚠️ **本方法不改变中奖概率**（各奖级概率恒定；一等奖恒为 1/T）。它只保证产出的号码
         满足单注层规则（如避开连号）。
 
         返回 core.generate.GenerateResult（含 tickets / attempts / stats）。

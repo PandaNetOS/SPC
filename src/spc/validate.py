@@ -1312,26 +1312,48 @@ def _check_summary_counts(root: str, rep: ValidationReport) -> None:
         rep.ok(f"速览计数: {checked} 处「N 条结论」与台账一致（台账 {total} 条）")
 
 
-# ---------------------------------------------------------------- 概率口径标注（T-050 r10 根治）
+# ---------------------------------------------------------------- 概率口径标注（T-050 r10 根治；r10.1 扫描范围自动派生）
 
-_PROB_CALIBRATION_FILES = [
-    "README.md",
-    "AI_CONTEXT.md",
-    "AGENTS.md",
-    "docs/METHODOLOGY.md",
-    "docs/CONSUMING.md",
-    "docs/ARCHITECTURE.md",
-    "cli/main.py",
-    "framework/core/generate.py",
-    "framework/core/judge.py",
-    "framework/core/portfolio.py",
-    "games/dlt/strategy/strategy.json",
-]
 _PROB_DIGITS = re.compile(r"(4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)")
 _PROB_QUALIFIER = re.compile(r"(一等奖|任一奖级|全奖级|各奖级|任意奖级|头奖)")
 _PROB_BAD_PATTERN = re.compile(
     r"(中奖概率[^\n]{0,40}(?:4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)"
     r"|(?:4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)[^\n]{0,40}中奖概率)")
+
+
+def _prob_calibration_files(root: str) -> list[str]:
+    """派生概率口径检查范围（r10.1 根治：禁止手写白名单——手写清单曾漏 STRATEGY_GUIDE.md）。
+
+    扫描集 = versions.json 全部 active 受管文件（.md/.py/.json，排除研究脚本区 `scripts/`，
+    其正则定义行本身含概率 token 会误报）+ docs/ 目录全部 .md/.py/.json。
+    任何受管/对外文件都在护栏内：新增文件未登记先被结构完整性拦截，登记即进入本检查。
+    """
+    files: set[str] = set()
+    vp = os.path.join(root, "versions.json")
+    if os.path.exists(vp):
+        try:
+            v = json.load(open(vp, encoding="utf-8"))
+        except Exception:  # noqa: BLE001, S112
+            v = {"entries": []}
+        for e in v.get("entries", []):
+            rel = e.get("path", "")
+            if e.get("status") != "active":
+                continue
+            if not rel.endswith((".md", ".py", ".json")):
+                continue
+            if "/scripts/" in rel:  # 研究脚本区：由 t0xx 脚本自管理，正则定义行会误报
+                continue
+            if rel == "src/spc/validate.py":  # 检查器自身：规则实现文本会自指误报
+                continue
+            files.add(rel)
+    docs_dir = os.path.join(root, "docs")
+    if os.path.isdir(docs_dir):
+        for dp, _dn, fns in os.walk(docs_dir):
+            for fn in fns:
+                if fn.endswith((".md", ".py", ".json")):
+                    rel = os.path.relpath(os.path.join(dp, fn), root).replace("\\", "/")
+                    files.add(rel)
+    return sorted(files)
 
 
 def _check_probability_calibration(root: str, rep: ValidationReport) -> None:
@@ -1340,10 +1362,11 @@ def _check_probability_calibration(root: str, rep: ValidationReport) -> None:
     检查对外产物中「中奖概率」与具体数字（1/T、4.667e-08、21,425,712）绑定出现、
     但附近 40 字符内无奖级限定词（一等奖/任一奖级/各奖级等）的表述。
     中奖概率是集合概念（任一奖级约 1/15），4.667e-08 仅指一等奖——两者不得混用。
+    扫描范围由 _prob_calibration_files 自动派生（r10.1），禁止手写清单。
     """
     bad: list[str] = []
     checked_files = 0
-    for rel in _PROB_CALIBRATION_FILES:
+    for rel in _prob_calibration_files(root):
         p = os.path.join(root, rel)
         if not os.path.exists(p):
             continue
@@ -1356,13 +1379,20 @@ def _check_probability_calibration(root: str, rep: ValidationReport) -> None:
             if not _PROB_DIGITS.search(line) or "中奖概率" not in line:
                 continue
             m = _PROB_BAD_PATTERN.search(line)
-            if m and not _PROB_QUALIFIER.search(line):
+            if not m:
+                continue
+            # 名词引用豁免：『中奖概率』「中奖概率」"中奖概率"（谈论词本身/规则描述）
+            # 紧接闭合引号视为引用，不算真实断言；真实断言后面跟的是 = 等，必被抓。
+            i = line.find("中奖概率")
+            if i >= 0 and line[i + 4:i + 5] in ("」", "』", '"', '"'):
+                continue
+            if not _PROB_QUALIFIER.search(line):
                 bad.append(f"{rel}:{lineno} 「中奖概率」与具体数字绑定但缺奖级限定: {line.strip()[:80]}")
     if bad:
         for b in bad:
             rep.err(f"概率口径: {b}")
     else:
-        rep.ok(f"概率口径: 检查 {checked_files} 个对外产物，无「中奖概率=具体数字」缺限定表述")
+        rep.ok(f"概率口径: 自动派生扫描 {checked_files} 个文件（versions.json 受管表 + docs/），无「中奖概率=具体数字」缺限定表述")
 
 
 # ---------------------------------------------------------------- 开放问题一致性（Q 状态根治）

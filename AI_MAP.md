@@ -43,7 +43,7 @@
 - `framework/core/judge.py` — 代码文件：不写文件内版本行（用 git blame）
 - `framework/core/portfolio.py` — ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross
 - `framework/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/methodology/MATH_BOUNDARY.md`
+- `framework/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
 - `framework/methodology/STATISTICAL_DISCIPLINE.md`
 - `framework/protocol/ITERATION_PROTOCOL.md`
 - `framework/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
@@ -66,10 +66,10 @@
 - `memory/journal/round08.md` — 体系升级批执行日志
 - `memory/journal/round09.md` — 策略量化轮执行日志
 - `memory/journal/round10.md` — r10 执行日志
-- `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
+- `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
-- `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
+- `memory/workbench/OPEN_QUESTIONS.md` — 15 问 11 answered：r10 清偿 Q-005/Q-017（销量外生 / 概率口径根治），验收判据更新
 - `memory/workbench/TODO.md` — 新增 T-046/047/048
 
 ## 策略输出
@@ -129,7 +129,7 @@
 - `src/__init__.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/__init__.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/ai_map.py` — AI_MAP 生成源（llms.txt 式机器地图）
-- `src/spc/api.py` — 代码文件：不写文件内版本行（用 git blame）
+- `src/spc/api.py` — r10.1：generate 概率口径限定（各奖级恒定；一等奖恒为 1/T）
 - `src/spc/depmap.py` — 跨文件依赖图生成源（C）
 - `src/spc/evidence.py` — ★ 证据锚定：sha256_file / fact_anchor / evidence_digest（结论与策略的哈希…
 - `src/spc/flywheel.py` — 飞轮健康度统计 + 置信度校准（K/D1）
@@ -137,7 +137,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — r07：新增 _check_consumes_completeness 逆向声明完整性检查；r08：新增 _check…
+- `src/spc/validate.py` — r07：consumes 逆向检查；r08：INV3/动态锚点/策略一致性/速览计数；r10：概率口径检查项；r10.…
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档

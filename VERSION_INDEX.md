@@ -147,7 +147,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round07/scripts/t016_holiday.json` | `1.0` | `r07` | 2026-10-11 | active | T-016 结果 |
 | `games/dlt/iterations/round07/scripts/t016_holiday.py` | `1.0` | `r07` | 2026-10-11 | active | T-016 节假日验证（F-0035） |
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.5` | `r07` | 2026-10-11 | active | r07：数据可靠性段升级（F-0033/F-0034 根因定位）；consumes 补齐 F-0002/F-0026~F-0029 |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.6` | `r10` | 2026-10-11 | active | r10.1：概率口径修正（一等奖 1/21,425,712 限定）；r07 数据可靠性段 + consumes 补齐 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.2` | `r08` | 2026-10-11 | active | 新增 F-0036 全奖级口径 |
 | `memory/facts/INDEX.md` | `1.5` | `r04` | 2026-10-11 | active | 派生物，由 cli index 生成（32 条） |
@@ -156,10 +156,10 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `memory/journal/round04.md` | `1.0` | `r04` | 2026-10-11 | active |  |
 | `memory/journal/round06.md` | `1.0` | `r06` | 2026-10-11 | active | r06 叙事（元层轮） |
 | `memory/journal/round07.md` | `1.0` | `r07` | 2026-10-11 | active | r07 叙事（研究轮） |
-| `memory/lessons/LESSONS.md` | `1.2` | `r04` | 2026-10-11 | active | L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例） |
+| `memory/lessons/LESSONS.md` | `1.3` | `r10` | 2026-10-11 | active | L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单） |
 | `memory/spec/ITERATION_SOP_v2.md` | `1.3` | `r07` | 2026-10-11 | active | 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究池（研究可并行、入库串行过三闸门） |
 | `memory/workbench/HYPOTHESES.md` | `1.2` | `r07` | 2026-10-11 | active | H-001~H-006（H-006 refuted） |
-| `memory/workbench/OPEN_QUESTIONS.md` | `1.4` | `r07` | 2026-10-11 | active | 11 问，5 answered（Q-001/002/004/013/014） |
+| `memory/workbench/OPEN_QUESTIONS.md` | `1.5` | `r10` | 2026-10-11 | active | 15 问 11 answered：r10 清偿 Q-005/Q-017（销量外生 / 概率口径根治），验收判据更新 |
 | `memory/workbench/TODO.md` | `1.7` | `r08` | 2026-10-11 | active | 新增 T-046/047/048 |
 | `games/dlt/iterations/round08/scripts/all_tiers_expectation.py` | `1.0` | `r08` | 2026-10-11 | active | 全奖级口径期望分解（r08 T-049，各奖级精确枚举 + 封顶饱和 L5 双口径） |
 | `games/dlt/iterations/round08/scripts/all_tiers_expectation.json` | `1.0` | `r08` | 2026-10-11 | active | 全奖级口径输出（F-0036 的派生产物） |
@@ -187,8 +187,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round10/scripts/t028_recalibrate_r10.py` | `1.0` | `r10` | 2026-10-11 | active | F-0028/29/31 重校准（维持+NOOP） |
 | `games/dlt/iterations/round10/scripts/t028_recalibrate_r10.json` | `1.0` | `r10` | 2026-10-11 | active | 3 条锚点复现/复核成立 |
 | `games/dlt/iterations/round10/scripts/apply_r10_facts.py` | `1.0` | `r10` | 2026-10-11 | active | r10 结论入库（F-0039/40/41 + 锚点重校准 + 工作台同步） |
-| `games/dlt/iterations/round10/FINDINGS.md` | `1.0` | `r10` | 2026-10-11 | active | r10 研究结论（T-050/T-021/T-022 + P0 重校准） |
-| `games/dlt/iterations/round10/HANDOFF.md` | `1.0` | `r10` | 2026-10-11 | active | r10→r11 交接（含下一轮遗留） |
+| `games/dlt/iterations/round10/FINDINGS.md` | `1.1` | `r10` | 2026-10-11 | active | r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATEGY_GUIDE/api.py/MATH_BOUNDARY） |
+| `games/dlt/iterations/round10/HANDOFF.md` | `1.1` | `r10` | 2026-10-11 | active | r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派生） |
 | `games/dlt/iterations/round10/manifest.json` | `1.0` | `r10` | 2026-10-11 | active | r10 轮清单 |
 | `memory/journal/round10.md` | `1.0` | `r10` | 2026-10-11 | active | r10 执行日志 |
 
@@ -217,7 +217,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `framework/core/judge.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `framework/core/portfolio.py` | —（见备注） | `—` | active | ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross |
 | `framework/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
-| `framework/methodology/MATH_BOUNDARY.md` | `1.0` | `r02` | active |  |
+| `framework/methodology/MATH_BOUNDARY.md` | `1.1` | `r10` | active | r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定） |
 | `framework/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
 | `framework/protocol/ITERATION_PROTOCOL.md` | `1.1` | `r03` | active |  |
 | `framework/protocol/MEMORY_PROTOCOL.md` | `1.2` | `r03` | active | r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定 |
@@ -240,7 +240,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/__init__.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/__init__.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/ai_map.py` | —（见备注） | `—` | active | AI_MAP 生成源（llms.txt 式机器地图） |
-| `src/spc/api.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
+| `src/spc/api.py` | —（见备注） | `r10` | active | r10.1：generate 概率口径限定（各奖级恒定；一等奖恒为 1/T） |
 | `src/spc/depmap.py` | —（见备注） | `—` | active | 跨文件依赖图生成源（C） |
 | `src/spc/evidence.py` | —（见备注） | `r03` | active | ★ 证据锚定：sha256_file / fact_anchor / evidence_digest（结论与策略的哈希锚） |
 | `src/spc/flywheel.py` | —（见备注） | `—` | active | 飞轮健康度统计 + 置信度校准（K/D1） |
@@ -248,7 +248,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/spc/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/tree.py` | —（见备注） | `r06` | active | 目录树生成源（P1-2）：README 树 = 派生物 |
-| `src/spc/validate.py` | —（见备注） | `r06` | active | r07：新增 _check_consumes_completeness 逆向声明完整性检查；r08：新增 _check_open_questions_consistency Q 状态 4 处一致性检查 |
+| `src/spc/validate.py` | —（见备注） | `r10` | active | r07：consumes 逆向检查；r08：INV3/动态锚点/策略一致性/速览计数；r10：概率口径检查项；r10.1：扫描范围自动派生（versions.json 受管表+docs/，禁手写清单）+ 名词引用豁免 |
 | `src/spc/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tests/README.md` | `1.5` | `r06` | active | 测试说明（自举计数：合计 333，含 test_structure 8） |
 | `tests/test_ai_readability.py` | —（见备注） | `—` | active | P1/P2/B/H/I 测试 |
@@ -290,7 +290,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
 | `games/dlt/iterations/round07/manifest.json` | `inputs.data_version` | `dlt_full_2933` | r07 机器登记 |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.3` | schema 1.3：convenience/experience/psychology 元数据；R-002 magnitude_pct 已量化填入（r09 F-0037） |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.3` | schema 1.3：convenience/experience/psychology 元数据；R-002 magnitude_pct（r09）；r10.1 A-008 概率口径限定 + evidence_hash 重算 |
 | `pyproject.toml` | `project.version` | `0.1.0` | 包版本 |
 | `spec/fact.schema.json` | `—` | `—` | evidence 新增 noop_count |
 | `spec/game_config.schema.json` | `—` | `—` | schema 自身无版本；约束 game_config.config_version |
@@ -328,7 +328,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/data/tools/validate_data.py` | `analysis_script` | — |  |
 | `games/dlt/manifest_v4_source.json` | `source_manifest` | — |  |
 | `games/dlt/strategy/simulation_results.json` | `analysis_output` | — |  |
-| `games/dlt/strategy/strategy_simulation.py` | `analysis_script` | — |  |
+| `games/dlt/strategy/strategy_simulation.py` | `analysis_script` | — | r10.1：docstring 一等奖概率口径 |
 | `memory/facts/ACTIVE.md` | `report` | — | 当前有效结论清单（与台账分离，compress_memory 生成） |
 | `tests/fixtures/shadow/game.yaml` | `test_fixture` | — |  |
 | `tools/count_tests.py` | `test_tool` | — | 登记测试文件 + --inject（T-045：tests/README 计数自举注入） |

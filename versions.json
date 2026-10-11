@@ -833,9 +833,9 @@
       "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
       "level": "A",
       "kind": "strategy_guide",
-      "content_version": "1.5",
-      "iteration": "r07",
-      "note": "r07：数据可靠性段升级（F-0033/F-0034 根因定位）；consumes 补齐 F-0002/F-0026~F-0029",
+      "content_version": "1.6",
+      "iteration": "r10",
+      "note": "r10.1：概率口径修正（一等奖 1/21,425,712 限定）；r07 数据可靠性段 + consumes 补齐",
       "updated_at": "2026-10-11",
       "status": "active",
       "consumes": [
@@ -946,9 +946,9 @@
       "path": "memory/lessons/LESSONS.md",
       "level": "A",
       "kind": "lesson_library",
-      "content_version": "1.2",
-      "iteration": "r04",
-      "note": "L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）",
+      "content_version": "1.3",
+      "iteration": "r10",
+      "note": "L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -976,9 +976,9 @@
       "path": "memory/workbench/OPEN_QUESTIONS.md",
       "level": "A",
       "kind": "workbench",
-      "content_version": "1.4",
-      "iteration": "r07",
-      "note": "11 问，5 answered（Q-001/002/004/013/014）",
+      "content_version": "1.5",
+      "iteration": "r10",
+      "note": "15 问 11 answered：r10 清偿 Q-005/Q-017（销量外生 / 概率口径根治），验收判据更新",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1187,10 +1187,11 @@
       "path": "framework/methodology/MATH_BOUNDARY.md",
       "level": "B",
       "kind": "methodology",
-      "content_version": "1.0",
-      "iteration": "r02",
+      "content_version": "1.1",
+      "iteration": "r10",
       "updated_at": "2026-10-11",
-      "status": "active"
+      "status": "active",
+      "note": "r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）"
     },
     {
       "path": "framework/methodology/STATISTICAL_DISCIPLINE.md",
@@ -1380,9 +1381,10 @@
       "level": "B",
       "kind": "library",
       "content_version": null,
-      "note": "代码文件：不写文件内版本行（用 git blame）",
-      "iteration": "r02",
-      "status": "active"
+      "note": "r10.1：generate 概率口径限定（各奖级恒定；一等奖恒为 1/T）",
+      "iteration": "r10",
+      "status": "active",
+      "updated_at": "2026-10-11"
     },
     {
       "path": "src/spc/depmap.py",
@@ -1447,8 +1449,8 @@
       "level": "B",
       "kind": "library",
       "content_version": null,
-      "note": "r07：新增 _check_consumes_completeness 逆向声明完整性检查；r08：新增 _check_open_questions_consistency Q 状态 4 处一致性检查",
-      "iteration": "r06",
+      "note": "r07：consumes 逆向检查；r08：INV3/动态锚点/策略一致性/速览计数；r10：概率口径检查项；r10.1：扫描范围自动派生（versions.json 受管表+docs/，禁手写清单）+ 名词引用豁免",
+      "iteration": "r10",
       "status": "active",
       "updated_at": "2026-10-11"
     },
@@ -1699,9 +1701,9 @@
       "kind": "strategy",
       "version_ref": "schema_version",
       "ref_version": "1.3",
-      "note": "schema 1.3：convenience/experience/psychology 元数据；R-002 magnitude_pct 已量化填入（r09 F-0037）",
+      "note": "schema 1.3：convenience/experience/psychology 元数据；R-002 magnitude_pct（r09）；r10.1 A-008 概率口径限定 + evidence_hash 重算",
       "content_version": "1.3",
-      "iteration": "r08",
+      "iteration": "r10",
       "status": "active",
       "consumes": [
         "F-0001",
@@ -1924,7 +1926,10 @@
       "path": "games/dlt/strategy/strategy_simulation.py",
       "level": "D",
       "kind": "analysis_script",
-      "status": "active"
+      "status": "active",
+      "iteration": "r10",
+      "note": "r10.1：docstring 一等奖概率口径",
+      "updated_at": "2026-10-11"
     },
     {
       "path": "memory/facts/ACTIVE.md",
@@ -2313,9 +2318,9 @@
       "path": "games/dlt/iterations/round10/FINDINGS.md",
       "level": "A",
       "kind": "findings",
-      "content_version": "1.0",
+      "content_version": "1.1",
       "iteration": "r10",
-      "note": "r10 研究结论（T-050/T-021/T-022 + P0 重校准）",
+      "note": "r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATEGY_GUIDE/api.py/MATH_BOUNDARY）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -2323,9 +2328,9 @@
       "path": "games/dlt/iterations/round10/HANDOFF.md",
       "level": "A",
       "kind": "handoff",
-      "content_version": "1.0",
+      "content_version": "1.1",
       "iteration": "r10",
-      "note": "r10→r11 交接（含下一轮遗留）",
+      "note": "r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派生）",
       "updated_at": "2026-10-11",
       "status": "active"
     },

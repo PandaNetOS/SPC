@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
 
 > **版本**：`1.16` ｜ 轮次 `r10` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.5`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.6`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.5`（轮次 `r07`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.6`（轮次 `r10`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -122,7 +122,7 @@ python cli/main.py new-game <game_id>
 │   │   ├── portfolio.py  —         ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
 │   │   └── ticket.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── methodology/
-│   │   ├── MATH_BOUNDARY.md  v1.0
+│   │   ├── MATH_BOUNDARY.md  v1.1      ← r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
 │   │   └── STATISTICAL_DISCIPLINE.md  v1.0
 │   ├── protocol/
 │   │   ├── ITERATION_PROTOCOL.md  v1.1
@@ -205,18 +205,18 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── manifest.json  —         ← 策略量化轮清单
 │       │   │   └── scripts/  ← 轮次脚本（7 个）
 │       │   └── round10/
-│       │       ├── FINDINGS.md  v1.0      ← r10 研究结论（T-050/T-021/T-022 + P0 重校准）
-│       │       ├── HANDOFF.md  v1.0      ← r10→r11 交接（含下一轮遗留）
+│       │       ├── FINDINGS.md  v1.1      ← r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATE…
+│       │       ├── HANDOFF.md  v1.1      ← r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派…
 │       │       ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
 │       │       ├── manifest.json  v1.0      ← r10 轮清单
 │       │       └── scripts/  ← 轮次脚本（9 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.5      ← r07：数据可靠性段升级（F-0033/F-0034 根因定位）；co…
+│           ├── STRATEGY_GUIDE.md  v1.6      ← r10.1：概率口径修正（一等奖 1/21,425,712 限定）；r…
 │           ├── simulation_results.json  —
 │           ├── strategy.json  v1.3      ← schema 1.3：convenience/experience/p…
-│           └── strategy_simulation.py  —
+│           └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
@@ -234,12 +234,12 @@ python cli/main.py new-game <game_id>
 │   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
 │   │   └── round10.md  v1.0      ← r10 执行日志
 │   ├── lessons/
-│   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
+│   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
 │   │   └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
-│       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…
+│       ├── OPEN_QUESTIONS.md  v1.5      ← 15 问 11 answered：r10 清偿 Q-005/Q-017…
 │       └── TODO.md  v1.7      ← 新增 T-046/047/048
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
@@ -259,7 +259,7 @@ python cli/main.py new-game <game_id>
 │   └── spc/
 │       ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── ai_map.py  —         ← AI_MAP 生成源（llms.txt 式机器地图）
-│       ├── api.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── api.py  —         ← r10.1：generate 概率口径限定（各奖级恒定；一等奖恒为 1…
 │       ├── depmap.py  —         ← 跨文件依赖图生成源（C）
 │       ├── evidence.py  —         ← ★ 证据锚定：sha256_file / fact_anchor / …
 │       ├── flywheel.py  —         ← 飞轮健康度统计 + 置信度校准（K/D1）
@@ -267,7 +267,7 @@ python cli/main.py new-game <game_id>
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —         ← r07：新增 _check_consumes_completeness…
+│       ├── validate.py  —         ← r07：consumes 逆向检查；r08：INV3/动态锚点/策略一…
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
@@ -361,7 +361,7 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **41 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L14 / 15 开放问题（**5 open**，r10 清偿 Q-005/Q-017）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 记忆层 | ✅ **41 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**5 open**，r10 清偿 Q-005/Q-017）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **94 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.3**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
