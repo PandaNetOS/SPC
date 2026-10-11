@@ -1,7 +1,7 @@
 # DEPENDENCY_MAP —— 跨文件依赖图
 
 
-> **版本**：`1.0` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_dependency_map.py` 从 strategy.json /
@@ -243,6 +243,11 @@
 - script→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
 - sha256锚→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
 - source→ `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py`
+
+## FACTS:F-0048
+- script→ `games/dlt/iterations/round16/scripts/t064_h002_segment.py`
+- sha256锚→ `games/dlt/iterations/round16/scripts/t064_h002_segment.py`
+- source→ `games/dlt/iterations/round16/scripts/t064_h002_segment.py`
 
 ## game.yaml:?
 - primitive→ `features.py:sum`

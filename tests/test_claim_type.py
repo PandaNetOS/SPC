@@ -104,9 +104,11 @@ def _schema_ok(ft: dict) -> bool:
 # ================================================================ 1. 枚举与回填
 
 def test_enum_and_backfill() -> None:
-    section("1. 47 条结论的 claim_type 回填")
+    section(f"1. {len(FACTS)} 条结论的 claim_type 回填")
 
-    check(len(FACTS) == 47, f"FACTS.jsonl 共 {len(FACTS)} 条（本文件按 47 条编写）")
+    # ★ r16：台账只增不删（superseded 的结论留在文件里），故用下界而非硬编码等值 ——
+    #   写死 47 会在每次新增结论后误报，逼人改测试而不是改数据。
+    check(len(FACTS) >= 47, f"FACTS.jsonl 只增不删（当前 {len(FACTS)} 条 ≥ 47）")
 
     missing = [f["id"] for f in FACTS if not f.get("claim_type")]
     check(not missing, f"每条结论都有 claim_type（缺失：{missing or '无'}）")
@@ -130,13 +132,13 @@ def test_enum_and_backfill() -> None:
 # ================================================================ 2. 真实结论全绿
 
 def test_real_facts_pass() -> None:
-    section("2. 47 条真实结论：schema 与 Python 双通道都通过")
+    section(f"2. {len(FACTS)} 条真实结论：schema 与 Python 双通道都通过")
 
     if not HAS_JSONSCHEMA:
         print("  （jsonschema 未安装，跳过 schema 通道）")
 
     bad_py = {f["id"]: _errs_of(f) for f in FACTS if _errs_of(f)}
-    check(not bad_py, f"Python 侧：47 条全部合规（违规：{list(bad_py) or '无'}）")
+    check(not bad_py, f"Python 侧：{len(FACTS)} 条全部合规（违规：{list(bad_py) or '无'}）")
 
     if HAS_JSONSCHEMA:
         bad_sc = [f["id"] for f in FACTS if not _schema_ok(f)]

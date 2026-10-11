@@ -1,6 +1,6 @@
 ﻿# SPC
 
-> **版本**：`1.16` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -41,7 +41,7 @@
 
 ### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.9`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.9`（轮次 `r15`，更新 2026-10-12）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.9`（轮次 `r16`，更新 2026-10-12）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -94,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← FACTS 计数 38→43
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.16     ← ← 速览区 47 条结论 / open 2 / r12 彩种行
+├── README.md  v1.16     ← ← 速览区 48 条结论 / open 1 / r12 彩种行
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -235,11 +235,17 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← r14 任务书（T-052 待批准/T-053/T-054）
 │       │   │   ├── manifest.json  —         ← r14 manifest
 │       │   │   └── scripts/  ← 轮次脚本（4 个）
-│       │   └── round15/
-│       │       ├── FINDINGS.md  v1.0      ← r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 …
-│       │       ├── HANDOFF.md  v1.0      ← r15 交接（含 T-020 未决裁定项）
-│       │       ├── TASK_BRIEF.md  v1.0      ← r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地…
-│       │       └── manifest.json  —         ← r15 manifest
+│       │   ├── round15/
+│       │   │   ├── FINDINGS.md  v1.0      ← r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 …
+│       │   │   ├── HANDOFF.md  v1.0      ← r15 交接（含 T-020 未决裁定项）
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地…
+│       │   │   └── manifest.json  —         ← r15 manifest
+│       │   └── round16/
+│       │       ├── FINDINGS.md  v1.0      ← r16 结论（B1 重校准钥匙=established_in；B2 证…
+│       │       ├── HANDOFF.md  v1.0      ← r16 交接（validate 首次 0 警告；F-0048 策略用途…
+│       │       ├── TASK_BRIEF.md  v1.0      ← r16 任务书（首次含派生候选：必做 1 个 = T-063 [der…
+│       │       ├── manifest.json  —         ← r16 manifest
+│       │       └── scripts/  ← 轮次脚本（9 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -267,7 +273,8 @@ python cli/main.py new-game <game_id>
 │   │   ├── round12.md  v1.0      ← r12 执行日志
 │   │   ├── round13.md  v1.0      ← r13 执行日志
 │   │   ├── round14.md  v1.0      ← r14 执行日志
-│   │   └── round15.md  v1.0      ← r15 执行日志（治理轮）
+│   │   ├── round15.md  v1.0      ← r15 执行日志（治理轮）
+│   │   └── round16.md  v1.0      ← r16 执行日志（告警清零 + 任务源机制轮）
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
@@ -311,6 +318,7 @@ python cli/main.py new-game <game_id>
 │   ├── test_consumes_completeness.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_core.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_cross_scope.py  —         ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
+│   ├── test_derive_tasks.py  v1.0      ← ★ 任务源派生（r16 ★源自救）：open Q 必派生 / 已答不派…
 │   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…
 │   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
@@ -324,6 +332,7 @@ python cli/main.py new-game <game_id>
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r13 T-04…
     ├── bump_iteration.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r14.2 新增…
     ├── count_tests.py  —         ← 登记测试文件 + --inject（T-045：tests/READM…
+    ├── derive_tasks.py  —         ← ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(…
     ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
@@ -404,8 +413,8 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **47 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**2 open**，r11 清偿 Q-011/Q-015，r12 清偿 Q-008）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **98 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库 + **★S 策略文档随轮同步**） |
+| 记忆层 | ✅ **48 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**1 open** = Q-016，r11 清偿 Q-011/Q-015，r12 清偿 Q-008，r16 清偿 Q-006）/ 6 假设（H-001 部分支持、H-002 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **110 项全绿**（r16：错误 0、警告 0）（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库 + **★S 策略文档随轮同步**） |
 | 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.4**，**3 规则** + 9 条 avoid_list，规则含有效性三档 `effectiveness_grade`）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计）+ **r12 L3 hold-out 落地轮**（T-049 时序评测验收通过 F-0044、T-030 策略有效性三档 schema 1.4、Q-008 answered、F-0004/F-0005 锚点重校准） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**252 条**登记（A=125 B=82 C=16 D=29），版本行全部一致 |

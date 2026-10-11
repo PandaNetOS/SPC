@@ -1,6 +1,6 @@
 ﻿# AI_CONTEXT.md — 单一入口
 
-> **版本**：`1.5` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.5` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **如果你是一个 AI（或人），要在这个仓库里做分析 —— 从本文件开始，读完本文件再动手。**
@@ -180,7 +180,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 
 ## 5. 已经确定的结论（速览）
 
-**权威源是 `memory/facts/FACTS.jsonl`（47 条）**，此处只列最重要的几条。
+**权威源是 `memory/facts/FACTS.jsonl`（48 条）**，此处只列最重要的几条。
 引用前**必读该条的 `caveats`**。
 
 | id | 结论 | 置信度 |

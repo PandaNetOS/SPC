@@ -2,7 +2,7 @@
   "index_version": "2.1",
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
-  "current_iteration": "r15",
+  "current_iteration": "r16",
   "framework_version": "1.1",
   "project_version": "0.1.0",
   "levels": {
@@ -53,7 +53,7 @@
       "level": "B",
       "kind": "entry_point",
       "content_version": "1.5",
-      "iteration": "r15",
+      "iteration": "r16",
       "updated_at": "2026-10-12",
       "status": "active",
       "note": "FACTS 计数 38→43",
@@ -64,7 +64,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "机器地图（派生物，render_ai_map 生成）",
       "updated_at": "2026-10-12",
       "status": "generated",
@@ -75,7 +75,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "跨文件依赖图（派生物，render_dependency_map 生成）",
       "updated_at": "2026-10-12",
       "status": "generated",
@@ -86,7 +86,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "飞轮健康度仪表盘（派生物，render_flywheel_health 生成）",
       "updated_at": "2026-10-12",
       "status": "generated",
@@ -97,10 +97,10 @@
       "level": "B",
       "kind": "doc",
       "content_version": "1.16",
-      "iteration": "r15",
+      "iteration": "r16",
       "updated_at": "2026-10-12",
       "status": "active",
-      "note": "← 速览区 47 条结论 / open 2 / r12 彩种行",
+      "note": "← 速览区 48 条结论 / open 1 / r12 彩种行",
       "follows_current": true
     },
     {
@@ -108,7 +108,7 @@
       "level": "B",
       "kind": "version_index_doc",
       "content_version": "1.0",
-      "iteration": "r15",
+      "iteration": "r16",
       "updated_at": "2026-10-12",
       "status": "active",
       "note": "版本索引（人读），权威源是 versions.json",
@@ -1977,6 +1977,136 @@
       "status": "active"
     },
     {
+      "path": "games/dlt/iterations/round16/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "r16 任务书（首次含派生候选：必做 1 个 = T-063 [derive:H-001]）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/FINDINGS.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "r16 结论（B1 重校准钥匙=established_in；B2 证据索引还债；F-0048 H-002 partial；★源自救）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/HANDOFF.md",
+      "level": "B",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "r16 交接（validate 首次 0 警告；F-0048 策略用途待用户批准）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/manifest.json",
+      "level": "D",
+      "kind": "manifest",
+      "content_version": null,
+      "iteration": "r16",
+      "note": "r16 manifest",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/apply_r16_facts.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-066/T-069：7 条动态锚点 NOOP 重记 + established_in→round16；Q-006→answered；H-002→partial",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/b2_fill_evidence_index.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-067：补 strategy.json evidence_index（F-0044~47）与 STRATEGY_GUIDE consumes（F-0041/44/45/46）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t064_h002_segment.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-064：H-002 三段单调 bootstrap CI + 序型置换检验（p=0.2103）→ F-0048",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t013_recalibrate_r09.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-066 复现副本（不覆盖 r09 历史产物）：F-0016/17/22/23 重校准",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t028_recalibrate_r10.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-066 复现副本（不覆盖 r10 历史产物）：F-0028/29/31 重校准",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t013_recalibrate_r09.json",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r16",
+      "note": "T-066 复现产物：F-0016/17/22/23 重校准数值快照",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t028_recalibrate_r10.json",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r16",
+      "note": "T-066 复现产物：F-0028/29/31 重校准数值快照",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t064_h002_segment.json",
+      "level": "D",
+      "kind": "data",
+      "content_version": null,
+      "iteration": "r16",
+      "note": "T-064 产物：三段均值/sd、bootstrap CI、置换检验 p 值（F-0048 证据）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round16/scripts/t020_number_weight.py",
+      "level": "C",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "T-069 复算副本：逐号相对撞号强度 S_j（F-0038 原始脚本，用于核实 T-020 产出确实存在）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
       "path": "games/dlt/manifest_v4_source.json",
       "level": "D",
       "kind": "source_manifest",
@@ -2003,7 +2133,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.9",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "r14.1: R-004 小节 + 三档表 B 档行（v1.8→1.9）",
       "updated_at": "2026-10-12",
       "status": "active",
@@ -2030,8 +2160,12 @@
         "F-0029",
         "F-0033",
         "F-0034",
+        "F-0041",
         "F-0042",
-        "F-0043"
+        "F-0043",
+        "F-0044",
+        "F-0045",
+        "F-0046"
       ],
       "follows_current": true
     },
@@ -2049,7 +2183,7 @@
       "ref_version": "1.4",
       "note": "r14.1: R-004 落地（用户批准 T-052）；schema 仍 1.4，内容 1.4→1.5",
       "content_version": "1.5",
-      "iteration": "r15",
+      "iteration": "r16",
       "status": "active",
       "consumes": [
         "F-0001",
@@ -2106,7 +2240,7 @@
       "level": "A",
       "kind": "facts",
       "content_version": "1.5",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47",
       "updated_at": "2026-10-12",
       "status": "active",
@@ -2261,6 +2395,16 @@
       "status": "active"
     },
     {
+      "path": "memory/journal/round16.md",
+      "level": "C",
+      "kind": "doc",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "r16 执行日志（告警清零 + 任务源机制轮）",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
       "path": "memory/lessons/LESSONS.md",
       "level": "A",
       "kind": "lesson_library",
@@ -2295,7 +2439,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.7",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "r12: Q-008 → answered（open 3→2：Q-006/Q-016）",
       "updated_at": "2026-10-12",
       "status": "active",
@@ -2306,7 +2450,7 @@
       "level": "A",
       "kind": "doc",
       "content_version": "2.2",
-      "iteration": "r15",
+      "iteration": "r16",
       "note": "r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08 记 done 但无产出记录、Q-006 仍 open），勾选状态未改待裁定",
       "updated_at": "2026-10-12",
       "status": "active",
@@ -2644,6 +2788,16 @@
       "status": "active"
     },
     {
+      "path": "tests/test_derive_tasks.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": "1.0",
+      "iteration": "r16",
+      "note": "★ 任务源派生（r16 ★源自救）：open Q 必派生 / 已答不派生；H unverified+partial 派生、refuted 不派生；resource 标记保留；幂等（跑两次不重复）；dry-run 不落盘；派生条目可被 render_task_brief 解析；无需 pytest",
+      "updated_at": "2026-10-12",
+      "status": "active"
+    },
+    {
       "path": "tests/test_round_stall.py",
       "level": "B",
       "kind": "test",
@@ -2767,6 +2921,14 @@
       "iteration": "r15"
     },
     {
+      "path": "tools/derive_tasks.py",
+      "level": "B",
+      "kind": "code",
+      "note": "★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(open) / HYPOTHESES(unverified,partial) / validate 告警 三处存量派生 T-nnn 写入 TODO；[derive:…] 源标记保证幂等；资源缺口如实标记不占轮次预算（Z 协议）",
+      "updated_at": "2026-10-12",
+      "iteration": "r16"
+    },
+    {
       "path": "tools/render_version_index.py",
       "level": "B",
       "kind": "repo_tool",
@@ -2787,7 +2949,7 @@
       "level": "B",
       "kind": "version_index",
       "content_version": "1.0",
-      "iteration": "r15",
+      "iteration": "r16",
       "updated_at": "2026-10-12",
       "status": "generated",
       "follows_current": true

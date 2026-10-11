@@ -157,9 +157,10 @@ def test_fact_anchor() -> None:
 # ================================================================ 3. 35 条已锚定
 
 def test_real_facts_anchored() -> None:
-    section("3. 47 条真实结论：source 均已锚定且实算一致")
+    section(f"3. {len(FACTS)} 条真实结论：source 均已锚定且实算一致")
 
-    check(len(FACTS) == 47, f"FACTS.jsonl 共 {len(FACTS)} 条")
+    # ★ r16：同上，用下界而非写死等值（台账只增不删）。
+    check(len(FACTS) >= 47, f"FACTS.jsonl 只增不删（当前 {len(FACTS)} 条 ≥ 47）")
 
     unanchored = [
         f["id"] for f in FACTS

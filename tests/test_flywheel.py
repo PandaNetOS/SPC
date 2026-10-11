@@ -48,9 +48,15 @@ def check(cond: bool, label: str) -> None:
 
 def test_flywheel_metrics() -> None:
     m = collect_metrics(_ROOT)
-    check(m["total"] == 47, "K: FACTS 台账统计 47 条结论（F-0001~F-0047）")
+    # ★ r16：总数字写死 47 会在 F-0048 入库后立刻误报 —— 改由 FACTS.jsonl 实读推导，
+    #   只保留「被推翻 3 条」这个不随新增变化的判据。
+    with open(os.path.join(_ROOT, "memory", "facts", "FACTS.jsonl"),
+              encoding="utf-8") as f:
+        n = sum(1 for ln in f if ln.strip())
+    alive = n - m["dead"]
+    check(m["total"] == n, f"K: FACTS 台账统计 {n} 条结论（与 FACTS.jsonl 实读一致）")
     check(m["dead"] == 3, "K: 被推翻结论 3 条（F-0007/F-0015/F-0032 superseded）")
-    check(abs(m["survival"] - 44 / 47) < 1e-9, "K: 存活率 = 44/47（可复核）")
+    check(abs(m["survival"] - alive / n) < 1e-9, f"K: 存活率 = {alive}/{n}（可复核）")
     check("by_round" in m and "by_confidence" in m, "K: 按轮/按置信度分层统计存在")
 
 

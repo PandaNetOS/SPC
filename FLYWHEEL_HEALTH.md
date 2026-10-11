@@ -1,7 +1,7 @@
 # FLYWHEEL_HEALTH —— 迭代飞轮健康度
 
 
-> **版本**：`1.0` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_flywheel_health.py` 从 FACTS.jsonl 统计生成；
@@ -14,10 +14,10 @@
 
 | 指标 | 值 |
 |---|---|
-| 总结论数 | **47** |
-| 有效结论（established+tentative） | **44** |
+| 总结论数 | **48** |
+| 有效结论（established+tentative） | **45** |
 | 被推翻（superseded+refuted） | **3** |
-| 结论存活率 | **93.6%** |
+| 结论存活率 | **93.8%** |
 
 ## 每轮新增结论（产出是否持续）
 
@@ -29,12 +29,13 @@
 | round05 | 4 |
 | round07 | 3 |
 | round08 | 1 |
-| round09 | 6 |
-| round10 | 6 |
+| round09 | 2 |
+| round10 | 3 |
 | round11 | 2 |
 | round12 | 3 |
 | round13 | 1 |
 | round14 | 2 |
+| round16 | 8 |
 
 ## 置信度分层存活率（D1 校准信号）
 
@@ -42,7 +43,7 @@
 |---|---|---|---|
 | 1★ | 1 | 1 | 100% |
 | 2★ | 1 | 1 | 100% |
-| 3★ | 16 | 0 | 0% |
+| 3★ | 17 | 0 | 0% |
 | 4★ | 18 | 0 | 0% |
 | 5★ | 11 | 1 | 9% |
 
@@ -52,6 +53,6 @@
 |---|---|
 | analytic | 5 |
 | documentary | 2 |
-| empirical | 31 |
+| empirical | 32 |
 | methodological | 4 |
 | simulation | 5 |

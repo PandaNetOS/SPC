@@ -1,7 +1,7 @@
 # AI_MAP —— SPC 机器可读地图
 
 
-> **版本**：`1.0` ｜ 轮次 `r15` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；
@@ -14,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — FACTS 计数 38→43
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — ← 速览区 47 条结论 / open 2 / r12 彩种行
+- `README.md` — ← 速览区 48 条结论 / open 1 / r12 彩种行
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -71,6 +71,7 @@
 - `memory/journal/round13.md` — r13 执行日志
 - `memory/journal/round14.md` — r14 执行日志
 - `memory/journal/round15.md` — r15 执行日志（治理轮）
+- `memory/journal/round16.md` — r16 执行日志（告警清零 + 任务源机制轮）
 - `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
@@ -90,6 +91,7 @@
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
+- `tools/derive_tasks.py` — ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(open) / HYPOTHESES(unver…
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
@@ -106,6 +108,7 @@
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
+- `tools/derive_tasks.py` — ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(open) / HYPOTHESES(unver…
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
@@ -124,6 +127,7 @@
 - `tests/test_consumes_completeness.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tests/test_core.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tests/test_cross_scope.py` — ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需 pytest
+- `tests/test_derive_tasks.py` — ★ 任务源派生（r16 ★源自救）：open Q 必派生 / 已答不派生；H unverified+partial 派…
 - `tests/test_evidence_anchor.py` — ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest
 - `tests/test_flywheel.py` — K/D1/D2/C/F 测试（无需 pytest）
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
