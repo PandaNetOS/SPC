@@ -1,6 +1,6 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
 
-> **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r10` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -19,7 +19,7 @@
 
 ## 核心立场（先看这个）
 
-> **选号不改变中奖概率。**
+> **选号不改变中奖概率（各奖级概率恒定）。**
 
 大乐透单注组合总数 `C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712`，
 一等奖概率 `≈ 4.667e-08`。这是**解析结论**，不依赖任何数据——
@@ -58,7 +58,7 @@
 ```bash
 # 依赖
 
-> **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r10` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 pip install pyyaml jsonschema numpy pandas
@@ -66,7 +66,7 @@ pip install pyyaml jsonschema numpy pandas
 # 仓库概览
 python cli/main.py info
 
-# 全量校验（48 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算 / 证据锚定漂移 / 版本一致性 / 跨注规则冒烟）
+# 全量校验（94 项：schema / 红线 / 外键 / 双向取代 / SHA256 实算 / 证据锚定漂移 / 版本一致性 / 跨注规则冒烟 / 概率口径）
 python cli/main.py validate --all -v
 
 # 重算证据锚定哈希（改完结论或证据文件后重新基线）
@@ -94,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.15     ← 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 /…
+├── README.md  v1.16     ← 速览区 r10 同步（41 条/94 项/463 测试/252 登记）…
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -198,12 +198,18 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
 │       │   │   ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
 │       │   │   └── scripts/  ← 轮次脚本（2 个）
-│       │   └── round09/
-│       │       ├── FINDINGS.md  v1.0      ← 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 /…
-│       │       ├── HANDOFF.md  v1.0      ← r09→r10 交接（F-0037/38；遗留 T-021/22/23…
-│       │       ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
-│       │       ├── manifest.json  —         ← 策略量化轮清单
-│       │       └── scripts/  ← 轮次脚本（7 个）
+│       │   ├── round09/
+│       │   │   ├── FINDINGS.md  v1.0      ← 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 /…
+│       │   │   ├── HANDOFF.md  v1.0      ← r09→r10 交接（F-0037/38；遗留 T-021/22/23…
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
+│       │   │   ├── manifest.json  —         ← 策略量化轮清单
+│       │   │   └── scripts/  ← 轮次脚本（7 个）
+│       │   └── round10/
+│       │       ├── FINDINGS.md  v1.0      ← r10 研究结论（T-050/T-021/T-022 + P0 重校准）
+│       │       ├── HANDOFF.md  v1.0      ← r10→r11 交接（含下一轮遗留）
+│       │       ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
+│       │       ├── manifest.json  v1.0      ← r10 轮清单
+│       │       └── scripts/  ← 轮次脚本（9 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -225,7 +231,8 @@ python cli/main.py new-game <game_id>
 │   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
 │   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
 │   │   ├── round08.md  v1.0      ← 体系升级批执行日志
-│   │   └── round09.md  v1.0      ← 策略量化轮执行日志
+│   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
+│   │   └── round10.md  v1.0      ← r10 执行日志
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
@@ -354,11 +361,11 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **38 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性） |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
-| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** + `test_structure.py` **8** + `test_flywheel.py` **20** + `test_ai_readability.py` **25** + `test_consumes_completeness.py` **6** 全绿（无需 pytest，共 **384** 项） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**167 条**登记（A=66 B=60 C=13 D=28），版本行全部一致 |
+| 记忆层 | ✅ **41 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L14 / 15 开放问题（**5 open**，r10 清偿 Q-005/Q-017）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **94 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**） |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.3**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地） |
+| `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**252 条**登记（A=125 B=82 C=16 D=29），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）
 
@@ -384,7 +391,7 @@ python cli/main.py new-game <game_id>
 
 | 项 | 说明 |
 |---|---|
-| `R-002` 跨注规则 | ✅ **执行层已闭合**（2.1）：已声明 `scope: cross` 特征 `has_duplicated_structure`，`judge_cross()` 可真正判定。⚠️ 但 `magnitude_pct` 仍为 **null** —— **可执行 ≠ 已量化** |
+| `R-002` 跨注规则 | ✅ **执行层已闭合**（2.1）：已声明 `scope: cross` 特征 `has_duplicated_structure`，`judge_cross()` 可真正判定。✅ **r09 已量化**：`magnitude_pct` = **65.49%** [64.86, 66.16]（K=10 修复增益，后段口径，`F-0037`） |
 | `spread_penalty` | 启发式，**未量化**（不是统计结论）。有跨注特征时应优先用跨注特征 |
 | L3 组合**优化** | **未实现**。跨注层只补齐了"执行"，"在候选集上求解最优组合"仍未做 |
 | 奖金封顶 | ✅ **已闭合**（r03 T-003 + r04 F-0022）：封顶已纳入模拟，口径改为后段 109.4% / 含封顶 40.6% |
@@ -393,6 +400,6 @@ python cli/main.py new-game <game_id>
 
 ## 免责声明
 
-本仓库**不提供中奖保证**，不改变中奖概率，不构成投注建议。
+本仓库**不提供中奖保证**，不改变中奖概率（各奖级恒定），不构成投注建议。
 所有分析结论均附带减损项（`caveats`）与置信度分级，引用前请阅读。
 **理性购彩，量力而行。**

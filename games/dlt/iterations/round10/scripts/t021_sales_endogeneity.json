@@ -1,0 +1,156 @@
+{
+  "n_obs": 1973,
+  "window": "2013-08-28 ~ 2026-10-10",
+  "adf": {
+    "logw1": {
+      "adf_stat": -5.1219,
+      "p": 0.0,
+      "stationary": true
+    },
+    "sale_yi": {
+      "adf_stat": -2.4292,
+      "p": 0.1337,
+      "stationary": false
+    },
+    "pool_yi": {
+      "adf_stat": -1.4707,
+      "p": 0.5479,
+      "stationary": false
+    }
+  },
+  "adf_diff": {
+    "sale_yi": {
+      "adf_stat": -11.4135,
+      "p": 0.0,
+      "stationary_diff": true
+    },
+    "pool_yi": {
+      "adf_stat": -6.883,
+      "p": 0.0,
+      "stationary_diff": true
+    }
+  },
+  "granger": {
+    "pool_yi→sale_yi": {
+      "1": {
+        "F": 7.0498,
+        "p": 0.008,
+        "sig": true
+      },
+      "2": {
+        "F": 6.1105,
+        "p": 0.0023,
+        "sig": true
+      },
+      "3": {
+        "F": 3.2591,
+        "p": 0.0208,
+        "sig": true
+      }
+    },
+    "sale_yi→pool_yi": {
+      "1": {
+        "F": 0.0001,
+        "p": 0.991,
+        "sig": false
+      },
+      "2": {
+        "F": 1.059,
+        "p": 0.347,
+        "sig": false
+      },
+      "3": {
+        "F": 0.5236,
+        "p": 0.6661,
+        "sig": false
+      }
+    },
+    "pool_yi→logw1": {
+      "1": {
+        "F": 30.9363,
+        "p": 0.0,
+        "sig": true
+      },
+      "2": {
+        "F": 16.0332,
+        "p": 0.0,
+        "sig": true
+      },
+      "3": {
+        "F": 9.3764,
+        "p": 0.0,
+        "sig": true
+      }
+    },
+    "sale_yi→logw1": {
+      "1": {
+        "F": 0.0958,
+        "p": 0.757,
+        "sig": false
+      },
+      "2": {
+        "F": 0.1896,
+        "p": 0.8273,
+        "sig": false
+      },
+      "3": {
+        "F": 0.8275,
+        "p": 0.4786,
+        "sig": false
+      }
+    },
+    "logw1→sale_yi": {
+      "1": {
+        "F": 0.0588,
+        "p": 0.8084,
+        "sig": false
+      },
+      "2": {
+        "F": 0.3094,
+        "p": 0.7339,
+        "sig": false
+      },
+      "3": {
+        "F": 0.0848,
+        "p": 0.9684,
+        "sig": false
+      }
+    }
+  },
+  "model_no_sale": {
+    "r2": 0.3086,
+    "const": {
+      "coef": 0.00434,
+      "p": 0.8066
+    },
+    "pool": {
+      "coef": -1.03841,
+      "p": 0.0
+    }
+  },
+  "model_with_sale": {
+    "r2": 0.3099,
+    "const": {
+      "coef": 0.00415,
+      "p": 0.815
+    },
+    "pool": {
+      "coef": -1.03953,
+      "p": 0.0
+    },
+    "sale": {
+      "coef": 0.17193,
+      "p": 0.0555
+    }
+  },
+  "pool_coef_change_with_sale": -0.00111,
+  "verdict": {
+    "sales_is_endogenous": false,
+    "pool_drives_sales": true,
+    "sales_drives_w1": false,
+    "pool_drives_w1": true,
+    "pool_coef_stable_without_sale": true,
+    "summary": "奖池→销量 True；销量→注数 False；奖池→注数 True；含销量后 pool 系数变化 -0.00111（<0.02 视为稳定）"
+  },
+  "seed": 20261011
+}

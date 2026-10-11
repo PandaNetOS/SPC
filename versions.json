@@ -1006,11 +1006,11 @@
       "path": "README.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.15",
-      "iteration": "r07",
+      "content_version": "1.16",
+      "iteration": "r10",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）+ r07 修复轮（下游声明完整性）；35 条结论、212 条登记"
+      "note": "速览区 r10 同步（41 条/94 项/463 测试/252 登记）+ 概率口径表述"
     },
     {
       "path": "VERSION_INDEX.md",
@@ -2206,6 +2206,146 @@
       "content_version": "1.0",
       "iteration": "r09",
       "note": "策略量化轮执行日志",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "任务书：T-050/T-021/T-022（T-050 概率口径根治，用户指出）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "T-021 销量内生性（Granger+VAR+模型对比）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t021_sales_endogeneity.json",
+      "level": "A",
+      "kind": "report",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "销量不驱动注数（pool→sale 显著、sale→w1 无）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t022_illusion.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "T-022 随机性错觉形态撞号（H-001）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t022_illusion.json",
+      "level": "A",
+      "kind": "report",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "仅等差1三连显著；H-001 部分支持",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t050_calibration.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "T-050 各奖级概率表 + 口径检索",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t050_calibration.json",
+      "level": "A",
+      "kind": "report",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "一等奖 1/21425712；任一奖级 1/15；命中清单",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t028_recalibrate_r10.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "F-0028/29/31 重校准（维持+NOOP）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/t028_recalibrate_r10.json",
+      "level": "A",
+      "kind": "report",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "3 条锚点复现/复核成立",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/scripts/apply_r10_facts.py",
+      "level": "A",
+      "kind": "script",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "r10 结论入库（F-0039/40/41 + 锚点重校准 + 工作台同步）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/FINDINGS.md",
+      "level": "A",
+      "kind": "findings",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "r10 研究结论（T-050/T-021/T-022 + P0 重校准）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/HANDOFF.md",
+      "level": "A",
+      "kind": "handoff",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "r10→r11 交接（含下一轮遗留）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round10/manifest.json",
+      "level": "A",
+      "kind": "manifest",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "r10 轮清单",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/journal/round10.md",
+      "level": "A",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r10",
+      "note": "r10 执行日志",
       "updated_at": "2026-10-11",
       "status": "active"
     }

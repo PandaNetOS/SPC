@@ -1,0 +1,109 @@
+{
+  "n_obs": 1973,
+  "window": "2013-08-28 ~ 2026-10-10",
+  "baseline": {
+    "mean_logw1": 1.4852933988654837,
+    "std_logw1": 0.7299212212506121
+  },
+  "forms": {
+    "arith_d1_triplet": {
+      "n_draws": 96,
+      "ratio_in_vs_out": 1.1287,
+      "ci95": [
+        1.0351,
+        1.2243
+      ],
+      "in_mean_logw1": 1.6661,
+      "judge": "显著偏高"
+    },
+    "arith_d2_triplet": {
+      "n_draws": 110,
+      "ratio_in_vs_out": 0.9136,
+      "ci95": [
+        0.8216,
+        1.0116
+      ],
+      "in_mean_logw1": 1.3635,
+      "judge": "不显著"
+    },
+    "arith_d3_triplet": {
+      "n_draws": 86,
+      "ratio_in_vs_out": 1.0142,
+      "ci95": [
+        0.9149,
+        1.1192
+      ],
+      "in_mean_logw1": 1.5055,
+      "judge": "不显著"
+    },
+    "arith_d5_triplet": {
+      "n_draws": 70,
+      "ratio_in_vs_out": 0.9854,
+      "ci95": [
+        0.8613,
+        1.1085
+      ],
+      "in_mean_logw1": 1.4644,
+      "judge": "不显著"
+    },
+    "arith_d1_pair": {
+      "n_draws": 960,
+      "ratio_in_vs_out": 1.025,
+      "ci95": [
+        0.9813,
+        1.0713
+      ],
+      "in_mean_logw1": 1.5042,
+      "judge": "不显著"
+    },
+    "all_odd_front": {
+      "n_draws": 47,
+      "ratio_in_vs_out": 1.1274,
+      "ci95": [
+        0.9933,
+        1.2793
+      ],
+      "in_mean_logw1": 1.6694,
+      "judge": "不显著"
+    },
+    "all_even_front": {
+      "n_draws": 36,
+      "ratio_in_vs_out": 0.915,
+      "ci95": [
+        0.7694,
+        1.0609
+      ],
+      "in_mean_logw1": 1.3612,
+      "judge": "不显著"
+    },
+    "mirrorish_pairs": {
+      "n_draws": 20,
+      "ratio_in_vs_out": 0.9059,
+      "ci95": [
+        0.7339,
+        1.0895
+      ],
+      "in_mean_logw1": 1.3469,
+      "judge": "不显著"
+    },
+    "low_span_1to20": {
+      "n_draws": 122,
+      "ratio_in_vs_out": 1.0431,
+      "ci95": [
+        0.9478,
+        1.1355
+      ],
+      "in_mean_logw1": 1.5452,
+      "judge": "不显著"
+    }
+  },
+  "h001": {
+    "verdict": "partial",
+    "supported_forms": [
+      "arith_d1_triplet"
+    ],
+    "baseline_mean_logw1": 1.4852933988654837,
+    "summary": "显著偏高的形态：['arith_d1_triplet']——仅等差 1 三连（连号强形态）显著；全奇/全偶/镜像/其他等差无证据 → H-001 部分支持"
+  },
+  "seed": 20261011
+}

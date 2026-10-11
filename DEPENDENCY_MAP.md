@@ -199,6 +199,21 @@
 - sha256锚→ `games/dlt/iterations/round09/scripts/t020_number_weight.py`
 - source→ `games/dlt/iterations/round09/scripts/t020_number_weight.py`
 
+## FACTS:F-0039
+- script→ `games/dlt/iterations/round10/scripts/t050_calibration.py`
+- sha256锚→ `games/dlt/iterations/round10/scripts/t050_calibration.py`
+- source→ `games/dlt/iterations/round10/scripts/t050_calibration.py`
+
+## FACTS:F-0040
+- script→ `games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py`
+- sha256锚→ `games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py`
+- source→ `games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py`
+
+## FACTS:F-0041
+- script→ `games/dlt/iterations/round10/scripts/t022_illusion.py`
+- sha256锚→ `games/dlt/iterations/round10/scripts/t022_illusion.py`
+- source→ `games/dlt/iterations/round10/scripts/t022_illusion.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 

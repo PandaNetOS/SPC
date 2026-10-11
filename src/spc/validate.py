@@ -1312,6 +1312,59 @@ def _check_summary_counts(root: str, rep: ValidationReport) -> None:
         rep.ok(f"速览计数: {checked} 处「N 条结论」与台账一致（台账 {total} 条）")
 
 
+# ---------------------------------------------------------------- 概率口径标注（T-050 r10 根治）
+
+_PROB_CALIBRATION_FILES = [
+    "README.md",
+    "AI_CONTEXT.md",
+    "AGENTS.md",
+    "docs/METHODOLOGY.md",
+    "docs/CONSUMING.md",
+    "docs/ARCHITECTURE.md",
+    "cli/main.py",
+    "framework/core/generate.py",
+    "framework/core/judge.py",
+    "framework/core/portfolio.py",
+    "games/dlt/strategy/strategy.json",
+]
+_PROB_DIGITS = re.compile(r"(4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)")
+_PROB_QUALIFIER = re.compile(r"(一等奖|任一奖级|全奖级|各奖级|任意奖级|头奖)")
+_PROB_BAD_PATTERN = re.compile(
+    r"(中奖概率[^\n]{0,40}(?:4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)"
+    r"|(?:4\.66?7e-08|1\s*/\s*T|21,425,712|21425712)[^\n]{0,40}中奖概率)")
+
+
+def _check_probability_calibration(root: str, rep: ValidationReport) -> None:
+    """T-050：概率数字必须带奖级限定。
+
+    检查对外产物中「中奖概率」与具体数字（1/T、4.667e-08、21,425,712）绑定出现、
+    但附近 40 字符内无奖级限定词（一等奖/任一奖级/各奖级等）的表述。
+    中奖概率是集合概念（任一奖级约 1/15），4.667e-08 仅指一等奖——两者不得混用。
+    """
+    bad: list[str] = []
+    checked_files = 0
+    for rel in _PROB_CALIBRATION_FILES:
+        p = os.path.join(root, rel)
+        if not os.path.exists(p):
+            continue
+        checked_files += 1
+        try:
+            text = open(p, encoding="utf-8").read()
+        except Exception:  # noqa: BLE001, S112
+            continue
+        for lineno, line in enumerate(text.splitlines(), 1):
+            if not _PROB_DIGITS.search(line) or "中奖概率" not in line:
+                continue
+            m = _PROB_BAD_PATTERN.search(line)
+            if m and not _PROB_QUALIFIER.search(line):
+                bad.append(f"{rel}:{lineno} 「中奖概率」与具体数字绑定但缺奖级限定: {line.strip()[:80]}")
+    if bad:
+        for b in bad:
+            rep.err(f"概率口径: {b}")
+    else:
+        rep.ok(f"概率口径: 检查 {checked_files} 个对外产物，无「中奖概率=具体数字」缺限定表述")
+
+
 # ---------------------------------------------------------------- 开放问题一致性（Q 状态根治）
 
 _QUESTION_ID_RE = re.compile(r"^##\s+(Q-\d{3})\s+—\s+(.+)$", re.M)
@@ -1888,6 +1941,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_dependency_map(root, rep)            # C 依赖图
     _check_critical_numbers(root, rep)          # C2 关键数字一致性
     _check_open_questions_consistency(root, rep)  # Q 状态一致性（4 处手动同步根治）
+    _check_probability_calibration(root, rep)   # T-050 概率口径标注（r10）
 
     # 协议文档存在性（软检查）
     docs = [

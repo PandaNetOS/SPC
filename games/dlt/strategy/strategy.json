@@ -221,7 +221,7 @@
       "refuted_by": [
         "F-0001"
       ],
-      "reason": "本仓库最严重的表述错误。避开连号作用于『与他人重号的人数』（奖金分母），不作用于『是否中奖』。中奖概率恒为 1/21,425,712，任何选号方式都无法改变。"
+      "reason": "本仓库最严重的表述错误。避开连号作用于『与他人重号的人数』（奖金分母），不作用于『是否中奖』。一等奖概率恒为 1/21,425,712（各奖级概率均恒定），任何选号方式都无法改变。"
     },
     {
       "id": "A-009",
@@ -458,7 +458,7 @@
   "provenance": {
     "iteration": "round06",
     "generator": "apply_r06_strategy.py (user-approved)",
-    "evidence_hash": "151d720cf5e6029e866e92f1983a26a9bc90e86950731602134a9a636a339581",
+    "evidence_hash": "5dcb8a7df33e50cbffae414dca250ae46abf8459212f813ca41043098ebe20ed",
     "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。 ★ 元数据增强（非研究轮）：schema_version 1.2→1.3，新增 convenience（购彩便利性）/ experience（情绪体验与预期校准）/ psychology（心理学外部锚点）三组元数据；均为非收益变量（affects_expected_return=false），不改变策略数字与 evidence_hash。"
   }
 }

@@ -14,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-005 证伪、32 条结论
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — 仓库总览；r05 研究要点 + r06 策略落地（R-002 重构 / R-003 新增，用户批准）+ r07 修复轮…
+- `README.md` — 速览区 r10 同步（41 条/94 项/463 测试/252 登记）+ 概率口径表述
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -65,6 +65,7 @@
 - `memory/journal/round07.md` — r07 叙事（研究轮）
 - `memory/journal/round08.md` — 体系升级批执行日志
 - `memory/journal/round09.md` — 策略量化轮执行日志
+- `memory/journal/round10.md` — r10 执行日志
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
