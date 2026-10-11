@@ -1,0 +1,178 @@
+{
+  "seed": 20261011,
+  "alpha_post": 12.7815,
+  "report": {
+    "S1_betting_method_equivalence": {
+      "conclusion": "所有投注方式在『每元期望回报率』上数学等价（都在 51% 返奖率内）；唯一可被投注方式影响的不是回报率，而是 (a) 覆盖的组合集合（撞号水平）与 (b) 组内重复（自我摊薄）。",
+      "methods": {
+        "单注基本票(2元)": {
+          "cost_yuan": 2,
+          "n_combos": 1,
+          "p_first": 4.6672894697735135e-08,
+          "note": "基线：中奖概率 = 1/T，期望回报率 = 返奖率 51%"
+        },
+        "复式前区 n 选 m": {
+          "cost_yuan": "2×C(m,5)",
+          "n_combos": "C(m,5)",
+          "note": "数学上恒等于 C(m,5) 注独立单式票的组合；中奖概率线性放大，每元回报率与单注相同"
+        },
+        "胆拖(前区 p 胆 q 拖)": {
+          "cost_yuan": "2×C(q,5-p)",
+          "n_combos": "C(q,5-p)",
+          "note": "= C(q,5-p) 注单式票的展开；同理，每元回报率不变，仅改变资金在组合空间上的分布粒度"
+        },
+        "倍投 k 倍": {
+          "cost_yuan": "2k",
+          "n_combos": 1,
+          "note": "金额线性放大；期望与方差均按 k 放大，每元回报率不变（负期望同样放大）"
+        },
+        "追加(3元)": {
+          "cost_yuan": 3,
+          "n_combos": 1,
+          "note": "E5 起追加仅作用于一二等奖（+80%）；返奖率同为 51%，撞号结构不变。对『期望回报率』无系统差异"
+        }
+      }
+    },
+    "S2_duplicate_ticket_self_dilution": {
+      "conclusion": "『买 K 注完全相同的号码』会自我摊薄：中奖时 K 注同中一等奖，总奖金被 K 份瓜分。锚点 m=6 下买 10 注相同号码，每元期望回报仅为买 1 注的 43.8%（损失 56%）。这是『重复』真正有害的形式 —— 与『结构同构（gap 向量相同但号码不同）』严格不同（见 S4）。",
+      "formula": "每元回报比 = (1+m)/(K+m)，m = 其他同号注数，K = 自重复注数",
+      "per_K": {
+        "2": {
+          "每元回报比(m=6锚点)": 0.875,
+          "回报损失_pct": 12.5
+        },
+        "3": {
+          "每元回报比(m=6锚点)": 0.7778,
+          "回报损失_pct": 22.22
+        },
+        "5": {
+          "每元回报比(m=6锚点)": 0.6364,
+          "回报损失_pct": 36.36
+        },
+        "10": {
+          "每元回报比(m=6锚点)": 0.4375,
+          "回报损失_pct": 56.25
+        }
+      }
+    },
+    "S3_kelly_negative_ev": {
+      "返奖率": 0.51,
+      "每注期望净收益(元)": -0.98,
+      "凯利分数": "f* ≤ 0（负期望下最优投注金额为 0）",
+      "结论": "凯利公式要求 b·p − q > 0 才给出正投注比例；大乐透返奖率 51% 意味着 b·p − q < 0，数学上的『最优投注金额』是 0。任何固定预算下的投注都应被理解为娱乐支出，而非期望为正的投资。这与 F-0002 一致。"
+    },
+    "S4_R002_quantification": {
+      "design": {
+        "n_tickets": 10,
+        "n_sim": 2000,
+        "seed": 20261011,
+        "constraint": "全部覆盖组合 run=0（先执行 R-001，再叠加 R-002）",
+        "spread": "均匀随机抽 10 个不同组合（结构分散）",
+        "cluster": "以随机种子为模板抽 10 个 gap 同构的**不同**组合；种子仅限同构组 >= 10",
+        "cluster_seed_pool_size": 80199,
+        "cluster_seed_share_of_norun": 0.472,
+        "dup_fallback_rate": 0.0
+      },
+      "collision_factor": {
+        "spread_mean": 0.476,
+        "cluster_mean": 0.5003,
+        "delta_cluster_minus_spread": 0.0243,
+        "delta_ci95": [
+          -0.0106,
+          0.0638
+        ],
+        "conclusion": "结构同构 vs 结构分散的期望撞号系数差异趋近 0 且 CI 含 0→ 结构同构不改变期望撞号（Q-012 判据：not_established）。"
+      },
+      "prize_per_ticket_nocap": {
+        "spread_mean_yuan": 14906043.4,
+        "cluster_mean_yuan": 14170064.2,
+        "spread_uplift_vs_cluster_pct": 5.24,
+        "uplift_ci95": [
+          -2.1277,
+          14.2857
+        ],
+        "conclusion": "未计封顶口径下，结构分散相对结构同构的期望奖金增益；CI 含 0 → R-002 的期望奖金效应不成立。"
+      },
+      "prize_per_ticket_with_cap": {
+        "spread_mean_yuan": 10000000.0,
+        "cluster_mean_yuan": 10000000.0,
+        "spread_uplift_vs_cluster_pct": 0.0,
+        "uplift_ci95": [
+          0.0,
+          0.0
+        ],
+        "conclusion": "含封顶口径下差异被单注 1000 万上限进一步抹平（锚点处均已饱和）。"
+      },
+      "variance_effect": {
+        "spread_cf_std": 0.0172,
+        "cluster_cf_std": 0.0105,
+        "cluster_over_spread": 0.611,
+        "conclusion": "结构同构的撞号系数标准差更高（同构组的人群权重集中）：方差效应存在但属二阶 —— R-002 若保留，定位应是『降低跨期方差』而非『提高期望奖金』。"
+      }
+    },
+    "S5_extended_strategy": {
+      "baseline_random": {
+        "collision_factor": 1.005,
+        "prize_per_ticket_nocap": 7051353.3,
+        "prize_per_ticket_with_cap": 7051353.3,
+        "cap_triggered": false,
+        "n_pool": 324632
+      },
+      "r001_only_norun": {
+        "collision_factor": 0.4759,
+        "prize_per_ticket_nocap": 14890955.5,
+        "prize_per_ticket_with_cap": 10000000.0,
+        "cap_triggered": false,
+        "n_pool": 169911
+      },
+      "r003_norun_and_nonbirthday": {
+        "collision_factor": 0.4254,
+        "prize_per_ticket_nocap": 16657084.9,
+        "prize_per_ticket_with_cap": 10000000.0,
+        "cap_triggered": false,
+        "n_pool": 89181
+      },
+      "uplift_pct_anchor_n0_6": {
+        "r001_only_nocap": 111.18,
+        "r001_only_with_cap": 41.82,
+        "r003_nocap": 136.23,
+        "r003_with_cap": 41.82,
+        "r003_over_r001_nocap": 25.05,
+        "r003_over_r001_with_cap": 0.0
+      },
+      "n0_sensitivity": {
+        "3.0": {
+          "base_cf": 1.0046,
+          "base_cap": 10000000.0,
+          "r001_cap": 10000000.0,
+          "r003_cap": 10000000.0,
+          "r003_nocap": 33314169.8,
+          "uplift_r001_cap_pct": 0.0,
+          "uplift_r003_cap_pct": 0.0,
+          "uplift_r003_nocap_pct": 136.13
+        },
+        "6.0": {
+          "base_cf": 1.0051,
+          "base_cap": 7051054.9,
+          "r001_cap": 10000000.0,
+          "r003_cap": 10000000.0,
+          "r003_nocap": 16657084.9,
+          "uplift_r001_cap_pct": 41.82,
+          "uplift_r003_cap_pct": 41.82,
+          "uplift_r003_nocap_pct": 136.24
+        },
+        "9.0": {
+          "base_cf": 1.0025,
+          "base_cap": 4712670.7,
+          "r001_cap": 9922402.8,
+          "r003_cap": 10000000.0,
+          "r003_nocap": 11104723.3,
+          "uplift_r001_cap_pct": 110.55,
+          "uplift_r003_cap_pct": 112.19,
+          "uplift_r003_nocap_pct": 135.64
+        }
+      },
+      "conclusion": "同时避开连号与生日号区（max>=32）可在 R-001 基础上进一步降低撞号：其覆盖集合的人群权重恒为 1.0（无任何偏好加成），是理论上的最低撞号覆盖。未计封顶收益由 R-001 的 ~111% 提升至 ~136%（+25pp）；含封顶净值在锚点 n0=6 处被单注 1000 万上限饱和、与 R-001 相同，但在 n0 更高（注数更多）时差异显现（见 n0_sensitivity）。"
+    }
+  }
+}

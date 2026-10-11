@@ -67,34 +67,71 @@
     },
     {
       "id": "R-002",
-      "statement": "投注组合应分散覆盖号码空间，避免多注集中在小号区或同一结构形态（资金分散可比结构集中略微降低撞号方差）",
+      "statement": "投注组合内**禁止出现完全相同的号码**（买 K 注相同号码 = 自我摊薄：K=10、锚点 m=6 时每元期望回报损失 56.2%，见 F-0027）；号码不同但结构同构的组合**不在此列**（F-0028 已证：期望奖金与方差均无益）",
       "kind": "portfolio_spread",
       "scope": "cross",
       "machine_rule": {
-        "predicate": "has_duplicated_structure == true",
-        "action": "penalize",
-        "weight": 0.5
+        "predicate": "has_identical_tickets == true",
+        "action": "exclude",
+        "weight": null
       },
       "evidence_refs": [
-        "F-0003"
+        "F-0027",
+        "F-0028"
       ],
       "confidence": 3,
       "expected_value_impact": {
-        "metric": "variance",
-        "direction": "decrease",
+        "metric": "bonus_given_win",
+        "direction": "increase",
         "magnitude_pct": null,
         "ci95": null,
         "changes_win_probability": false,
         "caveats": [
-          "本规则的直接证据仅来自 F-0003（连号形态人群更密）的推论，未经单独模拟验证。",
-          "对『中奖概率』无任何影响：期望中奖注数恒等于 N/T，与组合分散度无关。",
-          "作用在于降低方差（不同注同时撞号的风险），而非提高期望。",
-          "投注组合优化尚未在本仓库做过量化实验（F-0004 的 C 层是对单注策略的模拟）。",
-          "【schema_version 1.1 起可执行】predicate 引用 game.yaml 的跨注特征 has_duplicated_structure（前区间隔向量同构），需**整组号码**上下文，由 framework/core/portfolio.py 的 judge_cross() 执行。1.0 时代该特征未声明，本规则在任何地方都执行不了。",
-          "【仍未量化】本规则可判定（真/假），但 magnitude_pct 仍为 null —— 判定不等于收益已知。"
+          "【r06 语义重构（用户批准）】旧 predicate has_duplicated_structure（结构同构）经量化后期望效应与方差理由均不成立（F-0028，Q-012 判据 not_established）—— 故不再 penalize 结构同构。",
+          "真正有害的『重复』是**完全相同号码**：K 注相同 → 每元期望回报 = (1+m)/(K+m)；锚点 m=6 下 K=2/5/10 损失 12.5%/36.4%/56.2%（F-0027，解析结论）。",
+          "predicate has_identical_tickets 为 r06 新增跨注特征（identical_ticket_count >= 1），需**整组号码**上下文（framework/core/portfolio.py 的 judge_cross() 执行）。",
+          "本规则的 magnitude_pct 不填单一数字：修复增益依赖组内重复注数 K 与外部同号注数 m，解析式为 (K-1)/(K+m)（m=6 时 K=2 → +14.3%、K=10 → +128.6% 的上限参照）。",
+          "不改变中奖概率（4.67e-08 恒定）；长期期望回报仍为负（约 −0.98 元/注）。"
         ]
       },
       "applicable_epochs": []
+    },
+    {
+      "id": "R-003",
+      "statement": "避开『生日号区』：前区号码**不要全部落在 1~31**（max 须 >= 32）。与 R-001（避开连号）叠加：撞号系数 0.476 → 0.425，未计封顶期望奖金提升 +111.2% → **+136.2%**（F-0029）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "has_run_ge2 == true or all_birthday_zone == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": [
+        "F-0003",
+        "F-0004",
+        "F-0022",
+        "F-0029"
+      ],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "bonus_given_win",
+        "direction": "increase",
+        "magnitude_pct": 136.2,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "数字来自条件份额模拟（F-0029），依赖人群权重模型（连号 α=12.7815 + 生日号偏好 1.25，F-0022 校准），属『模型估计』，置信度 ★★★☆☆。",
+          "含封顶口径：锚点 n0=6 处与 R-001 同为 +41.8%（单注 1000 万上限饱和抹平）；n0=9 处 +112.2% vs R-001 +110.6%。",
+          "与 R-001 叠加执行：R-001 已排除连号（has_run_ge2==true），R-003 在其上再排除生日号区（all_birthday_zone==true，即 max<=31）。",
+          "只在中奖时兑现。中奖概率 4.67e-08 不变，期望回报提升被极小概率大幅折现。",
+          "长期期望回报仍为负（约 −0.98 元/注），本规则不改变这一事实。"
+        ],
+        "magnitude_pct_with_cap": 41.8,
+        "magnitude_pct_with_cap_note": "锚点 n0=6（E6 基准注数）下的含封顶净值（F-0029/F-0017）；n0=9 处为 +112.2%。低注数情形会被单注上限抹平。"
+      },
+      "applicable_epochs": [
+        "E6"
+      ]
     }
   ],
   "avoid_list": [
@@ -278,12 +315,30 @@
       "claim": "后区撞号结构存在但不可靠可利用：后区 66 对的『被选中率』强烈非均匀（过散布 8.72×，MC p<1e-4；最热对/最冷对密度比 2.25×），而『开出率』均匀（χ²=64.1，MC p=0.51）；前/后段交叉验证的避让收益K=5/10 仅约 1.1%/3.0%，95%CI 含 0",
       "status": "established",
       "confidence": 4
+    },
+    {
+      "id": "F-0027",
+      "claim": "『买 K 注完全相同的号码』会自我摊薄：若中奖，K 注同时命中一等奖、总奖金被 K 份瓜分，每元期望回报比 = (1+m)/(K+m)（m=其他同号注数）；锚点 m=6 下，K=2/5/10 的每元回报分别为单注的 87.5%/63.6%/43.8%（损失 12.5%/36.4%/56.2%）",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0028",
+      "claim": "R-002 判定的『结构同构』（gap 向量相同但号码不同）不改变期望奖金：10 注同构 vs 10 注分散的期望撞号差 +0.024（CI [-0.011, 0.064] 含 0）、未计封顶每注奖金增益 +5.24%（CI [-2.1, 14.3] 含 0）、含封顶增益 0%（单注上限饱和）；且同构组撞号方差反而更低（cf 标准差 0.0105 vs 0.0172）。按 Q-012 判据，R-002 的 magnitude_pct 应标 not_established，权重应为 1.0（不 penalize）",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0029",
+      "claim": "同时避开连号（run>=2）与生日号区（max<=31）的覆盖，条件撞号系数由随机基线 1.005 降至 0.425（仅避开连号为 0.476）；未计封顶的期望奖金提升 +136.2%（R-001 为 +111.2%，增量 +25pp）；含封顶在锚点 n0=6 处同为 +41.8%（单注上限饱和）、n0=9 处 +112.2%（vs R-001 +110.6%）",
+      "status": "established",
+      "confidence": 3
     }
   ],
   "provenance": {
-    "iteration": "round04",
-    "generator": "manual (round04 衰减归因轮)",
-    "evidence_hash": "afd2dd74f99ed0ccf8b5f809245143808065ce5f1fa46cb382204093233006e7",
-    "note": "r04：R-001 幅度改为后段口径（F-0022）；A-006 理由更正（F-0025，L7 口径混淆）；新增 A-009（择时被 F-0023/F-0024 驳回）。evidence_hash = 全部被引结论规范视图的 SHA256。"
+    "iteration": "round06",
+    "generator": "apply_r06_strategy.py (user-approved)",
+    "evidence_hash": "61ee451c086a375dbf2e53dde4742143903d13d0de731ef8deca05463767a751",
+    "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。"
   }
 }

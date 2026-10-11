@@ -154,12 +154,12 @@ def test_fact_anchor() -> None:
     )
 
 
-# ================================================================ 3. 25 条已锚定
+# ================================================================ 3. 32 条已锚定
 
 def test_real_facts_anchored() -> None:
-    section("3. 25 条真实结论：source 均已锚定且实算一致")
+    section("3. 32 条真实结论：source 均已锚定且实算一致")
 
-    check(len(FACTS) == 25, f"FACTS.jsonl 共 {len(FACTS)} 条")
+    check(len(FACTS) == 32, f"FACTS.jsonl 共 {len(FACTS)} 条")
 
     unanchored = [
         f["id"] for f in FACTS

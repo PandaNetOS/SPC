@@ -1,6 +1,6 @@
 # smartpickcore
 
-> **版本**：`1.12` ｜ 轮次 `r04` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.14` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.2`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.3`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.2`（轮次 `r04`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.3`（轮次 `r06`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -138,8 +138,8 @@ python cli/main.py new-game <game_id>
 │   └── main.py              —      ← 命令行入口（14 个命令）
 ├── memory/                        ← 记忆层
 │   ├── facts/
-│   │   ├── FACTS.jsonl        v1.4   ← 结论台账（25 条，JSONL 追加式；每条带 claim_type + source_sha256）
-│   │   └── INDEX.md           v1.4   ← 速览（派生物，CLI 生成，勿手改）
+│   │   ├── FACTS.jsonl        v1.5   ← 结论台账（32 条，JSONL 追加式；每条带 claim_type + source_sha256）
+│   │   └── INDEX.md           v1.5   ← 速览（派生物，CLI 生成，勿手改）
 │   ├── journal/
 │   │   ├── round02.md
 │   │   ├── round03.md
@@ -147,9 +147,9 @@ python cli/main.py new-game <game_id>
 │   ├── lessons/
 │   │   └── LESSONS.md         v1.2   ← 教训库 L1–L14（只增不删）
 │   ├── workbench/
-│   │   ├── TODO.md            v1.5   ← 任务台账（P0 已清空）
-│   │   ├── OPEN_QUESTIONS.md  v1.3   ← 开放问题（15，6 answered）
-│   │   └── HYPOTHESES.md      v1.1   ← 假设（5；H-004 已推翻）
+│   │   ├── TODO.md            v1.6   ← 任务台账（P0 已清空）
+│   │   ├── OPEN_QUESTIONS.md  v1.4   ← 开放问题（15，7 answered）
+│   │   └── HYPOTHESES.md      v1.2   ← 假设（6；H-004/H-005 已推翻）
 │   └── INDEX.md
 ├── games/                         ← 彩种（数据 + 轮次 + 策略）
 │   ├── _template/                   ← 新彩种骨架
@@ -264,12 +264,12 @@ python cli/main.py new-game <game_id>
 | 契约层 | ✅ 5 schema + VERSIONING（含 config 2.0 迁移指南） |
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
-| **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 5 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **25 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L14 / 15 开放问题（6 answered）/ 5 假设（1 已推翻）/ 待办（P0 已清空） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **52 项全绿** |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **3 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，2 规则 + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round04 完成**（衰减归因 / 择时 / 后区）+ round05 任务书 |
-| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **62** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **323** 项） |
-| 版本体系 | ✅ A/B/C/D 四级分区，**144 条**登记（A=46 B=58 C=13 D=27），版本行全部一致 |
+| **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
+| 记忆层 | ✅ **32 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定）/ L1–L14 / 8 开放问题（7 answered）/ 6 假设（2 已推翻）/ 待办（P0 已清空） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **67 项全绿** |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.1**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **round05 完成**（投注方式等价 / R-002 量化不成立 / 时间因素证伪）+ **r06 策略落地**（R-002 重构 / R-003 新增，用户批准）+ round06 任务书 |
+| `tests/` | ✅ `test_core.py` **117** + `test_cross_scope.py` **64** + `test_claim_type.py` **43** + `test_evidence_anchor.py` **32** + `test_shadow_game.py` **69** 全绿（无需 pytest，共 **325** 项） |
+| 版本体系 | ✅ A/B/C/D 四级分区，**159 条**登记（A=59 B=60 C=13 D=27），版本行全部一致 |
 
 ### r04 归因要点（口径已复核）
 

@@ -341,6 +341,25 @@ def _c_max_shared_count(groups: Any, **_: Any) -> int:
     return best
 
 
+def _c_duplicate_ticket_count(groups: Any, **_: Any) -> int:
+    """组内**完全相同号码**的注数（号码逐位相同，非结构相同）。
+
+    语义与 duplicate_structure_count 平行：对每张注，若其号码组合在组内
+    出现 >= 2 次，计 1；全组互异 → 0。『自我摊薄』的判定量（F-0027）：
+    买 K 注相同号码 = 中奖时 K 份瓜分总奖金。
+    """
+    gs = _sorted_groups(groups, "groups")
+    counts: dict[tuple[int, ...], int] = {}
+    for g in gs:
+        counts[tuple(g)] = counts.get(tuple(g), 0) + 1
+    return sum(c for c in counts.values() if c >= 2)
+
+
+def _c_duplicate_ticket_count_ge(groups: Any, **args: Any) -> bool:
+    t = _int_arg(args, "threshold", "duplicate_ticket_count_ge")
+    return _c_duplicate_ticket_count(groups) >= t
+
+
 # ---------------------------------------------------------------- 注册表
 
 PRIMITIVES: dict[str, Callable[..., Any]] = {
@@ -381,6 +400,8 @@ CROSS_PRIMITIVES: dict[str, Callable[..., Any]] = {
     "distinct_structure_count": _c_distinct_structure_count,
     "coverage_unique_count": _c_coverage_unique_count,
     "max_shared_count": _c_max_shared_count,
+    "duplicate_ticket_count": _c_duplicate_ticket_count,
+    "duplicate_ticket_count_ge": _c_duplicate_ticket_count_ge,
 }
 
 #: 原语名 → 作用域。供 game_util 静态校验「原语与 scope 是否匹配」。
@@ -402,6 +423,7 @@ _REQUIRED_ARGS: dict[str, tuple[str, ...]] = {
     "max_in_range": ("lo", "hi"),
     "sum_mod": ("modulus",),
     "duplicate_structure_count_ge": ("threshold",),
+    "duplicate_ticket_count_ge": ("threshold",),
 }
 
 #: 声明为 `zone` 的原语（需要 zone 参数）

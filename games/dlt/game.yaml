@@ -169,7 +169,8 @@ features:
     primitive: duplicate_structure_count_ge
     args: {zone: front, threshold: 1}
     formula: "duplicated_structure_across_tickets >= 1"
-    note: "★ R-002 的判定量。跨注层，需整组号码上下文；单注层算不出来。"
+    note: "r06 起**无规则引用**：旧 R-002 曾用它判『结构同构』，F-0028 量化后不成立（期望与方差均无益），
+           R-002 已重构为 has_identical_tickets（完全相同号码）。保留供 Q-009 组合分散度研究使用。"
 
   - key: distinct_structure_count
     label: 组内不同结构的个数（1 = 全同构）
@@ -179,6 +180,24 @@ features:
     args: {zone: front}
     formula: "len(set(gap_vector(front_t) for t in tickets))"
     note: "跨注特征（L3）。供后续组合分散度研究（Q-009）使用，当前无规则引用。"
+
+  - key: identical_ticket_count
+    label: 组内完全相同号码的注数（号码逐位相同，非结构相同）
+    type: integer
+    scope: cross
+    primitive: duplicate_ticket_count
+    args: {zone: front}
+    formula: "count(t in tickets: front_t 在组内出现 >= 2 次)"
+    note: "跨注特征。『自我摊薄』的判定量（F-0027）：买 K 注相同号码 = 中奖时 K 份瓜分总奖金。"
+
+  - key: has_identical_tickets
+    label: 组内是否存在完全相同号码的注（>= 1 注与他人号码相同）
+    type: boolean
+    scope: cross
+    primitive: duplicate_ticket_count_ge
+    args: {zone: front, threshold: 1}
+    formula: "identical_ticket_count >= 1"
+    note: "★ R-002（r06 语义重构）的判定量。跨注层，需整组号码上下文。"
 
 # ---------------------------------------------------------------- 奖金模型
 # ⚠️ 规则变更频繁：跨 epoch 不可直接比较奖金金额。
@@ -360,6 +379,11 @@ iterations:
     title: 撞号效应衰减归因与策略维度扩展
     date: "2026-10-11"
     note: 衰减归因（前段口径异常 + 估计量依赖）、后区撞号、奖金瓜分与择时
+  - round: round05
+    status: delivered
+    title: 最优投注方式 + 时间因素投注策略（用户点名方向）
+    date: "2026-10-11"
+    note: 投注方式等价性（F-0026）、重复投注自我摊薄（F-0027）、R-002 量化（F-0028，Q-012 闭合）、R-003 候选（F-0029）、H-005 证伪（F-0030）、奖池时序（F-0031）、节假日窗口（F-0032→H-006）；策略变更待用户批准
 
 strategy_output:
   schema: spec/strategy.schema.json

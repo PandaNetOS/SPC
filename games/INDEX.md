@@ -7,7 +7,7 @@
 
 | id | 名称 | 号码空间 T | 一等奖概率 | 返奖率 | 结论数 | 轮次 | 策略 |
 |---|---|---|---|---|---|---|---|
-| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 25 | round04 ✅ / round05 计划中 | `dlt/strategy/strategy.json` |
+| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 32 | round05 ✅ | `dlt/strategy/strategy.json` |
 
 > 上表是**手工维护的速览**。权威数据源：
 > - 结论数 → `python cli/main.py info`
@@ -48,7 +48,8 @@ games/
     │   ├── round02/      #     已完成：FINDINGS / HANDOFF / manifest / legacy_findings
     │   ├── round03/      #     已完成：复核轮（FINDINGS / HANDOFF / manifest）
     │   ├── round04/      #     已完成：归因轮（FINDINGS / HANDOFF / manifest + 5 脚本 + 3 JSON）
-    │   └── round05/      #     计划中：TASK_BRIEF（前段数据取证 + R-002 量化）
+    │   ├── round05/      #     已完成：投注方式 + 时间因素（FINDINGS / HANDOFF / manifest + 3 脚本 + 2 JSON）
+│   └── round06/      #     计划中：TASK_BRIEF（前段数据取证，r06 首推）
     ├── strategy/         #   对外输出
     │   ├── strategy.json #     唯一稳定契约
     │   └── strategy_simulation.py + simulation_results.json

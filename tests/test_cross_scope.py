@@ -192,7 +192,7 @@ def test_evaluate_cross() -> None:
     section("3. evaluate_cross：按声明求值跨注特征")
 
     keys = evaluable_cross_features(CFG)
-    check(len(keys) == 3, f"可执行跨注特征 {len(keys)} 个：{keys}")
+    check(len(keys) == 5, f"可执行跨注特征 {len(keys)} 个：{keys}")
 
     # 两注同构 + 一注不同
     pf = Portfolio([
@@ -289,8 +289,8 @@ def test_scope_mixing_rejected() -> None:
     # ⑤ 注册表分层正确
     check(len(list_primitives("single")) == 21,
           f"单注原语 {len(list_primitives('single'))} 个（21，未因改动作废）")
-    check(len(list_primitives("cross")) == 5,
-          f"跨注原语 {len(list_primitives('cross'))} 个")
+    check(len(list_primitives("cross")) == 7,
+          f"跨注原语 {len(list_primitives('cross'))} 个（5 + duplicate_ticket_count/_ge）")
     check(not (set(single_feature_keys(CFG)) & set(cross_feature_keys(CFG))),
           "单注与跨注特征 key 无交集")
 
@@ -305,23 +305,32 @@ def test_judge_cross() -> None:
     check(r002[0]["scope"] == "cross",
           f"R-002 的 scope = {r002[0]['scope']}（应为 cross）")
 
-    # 同构组 → 命中 penalize 0.5
+    # 完全相同号码组 → 命中 exclude（r06 语义重构：禁止完全重复，F-0027）
     pf_same = Portfolio([
+        Ticket({"front": (1, 3, 5, 7, 9), "back": (1, 2)}),
+        Ticket({"front": (1, 3, 5, 7, 9), "back": (1, 2)}),
+    ])
+    jr = judge_cross(CFG, pf_same, r002)
+    check(jr.matched == ["R-002"], f"完全相同组命中 {jr.matched}")
+    check(jr.excluded, "完全相同组被 exclude")
+
+    # 结构同构（号码不同）→ 不命中（F-0028：同构无害，r06 已废除该惩罚）
+    pf_iso = Portfolio([
         Ticket({"front": (1, 3, 5, 7, 9), "back": (1, 2)}),
         Ticket({"front": (2, 4, 6, 8, 10), "back": (3, 4)}),
     ])
-    jr = judge_cross(CFG, pf_same, r002)
-    check(jr.matched == ["R-002"], f"同构组命中 {jr.matched}")
-    check(abs(jr.weight - 0.5) < 1e-9, f"权重被 penalize 到 {jr.weight}")
+    jr1 = judge_cross(CFG, pf_iso, r002)
+    check(jr1.matched == [], f"结构同构组不命中（matched={jr1.matched}）")
+    check(not jr1.excluded, "结构同构组放行")
 
-    # 异构组 → 不命中
+    # 完全不同的组 → 不命中
     pf_diff = Portfolio([
         Ticket({"front": (1, 3, 5, 7, 9), "back": (1, 2)}),
         Ticket({"front": (2, 10, 18, 26, 34), "back": (3, 4)}),
     ])
     jr2 = judge_cross(CFG, pf_diff, r002)
     check(jr2.matched == [], f"异构组不命中（matched={jr2.matched}）")
-    check(abs(jr2.weight - 1.0) < 1e-9, f"权重保持 {jr2.weight}")
+    check(not jr2.excluded, "异构组放行")
 
     # 单注层规则不得混进跨注判定
     r001 = [r for r in ST["rules"] if r["id"] == "R-001"]
@@ -336,7 +345,7 @@ def test_classify_rules() -> None:
     section("6. classify_rules：single / cross / undeclared 三分")
 
     scopes = classify_rules(CFG, ST["rules"])
-    check([r["id"] for r in scopes.single] == ["R-001"],
+    check([r["id"] for r in scopes.single] == ["R-001", "R-003"],
           f"single = {[r['id'] for r in scopes.single]}")
     check([r["id"] for r in scopes.cross] == ["R-002"],
           f"cross = {[r['id'] for r in scopes.cross]}")
@@ -369,9 +378,9 @@ def test_e2e() -> None:
     check(ev is not None, "★ 跨注规则已在整组上下文执行（1.0 时代这里只会是『跳过』）")
     if ev:
         check(ev["rules"] == ["R-002"], f"执行的跨注规则：{ev['rules']}")
-        check("has_duplicated_structure" in ev["features"],
+        check("has_identical_tickets" in ev["features"],
               f"求得跨注特征：{sorted(ev['features'])}")
-        check(ev["weight"] in (0.5, 1.0), f"跨注权重 = {ev['weight']}")
+        check(ev["weight"] == 1.0, f"跨注权重 = {ev['weight']}（exclude 不乘权重）")
 
     # 启发式标记：spread_penalty 必须被标明不是统计结论
     check(st.get("spread_penalty_is_heuristic") is True,
