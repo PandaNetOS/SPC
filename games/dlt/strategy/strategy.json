@@ -40,7 +40,7 @@
       ],
       "confidence": 3,
       "expected_value_impact": {
-        "metric": "bonus_given_win",
+        "metric": "expected_bonus_given_win",
         "direction": "increase",
         "magnitude_pct": 109.39,
         "ci95": [
@@ -81,7 +81,7 @@
       ],
       "confidence": 3,
       "expected_value_impact": {
-        "metric": "bonus_given_win",
+        "metric": "expected_bonus_given_win",
         "direction": "increase",
         "magnitude_pct": null,
         "ci95": null,
@@ -114,7 +114,7 @@
       ],
       "confidence": 3,
       "expected_value_impact": {
-        "metric": "bonus_given_win",
+        "metric": "expected_bonus_given_win",
         "direction": "increase",
         "magnitude_pct": 136.2,
         "ci95": null,

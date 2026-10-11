@@ -48,9 +48,40 @@
 
 ## P0 — 阻塞性 / 正确性欠账
 
-**（r03 / r04 / r05 已全部清偿，当前无 P0）**
+**（r03 / r04 / r05 已全部清偿；r08 起新增 T-046）**
+
+- [ ] **T-046** ★ r08 首推：R-002 `magnitude_pct` 量化补齐
+      R-002 是唯一「可执行但未量化」的跨注规则（T-033 遗留：`strategy.json` 中
+      `magnitude_pct` 仍为 `null`，跨注规则求值需传入整组号码）。
+      口径锁定：后段 `dlt_full_2933`。已知数据坑——`draw_num` 为字符串、
+      `prize1_amount_yuan` 右删失（单期封顶 1 亿未触发，F-0016，但右删失影响奖金均值估计，须写入 `caveats`）。
+      方法（文献 27/28/29）：比例类用 Wilson 区间、连续量用 bootstrap（小样本禁用 CLT 正态近似）；
+      重抽样 T≥5 且同一期号内多条记录按聚类稳健标准误处理；与其他并行判据联用时 Holm 校正；
+      三态判定 PASS / FAIL / INCONCLUSIVE（INCONCLUSIVE 不算失败，照常过闸门并带 `caveats`）；
+      功效分析前置，样本不足直接判 INCONCLUSIVE，禁止硬跑后勉强报显著。
+      产出：`magnitude_pct` 填入「点估计 + 95% CI + 口径标注」（落点在 strategy 层规则对象，
+      **不写入 `evidence.effect`**）；新增 empirical 事实条目过三闸门；
+      命名一致性——`expected_value_impact.metric` 已统一为 `expected_bonus_given_win`（本轮已改）。
 
 ## P1 — 策略增强（可能新增可用规则）
+
+- [ ] **T-047** ★ r08 新增：F-0032 教训制度化 + FACTS 新增 NOOP
+      F-0032 探索性结论复现失败的根因是**口径参数缺失**（结论写得出来，读者复现不出来）。
+      分三步：
+      1. **Judge 证据分档校验**（✅ 本轮已落地）：按 `claim_type` 分档强制「数据版本 / 口径 / 阈值参数」三要素。
+         强校验档 `empirical` + `simulation`（实测 26/35 = 74%）任一缺失 → 退出码 2（拒绝），退出信息指明补哪个字段；
+         `simulation` 额外要求 `evidence.source_sha256`。弱校验档 `methodological` / `documentary` 缺失 → 提示（计入建议 tentative）。
+         `analytic` 解析可证，仅要求口径标注。已回归验证：对存量 35 条**零影响**，只对 r08 起新条目生效。
+         实现见 `framework/tools/ingate.py` 的 `_evidence_tier()` 与 `STRICT_CLAIM_TYPES`。
+      2. **NOOP 原子操作**（✅ schema 已就位）：显式记录「证据不足，维持原结论」，替代「什么都不写」的隐式状态。
+         理论依据：文献 37（Memory-R1）将 NOOP 作为与 add/update/delete 同级的受训操作；
+         文献 35 综述确认「更新/取代优于删除」的演化原则。
+         **实现形式：`evidence.noop_count`（整数计数器）**——刻意不进 `status` 与 `change_type` 枚举，
+         NOOP 语义上既非 initial/update 也非 revision，用独立字段承载避免污染既有状态机；存量条目为 null，语义等价于 0，不要求回填。
+         字段定义已写入 `spec/fact.schema.json`。
+      3. **版本号登记**：schema 变更走 `versions.json` + `python tools/render_version_index.py --write`
+         重生成 `VERSION_INDEX.md`（**该文件由脚本自动生成，禁止手工编辑**）。存量条目无需改写。
+      理论依据文档：`D:/WorkBuddy/2026-10-11-12-06-22/SPC_r08方案审阅报告.md`
 
 - [x] **T-014** 前段（<2013-08）数据取证：不自洽的根因（Q-013）★ **r06 首推（r05 顺延）**
       三条恒等式互相核对（注数反推一致性 / 注数×票价 ≤ 销售额 / 单注与奖池公式自洽）
@@ -63,6 +94,16 @@
       产出：新增 F-0xxx 或更新 F-0019 的 caveats；无外部数据则标 `blocked`
 
 ## P2 — 质量提升（提升置信度）
+
+- [ ] **T-048** ★ r08 新增：L3 组合优化预备（hold-out 评测设计，**本轮只做设计文档不落 L2**）
+      L1 已有可组合的规则原料：F-0004（避开连号，中奖时期望奖金 +109%，后段口径，动态锚点）、
+      F-0029（连号/生日号区撞号系数 0.425–1.005）、F-0027（同号 K 注自我摊薄 (1+m)/K）。
+      两项设计：
+      1. **评测设计**：以**时序 hold-out** 替代 shadow game——用后段最后 N 期做 hold-out，
+         规则在训练窗拟合、hold-out 窗只评估一次（文献 31/32 的评估纪律）。
+      2. **组合搜索边界**：组合只作用于**选号分布**（人群密度避让），
+         输出仍为 `expected_bonus_given_win` 优化，三条红线不变。
+      ⚠️ 引用陷阱：F-0004 是**奖金提升**而非概率提升，任何 L3 文案不得写成「提高中奖率」。
 
 - [x] **T-016** 节假日窗口撞号效应验证（H-006）★ r05 新增
       农历春节日期精确映射（2007–2026）+ 国庆/元旦窗口复验（F-0032 探索性信号待确认）

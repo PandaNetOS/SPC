@@ -235,6 +235,8 @@ def gate_judge(fact: dict, active: list[dict]) -> list[str]:
         if (not isinstance(eff, dict)) or (ci is None and p is None):
             msgs.append("[Judge] empirical/simulation 缺效应量支撑 —— 结论无法复核")
 
+    msgs.extend(_evidence_tier(fact, ev, ct))
+
     # 矛盾检测（D2 增强：互斥词 + 结构化的方向/主题/范畴三维检测）
     claim = fact.get("claim", "")
     for w1, w2 in MUTEX_PAIRS:
@@ -249,6 +251,62 @@ def gate_judge(fact: dict, active: list[dict]) -> list[str]:
 
     if not msgs:
         msgs.append("[Judge] claim_type 结构 / 口径 / 统计判据全部通过")
+    return msgs
+
+
+# ------------------------------------------------- 证据分档（r08 / T-047）
+#
+# F-0032 复现失败的根因是「口径参数缺失」——结论写得出来，读者复现不出来。
+# 本函数按 claim_type 分档强制「数据版本 / 口径 / 阈值参数」三要素：
+#   强校验档 empirical + simulation（实测 26/35 = 74%）：任一缺失 → hard（退出码 2）
+#   弱校验档 methodological / documentary：缺失 → 提示（计入 suggest_tentative）
+#   analytic：解析可证，只要求口径标注，不要求抽样三要素
+#
+# 存量 35 条已全部带 data_version + source_sha256，故本闸门对存量零影响，
+# 只对 r08 起的新条目生效。
+
+STRICT_CLAIM_TYPES = ("empirical", "simulation")
+SOFT_CLAIM_TYPES = ("methodological", "documentary")
+
+
+def _evidence_tier(fact: dict, ev: dict, ct: str | None) -> list[str]:
+    """claim_type 分档的证据完备性校验。hard 消息含「缺」字样 → 退出码 2。"""
+    msgs: list[str] = []
+    strict = ct in STRICT_CLAIM_TYPES
+    soft = ct in SOFT_CLAIM_TYPES
+
+    # 三要素：数据版本 / 口径（method + result_summary）/ 阈值参数（caveats 非空）
+    if strict:
+        if not ev.get("data_version"):
+            msgs.append("[Judge] 缺数据版本 evidence.data_version"
+                        " —— 消费者无法判断该结论适用哪一版数据")
+        if not (ev.get("method") and ev.get("result_summary")):
+            msgs.append("[Judge] 缺口径 evidence.method / evidence.result_summary"
+                        " —— 无法复现该结论的计算方式（F-0032 复现失败根因）")
+        if not fact.get("caveats"):
+            msgs.append("[Judge] 缺阈值参数：caveats 为空"
+                        " —— 探索性/边界结论必须显式列出适用阈值与失效边界")
+        if not ev.get("script"):
+            msgs.append("[Judge] 缺 evidence.script（可复现脚本相对路径）"
+                        " —— 无脚本的 empirical/simulation 不得标 established")
+    elif soft:
+        if not (ev.get("method") and ev.get("result_summary")):
+            msgs.append("[Judge] methodological/documentary 建议补口径"
+                        " evidence.method / evidence.result_summary")
+        if not fact.get("caveats"):
+            msgs.append("[Judge] methodological/documentary 的 caveats 为空"
+                        " —— 须说明该结论的失效边界")
+    elif ct == "analytic":
+        # 解析结论不含抽样不确定性，只要求口径可追溯
+        if not (ev.get("method") and ev.get("result_summary")):
+            msgs.append("[Judge] analytic 缺口径标注"
+                        " evidence.method / evidence.result_summary")
+
+    # simulation 额外要求脚本锚定（不可复现的模拟等于没跑）
+    if ct == "simulation" and not ev.get("source_sha256"):
+        msgs.append("[Judge] simulation 缺 evidence.source_sha256"
+                    " —— 模拟脚本未锚定内容哈希，不可复现")
+
     return msgs
 
 

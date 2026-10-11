@@ -148,6 +148,11 @@
           "type": ["string", "null"],
           "pattern": "^[0-9a-f]{64}$",
           "description": "★ 本条结论 `source` 文件在锚定时刻的 SHA256（小写 64 位十六进制）。路径还在 ≠ 内容没变：若这个文件被改，结论里那串数字就失去了担保。`validate --facts` 会实算比对，不符即报错。为 null 时校验只给 warning（未锚定），但**不得长期为 null** —— 重算方式见 `python cli/main.py rehash`。"
+        },
+        "noop_count": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "r08 新增。NOOP（no-operation）计数器：显式记录「证据不足，维持原结论」的次数，语义上与 ADD / UPDATE / DELETE 同级（见文献 37 Memory-R1）。用于替代旧写法「什么都不写」的隐式状态——隐式状态无法区分「没查」与「查了发现不用改」。**刻意不进 `status` 与 `change_type` 枚举**：NOOP 既非 initial/update 也非 revision，用独立字段承载可避免污染既有状态机（存量条目为 null，语义等价于 0，不要求回填）。取值 null 或 ≥0 的整数。"
         }
       }
     },

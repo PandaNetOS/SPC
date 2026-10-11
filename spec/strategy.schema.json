@@ -145,7 +145,7 @@
             "required": ["metric", "direction", "changes_win_probability"],
             "additionalProperties": true,
             "properties": {
-              "metric": {"type": "string", "enum": ["bonus_given_win", "variance", "none"]},
+              "metric": {"type": "string", "enum": ["expected_bonus_given_win", "variance", "none"]},
               "direction": {"type": "string", "enum": ["increase", "decrease", "neutral"]},
               "magnitude_pct": {"type": ["number", "null"], "description": "百分比量级，如 121.48。仅作参考上界。"},
               "ci95": {"type": ["array", "null"], "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
