@@ -214,6 +214,16 @@
 - sha256锚→ `games/dlt/iterations/round10/scripts/t022_illusion.py`
 - source→ `games/dlt/iterations/round10/scripts/t022_illusion.py`
 
+## FACTS:F-0042
+- script→ `games/dlt/iterations/round11/scripts/t023_roll_decay.py`
+- sha256锚→ `games/dlt/iterations/round11/scripts/t023_roll_decay.py`
+- source→ `games/dlt/iterations/round11/scripts/t023_roll_decay.py`
+
+## FACTS:F-0043
+- script→ `games/dlt/iterations/round11/scripts/t024_proxy.py`
+- sha256锚→ `games/dlt/iterations/round11/scripts/t024_proxy.py`
+- source→ `games/dlt/iterations/round11/scripts/t024_proxy.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
 

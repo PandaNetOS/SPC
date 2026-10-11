@@ -90,7 +90,7 @@ def _extract_block(text: str) -> tuple[int, int, int]:
 def main() -> int:
     write = "--write" in sys.argv
     rp = os.path.join(_ROOT, "README.md")
-    text = open(rp, encoding="utf-8").read()
+    text = open(rp, encoding="utf-8-sig").read()
     start, end, after = _extract_block(text)
 
     v = load_versions(_ROOT)

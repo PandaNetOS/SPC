@@ -12,9 +12,9 @@
 > （深度入口）与 AGENTS.md（操作规则）。
 
 ## 入口（先读）
-- `AI_CONTEXT.md` — 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-005 证伪、32 条结论
+- `AI_CONTEXT.md` — FACTS 计数 38→43
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — 速览区 r10 同步（41 条/94 项/463 测试/252 登记）+ 概率口径表述
+- `README.md` — 速览区 43 条结论 / open 3 / r11 彩种行
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -55,7 +55,7 @@
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
 - `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — 新增 F-0036 全奖级口径
+- `memory/facts/FACTS.jsonl` — 43 条（r11 新增 F-0042 效应平台期 / F-0043 机选代理可观测；F-0021 caveats 更新）
 - `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
 - `memory/journal/round02.md` — 整理入库轮
 - `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
@@ -66,11 +66,12 @@
 - `memory/journal/round08.md` — 体系升级批执行日志
 - `memory/journal/round09.md` — 策略量化轮执行日志
 - `memory/journal/round10.md` — r10 执行日志
+- `memory/journal/round11.md` — r11 执行日志（含 schema 踩坑序列与 BOM 根治）
 - `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
 - `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
-- `memory/workbench/OPEN_QUESTIONS.md` — 15 问 11 answered：r10 清偿 Q-005/Q-017（销量外生 / 概率口径根治），验收判据更新
-- `memory/workbench/TODO.md` — 新增 T-046/047/048
+- `memory/workbench/OPEN_QUESTIONS.md` — 15 问 13 answered：r11 清偿 Q-011/Q-015，open 3（Q-006/Q-008/Q-01…
+- `memory/workbench/TODO.md` — T-023/T-024/T-048 r11 完成（P2 段同步更新）
 
 ## 策略输出
 - `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
@@ -87,10 +88,10 @@
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
-- `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
-- `tools/render_dependency_map.py` — DEPENDENCY_MAP.md 渲染器
-- `tools/render_flywheel_health.py` — FLYWHEEL_HEALTH.md 渲染器
-- `tools/render_readme_tree.py` — 目录树渲染 CLI（--write 写回 README）
+- `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_flywheel_health.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_readme_tree.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
@@ -102,10 +103,10 @@
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
-- `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
-- `tools/render_dependency_map.py` — DEPENDENCY_MAP.md 渲染器
-- `tools/render_flywheel_health.py` — FLYWHEEL_HEALTH.md 渲染器
-- `tools/render_readme_tree.py` — 目录树渲染 CLI（--write 写回 README）
+- `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_flywheel_health.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+- `tools/render_readme_tree.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
@@ -137,7 +138,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — r07：consumes 逆向检查；r08：INV3/动态锚点/策略一致性/速览计数；r10：概率口径检查项；r10.…
+- `src/spc/validate.py` — r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲染编码护栏候选
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档

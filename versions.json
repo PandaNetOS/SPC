@@ -878,8 +878,8 @@
       "level": "A",
       "kind": "fact_ledger",
       "content_version": "1.2",
-      "iteration": "r08",
-      "note": "新增 F-0036 全奖级口径",
+      "iteration": "r11",
+      "note": "43 条（r11 新增 F-0042 效应平台期 / F-0043 机选代理可观测；F-0021 caveats 更新）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -976,9 +976,9 @@
       "path": "memory/workbench/OPEN_QUESTIONS.md",
       "level": "A",
       "kind": "workbench",
-      "content_version": "1.5",
-      "iteration": "r10",
-      "note": "15 问 11 answered：r10 清偿 Q-005/Q-017（销量外生 / 概率口径根治），验收判据更新",
+      "content_version": "1.6",
+      "iteration": "r11",
+      "note": "15 问 13 answered：r11 清偿 Q-011/Q-015，open 3（Q-006/Q-008/Q-016）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -987,8 +987,8 @@
       "level": "A",
       "kind": "workbench",
       "content_version": "1.7",
-      "iteration": "r08",
-      "note": "新增 T-046/047/048",
+      "iteration": "r11",
+      "note": "T-023/T-024/T-048 r11 完成（P2 段同步更新）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -997,20 +997,20 @@
       "level": "B",
       "kind": "entry_point",
       "content_version": "1.5",
-      "iteration": "r05",
+      "iteration": "r11",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-005 证伪、32 条结论"
+      "note": "FACTS 计数 38→43"
     },
     {
       "path": "README.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.16",
-      "iteration": "r10",
+      "iteration": "r11",
       "updated_at": "2026-10-11",
       "status": "active",
-      "note": "速览区 r10 同步（41 条/94 项/463 测试/252 登记）+ 概率口径表述"
+      "note": "速览区 43 条结论 / open 3 / r11 彩种行"
     },
     {
       "path": "VERSION_INDEX.md",
@@ -1449,8 +1449,8 @@
       "level": "B",
       "kind": "library",
       "content_version": null,
-      "note": "r07：consumes 逆向检查；r08：INV3/动态锚点/策略一致性/速览计数；r10：概率口径检查项；r10.1：扫描范围自动派生（versions.json 受管表+docs/，禁手写清单）+ 名词引用豁免",
-      "iteration": "r10",
+      "note": "r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲染编码护栏候选",
+      "iteration": "r11",
       "status": "active",
       "updated_at": "2026-10-11"
     },
@@ -1576,29 +1576,32 @@
       "path": "tools/render_ai_map.py",
       "level": "B",
       "kind": "code",
-      "note": "AI_MAP.md 渲染器（--write 写回）",
-      "updated_at": "2026-10-11"
+      "note": "r11：读取改 utf-8-sig（修 BOM 叠加 bug）",
+      "updated_at": "2026-10-11",
+      "iteration": "r11"
     },
     {
       "path": "tools/render_dependency_map.py",
       "level": "B",
       "kind": "code",
-      "note": "DEPENDENCY_MAP.md 渲染器",
-      "updated_at": "2026-10-11"
+      "note": "r11：读取改 utf-8-sig（修 BOM 叠加 bug）",
+      "updated_at": "2026-10-11",
+      "iteration": "r11"
     },
     {
       "path": "tools/render_flywheel_health.py",
       "level": "B",
       "kind": "code",
-      "note": "FLYWHEEL_HEALTH.md 渲染器",
-      "updated_at": "2026-10-11"
+      "note": "r11：读取改 utf-8-sig（修 BOM 叠加 bug）",
+      "updated_at": "2026-10-11",
+      "iteration": "r11"
     },
     {
       "path": "tools/render_readme_tree.py",
       "level": "B",
       "kind": "code",
-      "iteration": "r06",
-      "note": "目录树渲染 CLI（--write 写回 README）",
+      "iteration": "r11",
+      "note": "r11：读取改 utf-8-sig（修 BOM 叠加 bug）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -2048,7 +2051,6 @@
       "path": "tools/finish_round.py",
       "level": "D",
       "kind": "utility",
-      "content_version": null,
       "iteration": "r08",
       "note": "收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示",
       "updated_at": "2026-10-11",
@@ -2353,6 +2355,102 @@
       "note": "r10 执行日志",
       "updated_at": "2026-10-11",
       "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round11/TASK_BRIEF.md",
+      "level": "B",
+      "kind": "task_brief",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 任务书：T-023/T-024/T-048（render_task_brief --round 11 --top 3）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
+      "level": "B",
+      "kind": "design",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-048 L3 组合优化预备：时序 hold-out 评测设计（切分/指标/防泄漏/组合搜索边界/验收护栏，不落 L2）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.py",
+      "level": "C",
+      "kind": "research_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-023 效应弱化滚动复验（W=300/500 滚动窗口 + 节假日分时段；→ F-0042）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.json",
+      "level": "D",
+      "kind": "research_output",
+      "iteration": "r11",
+      "note": "T-023 复验结果（34/30 窗序列 + 趋势检验 + 节假日分段）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.py",
+      "level": "C",
+      "kind": "research_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "T-024 机选占比代理变量（P1 低号注数比 / P2 连号注数比 / P3 偏好基尼 + 变点扫描；→ F-0043）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.json",
+      "level": "D",
+      "kind": "research_output",
+      "iteration": "r11",
+      "note": "T-024 代理序列 + 变点 + 相关结果",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/apply_r11_facts.py",
+      "level": "C",
+      "kind": "apply_script",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 入库：F-0042/F-0043 新增 + F-0021 caveats 更新 + Q-011/Q-015 answered + TODO done",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/FINDINGS.md",
+      "level": "B",
+      "kind": "findings",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 结论：F-0042 平台期 / F-0043 代理可观测 / T-048 设计 + 2 项顺带根治",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/HANDOFF.md",
+      "level": "B",
+      "kind": "handoff",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11→r12 交接：T-048b 首推 + T-025 仍 blocked + 编码护栏建议",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "games/dlt/iterations/round11/manifest.json",
+      "level": "D",
+      "kind": "manifest",
+      "iteration": "r11",
+      "note": "r11 deliverables（根级）",
+      "updated_at": "2026-10-11"
+    },
+    {
+      "path": "memory/journal/round11.md",
+      "level": "C",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r11",
+      "note": "r11 执行日志（含 schema 踩坑序列与 BOM 根治）",
+      "updated_at": "2026-10-11"
     }
   ],
   "history": [

@@ -1,0 +1,99 @@
+{
+  "round": "round11",
+  "game": "dlt",
+  "title": "效应与代理轮：T-023（效应弱化滚动复验→F-0042）+ T-024（机选占比代理→F-0043）+ T-048（hold-out 评测设计，只做设计不落 L2）",
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（MainAgent 直接执行；用户「下一轮」「开工」批准任务书编排）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0003",
+      "F-0021",
+      "F-0029"
+    ],
+    "previous_handoff": "games/dlt/iterations/round10/HANDOFF.md",
+    "task_brief": "games/dlt/iterations/round11/TASK_BRIEF.md",
+    "note": "任务书（render_task_brief --round 11 --top 3 生成：T-023/T-024/T-048 各 60 分）经用户「开轮」批准；T-025（external-data）与 T-032（unverifiable）资源缺口未列入。"
+  },
+  "outputs": {
+    "new_fact_ids": [
+      "F-0042",
+      "F-0043"
+    ],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": true,
+    "strategy_pending_user_approval": [],
+    "actual_updates": [
+      "T-023 → F-0042：后段内部连号撞号效应进入平台期（W=300/500 趋势均不显著），F-0003 无需弱化标注",
+      "T-024 → F-0043：机选占比代理可观测（P2 变点 2015-04 / P3 基尼 2022-12 / P1 稳定 ~1.2），F-0021 caveats 更新（代理证据 + 概率口径限定）",
+      "T-048：T048_HOLDOUT_DESIGN.md 时序 hold-out 评测设计（本轮不落 L2）",
+      "validate.py：概率口径检查纳入 .jsonl（逐条 JSON 只查 claim 字段）",
+      "render_*.py×4：读取改 utf-8-sig（根治 BOM 叠加 bug，README 头部 15 个 U+FEFF → 1 个）",
+      "OPEN_QUESTIONS Q-011/Q-015 → answered（open 5→3）；TODO T-023/T-024/T-048 → done；FACTS 41→43"
+    ],
+    "open_questions": [
+      "Q-006",
+      "Q-008",
+      "Q-016"
+    ],
+    "framework_revision": {
+      "proposed": [
+        "T-048b：按 T048_HOLDOUT_DESIGN.md 实现评测脚本 + L3 规则搜索 v1（依赖 F-0042/F-0043 先验）——下轮首推",
+        "渲染脚本编码护栏：读 utf-8-sig / 写 utf-8-sig 纳入检查器或模板，防止 BOM 叠加复发（本轮教训候选）",
+        "F-0041 补强：三连号之外形态的复验（CI 宽，需更长窗口）"
+      ],
+      "accepted": [],
+      "rejected": []
+    }
+  },
+  "deliverables": [
+    {
+      "path": "games/dlt/iterations/round11/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round11/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "games/dlt/iterations/round11/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/t024_proxy.json",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/iterations/round11/scripts/apply_r11_facts.py",
+      "kind": "script"
+    },
+    {
+      "path": "games/dlt/iterations/round11/manifest.json",
+      "kind": "manifest"
+    }
+  ]
+}

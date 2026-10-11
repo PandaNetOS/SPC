@@ -8,7 +8,7 @@
 
 ## 本文件特别要守住的三条
 
-1. **41 条真实结论全部有 claim_type 且合规** —— 回填不是贴标签，每条都要站得住
+1. **43 条真实结论全部有 claim_type 且合规** —— 回填不是贴标签，每条都要站得住
 2. **五种类型的约束真的会拦** —— 一个从不触发的检查等于没有检查。
    每条约束都要用"变异后的真实结论"证明它会报错
 3. **schema 与 Python 双通道一致** —— schema 是结构性拒收的第一道，
@@ -104,9 +104,9 @@ def _schema_ok(ft: dict) -> bool:
 # ================================================================ 1. 枚举与回填
 
 def test_enum_and_backfill() -> None:
-    section("1. 41 条结论的 claim_type 回填")
+    section("1. 43 条结论的 claim_type 回填")
 
-    check(len(FACTS) == 41, f"FACTS.jsonl 共 {len(FACTS)} 条（本文件按 41 条编写）")
+    check(len(FACTS) == 43, f"FACTS.jsonl 共 {len(FACTS)} 条（本文件按 43 条编写）")
 
     missing = [f["id"] for f in FACTS if not f.get("claim_type")]
     check(not missing, f"每条结论都有 claim_type（缺失：{missing or '无'}）")
@@ -130,13 +130,13 @@ def test_enum_and_backfill() -> None:
 # ================================================================ 2. 真实结论全绿
 
 def test_real_facts_pass() -> None:
-    section("2. 41 条真实结论：schema 与 Python 双通道都通过")
+    section("2. 43 条真实结论：schema 与 Python 双通道都通过")
 
     if not HAS_JSONSCHEMA:
         print("  （jsonschema 未安装，跳过 schema 通道）")
 
     bad_py = {f["id"]: _errs_of(f) for f in FACTS if _errs_of(f)}
-    check(not bad_py, f"Python 侧：41 条全部合规（违规：{list(bad_py) or '无'}）")
+    check(not bad_py, f"Python 侧：43 条全部合规（违规：{list(bad_py) or '无'}）")
 
     if HAS_JSONSCHEMA:
         bad_sc = [f["id"] for f in FACTS if not _schema_ok(f)]

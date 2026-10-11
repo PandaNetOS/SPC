@@ -35,7 +35,7 @@ def main() -> int:
     new = render_ai_map(v["entries"], _ROOT)
 
     if os.path.exists(rp):
-        old = open(rp, encoding="utf-8").read()
+        old = open(rp, encoding="utf-8-sig").read()
     else:
         old = ""
     if old.strip() == new.strip():

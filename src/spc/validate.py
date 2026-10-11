@@ -1339,7 +1339,7 @@ def _prob_calibration_files(root: str) -> list[str]:
             rel = e.get("path", "")
             if e.get("status") != "active":
                 continue
-            if not rel.endswith((".md", ".py", ".json")):
+            if not rel.endswith((".md", ".py", ".json", ".jsonl")):
                 continue
             if "/scripts/" in rel:  # 研究脚本区：由 t0xx 脚本自管理，正则定义行会误报
                 continue
@@ -1374,6 +1374,29 @@ def _check_probability_calibration(root: str, rep: ValidationReport) -> None:
         try:
             text = open(p, encoding="utf-8").read()
         except Exception:  # noqa: BLE001, S112
+            continue
+        if rel.endswith(".jsonl"):
+            # 事实库：逐条 JSON 解析，只检查 claim 字段（断言主体）；
+            # caveats/confidence_basis 等元信息不检查，避免跨字段误报（r11 修正）。
+            import json as _json
+            for lineno, line in enumerate(text.splitlines(), 1):
+                if not line.strip():
+                    continue
+                try:
+                    obj = _json.loads(line)
+                except Exception:  # noqa: BLE001
+                    continue
+                claim = obj.get("claim", "") if isinstance(obj, dict) else ""
+                if not isinstance(claim, str) or not _PROB_DIGITS.search(claim) or "中奖概率" not in claim:
+                    continue
+                m = _PROB_BAD_PATTERN.search(claim)
+                if not m:
+                    continue
+                i = claim.find("中奖概率")
+                if i >= 0 and claim[i + 4:i + 5] in ("」", "』", '"', '"'):
+                    continue
+                if not _PROB_QUALIFIER.search(claim):
+                    bad.append(f"{rel}:{lineno} 「中奖概率」与具体数字绑定但缺奖级限定: {claim[:80]}")
             continue
         for lineno, line in enumerate(text.splitlines(), 1):
             if not _PROB_DIGITS.search(line) or "中奖概率" not in line:

@@ -1,6 +1,6 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
+﻿# SPC
 
-> **版本**：`1.16` ｜ 轮次 `r10` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r11` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -58,7 +58,7 @@
 ```bash
 # 依赖
 
-> **版本**：`1.16` ｜ 轮次 `r10` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r11` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 pip install pyyaml jsonschema numpy pandas
@@ -91,10 +91,10 @@ python cli/main.py new-game <game_id>
 
 ```
 ├── pyproject.toml  v0.1.0    ← 包版本
-├── AI_CONTEXT.md  v1.5      ← 单一入口；r05 同步投注方式等价性、R-002 量化不成立、H-00…
+├── AI_CONTEXT.md  v1.5      ← FACTS 计数 38→43
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.16     ← 速览区 r10 同步（41 条/94 项/463 测试/252 登记）…
+├── README.md  v1.16     ← 速览区 43 条结论 / open 3 / r11 彩种行
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -204,12 +204,19 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
 │       │   │   ├── manifest.json  —         ← 策略量化轮清单
 │       │   │   └── scripts/  ← 轮次脚本（7 个）
-│       │   └── round10/
-│       │       ├── FINDINGS.md  v1.1      ← r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATE…
-│       │       ├── HANDOFF.md  v1.1      ← r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派…
-│       │       ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
-│       │       ├── manifest.json  v1.0      ← r10 轮清单
-│       │       └── scripts/  ← 轮次脚本（9 个）
+│       │   ├── round10/
+│       │   │   ├── FINDINGS.md  v1.1      ← r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATE…
+│       │   │   ├── HANDOFF.md  v1.1      ← r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派…
+│       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
+│       │   │   ├── manifest.json  v1.0      ← r10 轮清单
+│       │   │   └── scripts/  ← 轮次脚本（9 个）
+│       │   └── round11/
+│       │       ├── FINDINGS.md  v1.0      ← r11 结论：F-0042 平台期 / F-0043 代理可观测 / …
+│       │       ├── HANDOFF.md  v1.0      ← r11→r12 交接：T-048b 首推 + T-025 仍 bloc…
+│       │       ├── T048_HOLDOUT_DESIGN.md  v1.0      ← T-048 L3 组合优化预备：时序 hold-out 评测设计（切分…
+│       │       ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
+│       │       ├── manifest.json  —         ← r11 deliverables（根级）
+│       │       └── scripts/  ← 轮次脚本（5 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
@@ -221,7 +228,7 @@ python cli/main.py new-game <game_id>
 │   ├── INDEX.md  v1.0      ← 记忆层说明
 │   ├── facts/
 │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.2      ← 新增 F-0036 全奖级口径
+│   │   ├── FACTS.jsonl  v1.2      ← 43 条（r11 新增 F-0042 效应平台期 / F-0043 机…
 │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
 │   ├── journal/
 │   │   ├── round02.md  v1.0      ← 整理入库轮
@@ -232,15 +239,16 @@ python cli/main.py new-game <game_id>
 │   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
 │   │   ├── round08.md  v1.0      ← 体系升级批执行日志
 │   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
-│   │   └── round10.md  v1.0      ← r10 执行日志
+│   │   ├── round10.md  v1.0      ← r10 执行日志
+│   │   └── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
 │   ├── spec/
 │   │   └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
-│       ├── OPEN_QUESTIONS.md  v1.5      ← 15 问 11 answered：r10 清偿 Q-005/Q-017…
-│       └── TODO.md  v1.7      ← 新增 T-046/047/048
+│       ├── OPEN_QUESTIONS.md  v1.6      ← 15 问 13 answered：r11 清偿 Q-011/Q-015…
+│       └── TODO.md  v1.7      ← T-023/T-024/T-048 r11 完成（P2 段同步更新）
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
 │   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
@@ -267,7 +275,7 @@ python cli/main.py new-game <game_id>
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —         ← r07：consumes 逆向检查；r08：INV3/动态锚点/策略一…
+│       ├── validate.py  —         ← r11：概率口径检查纳入 .jsonl（按 claim 字段检查）；渲…
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
@@ -289,10 +297,10 @@ python cli/main.py new-game <game_id>
     ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
-    ├── render_ai_map.py  —         ← AI_MAP.md 渲染器（--write 写回）
-    ├── render_dependency_map.py  —         ← DEPENDENCY_MAP.md 渲染器
-    ├── render_flywheel_health.py  —         ← FLYWHEEL_HEALTH.md 渲染器
-    ├── render_readme_tree.py  —         ← 目录树渲染 CLI（--write 写回 README）
+    ├── render_ai_map.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+    ├── render_dependency_map.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+    ├── render_flywheel_health.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
+    ├── render_readme_tree.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
     ├── render_task_brief.py  —         ← 任务书生成器（B+G/X）：--top N 控制必做数；resourc…
     ├── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     └── report_calibration.py  —         ← 置信度校准报告（D1）
@@ -361,9 +369,9 @@ python cli/main.py new-game <game_id>
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
 | **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
-| 记忆层 | ✅ **41 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**5 open**，r10 清偿 Q-005/Q-017）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
-| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **94 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**） |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.3**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地） |
+| 记忆层 | ✅ **43 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**3 open**，r11 清偿 Q-011/Q-015）/ 6 假设（H-001 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
+| 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **94 项全绿**（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库） |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.1**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.3**，**3 规则** + 9 条 avoid_list）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**252 条**登记（A=125 B=82 C=16 D=29），版本行全部一致 |
 
