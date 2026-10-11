@@ -302,11 +302,11 @@ C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712
 
 | 想了解 | 看哪里 |
 |---|---|
-| 策略的机器契约（工具开发者） | [strategy.json](games/dlt/strategy/strategy.json) + [CONSUMING.md](docs/CONSUMING.md) |
-| 每条结论的完整论证 | [INDEX.md](memory/facts/INDEX.md) → 各轮 `FINDINGS.md` |
-| 规则 6 次变更的细节 | [rules_history.md](games/dlt/rules_history.md) |
-| 数字是怎么算出来的 | [strategy_simulation.py](games/dlt/strategy/strategy_simulation.py) |
-| 本仓库的版本体系 | [VERSION_INDEX.md](VERSION_INDEX.md) |
+| 策略的机器契约（工具开发者） | [strategy.json](strategy.json) + [CONSUMING.md](../../../docs/CONSUMING.md) |
+| 每条结论的完整论证 | [INDEX.md](../../../memory/facts/INDEX.md) → 各轮 `FINDINGS.md` |
+| 规则 6 次变更的细节 | [rules_history.md](../rules_history.md) |
+| 数字是怎么算出来的 | [strategy_simulation.py](strategy_simulation.py) |
+| 本仓库的版本体系 | [VERSION_INDEX.md](../../../VERSION_INDEX.md) |
 
 ---
 
