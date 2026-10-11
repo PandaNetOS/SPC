@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿# SPC
+﻿﻿﻿﻿﻿﻿﻿﻿﻿# SPC
 
 > **版本**：`1.15` ｜ 轮次 `r07` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -194,6 +194,9 @@ python cli/main.py new-game <game_id>
 │       │   │   ├── manifest.json  vdlt_full_2933  ← r07 机器登记
 │       │   │   └── scripts/  ← 轮次脚本（9 个）
 │       │   └── round08/
+│       │       ├── FINDINGS.md  v1.0      ← 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四…
+│       │       ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
+│       │       ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
 │       │       └── scripts/  ← 轮次脚本（2 个）
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
@@ -214,15 +217,21 @@ python cli/main.py new-game <game_id>
 │   │   ├── round04.md  v1.0
 │   │   ├── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
 │   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
-│   │   └── round07.md  v1.0      ← r07 叙事（研究轮）
+│   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
+│   │   └── round08.md  v1.0      ← 体系升级批执行日志
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
-│   │   └── ITERATION_SOP_v2.md  v1.3      ← r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：in…
+│   │   └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…
 │       └── TODO.md  v1.7      ← 新增 T-046/047/048
+├── research_lib/
+│   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
+│   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
+│   ├── stability.py  —         ← split_ratio_stability / ci_overlap（…
+│   └── stats.py  —         ← bootstrap_ci / ratio_and_boot / wil…
 ├── spec/
 │   ├── README.md  v1.0
 │   ├── VERSIONING.md  v1.2
@@ -257,18 +266,20 @@ python cli/main.py new-game <game_id>
 │   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
 │   ├── test_open_questions_consistency.py  —         ← Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表act…
+│   ├── test_research_lib.py  —         ← research_lib 原语测试（已知分布验证可复现/正确性/样本不…
 │   ├── test_shadow_game.py  v1.0
 │   └── test_structure.py  —         ← 结构完整性回归测试（P1-2 三道防线）
 └── tools/
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
-    ├── count_tests.py  —         ← 登记 tests/test_open_questions_consis…
+    ├── count_tests.py  —         ← 登记测试文件 + --inject（T-045：tests/READM…
+    ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
     ├── render_ai_map.py  —         ← AI_MAP.md 渲染器（--write 写回）
     ├── render_dependency_map.py  —         ← DEPENDENCY_MAP.md 渲染器
     ├── render_flywheel_health.py  —         ← FLYWHEEL_HEALTH.md 渲染器
     ├── render_readme_tree.py  —         ← 目录树渲染 CLI（--write 写回 README）
-    ├── render_task_brief.py  —         ← 下轮任务书生成器（B+G 价值评分）
+    ├── render_task_brief.py  —         ← 任务书生成器（B+G/X）：--top N 控制必做数；resourc…
     ├── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
     └── report_calibration.py  —         ← 置信度校准报告（D1）
 ```

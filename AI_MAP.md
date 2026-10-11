@@ -63,8 +63,9 @@
 - `memory/journal/round05.md` — 叙事：R-002 量化不成立 + H-005 证伪
 - `memory/journal/round06.md` — r06 叙事（元层轮）
 - `memory/journal/round07.md` — r07 叙事（研究轮）
+- `memory/journal/round08.md` — 体系升级批执行日志
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
-- `memory/spec/ITERATION_SOP_v2.md` — r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写）
+- `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
 - `memory/workbench/TODO.md` — 新增 T-046/047/048
@@ -80,28 +81,30 @@
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/count_tests.py` — 登记 tests/test_open_questions_consistency.py
+- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
+- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
 - `tools/render_dependency_map.py` — DEPENDENCY_MAP.md 渲染器
 - `tools/render_flywheel_health.py` — FLYWHEEL_HEALTH.md 渲染器
 - `tools/render_readme_tree.py` — 目录树渲染 CLI（--write 写回 README）
-- `tools/render_task_brief.py` — 下轮任务书生成器（B+G 价值评分）
+- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）
-- `tools/count_tests.py` — 登记 tests/test_open_questions_consistency.py
+- `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）
+- `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — AI_MAP.md 渲染器（--write 写回）
 - `tools/render_dependency_map.py` — DEPENDENCY_MAP.md 渲染器
 - `tools/render_flywheel_health.py` — FLYWHEEL_HEALTH.md 渲染器
 - `tools/render_readme_tree.py` — 目录树渲染 CLI（--write 写回 README）
-- `tools/render_task_brief.py` — 下轮任务书生成器（B+G 价值评分）
+- `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段…
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
 
@@ -116,6 +119,7 @@
 - `tests/test_flywheel.py` — K/D1/D2/C/F 测试（无需 pytest）
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
 - `tests/test_open_questions_consistency.py` — Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法
+- `tests/test_research_lib.py` — research_lib 原语测试（已知分布验证可复现/正确性/样本不足不硬报）
 - `tests/test_shadow_game.py`
 - `tests/test_structure.py` — 结构完整性回归测试（P1-2 三道防线）
 

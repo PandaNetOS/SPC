@@ -958,7 +958,7 @@
       "kind": "doc",
       "content_version": "1.3",
       "iteration": "r07",
-      "note": "r07：收尾清单新增第 9 步『统一注入版本行』（版本行单一来源：inject/生成器，禁止手写）",
+      "note": "证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究池（研究可并行、入库串行过三闸门）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1604,7 +1604,7 @@
       "path": "tools/render_task_brief.py",
       "level": "B",
       "kind": "code",
-      "note": "下轮任务书生成器（B+G 价值评分）",
+      "note": "任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；必做≥2 输出并行研究建议段（X）",
       "updated_at": "2026-10-11"
     },
     {
@@ -1946,7 +1946,7 @@
       "level": "D",
       "kind": "test_tool",
       "status": "active",
-      "note": "登记 tests/test_open_questions_consistency.py",
+      "note": "登记测试文件 + --inject（T-045：tests/README 计数自举注入）",
       "updated_at": "2026-10-11"
     },
     {
@@ -1986,6 +1986,106 @@
       "content_version": null,
       "iteration": "r08",
       "note": "Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "research_lib/__init__.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "研究资本化（Y）：彩种无关统计原语出口",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "research_lib/stats.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "bootstrap_ci / ratio_and_boot / wilson_interval（来源 round03 b2_split_stability）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "research_lib/stability.py",
+      "level": "B",
+      "kind": "library",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "split_ratio_stability / ci_overlap（分期稳健性，Q-001 原语化）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "research_lib/README.md",
+      "level": "B",
+      "kind": "library_doc",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "原语→来源脚本→历史结论映射表 + 使用纪律",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_research_lib.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "research_lib 原语测试（已知分布验证可复现/正确性/样本不足不硬报）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "tools/finish_round.py",
+      "level": "D",
+      "kind": "utility",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "收尾自动化（C1）：rehash→count_tests--inject→validate→渲染→四件套检查→批准门提示",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round08/FINDINGS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r08",
+      "note": "体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四件套补齐）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round08/HANDOFF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "content_version": "1.0",
+      "iteration": "r08",
+      "note": "r08→r09 交接（P0：动态锚点重校准 + T-046/T-047；新工具用法）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "games/dlt/iterations/round08/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "content_version": null,
+      "iteration": "r08",
+      "note": "体系升级批清单（C+X+Y+Z）",
+      "updated_at": "2026-10-11",
+      "status": "active"
+    },
+    {
+      "path": "memory/journal/round08.md",
+      "level": "A",
+      "kind": "journal",
+      "content_version": "1.0",
+      "iteration": "r08",
+      "note": "体系升级批执行日志",
       "updated_at": "2026-10-11",
       "status": "active"
     }

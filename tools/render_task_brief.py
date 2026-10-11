@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """tools/render_task_brief.py — 下轮任务书生成器（B+G 升级）。
 
-从 memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP3 与
+从 memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP-N 与
 下轮任务书草稿 —— 把「AI 恰好想到挑哪个」变成可机械复核的排序。
 
 评分（B+G：TODO 条目加 value 字段，0-100；无 value 时按 P 级基础分）：
@@ -9,9 +9,15 @@
     value：显式 `value: N` 直接覆盖基础分（影响面/置信度缺口/可证伪性）
     ★ 首推标记（`★ rNN 首推`）：+10
 
+资源依赖前置（Z 方向）：
+    TODO 条目可声明 `resource: <类型>`（如 external-data / unverifiable）——
+    资源缺口型任务**不占本批必做预算**（数据就绪前不会把轮次浪费在推不动的事上），
+    任务书对它们显式标注 ⚠ 并列入备选，而非必做。
+
 用法：
-    python tools/render_task_brief.py [--round NN] [--write]
-        # 默认下一轮 = 当前最大轮 + 1；--write 写 games/dlt/iterations/roundNN/TASK_BRIEF.md
+    python tools/render_task_brief.py [--round NN] [--top N] [--write]
+        # 默认下一轮 = 当前最大轮 + 1；--top 控制本轮必做任务数（默认 3）；
+        # --write 写 games/dlt/iterations/roundNN/TASK_BRIEF.md
     python tools/render_task_brief.py --score   # 只打印评分榜
 
 依据：DOLPHIN（idea 生成→反馈闭环）、主动学习（按不确定性/价值采样）。
@@ -30,6 +36,8 @@ sys.path.insert(0, os.path.join(_ROOT, "src"))
 _BASE_BY_PRIORITY = {"P0": 100, "P1": 80, "P2": 60, "P3": 40, "P4": 20}
 _PRIORITY_RE = re.compile(r"^##\s*(P[0-4])")
 _ITEM_RE = re.compile(r"^-\s*\[\s\]\s*\*\*(T-\d{3})\*\*\s*(.*?)(?:\s*★\s*(.*))?$")
+_RESOURCE_RE = re.compile(r"resource[:：]\s*([\w\-/]+)")
+_DEFAULT_TOP = 3
 
 
 def _parse_todo(root: str) -> list[dict]:
@@ -53,9 +61,11 @@ def _parse_todo(root: str) -> list[dict]:
             score = int(value_m.group(1)) if value_m else base
             if star and "首推" in star:
                 score += 10
+            res_m = _RESOURCE_RE.search(line)
             items.append({
                 "tid": tid, "title": title.strip(), "priority": priority,
                 "star": (star or "").strip(), "score": score,
+                "resource": res_m.group(1) if res_m else None,
                 "line": line.strip(),
             })
     items.sort(key=lambda it: (-it["score"], it["tid"]))
@@ -73,13 +83,20 @@ def _next_round(root: str) -> int:
     return best + 1
 
 
-def _render_brief(root: str, items: list[dict], rnd: int) -> str:
-    top = items[:3]
+def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_TOP) -> str:
+    if top_n < 1:
+        top_n = _DEFAULT_TOP
+    # 可执行（无资源依赖）优先进入必做；资源缺口型降为备选（Z：不占轮次预算）
+    executable = [it for it in items if not it.get("resource")]
+    top = executable[:top_n] if executable else items[:top_n]
+    resource_waiting = [it for it in items if it.get("resource")]
+
     lines = [
         f"# TASK_BRIEF —— round{rnd:02d} 任务书",
         "",
-        "> 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成",
-        "> （派生物草稿，人工确认后可改）。评分依据：TODO 条目 value / P 级 / ★首推。",
+        f"> 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成",
+        f"> （派生物草稿，人工确认后可改）。本轮必做 **{len(top)}** 个（`--top {top_n}` 可调）。",
+        "> 评分依据：TODO 条目 value / P 级 / ★首推。",
         "",
     ]
     # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
@@ -92,27 +109,62 @@ def _render_brief(root: str, items: list[dict], rnd: int) -> str:
     except ImportError:  # noqa: S110
         pass
     lines += [
-        "## 本轮候选（按评分排序 TOP3）",
+        "## 本轮候选（按评分排序 TOP-N）",
         "",
         "| 排序 | 任务 | 优先级 | 评分 | 说明 |",
         "|---|---|---|---|---|",
     ]
     for i, it in enumerate(top, 1):
-        lines.append(f"| {i} | {it['tid']} {it['title']} | {it['priority']} | {it['score']} | {it['star']} |")
+        flag = f"⚠ 资源依赖: {it['resource']}" if it.get("resource") else (it["star"] or "")
+        lines.append(f"| {i} | {it['tid']} {it['title']} | {it['priority']} | {it['score']} | {flag} |")
     lines += [
         "",
-        "## 本轮 P0 任务（必做，引用 TODO 原条目）",
+        "## 本轮必做任务（引用 TODO 原条目）",
         "",
-        f"- [ ] **{top[0]['tid']}** —— 来源：`memory/workbench/TODO.md` 的 "
-        f"`{top[0]['priority']}` 段（评分 {top[0]['score']}）。",
+    ]
+    for it in top:
+        src = f"`{it['priority']}` 段（评分 {it['score']}）"
+        if it.get("resource"):
+            src += f"，⚠ 资源依赖: {it['resource']}"
+        lines.append(f"- [ ] **{it['tid']}** —— 来源：`memory/workbench/TODO.md` 的 {src}。")
+    if resource_waiting:
+        lines += [
+            "",
+            "## ⚠ 资源缺口型备选（不占本批预算，数据就绪后自动进入候选）",
+            "",
+        ]
+        for it in resource_waiting:
+            lines.append(
+                f"- **{it['tid']}** {it['title']}（评分 {it['score']}）—— 需 `{it['resource']}`，"
+                f"当前未就绪，不列为必做。"
+            )
+    lines += [
         "",
         "## 验收判据",
         "",
-        "1. 完成任务后更新 FACTS.jsonl（新结论必须过三闸门，带 caveats）；",
+        f"1. 本批 {len(top)} 个任务全部完成后更新 FACTS.jsonl（新结论必须过三闸门，带 caveats）；",
         "2. `python cli/main.py validate --all` 全绿；",
         "3. 收轮四件套 + 版本登记 + 下轮任务书。",
         "",
     ]
+    # X 协议：并行研究建议（研究可并行，入库串行过三闸门）
+    parallel = [it for it in top if not it.get("resource")]
+    if len(parallel) >= 2:
+        lines += [
+            "## 并行研究建议（X 协议，见 ITERATION_SOP_v2 §9）",
+            "",
+            f"本批有 **{len(parallel)}** 个可执行任务（无资源缺口）互不依赖，可并行研究：",
+            "",
+        ]
+        for it in parallel:
+            lines.append(f"- {it['tid']} {it['title']}")
+        lines += [
+            "",
+            "约束：① 各任务独立研究、各自出草案；② **入库必须串行过三闸门**（INV1/2/3 不豁免）；",
+            "③ 共享文档（FACTS/STRATEGY_GUIDE/strategy.json）在汇合后统一串行更新，避免并发写冲突；",
+            "④ 收尾统一跑 `tools/finish_round.py`。",
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -122,6 +174,10 @@ def main() -> int:
     if "--round" in sys.argv:
         i = sys.argv.index("--round")
         rnd = int(sys.argv[i + 1])
+    top_n = _DEFAULT_TOP
+    if "--top" in sys.argv:
+        i = sys.argv.index("--top")
+        top_n = int(sys.argv[i + 1])
     items = _parse_todo(_ROOT)
     if not items:
         print("TODO.md 无待办条目（或未按 T-nnn 格式），无法生成任务书。")
@@ -130,15 +186,16 @@ def main() -> int:
     if "--score" in sys.argv:
         print("TODO 待办评分榜：")
         for it in items:
-            print(f"  {it['tid']} [{it['priority']}] 评分 {it['score']:>3}  {it['title']}")
+            res = f"  [资源:{it['resource']}]" if it.get("resource") else ""
+            print(f"  {it['tid']} [{it['priority']}] 评分 {it['score']:>3}  {it['title']}{res}")
         return 0
 
-    brief = _render_brief(_ROOT, items, rnd)
+    brief = _render_brief(_ROOT, items, rnd, top_n)
     out = os.path.join(_ROOT, "games", "dlt", "iterations", f"round{rnd:02d}", "TASK_BRIEF.md")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     if "--write" in sys.argv:
         open(out, "w", encoding="utf-8").write(brief)
-        print(f"✓ 已写 {os.path.relpath(out, _ROOT)}（候选 {len(items[:3])} 条）")
+        print(f"✓ 已写 {os.path.relpath(out, _ROOT)}（必做 {top_n} 条，可执行优先）")
         return 0
     print(brief)
     print(f"（dry-run，未写；加 --write 写入 round{rnd:02d}/TASK_BRIEF.md）")

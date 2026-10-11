@@ -112,6 +112,31 @@ def test_task_brief_render() -> None:
     check(items[0]["tid"] in brief, f"B: 任务书引用 TODO 原条目 {items[0]['tid']}（可追溯）")
 
 
+def test_task_brief_top_n_and_resource() -> None:
+    items = RTB._parse_todo(_ROOT)
+    # --top N：必做数量可控（N=2 只列 2 个必做；默认 3）
+    brief2 = RTB._render_brief(_ROOT, items, 7, top_n=2)
+    brief3 = RTB._render_brief(_ROOT, items, 7)
+    must2 = [ln for ln in brief2.splitlines() if ln.strip().startswith("- [ ] **T-")]
+    must3 = [ln for ln in brief3.splitlines() if ln.strip().startswith("- [ ] **T-")]
+    check(len(must2) == 2 and len(must3) == 3,
+          "B: --top N 控制本轮必做任务数（2 与 3，可配置）")
+
+    # 资源依赖前置：resource 条目被解析并被标注为备选，不占必做
+    res_items = [it for it in items if it.get("resource")]
+    check(any("external-data" == it["resource"] for it in res_items),
+          "B: 资源依赖字段被解析（T-025 external-data）")
+    if res_items:
+        check("资源缺口型备选" in brief3,
+              "B: 资源缺口型任务列入备选段（不占必做预算）")
+        check(all(it["tid"] not in must3 for it in res_items),
+              "B: 资源缺口型任务不出现在必做段")
+    # --score 输出含资源标注
+    # （score 分支在 main() 里，这里只验证解析层）
+    check(all(it["score"] >= it2["score"] for it, it2 in zip(items, items[1:])),
+          "B: 评分单调降序（加 resource 字段后不变式保持）")
+
+
 # ---------------------------------------------------------------- H/I 护栏
 
 def test_handoff_structure() -> None:
@@ -173,6 +198,7 @@ if __name__ == "__main__":  # pragma: no cover
     test_ai_entry_completeness_missing()
     test_task_brief_scoring()
     test_task_brief_render()
+    test_task_brief_top_n_and_resource()
     test_handoff_structure()
     test_compression_freshness()
     print(f"\n通过 {_PASS}  失败 {_FAIL}")
