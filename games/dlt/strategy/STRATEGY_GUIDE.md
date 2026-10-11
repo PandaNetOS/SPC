@@ -1,6 +1,6 @@
 # 超级大乐透 · 策略说明书（给人看的）
 
-> **版本**：`1.3` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.4` ｜ 轮次 `r06` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **这份文档是给"人"看的**。不需要懂 `predicate`、`ci95`、`epoch` 这些术语。
@@ -302,11 +302,11 @@ C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712
 
 | 想了解 | 看哪里 |
 |---|---|
-| 策略的机器契约（工具开发者） | `games/dlt/strategy/strategy.json` + `docs/CONSUMING.md` |
-| 每条结论的完整论证 | `memory/facts/INDEX.md` → 各轮 `FINDINGS.md` |
-| 规则 6 次变更的细节 | `games/dlt/rules_history.md` |
-| 数字是怎么算出来的 | `games/dlt/strategy/strategy_simulation.py` |
-| 本仓库的版本体系 | `VERSION_INDEX.md` |
+| 策略的机器契约（工具开发者） | [strategy.json](games/dlt/strategy/strategy.json) + [CONSUMING.md](docs/CONSUMING.md) |
+| 每条结论的完整论证 | [INDEX.md](memory/facts/INDEX.md) → 各轮 `FINDINGS.md` |
+| 规则 6 次变更的细节 | [rules_history.md](games/dlt/rules_history.md) |
+| 数字是怎么算出来的 | [strategy_simulation.py](games/dlt/strategy/strategy_simulation.py) |
+| 本仓库的版本体系 | [VERSION_INDEX.md](VERSION_INDEX.md) |
 
 ---
 

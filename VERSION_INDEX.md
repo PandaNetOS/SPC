@@ -101,7 +101,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py` | `1.0` | `r04` | 2026-10-11 | active |  |
 | `games/dlt/iterations/round05/TASK_BRIEF.md` | `1.0` | `r05` | 2026-10-11 | active | 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 r06） |
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.3` | `r06` | 2026-10-11 | active | r06：R-002 语义重构（禁止完全相同号码，F-0027/F-0028）、新增 R-003（生日号区，F-0029） |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.4` | `r06` | 2026-10-11 | active | r06：R-002 重构 + R-003 新增；§7 参考表格加超链接 |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.5` | `r04` | 2026-10-11 | active | 32 条结论（F-0001~F-0032；F-0015/F-0007 superseded）；r05 新增 F-0026~F-0032（投注方式/时间因素） |
 | `memory/facts/INDEX.md` | `1.5` | `r04` | 2026-10-11 | active | 派生物，由 cli index 生成（32 条） |
