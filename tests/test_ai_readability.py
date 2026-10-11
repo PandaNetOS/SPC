@@ -96,8 +96,9 @@ def test_task_brief_scoring() -> None:
     items = RTB._parse_todo(_ROOT)
     check(len(items) > 0, "B: TODO 待办池可解析")
     top = items[0]
-    check(top["tid"] == "T-014" and top["score"] == 90,
-          f"B: T-014（★r06 首推）评分 90 居首（base 80 + ★ 10），实际 {top['score']}")
+    # r07 前首推是 T-014（评分 90）；任务完成后退池、首推随待办池演化——断言只锁不变式
+    check(top["score"] > 0 and top["tid"].startswith("T-"),
+          f"B: 首推任务 {top['tid']} 评分 {top['score']} > 0（动态，随待办池演化）")
     check(all(it["tid"] != "T-031" for it in items),
           "B: 已完成项（T-031 ✅）不计入待办评分（只取 [ ] 条目）")
     check(all(items[i]["score"] >= items[i + 1]["score"] for i in range(len(items) - 1)),
@@ -108,7 +109,7 @@ def test_task_brief_render() -> None:
     items = RTB._parse_todo(_ROOT)
     brief = RTB._render_brief(_ROOT, items, 7)
     check("# TASK_BRIEF" in brief and "## 本轮候选" in brief, "B: 任务书结构（候选+判据）")
-    check("T-014" in brief, "B: 任务书引用 TODO 原条目（可追溯）")
+    check(items[0]["tid"] in brief, f"B: 任务书引用 TODO 原条目 {items[0]['tid']}（可追溯）")
 
 
 # ---------------------------------------------------------------- H/I 护栏

@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.4`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.5`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.4`（轮次 `r06`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.5`（轮次 `r07`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -192,7 +192,7 @@ python cli/main.py new-game <game_id>
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.4      ← r06：R-002 重构 + R-003 新增；§7 参考表格加超链接
+│           ├── STRATEGY_GUIDE.md  v1.5      ← r07：数据可靠性段升级（F-0033/F-0034 根因定位）；co…
 │           ├── simulation_results.json  —
 │           ├── strategy.json  v1.3      ← r06（用户批准）：R-002 → exclude + 禁止完全相同号…
 │           └── strategy_simulation.py  —
@@ -212,7 +212,7 @@ python cli/main.py new-game <game_id>
 │   ├── lessons/
 │   │   └── LESSONS.md  v1.2      ← L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 …
 │   ├── spec/
-│   │   └── ITERATION_SOP_v2.md  v1.1      ← 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道…
+│   │   └── ITERATION_SOP_v2.md  v1.2      ← r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）
 │   └── workbench/
 │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
 │       ├── OPEN_QUESTIONS.md  v1.4      ← 11 问，5 answered（Q-001/002/004/013/0…
@@ -238,12 +238,13 @@ python cli/main.py new-game <game_id>
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
-│       ├── validate.py  —         ← v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环…
+│       ├── validate.py  —         ← r07：新增 _check_consumes_completeness…
 │       └── versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 ├── tests/
 │   ├── README.md  v1.5      ← 测试说明（自举计数：合计 333，含 test_structure 8）
 │   ├── test_ai_readability.py  —         ← P1/P2/B/H/I 测试
 │   ├── test_claim_type.py  —         ← ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Pyth…
+│   ├── test_consumes_completeness.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_core.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   ├── test_cross_scope.py  —         ← ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需…
 │   ├── test_evidence_anchor.py  —         ← ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 /…

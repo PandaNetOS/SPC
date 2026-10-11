@@ -62,7 +62,7 @@
 - `memory/journal/round06.md` — r06 叙事（元层轮）
 - `memory/journal/round07.md` — r07 叙事（研究轮）
 - `memory/lessons/LESSONS.md` — L1–L14，只增不删（r04 新增 L13 口径自由度 / L14 分段自洽性前置检查；L7 追加第二实例）
-- `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩
+- `memory/spec/ITERATION_SOP_v2.md` — r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）
 - `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `memory/workbench/OPEN_QUESTIONS.md` — 11 问，5 answered（Q-001/002/004/013/014）
 - `memory/workbench/TODO.md` — T-014/T-015/T-016 已交付
@@ -107,6 +107,7 @@
 - `tests/README.md` — 测试说明（自举计数：合计 333，含 test_structure 8）
 - `tests/test_ai_readability.py` — P1/P2/B/H/I 测试
 - `tests/test_claim_type.py` — ★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest
+- `tests/test_consumes_completeness.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tests/test_core.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tests/test_cross_scope.py` — ★ 跨注层测试（scope 三分 / 跨注判定 / 结构性拒收）；无需 pytest
 - `tests/test_evidence_anchor.py` — ★ 证据锚定测试（漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等）；无需 pytest
@@ -126,7 +127,7 @@
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
-- `src/spc/validate.py` — v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环检测 + grade/change_type 校…
+- `src/spc/validate.py` — r07：新增 _check_consumes_completeness 逆向声明完整性检查
 - `src/spc/versions.py` — 代码文件：不写文件内版本行（用 git blame）
 
 ## 文档

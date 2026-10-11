@@ -932,6 +932,7 @@ def validate_versions(repo_root: str | None = None,
         rep.err("versions.json 不存在")
 
     _check_consumes_freshness(root, rep)
+    _check_consumes_completeness(root, rep)
     _check_summary_counts(root, rep)
     _check_readme_tree_versions(root, rep)
     return rep
@@ -1054,6 +1055,73 @@ def _check_consumes_freshness(root: str, rep: ValidationReport) -> None:
         rep.ok(
             f"下游新鲜度: {n_declared} 个条目声明了 consumes，"
             f"引用 superseded 结论的均已同步（0 项沉默）"
+        )
+
+
+def _check_consumes_completeness(root: str, rep: ValidationReport) -> None:
+    """★ 逆向新鲜度检查：正文引用了结论，但未登记 consumes —— 堵住人工登记遗漏。
+
+    背景（r07 发现）：STRATEGY_GUIDE 正文引用了 F-0026~F-0029（r05 新增的投注方式/时间因素
+    结论）与 F-0002，但 versions.json 的 consumes 声明停在 r04/r06 时代，从未登记它们。
+    下游新鲜度检查（_check_consumes_freshness）是**单行道**——只查『声明了的结论是否被推翻』，
+    看不见『正文引用了但没声明』。声明遗漏 = 永久盲区：这些结论一旦被推翻，
+    引用它们的文档会静默过期而校验器全绿。
+
+    判据：对声明了 consumes 的 .md 条目，扫描正文 F-xxxx 引用并与声明比对；
+    正文引用未声明 → kind=strategy_guide / strategy 报 error（策略文档是高风险下游），
+    其余报 warning。历史沿革式提及（上下文含『作废/已废除/已证伪/更正/取代/替代/历史』等词）
+    豁免 —— 这类提及是陈述过往，不构成依赖，强行要求登记会造成永久噪音。
+    """
+    vp = os.path.join(root, "versions.json")
+    if not os.path.exists(vp):
+        return
+    try:
+        with open(vp, encoding="utf-8") as f:
+            vd = json.load(f)
+    except Exception:  # noqa: BLE001
+        return
+    pat = re.compile(r"F-\d{4}")
+    honorific = ("作废", "已废除", "已证伪", "更正", "取代", "替代",
+                 "superseded", "历史", "已废弃", "已推翻")
+    n_checked = n_missing = 0
+    for e in vd.get("entries", []):
+        consumes = e.get("consumes")
+        path = e.get("path", "")
+        if not consumes or not path.endswith(".md"):
+            continue
+        p = os.path.join(root, path)
+        if not os.path.exists(p):
+            continue
+        try:
+            with open(p, encoding="utf-8") as f:
+                text = f.read()
+        except Exception:  # noqa: BLE001
+            continue
+        declared = set(consumes)
+        n_checked += 1
+        for m in pat.finditer(text):
+            fid = m.group(0)
+            if fid in declared:
+                continue
+            ctx = text[max(0, m.start() - 24):m.end() + 24]
+            if any(k in ctx for k in honorific):
+                continue  # 历史沿革式提及，非依赖
+            n_missing += 1
+            kind = e.get("kind", "")
+            if kind in ("strategy_guide", "strategy"):
+                rep.err(
+                    f"下游声明完整性: {path} 正文引用了 {fid} 但未登记 consumes"
+                    f"（kind={kind}）—— 该结论被推翻时此文档会静默过期；请补登记"
+                )
+            else:
+                rep.warn(
+                    f"下游声明完整性: {path} 正文引用了 {fid} 但未登记 consumes"
+                    f"（kind={kind}）—— 若属依赖请补登记，若属历史沿革请在上下文标注"
+                )
+    if n_missing == 0:
+        rep.ok(
+            f"下游声明完整性: {n_checked} 个声明 consumes 的文档，"
+            f"正文引用均已在声明内（0 项遗漏）"
         )
 
 

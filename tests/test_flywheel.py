@@ -48,9 +48,9 @@ def check(cond: bool, label: str) -> None:
 
 def test_flywheel_metrics() -> None:
     m = collect_metrics(_ROOT)
-    check(m["total"] == 32, "K: FACTS 台账统计 32 条结论（F-0001~F-0032）")
-    check(m["dead"] == 2, "K: 被推翻结论 2 条（F-0007/F-0015 superseded）")
-    check(abs(m["survival"] - 30 / 32) < 1e-9, "K: 存活率 = 30/32（可复核）")
+    check(m["total"] == 35, "K: FACTS 台账统计 35 条结论（F-0001~F-0035）")
+    check(m["dead"] == 3, "K: 被推翻结论 3 条（F-0007/F-0015/F-0032 superseded）")
+    check(abs(m["survival"] - 32 / 35) < 1e-9, "K: 存活率 = 32/35（可复核）")
     check("by_round" in m and "by_confidence" in m, "K: 按轮/按置信度分层统计存在")
 
 

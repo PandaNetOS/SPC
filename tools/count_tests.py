@@ -38,6 +38,7 @@ TEST_FILES = [
     "tests/test_structure.py",
     "tests/test_flywheel.py",
     "tests/test_ai_readability.py",
+    "tests/test_consumes_completeness.py",
 ]
 
 _LINE_RE = re.compile(r"通过\s+(\d+)\s+失败\s+(\d+)")

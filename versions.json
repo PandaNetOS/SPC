@@ -1,5 +1,5 @@
 {
-  "index_version": "1.5",
+  "index_version": "1.8",
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-11",
   "current_iteration": "r07",
@@ -824,7 +824,8 @@
       "status": "active",
       "consumes": [
         "F-0014",
-        "F-0015"
+        "F-0015",
+        "F-0016"
       ],
       "consumes_superseded": "historical"
     },
@@ -832,13 +833,14 @@
       "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
       "level": "A",
       "kind": "strategy_guide",
-      "content_version": "1.4",
-      "iteration": "r06",
-      "note": "r06：R-002 重构 + R-003 新增；§7 参考表格加超链接",
+      "content_version": "1.5",
+      "iteration": "r07",
+      "note": "r07：数据可靠性段升级（F-0033/F-0034 根因定位）；consumes 补齐 F-0002/F-0026~F-0029",
       "updated_at": "2026-10-11",
       "status": "active",
       "consumes": [
         "F-0001",
+        "F-0002",
         "F-0003",
         "F-0004",
         "F-0006",
@@ -852,7 +854,13 @@
         "F-0020",
         "F-0021",
         "F-0022",
-        "F-0025"
+        "F-0025",
+        "F-0026",
+        "F-0027",
+        "F-0028",
+        "F-0029",
+        "F-0033",
+        "F-0034"
       ]
     },
     {
@@ -948,9 +956,9 @@
       "path": "memory/spec/ITERATION_SOP_v2.md",
       "level": "A",
       "kind": "doc",
-      "content_version": "1.1",
-      "iteration": "r06",
-      "note": "证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩",
+      "content_version": "1.2",
+      "iteration": "r07",
+      "note": "r07：收尾清单新增第 8 步『下游增强性更新检查』（逆向声明检查）",
       "updated_at": "2026-10-11",
       "status": "active"
     },
@@ -1438,7 +1446,7 @@
       "level": "B",
       "kind": "library",
       "content_version": null,
-      "note": "v2.0：INV2 引用链升级（禁引被推翻结论）+ INV3 取代链环检测 + grade/change_type 校验 + 动态锚点重校准检查 + 策略-证据一致性",
+      "note": "r07：新增 _check_consumes_completeness 逆向声明完整性检查",
       "iteration": "r06",
       "status": "active",
       "updated_at": "2026-10-11"
@@ -1475,6 +1483,16 @@
       "kind": "test",
       "iteration": "r03",
       "note": "★ 结论证据类型测试（五类约束真的会拦 / schema 与 Python 双通道一致）；无需 pytest",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_consumes_completeness.py",
+      "level": "B",
+      "kind": "test",
+      "content_version": null,
+      "iteration": "r02",
+      "note": "代码文件：不写文件内版本行（用 git blame）",
+      "updated_at": "2026-10-11",
       "status": "active"
     },
     {
@@ -1928,6 +1946,18 @@
     }
   ],
   "history": [
+    {
+      "version": "1.7",
+      "date": "2026-10-11",
+      "scope": "r07 修复（续）",
+      "change": "STRATEGY_GUIDE consumes 补 F-0033/F-0034；登记 tests/test_consumes_completeness.py。"
+    },
+    {
+      "version": "1.6",
+      "date": "2026-10-11",
+      "scope": "r07 修复",
+      "change": "下游声明完整性修复：STRATEGY_GUIDE consumes 补齐 F-0002/F-0026~F-0029 并升 1.5；validate 新增逆向检查（正文引用未声明即拦截）；SOP 收尾清单新增第 8 步。"
+    },
     {
       "version": "1.5",
       "date": "2026-10-11",
