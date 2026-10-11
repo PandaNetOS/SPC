@@ -174,7 +174,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round10/scripts/t050_calibration.json` | `1.0` | `r10` | 2026-10-11 | active | 一等奖 1/21425712；任一奖级 1/15；命中清单 |
 | `games/dlt/iterations/round10/scripts/t050_calibration.py` | `1.0` | `r10` | 2026-10-11 | active | T-050 各奖级概率表 + 口径检索 |
 | `games/dlt/rules_history.md` | `1.1` | `r03` | 2026-10-11 | active | E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记） |
-| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.8` | `r12` | 2026-10-11 | active | r12: 策略有效性三档表 + T-049 测试窗证据（v1.7→1.8） |
+| `games/dlt/strategy/STRATEGY_GUIDE.md` | `1.9` | `r14` | 2026-10-11 | active | r14.1: R-004 小节 + 三档表 B 档行（v1.8→1.9） |
 | `memory/INDEX.md` | `1.0` | `r02` | 2026-10-11 | active | 记忆层说明 |
 | `memory/facts/FACTS.jsonl` | `1.5` | `r14` | 2026-10-11 | active | r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47 |
 | `memory/facts/INDEX.md` | `1.5` | `r04` | 2026-10-11 | active | 派生物，由 cli index 生成（32 条） |
@@ -298,7 +298,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 |---|---|---|---|
 | `games/_template/game.yaml` | `config_version` | `2.0` | 2026-10-11 与 dlt 同步升至 2.0（features 原语化） |
 | `games/_template/strategy/strategy.json` | `config_version` | `2.0` | 模板策略，2026-10-11 随 game.yaml 同步至 2.0 |
-| `games/dlt/game.yaml` | `config_version` | `2.1` | 跨注特征 3→5（新增 identical_ticket_count / has_identical_tickets）；has_duplicated_structure 改为无规则引用（R-002 已重构） |
+| `games/dlt/game.yaml` | `config_version` | `2.2` | r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2 |
 | `games/dlt/iterations/round02/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `games/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
@@ -313,7 +313,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `games/dlt/iterations/round13/scripts/t051_walkforward.py` | `—` | `—` | T-051 walk-forward 评测 |
 | `games/dlt/iterations/round14/scripts/t053_shape_ratios.py` | `—` | `—` | T-053 形态撞号比复验 |
 | `games/dlt/iterations/round14/scripts/t054_walkforward_ci.py` | `—` | `—` | T-054 walk-forward 每步 CI |
-| `games/dlt/strategy/strategy.json` | `schema_version` | `1.4` | r12: schema_version 1.4 + effectiveness_grade 三档回填（1.3→1.4） |
+| `games/dlt/strategy/strategy.json` | `schema_version` | `1.4` | r14.1: R-004 落地（用户批准 T-052）；schema 仍 1.4，内容 1.4→1.5 |
 | `memory/journal/round11.md` | `—` | `—` | r11 执行日志（含 schema 踩坑序列与 BOM 根治） |
 | `memory/journal/round12.md` | `—` | `—` | r12 执行日志 |
 | `memory/journal/round13.md` | `—` | `—` | r13 执行日志 |

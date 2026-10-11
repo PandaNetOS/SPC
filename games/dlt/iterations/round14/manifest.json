@@ -31,15 +31,16 @@
     "new_question_ids": [],
     "new_hypothesis_ids": [],
     "closed_hypothesis_ids": [],
-    "strategy_updated": false,
-    "strategy_pending_user_approval": [
-      "T-052：R_new 落地为 R-004（证据链 F-0044/F-0045/F-0046/F-0047 已闭合，等待用户批准，红线不自动执行）"
+    "strategy_updated": true,
+    "strategy_pending_user_approval": [],
+    "strategy_landed": [
+      "r14.1 用户批准 T-052：R-004 落地（R-001/R-003 叠加再排除镜像对，effectiveness_grade=B，引用 F-0044/F-0045/F-0046/F-0047）；strategy.json 1.4→1.5、STRATEGY_GUIDE v1.8→v1.9、game.yaml config_version 2.1→2.2（+has_mirror_pair 特征原语）"
     ],
     "actual_updates": [
       "T-053 → F-0046：后段 high_zone_ge32 撞号比 0.9117 [0.8537,0.9716] 显著<1（高区避让机制证据）；run=2 不显著；run>=3 1.2423 CI 宽",
       "T-054 → F-0047：R_new walk-forward 单步显著正增益 1/5（step3 CI [594,906,2,913,333]），F-0045 判据补不确定性限定",
-      "T-052 保持候选待批准（证据链闭合，未自动落地 R-004）",
-      "FACTS 45→47；TODO T-053/T-054 → done，T-052 标注证据闭合待批准"
+      "T-052 用户批准 → R-004 落地（strategy.json/STRATEGY_GUIDE/game.yaml/features.py 同步，evidence_hash 重算）",
+      "FACTS 45→47；TODO T-053/T-054 → done，T-052 批准落地 → done"
     ],
     "open_questions": [
       "Q-006",
@@ -83,6 +84,22 @@
     {
       "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
       "kind": "report"
+    },
+    {
+      "path": "games/dlt/strategy/strategy.json",
+      "kind": "data"
+    },
+    {
+      "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
+      "kind": "report"
+    },
+    {
+      "path": "games/dlt/game.yaml",
+      "kind": "data"
+    },
+    {
+      "path": "framework/core/features.py",
+      "kind": "script"
     },
     {
       "path": "games/dlt/iterations/round14/manifest.json",

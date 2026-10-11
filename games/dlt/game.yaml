@@ -8,7 +8,7 @@
 
 id: dlt
 name: 超级大乐透
-config_version: "2.1"
+config_version: "2.2"
 owner: PandaNetOS
 
 machine:
@@ -123,6 +123,14 @@ features:
     primitive: all_le
     args: {zone: front, threshold: 31}
     formula: "max(front) <= 31"
+
+  - key: has_mirror_pair
+    label: 存在镜像对（前区两数之和 == 36，如 1 与 35、8 与 28）
+    type: boolean
+    primitive: has_mirror_pair
+    args: {zone: front}
+    formula: "any(c[i] + c[j] == 36)"
+    # ⚠️ 本特征是 R-004 的判定量（r14.1 用户批准落地），与 t049/t051/t054 研究脚本口径一致。
 
   - key: back_sum
     label: 后区和值

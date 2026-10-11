@@ -297,7 +297,7 @@ def test_scope() -> None:
     section("5. 作用域切分（跨注规则不得被静默忽略）")
 
     single, cross = apply_scope(CFG, ST["rules"])
-    check([r["id"] for r in single] == ["R-001", "R-003"], "R-001/R-003 归入单注层")
+    check([r["id"] for r in single] == ["R-001", "R-003", "R-004"], "R-001/R-003/R-004 归入单注层")
     check([r["id"] for r in cross] == ["R-002"], "R-002 归入跨注层")
 
     # 混用规则集必须明确报错（而非静默忽略 R-002）

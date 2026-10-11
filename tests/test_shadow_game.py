@@ -537,8 +537,8 @@ def test_iron_law() -> None:
           f"framework/ 与 src/ 不 import games/ 下的模块（共 {len(imported)} 个 import）")
 
     # 反向自证：本测试用的两套配置彼此独立，且**都没改过**框架
-    check(len(single_feature_keys(CFG)) == 5 and len(single_feature_keys(_DLT_CFG)) == 11,
-          "两套配置各自声明自己的特征（5 vs 11），框架只是执行方")
+    check(len(single_feature_keys(CFG)) == 5 and len(single_feature_keys(_DLT_CFG)) == 12,
+          "两套配置各自声明自己的特征（5 vs 12，dlt r14.1 +has_mirror_pair），框架只是执行方")
 
 
 def test_scanner_not_vacuous() -> None:

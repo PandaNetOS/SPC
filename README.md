@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.8`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v1.9`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.8`（轮次 `r12`，更新 2026-10-11）— 不需要任何背景知识
+> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v1.9`（轮次 `r14`，更新 2026-10-11）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -143,7 +143,7 @@ python cli/main.py new-game <game_id>
 │   │   └── strategy/
 │   │       └── strategy.json  v2.0      ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
 │   └── dlt/
-│       ├── game.yaml  v2.1      ← 跨注特征 3→5（新增 identical_ticket_count …
+│       ├── game.yaml  v2.2      ← r14.1: +has_mirror_pair 特征（R-004 判定…
 │       ├── iterations/
 │       │   ├── round02/
 │       │   │   ├── FINDINGS.md  v1.0      ← 整理入库轮发现
@@ -238,9 +238,9 @@ python cli/main.py new-game <game_id>
 │       ├── manifest_v4_source.json  —
 │       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
 │       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.8      ← r12: 策略有效性三档表 + T-049 测试窗证据（v1.7→1.…
+│           ├── STRATEGY_GUIDE.md  v1.9      ← r14.1: R-004 小节 + 三档表 B 档行（v1.8→1.9）
 │           ├── simulation_results.json  —
-│           ├── strategy.json  v1.4      ← r12: schema_version 1.4 + effective…
+│           ├── strategy.json  v1.5      ← r14.1: R-004 落地（用户批准 T-052）；schema …
 │           └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
 ├── memory/
 │   ├── INDEX.md  v1.0      ← 记忆层说明

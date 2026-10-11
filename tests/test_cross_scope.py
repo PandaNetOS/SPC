@@ -287,8 +287,8 @@ def test_scope_mixing_rejected() -> None:
           "现有 game.yaml 声明零错误")
 
     # ⑤ 注册表分层正确
-    check(len(list_primitives("single")) == 21,
-          f"单注原语 {len(list_primitives('single'))} 个（21，未因改动作废）")
+    check(len(list_primitives("single")) == 22,
+          f"单注原语 {len(list_primitives('single'))} 个（22，r14.1 +has_mirror_pair）")
     check(len(list_primitives("cross")) == 7,
           f"跨注原语 {len(list_primitives('cross'))} 个（5 + duplicate_ticket_count/_ge）")
     check(not (set(single_feature_keys(CFG)) & set(cross_feature_keys(CFG))),
@@ -345,7 +345,7 @@ def test_classify_rules() -> None:
     section("6. classify_rules：single / cross / undeclared 三分")
 
     scopes = classify_rules(CFG, ST["rules"])
-    check([r["id"] for r in scopes.single] == ["R-001", "R-003"],
+    check([r["id"] for r in scopes.single] == ["R-001", "R-003", "R-004"],
           f"single = {[r['id'] for r in scopes.single]}")
     check([r["id"] for r in scopes.cross] == ["R-002"],
           f"cross = {[r['id'] for r in scopes.cross]}")

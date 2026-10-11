@@ -259,11 +259,21 @@ def _p_max_in_range(zone: Numbers, **args: Any) -> int:
 
 
 def _p_sum_mod(zone: Numbers, **args: Any) -> int:
-    """和值对 modulus 取余。args: modulus。"""
     m = _int_arg(args, "modulus", "sum_mod")
     if m <= 0:
         raise PrimitiveError(f"sum_mod: modulus 必须为正，得到 {m}")
     return sum(zone) % m
+
+
+def _p_has_mirror_pair(zone: Numbers, **_: Any) -> bool:
+    """是否存在『镜像对』：前区任意两数之和 == 36（1↔35、8↔28 …）。
+
+    超区规则下 36−x 仍在 1~35，故镜像对 = 互补对。R-004 的判定量之一：
+    R001_norun_high_mirror（t049/t051/t054 脚本同口径 c[i]+c[j]==36）。
+    原语只回答『存在与否』，不解释『为什么避让』。
+    """
+    s = set(zone)
+    return any((36 - x) in s for x in s)
 
 
 # ---------------------------------------------------------------- 跨注原语
@@ -391,6 +401,7 @@ PRIMITIVES: dict[str, Callable[..., Any]] = {
     "max_in_range": _p_max_in_range,
     # 其他
     "sum_mod": _p_sum_mod,
+    "has_mirror_pair": _p_has_mirror_pair,
 }
 
 #: 跨注原语（scope: cross）。输入是一组注，不是一注。
