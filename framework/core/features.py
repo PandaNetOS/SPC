@@ -276,6 +276,91 @@ def _p_has_mirror_pair(zone: Numbers, **_: Any) -> bool:
     return any((36 - x) in s for x in s)
 
 
+def _p_count_same_tail(zone: Numbers, **_: Any) -> int:
+    """同尾号对数：尾数（x mod 10）相同的号码两两配对数。
+
+    例：[3,13,23,7,9] → 尾数 [3,3,3,7,9] → C(3,2)=3 对。
+    """
+    from collections import Counter
+    tails = [x % 10 for x in zone]
+    counts = Counter(tails)
+    return sum(c * (c - 1) // 2 for c in counts.values() if c >= 2)
+
+
+def _p_max_run_length(zone: Numbers, **_: Any) -> int:
+    """最长连号长度：连续相邻号的最长段长度。
+
+    例：[1,2,3,7,10] → 3；[1,2,7,8,9] → 3；[1,3,5,7,9] → 1。
+    """
+    s = sorted(zone)
+    if not s:
+        return 0
+    max_len = 1
+    cur_len = 1
+    for i in range(1, len(s)):
+        if s[i] - s[i - 1] == 1:
+            cur_len += 1
+            max_len = max(max_len, cur_len)
+        else:
+            cur_len = 1
+    return max_len
+
+
+def _p_arithmetic_triplet_count(zone: Numbers, **_: Any) -> int:
+    """等差数列三元组个数：任意 a<b<c 满足 b-a == c-b。
+
+    例：[1,3,5,7,9] → 多个等差三元组。
+    """
+    s = sorted(zone)
+    n = len(s)
+    count = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                if s[j] - s[i] == s[k] - s[j]:
+                    count += 1
+    return count
+
+
+def _p_count_in_set(zone: Numbers, **args: Any) -> int:
+    """落在指定集合内的号码个数。args: values (list[int])。
+
+    例：count_in_set([6,8,18,28]) → 有几个号在 {6,8,18,28} 里。
+    """
+    values = args.get("values")
+    if values is None:
+        raise PrimitiveError("count_in_set 缺少必需参数 'values'")
+    if not isinstance(values, (list, tuple)):
+        raise PrimitiveError("count_in_set 的 'values' 必须是整数列表")
+    target = set(int(v) for v in values)
+    return sum(1 for x in zone if x in target)
+
+
+def _p_center_deviation(zone: Numbers, **args: Any) -> float:
+    """中心偏离度：mean(|x - center|)。args: center (int)。
+
+    例：center=18，zone=[15,17,18,19,21] → mean(|x-18|) = mean([3,1,0,1,3]) = 1.6
+    """
+    center = args.get("center")
+    if center is None:
+        raise PrimitiveError("center_deviation 缺少必需参数 'center'")
+    if not isinstance(center, int) or isinstance(center, bool):
+        raise PrimitiveError(f"center_deviation 的 'center' 必须是整数，得到 {center!r}")
+    return sum(abs(x - center) for x in zone) / len(zone)
+
+
+def _p_has_tail_cluster(zone: Numbers, **args: Any) -> bool:
+    """是否存在 >= threshold 个号码尾数相同。args: threshold (int)。
+
+    例：threshold=3，zone=[3,13,23,7,9] → True（3个尾数=3）。
+    """
+    threshold = _int_arg(args, "threshold", "has_tail_cluster")
+    from collections import Counter
+    tails = [x % 10 for x in zone]
+    counts = Counter(tails)
+    return max(counts.values()) >= threshold
+
+
 # ---------------------------------------------------------------- 跨注原语
 # 约定：签名 (groups, **args) -> int | bool
 #   groups  list[list[int]] —— **一组注**在同一区的号码（每注已排序去重）
@@ -402,6 +487,13 @@ PRIMITIVES: dict[str, Callable[..., Any]] = {
     # 其他
     "sum_mod": _p_sum_mod,
     "has_mirror_pair": _p_has_mirror_pair,
+    # r17 新增：同尾/连号长度/等差/集合/中心偏离/同尾聚集
+    "count_same_tail": _p_count_same_tail,
+    "max_run_length": _p_max_run_length,
+    "arithmetic_triplet_count": _p_arithmetic_triplet_count,
+    "count_in_set": _p_count_in_set,
+    "center_deviation": _p_center_deviation,
+    "has_tail_cluster": _p_has_tail_cluster,
 }
 
 #: 跨注原语（scope: cross）。输入是一组注，不是一注。
@@ -435,6 +527,10 @@ _REQUIRED_ARGS: dict[str, tuple[str, ...]] = {
     "sum_mod": ("modulus",),
     "duplicate_structure_count_ge": ("threshold",),
     "duplicate_ticket_count_ge": ("threshold",),
+    # r17 新增
+    "count_in_set": ("values",),
+    "center_deviation": ("center",),
+    "has_tail_cluster": ("threshold",),
 }
 
 #: 声明为 `zone` 的原语（需要 zone 参数）
