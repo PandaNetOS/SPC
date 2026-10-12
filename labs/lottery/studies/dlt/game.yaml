@@ -1,0 +1,579 @@
+﻿# game.yaml — 超级大乐透（dlt）
+#
+# 彩种声明式配置。框架据此驱动，不硬编码任何数值。
+# 受 spec/game_config.schema.json 约束。
+#
+# ⚠️ 修改本文件后必须跑：
+#      python cli/main.py validate --game dlt
+
+id: dlt
+name: 超级大乐透
+config_version: "2.3"
+owner: PandaNetOS
+
+machine:
+  zones:
+    - key: front
+      label: 前区
+      pool_size: 35
+      pick: 5
+      ordered: false
+      min_value: 1
+    - key: back
+      label: 后区
+      pool_size: 12
+      pick: 2
+      ordered: false
+      min_value: 1
+  draw_days: [1, 3, 6]        # ISO：周一 / 周三 / 周六
+  draw_time: "21:25"
+
+# ---------------------------------------------------------------- 特征
+# 可从一注号码机械计算的派生特征。
+# strategy.json 的 machine_rule.predicate 只能引用此处声明的 key。
+#
+# ────────────────────────────────────────────────────────────────────
+# 格式说明（config_version 2.0）
+#
+#   primitive  框架 **可执行** 的原语名，取自 platform/core/features.py 的 PRIMITIVES。
+#              有 primitive → 本特征可被 evaluate() 求值、可被 predicate 引用。
+#   args       原语参数。`zone` 指定对哪个区求值，其余参数名由原语决定。
+#   formula    人类可读的数学说明。**仅注释，不参与求值**（刻意不用 eval）。
+#   range      取值范围的说明性声明（供人核对，不强制校验）。
+#   scope      ★ config_version 2.1 新增。single（默认，可从一注算出）
+#              / cross（**跨注**，需一整组注才能算出）。
+#              scope 必须与原语的作用域一致，否则 validate 报错。
+#              cross 特征由 platform/core/portfolio.py 求值，
+#              引用它的规则（如 R-002）也必须用整组号码判定。
+#
+# ⚠️ formula 与 primitive 必须语义一致。改 primitive 时同步改 formula，
+#    否则注释会与行为脱节（这是本仓库要求 formula 存在的原因）。
+# ⚠️ 修改后必须跑：python cli/main.py validate --game dlt
+# ────────────────────────────────────────────────────────────────────
+features:
+  - key: front_sum
+    label: 前区和值
+    type: integer
+    primitive: sum
+    args: {zone: front}
+    formula: "sum(front)"
+    range: [15, 165]
+
+  - key: front_odd
+    label: 前区奇数个数
+    type: integer
+    primitive: count_odd
+    args: {zone: front}
+    formula: "count(front, odd)"
+    range: [0, 5]
+
+  - key: front_big
+    label: 前区大号个数（>=18）
+    type: integer
+    primitive: count_ge
+    args: {zone: front, threshold: 18}
+    formula: "count(front, >=18)"
+    range: [0, 5]
+
+  - key: front_span
+    label: 前区跨度 = max(front) - min(front)
+    type: integer
+    primitive: span
+    args: {zone: front}
+    formula: "max(front) - min(front)"
+    range: [4, 34]
+
+  - key: adjacent_pairs
+    label: 前区连号对数（相邻号对，如 12-13 算 1 对）
+    type: integer
+    primitive: adjacent_pair_count
+    args: {zone: front}
+    formula: "count(i in 1..4: front[i+1] - front[i] == 1)"
+    range: [0, 4]
+    note: "run(c) 的定义量。精确理论分布见 data/derived/04_structure_distribution_exact.json"
+
+  - key: has_adjacent
+    label: 是否存在连号（adjacent_pairs >= 1）
+    type: boolean
+    primitive: has_consecutive
+    args: {zone: front}
+    formula: "adjacent_pairs >= 1"
+
+  - key: has_run_ge2
+    label: 是否存在 2 连号及以上（本仓库策略核心判定量）
+    type: boolean
+    primitive: adjacent_pair_count_ge
+    args: {zone: front, threshold: 2}
+    formula: "adjacent_pairs >= 2"
+    # 说明：run>=2 定义为「至少两个相邻号对」。
+    #       精确理论 P(run>=2) = 0.088904（枚举 C(35,5)=324632 全部组合）
+    #       ⚠️ 本特征是 R-001 的判定量，改动它会直接改变对外策略。
+
+  - key: front_max
+    label: 前区最大号
+    type: integer
+    primitive: max
+    args: {zone: front}
+    formula: "max(front)"
+    range: [5, 35]
+
+  - key: all_birthday_zone
+    label: 前区全部号码 <= 31（"生日号区"）
+    type: boolean
+    primitive: all_le
+    args: {zone: front, threshold: 31}
+    formula: "max(front) <= 31"
+
+  - key: has_mirror_pair
+    label: 存在镜像对（前区两数之和 == 36，如 1 与 35、8 与 28）
+    type: boolean
+    primitive: has_mirror_pair
+    args: {zone: front}
+    formula: "any(c[i] + c[j] == 36)"
+    # ⚠️ 本特征是 R-004 的判定量（r14.1 用户批准落地），与 t049/t051/t054 研究脚本口径一致。
+
+  - key: back_sum
+    label: 后区和值
+    type: integer
+    primitive: sum
+    args: {zone: back}
+    formula: "sum(back)"
+    range: [3, 23]
+
+  - key: back_span
+    label: 后区跨度
+    type: integer
+    primitive: span
+    args: {zone: back}
+    formula: "max(back) - min(back)"
+    range: [1, 11]
+
+  # ─── r17 新增：全形态筛选用特征 ───
+  - key: front_min
+    label: 前区最小号
+    type: integer
+    primitive: min
+    args: {zone: front}
+    formula: "min(front)"
+    range: [1, 31]
+
+  - key: front_even_count
+    label: 前区偶数个数
+    type: integer
+    primitive: count_even
+    args: {zone: front}
+    formula: "count(front, even)"
+    range: [0, 5]
+
+  - key: front_le12_count
+    label: 前区 ≤12 的个数（月号密度）
+    type: integer
+    primitive: count_le
+    args: {zone: front, threshold: 12}
+    formula: "count(front, <=12)"
+    range: [0, 5]
+
+  - key: front_ge25_count
+    label: 前区 ≥25 的个数（高区密度）
+    type: integer
+    primitive: count_ge
+    args: {zone: front, threshold: 25}
+    formula: "count(front, >=25)"
+    range: [0, 5]
+
+  - key: front_boundary_low_count
+    label: 前区边界小号个数（1–5）
+    type: integer
+    primitive: count_in_range
+    args: {zone: front, lo: 1, hi: 5}
+    formula: "count(front in [1,5])"
+    range: [0, 5]
+
+  - key: front_boundary_high_count
+    label: 前区边界大号个数（31–35）
+    type: integer
+    primitive: count_in_range
+    args: {zone: front, lo: 31, hi: 35}
+    formula: "count(front in [31,35])"
+    range: [0, 5]
+
+  - key: front_center_zone_count
+    label: 前区中间号个数（15–21）
+    type: integer
+    primitive: count_in_range
+    args: {zone: front, lo: 15, hi: 21}
+    formula: "count(front in [15,21])"
+    range: [0, 5]
+
+  - key: front_high_zone_count
+    label: 前区生日区外个数（32–35）
+    type: integer
+    primitive: count_in_range
+    args: {zone: front, lo: 32, hi: 35}
+    formula: "count(front in [32,35])"
+    range: [0, 4]
+
+  - key: front_all_ge20
+    label: 前区全部 ≥20（高区聚集）
+    type: boolean
+    primitive: all_ge
+    args: {zone: front, threshold: 20}
+    formula: "min(front) >= 20"
+
+  - key: front_has_1
+    label: 前区是否含 1
+    type: boolean
+    primitive: any_le
+    args: {zone: front, threshold: 1}
+    formula: "any(front <= 1)"
+
+  - key: front_has_35
+    label: 前区是否含 35
+    type: boolean
+    primitive: any_ge
+    args: {zone: front, threshold: 35}
+    formula: "any(front >= 35)"
+
+  - key: front_max_gap
+    label: 前区最大间隔
+    type: integer
+    primitive: max_gap
+    args: {zone: front}
+    formula: "max(gaps)"
+    range: [1, 30]
+
+  - key: front_min_gap
+    label: 前区最小间隔
+    type: integer
+    primitive: min_gap
+    args: {zone: front}
+    formula: "min(gaps)"
+    range: [1, 30]
+
+  - key: front_max_run_length
+    label: 前区最长连号长度
+    type: integer
+    primitive: max_run_length
+    args: {zone: front}
+    formula: "longest consecutive run"
+    range: [1, 5]
+
+  - key: front_same_tail_pairs
+    label: 前区同尾号对数
+    type: integer
+    primitive: count_same_tail
+    args: {zone: front}
+    formula: "pairs with same x%10"
+    range: [0, 10]
+
+  - key: front_has_tail_cluster3
+    label: 前区是否有 ≥3 个同尾号
+    type: boolean
+    primitive: has_tail_cluster
+    args: {zone: front, threshold: 3}
+    formula: "max tail count >= 3"
+
+  - key: front_arithmetic_triplets
+    label: 前区等差数列三元组个数
+    type: integer
+    primitive: arithmetic_triplet_count
+    args: {zone: front}
+    formula: "count a<b<c with b-a==c-b"
+    range: [0, 10]
+
+  - key: front_lucky_count
+    label: 前区吉祥号个数 {6,8,16,18,28}
+    type: integer
+    primitive: count_in_set
+    args: {zone: front, values: [6, 8, 16, 18, 28]}
+    formula: "count in {6,8,16,18,28}"
+    range: [0, 5]
+
+  - key: front_taboo_count
+    label: 前区忌讳号个数 {4,14,24}
+    type: integer
+    primitive: count_in_set
+    args: {zone: front, values: [4, 14, 24]}
+    formula: "count in {4,14,24}"
+    range: [0, 3]
+
+  - key: front_center_dev
+    label: 前区中心偏离度（中心=18）
+    type: number
+    primitive: center_deviation
+    args: {zone: front, center: 18}
+    formula: "mean(|x - 18|)"
+    range: [0, 17]
+
+  - key: back_even_count
+    label: 后区偶数个数
+    type: integer
+    primitive: count_even
+    args: {zone: back}
+    formula: "count(back, even)"
+    range: [0, 2]
+
+  - key: back_le6_count
+    label: 后区 ≤6 的个数（小号密度）
+    type: integer
+    primitive: count_le
+    args: {zone: back, threshold: 6}
+    formula: "count(back, <=6)"
+    range: [0, 2]
+
+  - key: back_same_tail
+    label: 后区是否同尾（如 2 和 12）
+    type: boolean
+    primitive: count_same_tail
+    args: {zone: back}
+    formula: "1 if back[0]%10 == back[1]%10 else 0"
+
+# ──────────────────────────────────────────────────────────────────────
+# 跨注特征（scope: cross）—— config_version 2.1 起
+#
+# 这些量描述的是「注与注之间」的关系，**一注号码在数学上算不出来**。
+# 求值入口：platform/core/portfolio.py 的 evaluate_cross()。
+#
+# 之前 R-002 的 predicate 引用了 `duplicated_structure_across_tickets`
+# 但本文件从未声明它 → 该规则**没有任何地方能执行**，validate 只能给 warning。
+# 2.1 把它声明为 cross 特征后，R-002 可在整组上下文里真正判定。
+#
+# 结构签名 = 相邻间隔向量：gaps(1,3,5) = (2,2) = gaps(2,4,6)。
+# 用间隔向量而非号码本身，是刻意的 —— 否则两注号码不同就永远判不出"同构"。
+# ──────────────────────────────────────────────────────────────────────
+  - key: duplicated_structure_across_tickets
+    label: 组内前区结构同构的注数（间隔向量与他人相同的注数）
+    type: integer
+    scope: cross
+    primitive: duplicate_structure_count
+    args: {zone: front}
+    formula: "count(t in tickets: gap_vector(front_t) 在组内出现 >= 2 次)"
+    note: "跨注特征（L3）。单注无法求值，必须用 portfolio.evaluate_cross()。上限依赖注数，故不声明 range。"
+
+  - key: has_duplicated_structure
+    label: 组内是否存在结构同构的注（>= 1 注与他人结构相同）
+    type: boolean
+    scope: cross
+    primitive: duplicate_structure_count_ge
+    args: {zone: front, threshold: 1}
+    formula: "duplicated_structure_across_tickets >= 1"
+    note: "r06 起**无规则引用**：旧 R-002 曾用它判『结构同构』，F-0028 量化后不成立（期望与方差均无益），
+           R-002 已重构为 has_identical_tickets（完全相同号码）。保留供 Q-009 组合分散度研究使用。"
+
+  - key: distinct_structure_count
+    label: 组内不同结构的个数（1 = 全同构）
+    type: integer
+    scope: cross
+    primitive: distinct_structure_count
+    args: {zone: front}
+    formula: "len(set(gap_vector(front_t) for t in tickets))"
+    note: "跨注特征（L3）。供后续组合分散度研究（Q-009）使用，当前无规则引用。"
+
+  - key: identical_ticket_count
+    label: 组内完全相同号码的注数（号码逐位相同，非结构相同）
+    type: integer
+    scope: cross
+    primitive: duplicate_ticket_count
+    args: {zone: front}
+    formula: "count(t in tickets: front_t 在组内出现 >= 2 次)"
+    note: "跨注特征。『自我摊薄』的判定量（F-0027）：买 K 注相同号码 = 中奖时 K 份瓜分总奖金。"
+
+  - key: has_identical_tickets
+    label: 组内是否存在完全相同号码的注（>= 1 注与他人号码相同）
+    type: boolean
+    scope: cross
+    primitive: duplicate_ticket_count_ge
+    args: {zone: front, threshold: 1}
+    formula: "identical_ticket_count >= 1"
+    note: "★ R-002（r06 语义重构）的判定量。跨注层，需整组号码上下文。"
+
+# ---------------------------------------------------------------- 奖金模型
+# ⚠️ 规则变更频繁：跨 epoch 不可直接比较奖金金额。
+#    详见 rules_history.md，以及 memory/lessons/LESSONS.md 的 L9。
+prize_model:
+  current_epoch: E6
+  return_rate: 0.51
+
+  epochs:
+    - id: E0
+      effective_from: "2007-05-30"
+      effective_to: "2009-10-17"
+      first_draw_num: "07001"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 原始规则；奖池未过亿封顶 500 万
+
+    - id: E1
+      effective_from: "2009-10-17"
+      effective_to: "2013-12-09"
+      first_draw_num: "09121"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 奖池过亿时一等奖单注最高 1000 万、追加最高 1600 万
+
+    - id: E2
+      effective_from: "2013-12-09"
+      effective_to: "2014-05-05"
+      first_draw_num: "13145"
+      prize_levels: 8
+      sum_affects_numbers: false
+      notes: 资金构成 50/15/35 → 51/14/35；调节基金 1% → 2%
+
+    - id: E3
+      effective_from: "2014-05-05"
+      effective_to: "2019-02-18"
+      first_draw_num: "14052"
+      prize_levels: 6
+      sum_affects_numbers: false
+      notes: 奖级 8 → 6；一/二/三等奖浮动并设保底
+
+    - id: E4
+      effective_from: "2019-02-18"
+      effective_to: "2023-01-01"
+      first_draw_num: "19019"
+      prize_levels: 9
+      sum_affects_numbers: false
+      notes: 奖级 6 → 9；追加范围改为仅一/二等奖，比例 60% → 80%
+
+    - id: E5
+      effective_from: "2023-01-01"
+      effective_to: "2026-02-02"
+      first_draw_num: "23001"
+      prize_levels: 9
+      sum_affects_numbers: false
+      notes: 销售截止 20:00→21:00；开奖 20:25 → 21:25（不改号码与奖金结构）
+
+    - id: E6
+      effective_from: "2026-02-02"
+      effective_to: null
+      first_draw_num: "26014"
+      prize_levels: 7
+      sum_affects_numbers: false
+      notes: 现行规则。奖级 9 → 7；一/二等奖单期总额封顶 1 亿元；返奖率 51%
+
+  cap_rules:
+    - epoch: E6
+      scope: "prize1 + prize2"
+      type: single_period_total_cap
+      amount_yuan: 100000000
+      overflow: roll_into_pool
+      # ⚠️ r03 更正（F-0016）：E6 全 102 期（>=26014）一等奖单期总额最大值仅 0.9788 亿
+      #    （26060 期），封顶**从未触发**；26113 期的 239 万/注是 37 注自然摊薄，不是封顶所致。
+      observed_trigger: "none (E6 102 期均未触发；最大总额 0.9788 亿 / 26060 期) —— F-0016"
+      # ⚠️ 该封顶把 F-0004 的收益上界由 121% 压到约 41%（F-0017）；r04 按后段口径重算为
+      #    上界 109% / 含封顶 40.6%（F-0022）。
+    - epoch: E6
+      scope: "prize1"
+      type: single_ticket_cap
+      amount_yuan: 5000000
+      note: 基本投注单注最高 500 万元；追加部分另计
+    - epoch: E6
+      scope: "prize3..prize7"
+      type: pool_threshold_boost
+      threshold_pool_yuan: 800000000
+      boost_pct: [20, 40]
+      note: 奖池 >= 8 亿时三至七等奖提升 20%–40%
+
+# ---------------------------------------------------------------- 数据
+data:
+  raw:
+    path: labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv
+    format: csv
+    encoding: utf-8-sig
+    n_draws: 2933
+    first_draw_num: "07001"
+    last_draw_num: "26115"
+    date_range: ["2007-05-30", "2026-10-10"]
+    sha256: "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7"
+
+  derived:
+    path: labs/lottery/studies/dlt/data/derived
+    rebuild_script: labs/lottery/studies/dlt/data/build_scripts/build_derived_v4.py
+    files:
+      - 01_yearly_stats.csv
+      - 02_front_number_frequency.csv
+      - 03_back_number_frequency.csv
+      - 04_structure_distribution_exact.json
+      - 05_back_combo_66.csv
+      - 06_acf_lag1to60.csv
+      - 07_data_quality_report.json
+      - 08_rules_epoch_summary.json
+
+  columns:
+    draw_num:
+      type: string
+      note: "★ 带前导零，读取必须 dtype={'draw_num': str}，否则 '07001' 变 7001"
+    date:
+      type: string
+      note: "YYYY-MM-DD，单调递增"
+    weekday:
+      type: string
+      note: "中文单字：一 / 三 / 六"
+    front_1..front_5:
+      type: integer
+      note: "严格升序，1-35"
+    front_sum:
+      type: integer
+      note: "15-165"
+    front_big:
+      type: integer
+      note: "★ 大号定义为 >= 18（不是 > 17.5 的直觉边界，注意口径）"
+    pool_yuan:
+      type: number
+      note: "★ 本期期末奖池（滚入下期），不是本期起始奖池"
+    sale_yuan:
+      type: number
+      note: "全国销售额（元）"
+    prize1_winners:
+      type: integer
+      note: "★ 重尾分布：mean 3.86 / median 2 / max 106 / var/mean 8.46。禁止均值比较（L5）"
+    prize1_amount_yuan:
+      type: number
+      note: "★ 右删失：81.4% 期数封顶 5,000,000。建模须用 Tobit；且封顶规则多次变更（L9）"
+    verified_pdf:
+      type: boolean
+      note: "2020-01 起 1001 期经官方 PDF 校验，0 不一致"
+    verified_api:
+      type: boolean
+      note: "2021-06 起 801 期经官方 API 校验，0 不一致"
+
+  caveats:
+    - "CSV 是 UTF-8 with BOM：漏掉 encoding='utf-8-sig' 会让首列名变成 '\\ufeffdraw_num'"
+    - "draw_num 是字符串，带前导零：漏 dtype={'draw_num': str} 会让 '07001' 变成整数 7001"
+    - "prize1_amount_yuan 是右删失数据（81.4% 封顶 500 万），建模须用删失模型"
+    - "prize1_amount_yuan 的封顶规则多次变更，跨 epoch 不可直接比较"
+    - "prize1_winners 是重尾分布（var/mean=8.46），禁止用均值比较（见 L5）"
+    - "18 组前区组合重复（涉及 36 期）；随机碰撞期望约 13.25 对，量级正常"
+    - "开奖频率不均：2007 年 93 期、2020 年 134 期、2026 年 115 期（未完）"
+    - "pool_yuan 是期末奖池（滚入下期），做因果分析时须注意滞后对齐"
+
+# ---------------------------------------------------------------- 轮次
+iterations:
+  - round: round01
+    status: archived
+    title: 历史轮次（第 2/3 轮分析，v4 之前的产出）
+    note: 产出已归入 round02/legacy_findings/
+  - round: round02
+    status: delivered
+    title: v4 素材结构化入库（建立记忆层与契约层）
+    date: "2026-10-10"
+  - round: round03
+    status: delivered
+    title: 撞号效应稳健性与封顶修正
+    date: "2026-10-11"
+    note: 复核轮：推翻 F-0015、新增 F-0016/F-0017/F-0018、清偿 L5 技术债
+  - round: round04
+    status: delivered
+    title: 撞号效应衰减归因与策略维度扩展
+    date: "2026-10-11"
+    note: 衰减归因（前段口径异常 + 估计量依赖）、后区撞号、奖金瓜分与择时
+  - round: round05
+    status: delivered
+    title: 最优投注方式 + 时间因素投注策略（用户点名方向）
+    date: "2026-10-11"
+    note: 投注方式等价性（F-0026）、重复投注自我摊薄（F-0027）、R-002 量化（F-0028，Q-012 闭合）、R-003 候选（F-0029）、H-005 证伪（F-0030）、奖池时序（F-0031）、节假日窗口（F-0032→H-006）；策略变更待用户批准
+
+strategy_output:
+  schema: spec/strategy.schema.json
+  path: labs/lottery/studies/dlt/strategy/strategy.json
+  version: "1.1"

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """tools/render_readme_tree.py — README 目录树渲染器（派生物写入）。
 
 README 的 `## 目录结构` 代码块 = `spc.tree.render_tree(versions.json entries)`
@@ -39,10 +39,10 @@ _DERIVED_NOTE = (
 # 来自 versions.json 的 STRATEGY_GUIDE 登记 —— 禁止手写。
 _GUIDE_LINK = re.compile(
     r"### 👉 \[\*\*超级大乐透 · 策略说明书（人话版）\*\*\]"
-    r"\(games/dlt/strategy/STRATEGY_GUIDE\.md\) &nbsp;`v[^`]+`"
+    r"\(labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE\.md\) &nbsp;`v[^`]+`"
 )
 _GUIDE_PATH = re.compile(
-    r"> 路径：`games/dlt/strategy/STRATEGY_GUIDE\.md` — 版本 `v[^`]+`"
+    r"> 路径：`labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE\.md` — 版本 `v[^`]+`"
     r"（轮次 `r\d+`，更新 [^）]+）— 不需要任何背景知识"
 )
 
@@ -50,7 +50,7 @@ _GUIDE_PATH = re.compile(
 def _sync_guide_annotation(text: str, v: dict) -> str:
     """把 README 策略说明书入口标注同步到登记的 STRATEGY_GUIDE 版本。"""
     try:
-        g = next(e for e in v["entries"] if e["path"] == "games/dlt/strategy/STRATEGY_GUIDE.md")
+        g = next(e for e in v["entries"] if e["path"] == "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md")
     except StopIteration:
         return text
     ver = g.get("content_version") or ""
@@ -58,8 +58,8 @@ def _sync_guide_annotation(text: str, v: dict) -> str:
     upd = g.get("updated_at") or ""
     if not ver:
         return text
-    new_link = f"### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v{ver}`"
-    new_path = (f"> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v{ver}`"
+    new_link = f"### 👉 [**超级大乐透 · 策略说明书（人话版）**](labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v{ver}`"
+    new_path = (f"> 路径：`labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v{ver}`"
                 f"（轮次 `{it}`，更新 {upd}）— 不需要任何背景知识")
     text2 = _GUIDE_LINK.sub(lambda _m: new_link, text)
     return _GUIDE_PATH.sub(lambda _m: new_path, text2)

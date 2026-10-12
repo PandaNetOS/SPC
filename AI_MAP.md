@@ -1,4 +1,4 @@
-# AI_MAP —— SPC 机器可读地图
+﻿# AI_MAP —— SPC 机器可读地图
 
 
 > **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
@@ -32,25 +32,25 @@
 - `spec/version_index.schema.json` — schema 自身无版本；约束 versions.index_version
 
 ## 框架
-- `framework/INDEX.md`
-- `framework/README.md`
-- `framework/core/README.md`
-- `framework/core/__init__.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/core/evaluate.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/core/features.py` — 新增跨注原语 duplicate_ticket_count / duplicate_ticket_count_ge（F…
-- `framework/core/game_util.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/core/generate.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/core/judge.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/core/portfolio.py` — ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross
-- `framework/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
-- `framework/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
-- `framework/methodology/STATISTICAL_DISCIPLINE.md`
-- `framework/protocol/ITERATION_PROTOCOL.md` — r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏
-- `framework/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
-- `framework/protocol/README.md`
-- `framework/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）
-- `framework/tools/ingate.py` — 新增 _evidence_tier 分档校验
-- `framework/tools/memory.py` — 代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）…
+- `platform/INDEX.md`
+- `platform/README.md`
+- `platform/core/README.md`
+- `platform/core/__init__.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/core/evaluate.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/core/features.py` — 新增跨注原语 duplicate_ticket_count / duplicate_ticket_count_ge（F…
+- `platform/core/game_util.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/core/generate.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/core/judge.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/core/portfolio.py` — ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross
+- `platform/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
+- `platform/methodology/STATISTICAL_DISCIPLINE.md`
+- `platform/protocol/ITERATION_PROTOCOL.md` — r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏
+- `platform/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
+- `platform/protocol/README.md`
+- `platform/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）
+- `platform/tools/ingate.py` — 新增 _evidence_tier 分档校验
+- `platform/tools/memory.py` — 代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）…
 
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
@@ -79,12 +79,12 @@
 - `memory/workbench/TODO.md` — r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08…
 
 ## 策略输出
-- `games/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
+- `labs/lottery/studies/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
 
 ## 彩种
-- `games/_template/README.md`
-- `games/_template/game.yaml` — 2026-10-11 与 dlt 同步升至 2.0（features 原语化）
-- `games/_template/iterations/round01/TASK_BRIEF.md`
+- `labs/lottery/studies/_template/README.md`
+- `labs/lottery/studies/_template/game.yaml` — 2026-10-11 与 dlt 同步升至 2.0（features 原语化）
+- `labs/lottery/studies/_template/iterations/round01/TASK_BRIEF.md`
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）

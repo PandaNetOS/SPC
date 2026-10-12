@@ -1,0 +1,155 @@
+{
+  "round": "round16",
+  "game": "dlt",
+  "title": "告警清零 + 任务源机制轮：T-066/T-067（清 14 条告警）+ T-064（F-0048）+ T-068（★源自救）+ T-069",
+  "status": "delivered",
+  "started_at": "2026-10-12",
+  "finished_at": "2026-10-12",
+  "executor": "AI（用户「下一轮多做一点」后自主执行，四条并行线）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0016",
+      "F-0017",
+      "F-0022",
+      "F-0023",
+      "F-0028",
+      "F-0029",
+      "F-0031",
+      "F-0038",
+      "F-0044",
+      "F-0045",
+      "F-0046",
+      "F-0047"
+    ],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round15/HANDOFF.md",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round16/TASK_BRIEF.md",
+    "note": "任务书（render_task_brief --round 16 生成，首次含派生候选）：必做 1 个 = T-063（H-001 补判据）。T-063 本轮**未执行**，留给 round17；实际完成的是开轮侦察出的 5 项（T-064/T-066/T-067/T-068/T-069）。用户要求「多做一点」，故本轮并行四条线而非单点推进。"
+  },
+  "outputs": {
+    "new_fact_ids": [
+      "F-0048"
+    ],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [
+      "F-0048 端点显著（1-12 vs 32-35 差 +0.0633，CI [+0.0045,+0.1211]）是否用于调整生日号分段（如 max≤31 改加权）—— 属策略变更，未动任何规则"
+    ],
+    "strategy_landed": [],
+    "actual_updates": [
+      "T-066 → labs/lottery/studies/dlt/iterations/round16/scripts/{t013_recalibrate_r09.py,t028_recalibrate_r10.py} + apply_r16_facts.py：7 条动态锚点（F-0016/17/22/23/28/29/31）复跑全部 maintain；NOOP 重记（noop_count+1）**并刷新 established_in → round16**，7 条重校准告警清零",
+      "T-067 → labs/lottery/studies/dlt/iterations/round16/scripts/b2_fill_evidence_index.py：strategy.json.evidence_index 补 F-0044~F-0047（至 25 条）；versions.json 中 STRATEGY_GUIDE.md consumes 补 F-0041/44/45/46（至 28 项），6 条结构性告警清零",
+      "T-064 → labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py：H-002 三段单调检验，点估计全序单调（1-12=1.0213 / 13-31=0.9947 / 32-35=0.9580），端点 bootstrap CI [+0.0045,+0.1211] 显著，序型置换检验 p=0.2103 不显著 → H-002 判 partial，新增 F-0048",
+      "T-068 → tools/derive_tasks.py + tests/test_derive_tasks.py（11 项断言）：从 OPEN_QUESTIONS/HYPOTHESES/validate 告警三处存量派生 T-nnn，带 [derive:…] 源标记保证幂等，资源缺口如实标记不占预算",
+      "T-069 → 修正 r15 对 T-020 的误判：产出 F-0038 一直存在，缺的只是完成记录；补记后 Q-006 → answered（15/15 已答）",
+      "环境：托管 Python 补装 numpy/pandas/scipy/statsmodels，tests/test_research_lib.py 由 ERR 恢复运行（+18）",
+      "顺带根治「写死计数」：test_claim_type / test_evidence_anchor 的 len(FACTS)==47 改为下界 >=47；test_flywheel 总数改由 FACTS.jsonl 实读推导（与 L15 同源，F-0048 入库后曾红 4 项）",
+      "文档同步：README/AI_CONTEXT 速览计数 47 → 48；README「validate --all 98 项」→ 110 项；OPEN_QUESTIONS 头部 open 列表去掉已清偿的 Q-006（2 open → 1 open）"
+    ],
+    "open_questions": [
+      "Q-016"
+    ],
+    "framework_revision": {
+      "proposed": [
+        "SOP 补充：NOOP 重校准必须同时刷新 established_in（仅写 recalibrated_roundNN 不清告警）—— 本轮发现但列为范围外，未改 SOP 文档",
+        "derive_tasks 扫描源扩展到 memory/lessons/LESSONS.md 与 platform/methodology 待办项（告警已清零后需新任务源）"
+      ],
+      "accepted": [],
+      "rejected": [
+        "把 F-0048 端点显著性直接落成策略规则 —— 违反策略变更红线，需用户批准，本轮只做结论入库"
+      ]
+    }
+  },
+  "deliverables": [
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/manifest.json",
+      "kind": "manifest"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/apply_r16_facts.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/b2_fill_evidence_index.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t020_number_weight.py",
+      "kind": "script"
+    },
+    {
+      "path": "tools/derive_tasks.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_derive_tasks.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_claim_type.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_evidence_anchor.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_flywheel.py",
+      "kind": "script"
+    },
+    {
+      "path": "README.md",
+      "kind": "report"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "kind": "report"
+    },
+    {
+      "path": "memory/facts/FACTS.jsonl",
+      "kind": "data"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "kind": "report"
+    },
+    {
+      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "kind": "report"
+    },
+    {
+      "path": "memory/workbench/HYPOTHESES.md",
+      "kind": "report"
+    }
+  ]
+}

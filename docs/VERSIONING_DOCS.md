@@ -35,7 +35,7 @@
 | `config_version` | 彩种**参数**是什么版本 | `games/<id>/` | `game.yaml.config_version` | 彩种配置 |
 | `data_version` | 用了**哪份数据** | `data/raw/` | `game.yaml` / `manifest.inputs` | 数据 |
 | **`content_version`** ★ | **这份内容改过几版** | **每份内容自己** | 文件内版本行 | 文档 / 结论 / 教训 |
-| **`framework_version`** ★ | **框架层改过几版** | `framework/` | `versions.json` | 研究框架 |
+| **`framework_version`** ★ | **框架层改过几版** | `platform/` | `versions.json` | 研究框架 |
 
 ★ = 2026-10-11 新引入。
 
@@ -227,8 +227,8 @@ python cli/main.py validate --all -v
 ```python
 # tools/build_versions.py
 CONSUMES: dict[str, list[str]] = {
-    "games/dlt/strategy/STRATEGY_GUIDE.md": ["F-0001", "F-0003", ...],
-    "games/dlt/strategy/strategy.json":     ["F-0001", "F-0003", ...],
+    "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md": ["F-0001", "F-0003", ...],
+    "labs/lottery/studies/dlt/strategy/strategy.json":     ["F-0001", "F-0003", ...],
 }
 ```
 
@@ -251,14 +251,14 @@ CONSUMES: dict[str, list[str]] = {
 **第二类下游漏洞**：`consumes` 管得住「引用某条结论」，却管不住
 「表格里写的结论**总数**」。
 
-真实案例：`games/INDEX.md` 写「结论数 15」、`AI_CONTEXT.md` 写
+真实案例：`labs/lottery/INDEX.md` 写「结论数 15」、`AI_CONTEXT.md` 写
 「FACTS.jsonl（15 条）」，而台账已 18 条 —— **两种情况下校验依然全绿**。
 
 **机制**：校验器扫描指定的速览类文件，凡出现「N 条结论」字样，
 `N` 必须等于台账实际条数（接受「全部条数」与「非 superseded 条数」两个口径）。
 
 ```python
-_COUNT_LABEL_FILES = ("games/INDEX.md", "AI_CONTEXT.md", "README.md", "memory/INDEX.md")
+_COUNT_LABEL_FILES = ("labs/lottery/INDEX.md", "AI_CONTEXT.md", "README.md", "memory/INDEX.md")
 # 命中： "18 条结论" / "FACTS.jsonl（18 条）"
 ```
 
@@ -343,7 +343,7 @@ r15 新增的 ★R 校验项要求 `current_iteration` == 最新**已收尾轮**
 
 ## 7. 与迭代协议的关系
 
-`framework/protocol/ITERATION_PROTOCOL.md` §4「收轮」现已包含**升版本**步骤：
+`platform/protocol/ITERATION_PROTOCOL.md` §4「收轮」现已包含**升版本**步骤：
 
 ```
 收轮时（在写完 HANDOFF.md 之后）：

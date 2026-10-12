@@ -84,7 +84,7 @@
           "primitive": {
             "type": ["string", "null"],
             "pattern": "^[a-z][a-z0-9_]*$",
-            "description": "框架可执行的原语名，取自 framework/core/features.py 的 PRIMITIVES。有 primitive 则该特征可被 evaluate() 求值、可被 predicate 引用；没有则本特征只是注释，框架无法求值。"
+            "description": "框架可执行的原语名，取自 platform/core/features.py 的 PRIMITIVES。有 primitive 则该特征可被 evaluate() 求值、可被 predicate 引用；没有则本特征只是注释，框架无法求值。"
           },
           "args": {
             "type": ["object", "null"],
@@ -99,7 +99,7 @@
             "type": "string",
             "enum": ["single", "cross"],
             "default": "single",
-            "description": "★ config_version 2.1 新增。single=可从一注号码算出（默认）；cross=**跨注**特征，需一整组注才能算出，由 framework/core/portfolio.py 求值。scope 必须与 primitive 所属的原语表一致，否则校验器报错（单注原语不得用于 cross 特征，反之亦然）。"
+            "description": "★ config_version 2.1 新增。single=可从一注号码算出（默认）；cross=**跨注**特征，需一整组注才能算出，由 platform/core/portfolio.py 求值。scope 必须与 primitive 所属的原语表一致，否则校验器报错（单注原语不得用于 cross 特征，反之亦然）。"
           },
           "range": {
             "type": ["array", "null"],

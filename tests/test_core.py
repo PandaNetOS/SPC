@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """tests/test_core.py — 框架核心的自动化测试
 
 跑法（无需 pytest，直接 python）：
@@ -87,8 +87,8 @@ def section(t: str) -> None:
 
 
 # ---------------------------------------------------------------- 载入真实配置
-CFG = yaml.safe_load(open(os.path.join(_ROOT, "games/dlt/game.yaml"), encoding="utf-8"))
-ST = json.load(open(os.path.join(_ROOT, "games/dlt/strategy/strategy.json"), encoding="utf-8"))
+CFG = yaml.safe_load(open(os.path.join(_ROOT, "labs/lottery/studies/dlt/game.yaml"), encoding="utf-8"))
+ST = json.load(open(os.path.join(_ROOT, "labs/lottery/studies/dlt/strategy/strategy.json"), encoding="utf-8"))
 DECLARED = [f["key"] for f in CFG["features"]]
 
 

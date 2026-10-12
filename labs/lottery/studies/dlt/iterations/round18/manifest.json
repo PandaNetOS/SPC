@@ -1,0 +1,52 @@
+{
+  "round": "round18",
+  "game": "dlt",
+  "title": "置换检验校正 + 重尾稳健复核 — R-005 修正",
+  "status": "delivered",
+  "started_at": "2026-10-12",
+  "finished_at": "2026-10-12",
+  "executor": "AI",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": ["F-0049", "F-0038", "F-0041", "F-0048"],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md"
+  },
+  "outputs": {
+    "new_fact_ids": [],
+    "updated_fact_ids": ["F-0049"],
+    "refuted_fact_ids": [],
+    "strategy_updated": true,
+    "strategy_landed": [
+      "R-005 predicate 修正：移除 back_even_count==2（中位数口径效应消失），保留 front_has_35 / front_min_gap==2 / back_same_tail>=1",
+      "R-005 evidence_refs 加入 F-0038/F-0041/F-0048（established 支撑）",
+      "R-005 caveats 更新：置换检验 p=0.2235、稳健复核三口径结果"
+    ],
+    "actual_updates": [
+      "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py：置换检验脚本",
+      "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json：置换检验结果",
+      "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py：稳健复核脚本",
+      "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json：稳健复核结果",
+      "labs/lottery/studies/dlt/strategy/strategy.json：R-005 修正",
+      "memory/facts/FACTS.jsonl：F-0049 更新（claim/caveats/evidence）"
+    ],
+    "framework_revision": {
+      "proposed": [],
+      "accepted": [],
+      "rejected": []
+    }
+  },
+  "deliverables": [
+    {"path": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md", "kind": "task_brief"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/FINDINGS.md", "kind": "findings"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/HANDOFF.md", "kind": "handoff"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/manifest.json", "kind": "manifest"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py", "kind": "script"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json", "kind": "data"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py", "kind": "script"},
+    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json", "kind": "data"},
+    {"path": "labs/lottery/studies/dlt/strategy/strategy.json", "kind": "config"},
+    {"path": "memory/facts/FACTS.jsonl", "kind": "data"}
+  ]
+}

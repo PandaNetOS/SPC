@@ -1,4 +1,4 @@
-# spec/ — 契约层
+﻿# spec/ — 契约层
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -46,7 +46,7 @@
 4. **`game_config.prize_model.epochs[].sum_affects_numbers` 恒为 `false`**
    奖金规则的变更不影响号码分布。跨 epoch 比较奖金金额是无意义的。
 
-> 这四条来自 `games/dlt/iterations/round02/known_errors.md` 的 E1–E9 实证教训。
+> 这四条来自 `labs/lottery/studies/dlt/iterations/round02/known_errors.md` 的 E1–E9 实证教训。
 > 契约不是装饰 —— 它是把已付出的学费固化成机器可检的约束。
 
 ## 校验

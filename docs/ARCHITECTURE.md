@@ -1,4 +1,4 @@
-# ARCHITECTURE —— 仓库架构
+﻿# ARCHITECTURE —— 仓库架构
 
 > **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -17,7 +17,7 @@
      ┌──────────────────────┼──────────────────────┐
      ▼                      ▼                      ▼
 ┌──────────┐        ┌──────────────┐        ┌──────────────┐
-│  spec/   │        │  framework/  │        │   memory/    │
+│  spec/   │        │  platform/  │        │   memory/    │
 │  契约层   │        │   框架层      │        │   记忆层      │
 │          │        │              │        │              │
 │ 4 schema │        │ protocol     │        │ facts (台账)  │
@@ -45,7 +45,7 @@
 | 层 | 职责 | 允许写的内容 | 禁止写的内容 |
 |---|---|---|---|
 | `spec/` | 定义**数据结构与红线** | JSON Schema、版本规则 | 具体彩种参数、具体结论 |
-| `framework/` | 定义**怎么做研究** | 协议、方法论、通用工具、**号码空间计算与判定核心** | 彩种专属分支、彩种数值 |
+| `platform/` | 定义**怎么做研究** | 协议、方法论、通用工具、**号码空间计算与判定核心** | 彩种专属分支、彩种数值 |
 | `memory/` | 存**结论与教训** | 结论台账、日志、教训、待办 | 原始数据、脚本 |
 | `src/` + `cli/` | **机械执行**契约与协议 | 校验、计算、生成 | 判断"哪条结论对" |
 | `games/<id>/` | **具体彩种的**数据与产出 | 数据、脚本、策略、轮次 | 修改上面任何一层 |
@@ -55,14 +55,14 @@
 ```
 games/  →  src/  →  spec/
    │        │
-   └────────┴──→  framework/（文档与工具，被引用）
+   └────────┴──→  platform/（文档与工具，被引用）
                      │
 memory/ ←── 由 games/ 的轮次产出写入
 ```
 
 **反向依赖 = 架构破坏。** 具体说：
 
-- `framework/` 里出现 `if game_id == "dlt"` → 破坏
+- `platform/` 里出现 `if game_id == "dlt"` → 破坏
 - `src/` 里硬编码 `35`、`12`、`21425712` → 破坏
 - `spec/` 里出现"大乐透"三个字 → 破坏
 
@@ -86,10 +86,10 @@ memory/ ←── 由 games/ 的轮次产出写入
 ### 2. 配置驱动（config-driven）
 
 `game.yaml` 是唯一彩种参数来源。`T = ∏ C(pool_size_i, pick_i)` 由
-`framework/core/game_util.py` 从 `machine.zones` **机械算出**，代码里没有任何 `35` 或 `12`。
+`platform/core/game_util.py` 从 `machine.zones` **机械算出**，代码里没有任何 `35` 或 `12`。
 
 **同一思路已从「号码空间级」下沉到「单注级」**：
-`framework/core/` 的 21 个特征原语由 `game.yaml` 的 `features[]`
+`platform/core/` 的 21 个特征原语由 `game.yaml` 的 `features[]`
 以 `primitive` + `args` 形式声明驱动 —— 框架不知道"连号"是什么，只执行声明。
 
 验证方式：把 `game.yaml` 的 `pool_size` 从 35 改成 36，`T` 必须自动变；
@@ -97,7 +97,7 @@ memory/ ←── 由 games/ 的轮次产出写入
 
 ### 3. 单注层一等公民（single-ticket core）
 
-`framework/core/` 七个模块，构成 `Ticket → 求值 → 判定 → 生成` 与
+`platform/core/` 七个模块，构成 `Ticket → 求值 → 判定 → 生成` 与
 `Portfolio → 跨注求值 → 跨注判定` 两条链路：
 
 ```
@@ -110,7 +110,7 @@ L3 Portfolio   portfolio.py   ★ 2.1 起已实现：整组一等公民 + 跨注
 ```
 
 **为什么 `Ticket` 不含 `front`/`back`**：区名是可变长数组。这是"加入第二个彩种
-不改 `framework/`"的唯一硬标准的前提。`Portfolio` 同理 —— 只持有 `tuple[Ticket]`。
+不改 `platform/`"的唯一硬标准的前提。`Portfolio` 同理 —— 只持有 `tuple[Ticket]`。
 
 **★ 作用域是本层的核心机制**，且 2.1 起从"二路切分"升级为"三路切分"：
 
@@ -129,7 +129,7 @@ L3 Portfolio   portfolio.py   ★ 2.1 起已实现：整组一等公民 + 跨注
 > 策略被发布，消费者却无法执行它，**契约缺了整整一层**。
 > 2.1 已正式声明为 `scope: cross`（改名为 `has_duplicated_structure`）并补上 L3 执行层。
 
-> 详见 `framework/core/README.md` 与 `docs/PROPOSAL_SINGLE_TICKET_CORE.md`。
+> 详见 `platform/core/README.md` 与 `docs/PROPOSAL_SINGLE_TICKET_CORE.md`。
 
 ### 4. 记忆四层（memory tiers）
 
@@ -182,7 +182,7 @@ iterations/roundNN/HANDOFF.md         ← 交接 + 生成下轮 TASK_BRIEF
 
 ## 为什么这样分
 
-见 `framework/methodology/` 与 `memory/lessons/LESSONS.md`。核心动机：
+见 `platform/methodology/` 与 `memory/lessons/LESSONS.md`。核心动机：
 
 - **框架与彩种分离** → 第二个彩种不需要复制粘贴 5000 行分析代码
 - **契约优先** → 红线不可能被"不小心"违反，也不可能被后来的 AI 悄悄改掉
@@ -191,6 +191,6 @@ iterations/roundNN/HANDOFF.md         ← 交接 + 生成下轮 TASK_BRIEF
 
 ## 唯一硬标准（再强调一次）
 
-> **加入第二个彩种时，是否需要改 `framework/` 或 `src/` 的任何一行？**
+> **加入第二个彩种时，是否需要改 `platform/` 或 `src/` 的任何一行？**
 
 不需要 = 架构成立。需要 = 这不是"新彩种的问题"，是框架缺了抽象，必须补进框架。

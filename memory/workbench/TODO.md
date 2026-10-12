@@ -76,7 +76,7 @@
       **换算**：R-001 +40.64% → **+26.42%**；R-003 +41.80% → **+27.18%**（方向不变，幅度下调约 35%）。
       **★ 对外表述硬伤已修**：净期望 −0.98 → **−1.7275 元/2元注**（口径B），
       原 `disclaimer.text` 低估了亏损。
-      三条红线全部仍然成立。产出 `games/dlt/iterations/round08/scripts/all_tiers_expectation.py` + `.json`，
+      三条红线全部仍然成立。产出 `labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py` + `.json`，
       `strategy.json` schema_version 1.1 → **1.2**。
 
 - [x] **T-047** ★ r08 新增：F-0032 教训制度化 + FACTS 新增 NOOP
@@ -86,7 +86,7 @@
          强校验档 `empirical` + `simulation`（实测 26/35 = 74%）任一缺失 → 退出码 2（拒绝），退出信息指明补哪个字段；
          `simulation` 额外要求 `evidence.source_sha256`。弱校验档 `methodological` / `documentary` 缺失 → 提示（计入建议 tentative）。
          `analytic` 解析可证，仅要求口径标注。已回归验证：对存量 35 条**零影响**，只对 r08 起新条目生效。
-         实现见 `framework/tools/ingate.py` 的 `_evidence_tier()` 与 `STRICT_CLAIM_TYPES`。
+         实现见 `platform/tools/ingate.py` 的 `_evidence_tier()` 与 `STRICT_CLAIM_TYPES`。
       2. **NOOP 原子操作**（✅ schema 已就位）：显式记录「证据不足，维持原结论」，替代「什么都不写」的隐式状态。
          理论依据：文献 37（Memory-R1）将 NOOP 作为与 add/update/delete 同级的受训操作；
          文献 35 综述确认「更新/取代优于删除」的演化原则。
@@ -238,14 +238,14 @@
 - [x] **T-030** 明确"策略有效性"的三档标准并写入 schema（Q-008）✅ **r12 完成** → strategy.schema.json 1.4 `effectiveness_grade`（A 数学恒真 / B 统计确立 / C 模型估计）+ R-001=B/R-002=A/R-003=B 回填；STRATEGY_GUIDE §2 三档表；Q-008 → answered
 
 - [x] **T-031** 第二个彩种接入（验证框架的通用性）✅ **r03 框架迭代已落地（影子彩种实测）**
-      目前只有 `games/dlt/`。**框架是否真通用，只有接入第二个彩种才知道**
+      目前只有 `labs/lottery/studies/dlt/`。**框架是否真通用，只有接入第二个彩种才知道**
       这是验证"框架/彩种分离"设计的唯一硬标准
 
       **落地内容**：
       - 新增 `tests/fixtures/shadow/`（与 dlt **处处不同**的第二彩种夹具：9选3+5选2 / 红区 `min_value=0` / T=840 / 5 单注+2 跨注特征，与 dlt 零交集）
       - 新增 `tests/test_shadow_game.py`（**69 项**）：装载/校验/求值/判定/跨注/端到端/单区变体全链路在影子彩种跑通
-      - 铁律扫描断言 `framework/` 与 `src/` 无 dlt 痕迹（AST 剥 docstring 防误报），并含**扫描器自检**确认非"永远全绿"
-      - **结论：加入第二个彩种无需改 `framework/` 或 `src/` 任何一行 —— 硬标准首次通过**
+      - 铁律扫描断言 `platform/` 与 `src/` 无 dlt 痕迹（AST 剥 docstring 防误报），并含**扫描器自检**确认非"永远全绿"
+      - **结论：加入第二个彩种无需改 `platform/` 或 `src/` 任何一行 —— 硬标准首次通过**
 
 - [ ] **T-032** 摇奖设备数据的获取评估（H-003）`resource: unverifiable`
       唯一的"推翻 F-0001"路径。当前标 `unverifiable_with_current_data`
@@ -257,7 +257,7 @@
       但都等于承认**契约缺一层**（策略被发布却无法执行）。
 
       **落地内容**：
-      - `framework/core/portfolio.py` 新增（Portfolio 一等公民 + `evaluate_cross` + `judge_cross`）
+      - `platform/core/portfolio.py` 新增（Portfolio 一等公民 + `evaluate_cross` + `judge_cross`）
       - `features.py` 新增 `CROSS_PRIMITIVES` 独立注册表（5 个跨注原语）
       - `game.yaml` 声明 3 个 `scope: cross` 特征（config 2.0 → **2.1**）
       - `strategy.json` `rules[]` 新增必填 `scope`；R-002 改引用 `has_duplicated_structure`（schema 1.0 → **1.1**）
@@ -269,7 +269,7 @@
 
 ## P4 — 框架自迭代（元层面）
 
-- [x] **T-040** 从本仓库实践中提炼的框架改进，回写 `framework/protocol/` ✅ **r12 完成** → ITERATION_PROTOCOL §6 校验扩展（概率口径派生扫描/★S 策略同步/deliverables 对象数组/schema 全字段）+ §7 禁止事项 +5（BOM 编码/策略版本落后/任务 id 纯数字/渲染五件套/deliverables 字符串）；遗留建议：`evidence.effect` 区分"观测事件/归因"（F-0015 教训）已记入 T-040 文本，仍开放可选做
+- [x] **T-040** 从本仓库实践中提炼的框架改进，回写 `platform/protocol/` ✅ **r12 完成** → ITERATION_PROTOCOL §6 校验扩展（概率口径派生扫描/★S 策略同步/deliverables 对象数组/schema 全字段）+ §7 禁止事项 +5（BOM 编码/策略版本落后/任务 id 纯数字/渲染五件套/deliverables 字符串）；遗留建议：`evidence.effect` 区分"观测事件/归因"（F-0015 教训）已记入 T-040 文本，仍开放可选做
 
 - [x] **T-041** 自动化：`cli/main.py index` 从 `FACTS.jsonl` 重生成 `INDEX.md` ✅ **已实现（误报，命令位早已落地）**
       `cli/main.py` 的 `index` 子命令（`cmd_index` → `mem.write_index()`）**已实现**，
@@ -299,7 +299,7 @@
 ## 已完成（本轮）
 
 > r04 开始时已按约定清空本节。r03 的完成项见 `memory/journal/round03.md`；
-> r04 的完成项见 `memory/journal/round04.md` 与 `games/dlt/iterations/round04/HANDOFF.md` §1。
+> r04 的完成项见 `memory/journal/round04.md` 与 `labs/lottery/studies/dlt/iterations/round04/HANDOFF.md` §1。
 
 ---
 

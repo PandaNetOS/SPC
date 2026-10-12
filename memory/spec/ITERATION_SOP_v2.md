@@ -4,7 +4,7 @@
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > 本文件是 SPC 自我迭代的 v2.0 操作规范：**记忆分层、入库门控、
-> 矛盾双通道、一致性不变量、重校准与记忆压缩**。由 v1（`framework/protocol/ITERATION_PROTOCOL.md`）
+> 矛盾双通道、一致性不变量、重校准与记忆压缩**。由 v1（`platform/protocol/ITERATION_PROTOCOL.md`）
 > 按学术研究综合升级而来。最后更新：2026-10-11（round06）。
 
 ## 0. 设计依据（学术）
@@ -44,7 +44,7 @@ FACTS.jsonl 的一切变更必须通过以下**原子操作**之一，禁止整�
 
 **禁止**：删除 F 条目；重用 F 编号；跳过 supersedes/superseded_by 双向声明。
 
-## 3. 入库三闸门（`framework/tools/ingate.py`）
+## 3. 入库三闸门（`platform/tools/ingate.py`）
 
 新结论进 FACTS 前逐闸过检（任一硬错误 → 拒绝；相似/疑似矛盾 → 降 tentative）：
 
@@ -88,7 +88,7 @@ revision 必须落到 status ∈ {superseded, refuted}（validate 强制）。
 - validate 按 `established_in + N` vs 当前轮报 warning；`compress_memory.py` 也列出到期项。
 - 到期处理：① 数值仍成立 → 维持并重记；② 变了 → 走 update（change_type=update，旧记录保留）。
 
-## 7. 记忆压缩（每 5 轮一次，`framework/tools/compress_memory.py --write`）
+## 7. 记忆压缩（每 5 轮一次，`platform/tools/compress_memory.py --write`）
 
 - 只读 + 生成视图，**不移动/不删除数据**（审计留痕优先）。
 - 产物：`memory/facts/ACTIVE.md`（当前有效结论清单，与台账分离解决信噪比）
@@ -136,7 +136,7 @@ revision 必须落到 status ∈ {superseded, refuted}（validate 强制）。
    列出可并行任务并注明约束；
 2. **研究可并行**：各任务独立检索/建模/验证，各自产出草案（FINDINGS 草稿）；
 3. **入库必串行**：新结论统一过 §3 三闸门（INV1/2/3），Add 按顺序逐条执行
-   （`framework/tools/ingate.py` 已保证单线程）；并行不豁免任何一道门；
+   （`platform/tools/ingate.py` 已保证单线程）；并行不豁免任何一道门；
 4. **汇合统一写**：FACTS.jsonl 是 L0 单一权威；策略/文档层（STRATEGY_GUIDE / strategy.json /
    AI_CONTEXT）的更新集中在汇合后统一串行做，避免并发写冲突；
 5. **收尾照跑**：无论并行几组，§8 收尾清单照跑（可用 `finish_round.py` 一键化）。

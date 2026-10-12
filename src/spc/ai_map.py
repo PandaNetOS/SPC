@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.ai_map — AI_MAP.md 生成源（AI 可读性升级 P1，llms.txt 式机器地图）。
 
 README 目录树（spc.tree）解决的是「文件在哪」；AI_MAP 解决的是
@@ -20,7 +20,7 @@ import os
 
 _EXCLUDE_DIR_PREFIXES = (
     "tests/fixtures/",
-    "framework/protocol/templates/",
+    "platform/protocol/templates/",
 )
 _EXCLUDE_FILES = {".gitignore"}
 
@@ -28,7 +28,7 @@ _EXCLUDE_FILES = {".gitignore"}
 _BASE_SECTIONS: list[tuple[str, str]] = [
     ("入口（先读）", ""),          # 根层文件
     ("契约", "spec/"),
-    ("框架", "framework/"),
+    ("框架", "platform/"),
     ("记忆", "memory/"),
     ("策略输出", "strategy/"),
     ("彩种", ""),
@@ -87,7 +87,7 @@ def _sections_for(game: str) -> list[tuple[str, str]]:
     return [
         ("入口（先读）", ""),
         ("契约", "spec/"),
-        ("框架", "framework/"),
+        ("框架", "platform/"),
         ("记忆", "memory/"),
         ("策略输出", f"games/{game}/strategy/"),
         ("彩种", f"games/{game}/"),

@@ -138,7 +138,7 @@
         },
         "rules_epoch": {
           "type": ["string", "null"],
-          "description": "奖金/奖级类结论必须声明所用规则 epoch（见 games/dlt/rules_history.md）。号码类结论填 null。"
+          "description": "奖金/奖级类结论必须声明所用规则 epoch（见 labs/lottery/studies/dlt/rules_history.md）。号码类结论填 null。"
         },
         "script": {
           "type": ["string", "null"],

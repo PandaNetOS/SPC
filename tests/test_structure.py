@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """结构完整性测试（P1-2 根治）—— 无需 pytest，直接 `python tests/test_structure.py`
 
 ## 为什么单独一个文件
@@ -128,7 +128,7 @@ def test_filter_and_aggregate() -> None:
     entries = [
         {"path": "games/x/data/raw/a.csv", "level": "D"},
         {"path": "tests/fixtures/y.yaml", "level": "D"},
-        {"path": "framework/protocol/templates/t.md", "level": "D"},
+        {"path": "platform/protocol/templates/t.md", "level": "D"},
         {"path": "games/g/iterations/r1/scripts/a.py", "level": "A", "content_version": "1.0"},
         {"path": "games/g/iterations/r1/scripts/b.py", "level": "A", "content_version": "1.0"},
         {"path": "src/spc/t.py", "level": "B"},

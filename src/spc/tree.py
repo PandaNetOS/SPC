@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.tree — README 目录树的生成源（结构完整性根治，P1-2）。
 
 README 的 `## 目录结构` 代码块从此是**派生物**：数据源 = versions.json entries，
@@ -13,7 +13,7 @@ README 的 `## 目录结构` 代码块从此是**派生物**：数据源 = versi
 
 裁剪/聚合规则（防树膨胀、防误报）：
   · 排除：`*/data/**`（D 级数据走 SHA256 清单）、`tests/fixtures/**`（夹具）、
-    `framework/protocol/templates/**`（模板）、`.gitignore`——不进入目录树；
+    `platform/protocol/templates/**`（模板）、`.gitignore`——不进入目录树；
   · 聚合：目录名 == `scripts` 时折叠为一行 `scripts/ ← N 个脚本`；
   · 标注：A/B/C 级有 content_version → `vX.Y`；version_ref 条目 → `v{ref_version}`；
     D 级 → `—`；
@@ -26,7 +26,7 @@ import json
 
 _EXCLUDE_DIR_PREFIXES = (
     "tests/fixtures/",
-    "framework/protocol/templates/",
+    "platform/protocol/templates/",
 )
 _EXCLUDE_PATHS = {".gitignore"}
 

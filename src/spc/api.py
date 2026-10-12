@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.api — 高层门面
 
 面向两类用户的统一入口：
@@ -9,7 +9,7 @@
       sp.strategy()          # 策略规则集（受 schema 约束）
       sp.disclaimer()        # 免责声明（必须原样展示）
 
-      # 单注层（framework/core）
+      # 单注层（platform/core）
       sp.evaluate({"front": [...], "back": [...]})   # 求一注的特征
       sp.judge(ticket)                               # 按规则判定（单注层）
       sp.pick(n=5)                                   # 生成合规号码
@@ -38,9 +38,9 @@ from .memory import Memory
 from .strategy import load_strategy
 from .validate import validate_all
 
-# framework/core 是彩种无关的计算核心，不在 src/ 包内 —— 补进 import 路径
+# platform/core 是彩种无关的计算核心，不在 src/ 包内 —— 补进 import 路径
 _FRAMEWORK = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "framework")
+    os.path.join(os.path.dirname(__file__), "..", "..", "platform")
 )
 if _FRAMEWORK not in sys.path:
     sys.path.insert(0, _FRAMEWORK)
@@ -152,7 +152,7 @@ class SmartPick:
         """可算特征 key（machine_rule.predicate 只能引用这些）。"""
         return feature_keys(self.config)
 
-    # -------------------------------------------------- 单注层（framework/core）
+    # -------------------------------------------------- 单注层（platform/core）
 
     def evaluable_features(self) -> list[str]:
         """**可执行**的特征 key（声明了 primitive 的那些）。"""
@@ -219,7 +219,7 @@ class SmartPick:
             "cross_reasons": reasons,
         }
 
-    # -------------------------------------------------- 跨注层（framework/core/portfolio）
+    # -------------------------------------------------- 跨注层（platform/core/portfolio）
 
     def evaluable_cross_features(self) -> list[str]:
         """可执行的**跨注**特征 key（scope=cross 且声明了 primitive）。"""

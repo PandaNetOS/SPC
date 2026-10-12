@@ -63,7 +63,7 @@ SPC/
 ├── README.md                  仓库总览（给人看）
 ├── spec/                  ★ 契约层：5 个 JSON Schema + VERSIONING.md
 │   └── version_index.schema.json   版本索引的契约
-├── framework/             框架层（彩种无关）｜ framework_version = 1.0
+├── platform/             框架层（彩种无关）｜ framework_version = 1.0
 │   ├── protocol/          迭代协议、记忆协议 ★ 动手前必读
 │   ├── methodology/       方法论（数学底线、统计纪律）
 │   ├── tools/             通用工具（记忆读写库）
@@ -109,21 +109,21 @@ SPC/
 | 数据版本 | `dlt_full_2933` |
 | 期数 | **2933**（`07001` ~ `26115`） |
 | 时间范围 | 2007-05-30 ~ 2026-10-10 |
-| 原始数据 | `games/dlt/data/raw/dlt_full_2933.csv`（SHA256 `9e92848e...706bb7`） |
+| 原始数据 | `labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv`（SHA256 `9e92848e...706bb7`） |
 | 现行规则 | **E6**，2026-02-02（26014 期）起：7 奖级、一/二等奖单期总额封顶 1 亿元、返奖率 51% |
 
 ### 读数据的两个必踩坑
 
 ```python
 import pandas as pd
-df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
+df = pd.read_csv("labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
                  encoding="utf-8-sig",        # ← 漏掉会让首列名变成 '\ufeffdraw_num'
                  dtype={"draw_num": str})     # ← 漏掉会让 '07001' 变成整数 7001
 ```
 
 `draw_num` 是**字符串**（带前导零），`prize1_amount_yuan` 是**右删失**数据
 （81.4% 封顶 500 万），`prize1_winners` 是**重尾**分布（var/mean=8.46）。
-详见 `games/dlt/game.yaml` 的 `data.caveats`。
+详见 `labs/lottery/studies/dlt/game.yaml` 的 `data.caveats`。
 
 > ⚠️ **r04 新增的口径警告（F-0019）**：**2013-08 之前那一段数据不能当基线** —— 它在
 > 「号码分布—中出注数—销售额」三者间不自洽（前区号码分布 χ²=251.5；由中出注数反推的投注量
@@ -238,7 +238,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
                 "calibrated_alpha_post_segment": 12.7815 },
     "ci95": [0.4487, 0.4543],
     "rules_epoch": "E6",
-    "script": "games/dlt/strategy/strategy_simulation.py"
+    "script": "labs/lottery/studies/dlt/strategy/strategy_simulation.py"
   },
   "caveats": [                               // ← 必读！每条 caveat 都是一个任务
     "模型依赖：α 由历史注数近似校准，是估计非真值。",
@@ -249,7 +249,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
   ],
   "established_in": "round02（r04 复核口径）",
   "supersedes": null, "superseded_by": null,
-  "source": "games/dlt/strategy/simulation_results.json"
+  "source": "labs/lottery/studies/dlt/strategy/simulation_results.json"
 }
 ```
 
@@ -273,7 +273,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 最典型的坑：把模拟结论标成 `empirical` —— 那等于暗示"换个数据集就能解决"，
 而 F-0004 的 109% 与 F-0017 的 40.6% 的差距恰恰来自**假设**（封顶与锚点），不是数据。
 
-> 详见 `framework/protocol/MEMORY_PROTOCOL.md` §1.7。
+> 详见 `platform/protocol/MEMORY_PROTOCOL.md` §1.7。
 
 ### ★ 证据锚定：改了证据文件要能被发现
 
@@ -329,7 +329,7 @@ df = pd.read_csv("games/dlt/data/raw/dlt_full_2933.csv",
 
 **第 16 步是本次新增的**。**改了内容不升版本 = 索引记录的是错的，比没有索引更坏。**
 
-详细协议见 `framework/protocol/ITERATION_PROTOCOL.md` 与 `MEMORY_PROTOCOL.md`。
+详细协议见 `platform/protocol/ITERATION_PROTOCOL.md` 与 `MEMORY_PROTOCOL.md`。
 
 ---
 
@@ -448,7 +448,7 @@ sp.pick(n=10, seed=...)    # 生成 n 注（若有 cross 规则会自动执行�
 - ❌ **不给"推荐号码"**。策略是**约束**（避开什么、偏好什么），
   不是具体号码 —— 具体号码无信息量，且容易被误读为"更可能中"。
 - ❌ **不鼓励投注**。长期期望恒为负（F-0002）。
-- ❌ **不在完成独立分析前读 `games/dlt/iterations/round02/legacy_findings/`**
+- ❌ **不在完成独立分析前读 `labs/lottery/studies/dlt/iterations/round02/legacy_findings/`**
   —— 那是历史产出的归档，设了使用门槛（防锚定）。
 
 ---

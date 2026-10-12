@@ -39,9 +39,9 @@
 
 **你不想读代码、不想看统计术语，只想知道"这个策略到底该怎么用"** —— 直接点这里：
 
-### 👉 [**超级大乐透 · 策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v2.0`
+### 👉 [**超级大乐透 · 策略说明书（人话版）**](labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v2.0`
 
-> 路径：`games/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v2.0`（轮次 `r19`，更新 2026-10-12）— 不需要任何背景知识
+> 路径：`labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v2.0`（轮次 `r19`，更新 2026-10-12）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -108,7 +108,7 @@ python cli/main.py new-game <game_id>
 │   ├── METHODOLOGY.md  v1.0
 │   ├── PROPOSAL_SINGLE_TICKET_CORE.md  v1.1
 │   └── VERSIONING_DOCS.md  v1.5      ← r15: §6.2 追加『manifest 先于 bump』顺序约束；…
-├── framework/
+├── platform/
 │   ├── INDEX.md  v1.1
 │   ├── README.md  v1.0
 │   ├── core/
@@ -401,7 +401,7 @@ python cli/main.py new-game <game_id>
 
 **唯一硬标准**：
 
-> 加入第二个彩种时，是否需要改 `framework/` 或 `src/` 的任何一行？
+> 加入第二个彩种时，是否需要改 `platform/` 或 `src/` 的任何一行？
 
 不需要 = 框架分离成立。需要 = 框架缺了抽象，必须补进框架而不是打补丁。
 
@@ -412,10 +412,10 @@ python cli/main.py new-game <game_id>
 | 契约层 | ✅ 5 schema + VERSIONING（含 config 2.0 迁移指南） |
 | 版本体系 | ✅ A/B/C/D 四级分区 + `versions.json` 权威源 + `content_version` / `framework_version` |
 | 框架层 | ✅ 2 协议 + 3 模板 + 2 方法论 + memory.py |
-| **框架核心** | ✅ **`framework/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
+| **框架核心** | ✅ **`platform/core/` 7 模块 / 21 单注原语 + 7 跨注原语**（Ticket / Portfolio / 求值 / 受限 DSL 判定 / 作用域三路切分 / 生成器） |
 | 记忆层 | ✅ **49 条结论**（每条带 `claim_type` 证据类型 + `source_sha256` 证据锚定 + **v2.0** `confidence_grade`/`change_type`/重校准周期 + **r08 起 `noop_count`**）/ L1–L15 / 15 开放问题（**1 open** = Q-016，r11 清偿 Q-011/Q-015，r12 清偿 Q-008，r16 清偿 Q-006）/ 6 假设（H-001 部分支持、H-002 部分支持，2 已推翻）/ 待办（P0 已清空，P1/P2 见 TODO） |
 | 库与 CLI | ✅ 9 模块 + 14 命令，`validate --all` **110 项全绿**（r16：错误 0、警告 0）（含 v2.0：INV2 引用链 / INV3 取代链环检测 / 动态锚点重校准 / 策略-证据一致性 / 速览计数 / **r10 概率口径检查项**，r11 覆盖 .jsonl 事实库 + **★S 策略文档随轮同步**） |
-| 彩种 `dlt` | ✅ `game.yaml`（config **2.3**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.4**，**5 规则** + 9 条 avoid_list，规则含有效性三档 `effectiveness_grade`）+ [**策略说明书（人话版）**](games/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计）+ **r12 L3 hold-out 落地轮**（T-049 时序评测验收通过 F-0044、T-030 策略有效性三档 schema 1.4、Q-008 answered、F-0004/F-0005 锚点重校准）+ **r17~r18 全形态筛选轮**（40 形态宽筛 + 置换检验 p=0.22 + 稳健复核，R-005 落地 C 档探索性） |
+| 彩种 `dlt` | ✅ `game.yaml`（config **2.3**，11 单注 + **5 跨注**特征全原语化）+ `strategy.json`（schema **1.4**，**5 规则** + 9 条 avoid_list，规则含有效性三档 `effectiveness_grade`）+ [**策略说明书（人话版）**](labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md) + **r07**（前段取证/外部核对/节假日验证）+ **r08 体系升级**（C+X+Y+Z：任务书参数化/研究资本化/收尾自动化/并行研究池）+ **r09 策略量化轮**（R-002 `magnitude_pct`=65.49 量化、F-0037/F-0038 新增、P0 四锚点重校准维持）+ **r10 口径根治轮**（F-0039 全奖级概率表 / F-0040 销量外生 / F-0041 形态撞号、概率口径检查项落地）+ **r11 效应与代理轮**（F-0042 效应平台期 / F-0043 机选代理可观测、T-048 hold-out 评测设计）+ **r12 L3 hold-out 落地轮**（T-049 时序评测验收通过 F-0044、T-030 策略有效性三档 schema 1.4、Q-008 answered、F-0004/F-0005 锚点重校准）+ **r17~r18 全形态筛选轮**（40 形态宽筛 + 置换检验 p=0.22 + 稳健复核，R-005 落地 C 档探索性） |
 | `tests/` | ✅ 12 文件 **463/463 全绿**（core 117 / cross_scope 64 / claim_type 42 / evidence_anchor 31 / shadow_game 69 / structure 8 / flywheel 17 / ai_readability 30 / consumes_completeness 6 / meta_variables 44 / open_questions_consistency 12 / research_lib 18；无需 pytest） |
 | 版本体系 | ✅ A/B/C/D 四级分区，**252 条**登记（A=125 B=82 C=16 D=29），版本行全部一致 |
 

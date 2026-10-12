@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """测试通过计数的**自举**来源。
 
 ## 为什么需要它
@@ -53,7 +53,7 @@ TEST_COVERAGE = {
     "tests/test_cross_scope.py": "★ 跨注层：跨注原语 / `Portfolio` / `evaluate_cross` / `judge_cross` / 三路切分 / 端到端 / 铁律扫描",
     "tests/test_claim_type.py": "★ 证据类型：五类约束**真的会拦** / schema 与 Python 双通道一致 / 分类自洽",
     "tests/test_evidence_anchor.py": "★ 证据锚定：漂移真能检出 / 该敏感的要敏感、该迟钝的要迟钝 / 重基线幂等",
-    "tests/test_shadow_game.py": "★ 影子彩种：第二彩种全链路跑通 + 铁律扫描（`framework/` 与 `src/` 无 dlt 痕迹）+ 扫描器自检",
+    "tests/test_shadow_game.py": "★ 影子彩种：第二彩种全链路跑通 + 铁律扫描（`platform/` 与 `src/` 无 dlt 痕迹）+ 扫描器自检",
     "tests/test_structure.py": "★ 结构完整性（P1-2 根治）：目录树 = 派生物防手改 / 双向登记真的会拦 / 裁剪不误伤 / scripts 聚合",
     "tests/test_flywheel.py": "★ r06 飞轮升级：K 健康度统计 / D1 置信度校准 / D2 矛盾检测（方向+范畴）/ C 依赖图 / F 增量校验冒烟",
     "tests/test_ai_readability.py": "★ r06 AI 可读性：P1 机器地图派生物 / P2 入口完整性 / B 任务书评分 / H 交接模板 / I 压缩到期",

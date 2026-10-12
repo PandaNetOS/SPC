@@ -1,0 +1,51 @@
+{
+  "round": "round17",
+  "game": "dlt",
+  "title": "全形态穷举筛选：40 个 boolean 形态撞号比 + Bootstrap CI + 分期稳健性",
+  "status": "delivered",
+  "started_at": "2026-10-12",
+  "finished_at": "2026-10-12",
+  "executor": "AI",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": ["F-0003", "F-0025", "F-0038", "F-0041", "F-0048"],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round16/HANDOFF.md",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md"
+  },
+  "outputs": {
+    "new_fact_ids": ["F-0049"],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [
+      "front_mingap_eq2 冷门（ratio=0.794）是否落地为 R-005（偏好最小间隔=2）",
+      "front_max_ge31 冷门（ratio=0.795）是否用于选号偏好",
+      "back_all_even / back_same_tail 后区冷门是否纳入后区选号策略"
+    ],
+    "strategy_landed": [],
+    "actual_updates": [
+      "platform/core/features.py 新增 6 个原语：count_same_tail / max_run_length / arithmetic_triplet_count / count_in_set / center_deviation / has_tail_cluster，注册到 PRIMITIVES + _REQUIRED_ARGS",
+      "labs/lottery/studies/dlt/game.yaml 新增 23 个特征声明，config_version 2.2 → 2.3",
+      "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py：40 形态撞号比筛选脚本",
+      "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json：筛选结果输出",
+      "memory/facts/FACTS.jsonl 追加 F-0049（tentative）"
+    ],
+    "framework_revision": {
+      "proposed": [],
+      "accepted": [],
+      "rejected": []
+    }
+  },
+  "deliverables": [
+    {"path": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md", "kind": "task_brief"},
+    {"path": "labs/lottery/studies/dlt/iterations/round17/FINDINGS.md", "kind": "findings"},
+    {"path": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md", "kind": "handoff"},
+    {"path": "labs/lottery/studies/dlt/iterations/round17/manifest.json", "kind": "manifest"},
+    {"path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py", "kind": "script"},
+    {"path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json", "kind": "data"},
+    {"path": "platform/core/features.py", "kind": "code"},
+    {"path": "labs/lottery/studies/dlt/game.yaml", "kind": "config"},
+    {"path": "memory/facts/FACTS.jsonl", "kind": "data"}
+  ]
+}

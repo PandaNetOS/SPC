@@ -1,0 +1,133 @@
+{
+  "round": "round05",
+  "game": "dlt",
+  "title": "最优投注方式 + 时间因素投注策略（用户点名方向）",
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（MainAgent 直接执行）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0002",
+      "F-0003",
+      "F-0004",
+      "F-0012",
+      "F-0016",
+      "F-0017",
+      "F-0019",
+      "F-0022",
+      "F-0023"
+    ],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round04/HANDOFF.md",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md",
+    "forbidden_fact_ids": [
+      "F-0007",
+      "F-0015"
+    ],
+    "note": "用户点名方向（最优投注方式 + 时间因素）优先；T-201（前段取证）顺延至 round06；T-202（R-002 量化）本轮闭合。"
+  },
+  "outputs": {
+    "new_fact_ids": [
+      "F-0026",
+      "F-0027",
+      "F-0028",
+      "F-0029",
+      "F-0030",
+      "F-0031",
+      "F-0032"
+    ],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [
+      "H-006"
+    ],
+    "closed_hypothesis_ids": [
+      "H-005 (refuted)"
+    ],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [
+      "R-002 权重 0.5 → 1.0（F-0028：期望效应不成立）",
+      "R-002 语义重构为『禁止完全相同号码』（F-0027）",
+      "R-003 新规则候选：避开连号 + 生日号区 max>31（F-0029）"
+    ],
+    "actual_updates": [
+      "F-0026 新增：投注方式（单注/复式/胆拖/倍投/追加）每元回报率数学等价",
+      "F-0027 新增：K 注相同号码自我摊薄（每元回报 = (1+m)/(K+m)，K=10 → 损失 56%）",
+      "F-0028 新增：R-002 量化 —— 结构同构期望效应 CI 含 0 → not_established，权重应改 1.0",
+      "F-0029 新增：R-003 候选 —— 避开连号+生日号区，未计封顶 +136.2%（R-001 +111.2%）",
+      "F-0030 新增：H-005 证伪 —— 周六连号撞号效应更弱（w2 run×sat −0.607），不构成择时",
+      "F-0031 新增：期初奖池 AR(1)=0.9994 → 高度可预测但不可利用",
+      "F-0032 新增：国庆/元旦窗口连号比偏低（tentative → H-006）",
+      "HYPOTHESES.md：H-005 标 refuted（方向相反）；新增 H-006",
+      "OPEN_QUESTIONS.md：Q-012 标 answered（F-0028/F-0027）",
+      "TODO.md：T-011/T-202/T-205/T-206 done；T-014 顺延 r06 首推；新增 T-016（H-006）",
+      "strategy.json：本轮零改动（策略变更待用户批准）",
+      "game.yaml：round05 状态更新"
+    ],
+    "questions_closed": [
+      "Q-012"
+    ]
+  },
+  "deliverables": [
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json",
+      "kind": "report"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.json",
+      "kind": "report"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/manifest.json",
+      "kind": "manifest"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round06/TASK_BRIEF.md",
+      "kind": "task_brief",
+      "note": "下一轮任务书（迭代链不断）；T-201 前段取证恢复首推"
+    }
+  ],
+  "open_questions": [
+    "Q-005",
+    "Q-006",
+    "Q-008",
+    "Q-009",
+    "Q-011",
+    "Q-013",
+    "Q-014",
+    "Q-015",
+    "Q-016"
+  ],
+  "framework_revision": {
+    "proposed": [
+      "R-10: strategy.schema.json 的 magnitude_pct 增加 not_established 语义（可携带 CI 含 0 判定）—— F-0028",
+      "R-11: 文档层显式区分『结构同构』与『完全相同号码』两种重复形态—— F-0027/F-0028"
+    ],
+    "accepted": [],
+    "rejected": []
+  }
+}

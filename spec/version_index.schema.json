@@ -28,7 +28,7 @@
     "framework_version": {
       "type": ["string", "null"],
       "pattern": "^[0-9]+\\.[0-9]+$",
-      "description": "★ 框架层（framework/）的独立版本。与包版本 __version__ 解耦 —— 框架演进节奏与库代码不同。"
+      "description": "★ 框架层（platform/）的独立版本。与包版本 __version__ 解耦 —— 框架演进节奏与库代码不同。"
     },
     "project_version": {
       "type": ["string", "null"],

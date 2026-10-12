@@ -1,4 +1,4 @@
-# ITERATION_GUIDE —— 如何做一轮分析
+﻿# ITERATION_GUIDE —— 如何做一轮分析
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -39,7 +39,7 @@ python cli/main.py validate --all
 | `manifest.json` | **收轮时** | 结构化登记（机器可读） |
 | `round(N+1)/TASK_BRIEF.md` | **收轮时必生成** | 迭代链不断的关键 |
 
-模板在 `framework/protocol/templates/`。
+模板在 `platform/protocol/templates/`。
 
 ## 2. 开轮：写 TASK_BRIEF
 
@@ -211,7 +211,7 @@ python cli/main.py validate --facts           # 只查台账
 | 混用开出率与被选中率 | L7 |
 | 删除被推翻的结论 | MEMORY_PROTOCOL §1.4 |
 | 手改 `INDEX.md` | 它是派生物 |
-| 在 `framework/` 写彩种分支 | ARCHITECTURE 唯一硬标准 |
+| 在 `platform/` 写彩种分支 | ARCHITECTURE 唯一硬标准 |
 | 跳过 TASK_BRIEF 直接给结论 | 反锚定协议 |
 | 静默跳过数据缺口 | MEMORY_PROTOCOL / data/raw/README |
 | 收轮不生成下轮 TASK_BRIEF | 迭代协议 §4.3 |

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """轮次停滞检查（r14.2 根治）测试 —— 无需 pytest，直接 `python tests/test_round_stall.py`
 
 ## 这个 bug 长什么样
@@ -129,8 +129,8 @@ def test_unmarked_stale_doc_not_reported() -> None:
 def test_round_artifact_not_reported() -> None:
     section("4. 轮次产物（roundNN/*）落后 → 不报（轮次天生属于产出那一轮）")
     with tempfile.TemporaryDirectory() as root:
-        _mk_md(root, "games/dlt/iterations/round12/HANDOFF.md", "1.0", "r12")
-        _mk_index(root, [{"path": "games/dlt/iterations/round12/HANDOFF.md",
+        _mk_md(root, "labs/lottery/studies/dlt/iterations/round12/HANDOFF.md", "1.0", "r12")
+        _mk_index(root, [{"path": "labs/lottery/studies/dlt/iterations/round12/HANDOFF.md",
                           "level": "A", "kind": "handoff",
                           "content_version": "1.0", "iteration": "r12"}])
         check(not _errs(root), "轮次产物保持产出轮次 → 无错误")

@@ -35,9 +35,9 @@ python tools/render_version_index.py --write # VERSION_INDEX 重渲染
 | `AI_MAP.md` | 机器地图（派生物，勿手改） |
 | `AGENTS.md` | 本文件（操作规则） |
 | `spec/` | 契约层（JSON Schema + 版本规范） |
-| `framework/` | 框架层（协议/方法论/工具/核心，彩种无关） |
+| `platform/` | 框架层（协议/方法论/工具/核心，彩种无关） |
 | `memory/` | 记忆层（FACTS 台账 + lessons + journal + workbench） |
-| `games/dlt/` | 彩种层（game.yaml + strategy.json + iterations） |
+| `labs/lottery/studies/dlt/` | 彩种层（game.yaml + strategy.json + iterations） |
 | `src/spc/` | 库代码（validate/versions/evidence/tree/ai_map/flywheel/depmap） |
 | `cli/` `tools/` | 命令行入口与仓库维护脚本 |
 | `tests/` | 测试（无需 pytest） |

@@ -1,4 +1,4 @@
-# CONSUMING —— 其他工具如何消费本仓库的输出
+﻿# CONSUMING —— 其他工具如何消费本仓库的输出
 
 > **版本**：`1.1` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -141,7 +141,7 @@ term1 or term2                        不可与 and 混用
 
 不支持：括号、嵌套、`not`、右侧非字面量。
 
-**本仓库提供参考求值器**（`framework/core/judge.py`）：
+**本仓库提供参考求值器**（`platform/core/judge.py`）：
 
 ```python
 from core.judge import judge, split_by_scope, apply_scope
@@ -194,7 +194,7 @@ single, cross = apply_scope(cfg, rules)
 ```
 
 `primitive` 是框架注册表中的纯数学函数（21 个，见
-`framework/core/README.md`），消费方可直接调用 `apply_primitive()`，
+`platform/core/README.md`），消费方可直接调用 `apply_primitive()`，
 无需自己复现数学。
 
 ## 7. 绝对不要做的事

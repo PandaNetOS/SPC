@@ -1,0 +1,1001 @@
+{
+  "total_combinations": 21425712,
+  "first_prize_prob": {
+    "as_fraction": "1/21425712",
+    "decimal": 4.67e-08
+  },
+  "any_prize_prob": {
+    "fraction_approx": "≈1/15",
+    "decimal": 0.066705,
+    "percent": 6.67
+  },
+  "prize_table": [
+    {
+      "prize": "一等奖",
+      "match": "5+2",
+      "n_wins": 1,
+      "prob": 4.67e-08,
+      "one_in": 21425712.0
+    },
+    {
+      "prize": "二等奖",
+      "match": "5+1",
+      "n_wins": 20,
+      "prob": 9.335e-07,
+      "one_in": 1071285.6
+    },
+    {
+      "prize": "三等奖",
+      "match": "5+0",
+      "n_wins": 45,
+      "prob": 2.1003e-06,
+      "one_in": 476126.9
+    },
+    {
+      "prize": "四等奖",
+      "match": "4+2",
+      "n_wins": 150,
+      "prob": 7.0009e-06,
+      "one_in": 142838.1
+    },
+    {
+      "prize": "五等奖",
+      "match": "4+1",
+      "n_wins": 3000,
+      "prob": 0.0001400187,
+      "one_in": 7141.9
+    },
+    {
+      "prize": "六等奖",
+      "match": "3+2",
+      "n_wins": 4350,
+      "prob": 0.0002030271,
+      "one_in": 4925.5
+    },
+    {
+      "prize": "七等奖",
+      "match": "4+0",
+      "n_wins": 6750,
+      "prob": 0.000315042,
+      "one_in": 3174.2
+    },
+    {
+      "prize": "八等奖",
+      "match": "3+1 或 2+2",
+      "n_wins": 127600,
+      "prob": 0.0059554614,
+      "one_in": 167.9
+    },
+    {
+      "prize": "九等奖",
+      "match": "3+0 / 2+1 / 1+2 / 0+2",
+      "n_wins": 1287281,
+      "prob": 0.0600811306,
+      "one_in": 16.6
+    }
+  ],
+  "total_wins_combos": 1429197,
+  "needs_calibration_hits": [
+    {
+      "path": "AGENTS.md",
+      "line": 47,
+      "snippet": "1. 任何结论不得声称改变中奖概率（`affects_win_probability` 恒 false）"
+    },
+    {
+      "path": "AGENTS.md",
+      "line": 48,
+      "snippet": "2. 对外输出必须声明不提高中奖概率（`changes_win_probability` 恒 false）"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 32,
+      "snippet": "> **没有任何选号方法能提高中奖概率。** 唯一可优化的量是"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 36,
+      "snippet": "任何声称能提高中奖概率的结论，在本仓库**结构性拒收**。"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 44,
+      "snippet": "| 1 | **`affects_win_probability` 恒为 `false`** —— 任何结论都不能声称改变中奖概率 | `spec/fact.schema.json` 的 `const` |"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 45,
+      "snippet": "| 2 | **`strategy.disclaimer.changes_win_probability` 恒为 `false`** —— 对外输出必须声明不提高中奖概率 | `spec/strategy.schema."
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 107,
+      "snippet": "| 单注组合总数 | **21,425,712** |"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 188,
+      "snippet": "| **F-0001** | 任何选号方式都不能改变单注中奖概率（**解析可证**） | ★★★★★ |"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 209,
+      "snippet": "1. **F-0004 的 +109%（全样本口径 +121%）不是中奖概率提升**，是\"中奖时奖金\"提升。"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 247,
+      "snippet": "\"只在中奖时兑现：中奖概率不变，期望回报提升被极小概率大幅折现。\","
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 447,
+      "snippet": "- ❌ **不声称提高中奖概率**（红线）。"
+    },
+    {
+      "path": "AI_CONTEXT.md",
+      "line": 461,
+      "snippet": "2. 本仓库的一切结论**不提高中奖概率**（红线，数学事实）。"
+    },
+    {
+      "path": "README.md",
+      "line": 22,
+      "snippet": "> **选号不改变中奖概率。**"
+    },
+    {
+      "path": "README.md",
+      "line": 24,
+      "snippet": "大乐透单注组合总数 `C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712`，"
+    },
+    {
+      "path": "README.md",
+      "line": 49,
+      "snippet": "> 一句话预告：**本策略不提高中奖概率，只在中奖时可能让你少跟别人分钱；"
+    },
+    {
+      "path": "README.md",
+      "line": 311,
+      "snippet": "| 1 | 任何结论都不得声称影响中奖概率 | `fact.schema.json`：`affects_win_probability` 为 `{\"const\": false}` |"
+    },
+    {
+      "path": "README.md",
+      "line": 312,
+      "snippet": "| 2 | 策略声明不得声称改变中奖概率 | `strategy.schema.json`：`disclaimer.changes_win_probability` 为 `{\"const\": false}` |"
+    },
+    {
+      "path": "README.md",
+      "line": 396,
+      "snippet": "本仓库**不提供中奖保证**，不改变中奖概率，不构成投注建议。"
+    },
+    {
+      "path": "cli/main.py",
+      "line": 526,
+      "snippet": "print(\"⚠️ 本命令不改变中奖概率（恒为 1/T）。产出的号码只是满足规则，\")"
+    },
+    {
+      "path": "cli/main.py",
+      "line": 620,
+      "snippet": "print(\"⚠️ 该判定只反映「号码与规则的契合度」，不代表中奖概率。\")"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "line": 66,
+      "snippet": "- `src/` 里硬编码 `35`、`12`、`21425712` → 破坏"
+    },
+    {
+      "path": "docs/CONSUMING.md",
+      "line": 45,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "docs/CONSUMING.md",
+      "line": 205,
+      "snippet": "| 用 `rules` 生成\"必中号码\" | 中奖概率恒 4.667e-08，不可改变 |"
+    },
+    {
+      "path": "docs/METHODOLOGY.md",
+      "line": 11,
+      "snippet": "单注组合总数 = 324,632 × 66 = 21,425,712"
+    },
+    {
+      "path": "docs/METHODOLOGY.md",
+      "line": 15,
+      "snippet": "**选号方式不能改变中奖概率。** 这是解析结论，不依赖数据："
+    },
+    {
+      "path": "docs/METHODOLOGY.md",
+      "line": 54,
+      "snippet": "3. **只在中奖时兑现**：中奖概率 4.667e-08 不变，长期期望回报仍为负。"
+    },
+    {
+      "path": "platform/core/generate.py",
+      "line": 25,
+      "snippet": "**本模块不改变中奖概率**（恒为 1/T）。它只保证产出的号码满足规则。"
+    },
+    {
+      "path": "platform/core/judge.py",
+      "line": 483,
+      "snippet": "⚠️ 这个分数**不代表中奖概率**，也不代表期望回报。"
+    },
+    {
+      "path": "platform/core/portfolio.py",
+      "line": 46,
+      "snippet": "本模块提供的判定结果不得被解读为\"提高中奖概率\"或\"提高期望回报\"。"
+    },
+    {
+      "path": "platform/core/portfolio.py",
+      "line": 383,
+      "snippet": "⚠️ 与 `score()` 同理：这个分数**不代表中奖概率，也不代表期望回报**。"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 15,
+      "snippet": "### 1.1 单注中奖概率的构成"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 21,
+      "snippet": "大乐透：T = C(35,5) × C(12,2) = 324632 × 66 = 21,425,712"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 28,
+      "snippet": "大乐透：1 / 21425712 = 4.667289469773513e-08"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 55,
+      "snippet": "| (a) | **提高中奖概率** | ❌ **数学上不可能** | 分母 T 固定，选号无法作用于\"开奖结果\"这个分子 |"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 143,
+      "snippet": "└─4.67e-08─┘  └─ 有限 ─┘"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 200,
+      "snippet": "| (a) 提高中奖概率 | ❌ 不可能 | `P = 1/T`，恒为定值 | 0（且声称能做即违反红线） |"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 212,
+      "snippet": "| **解析可证** | 数学推导 | (a) 不可能；`T = 21425712` | ✅ 直接依赖 |"
+    },
+    {
+      "path": "platform/methodology/MATH_BOUNDARY.md",
+      "line": 243,
+      "snippet": "2. 本框架的一切结论**不提高中奖概率**（数学事实）。"
+    },
+    {
+      "path": "platform/protocol/ITERATION_PROTOCOL.md",
+      "line": 240,
+      "snippet": "| 声称提高中奖概率 | 红线 |"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 131,
+      "snippet": "2. 范畴断言冲突 —— 新结论称「提高/改变中奖概率」，违反红线（F-0001）"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 175,
+      "snippet": "# 2. 范畴断言冲突（红线：任何结论不得提高/改变中奖概率）"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 176,
+      "snippet": "raises_prob = (\"提高中奖概率\" in claim or \"增加中奖概率\" in claim or"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 177,
+      "snippet": "(\"改变中奖概率\" in claim and \"不改变\" not in claim"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 182,
+      "snippet": "if \"中奖概率\" in aclaim and (\"不能改变\" in aclaim or \"不改变\" in aclaim):"
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 184,
+      "snippet": "f\"[Judge] 与 {a['id']} 冲突：新结论声称「提高/改变中奖概率」，\""
+    },
+    {
+      "path": "platform/tools/ingate.py",
+      "line": 185,
+      "snippet": "f\"违反红线（任何选号方式都不能改变单注的中奖概率）\""
+    },
+    {
+      "path": "platform/tools/memory.py",
+      "line": 151,
+      "snippet": "f\"选号方式在数学上不可能改变中奖概率。\""
+    },
+    {
+      "path": "labs/lottery/INDEX.md",
+      "line": 10,
+      "snippet": "| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 32 | round05 ✅ | `dlt/strategy/strategy.json` |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/manifest_v4_source.json",
+      "line": 42,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/manifest_v4_source.json",
+      "line": 43,
+      "snippet": "\"first_prize_probability\": 4.667e-08,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/manifest_v4_source.json",
+      "line": 121,
+      "snippet": "\"A_probability\": {\"claim\": \"选号不改变中奖概率\", \"method\": \"解析\", \"verdict\": \"不可能\", \"confidence\": \"★★★★★\"},"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/manifest_v4_source.json",
+      "line": 127,
+      "snippet": "\"red_line\": \"C 层的 +121% 是『中奖时奖金』提升，不是中奖概率提升\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/data/build_scripts/validate_package_v4.py",
+      "line": 90,
+      "snippet": "check('单注组合总数 == 21425712', st['meta']['total_combinations'] == 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/data/derived/04_structure_distribution_exact.json",
+      "line": 4,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/FINDINGS.md",
+      "line": 189,
+      "snippet": "| `src/spc/game.py` | 号码空间计算 | ✅ 可运行（T=21,425,712 验证通过） |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/HANDOFF.md",
+      "line": 24,
+      "snippet": "| F-0001 | 任何选号方式都不能改变单注中奖概率 | established | ★★★★★ | 解析可证 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/known_errors.md",
+      "line": 330,
+      "snippet": "更根本的是：**选号方式不改变中奖概率是数学定理**，不需要也不应该靠模拟\"验证\"。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/known_errors.md",
+      "line": 336,
+      "snippet": "| 概率不变性（选号不改中奖率） | **解析给出**（分母 = 21,425,712 固定） |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "line": 236,
+      "snippet": "| **验收判据** | ① 优化前后定量对比；② 明确说明\"期望中奖概率不变\"；③ 附风险评估 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "line": 243,
+      "snippet": "| **要求** | 明确写出：① 彩票是负期望游戏，长期必亏；② 本建议**不提高中奖概率**；③ 理性购彩、量力而行；④ 不得将分析结果用于借贷投注 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "line": 274,
+      "snippet": "| **必含四层** | **A 概率层**（解析：选号不改变中奖概率）<br>**B1 开出率层**（精确枚举：形态被摇出的理论 vs 观测）<br>**B2 撞号层**（观测数据：形态是否集聚更多彩民）<br>**C"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "line": 292,
+      "snippet": "| **验收判据** | ① 给出奖金提升量 + CI；② **明确写出\"不改变中奖概率\"**；③ 给出收益上界与减损后的净值讨论 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "line": 299,
+      "snippet": "| **要求** | 证明（并解释为何难以统计检验）\"技巧\"与随机策略的中奖概率相等 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
+      "line": 52,
+      "snippet": "| 单注组合总数 | C(35,5) × C(12,2) = **21,425,712** |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
+      "line": 93,
+      "snippet": "单注组合总数      = 21,425,712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
+      "line": 99,
+      "snippet": "- **不存在能提高中奖概率的选号方法**，除非能证明摇奖物理过程存在可利用偏倚（见优先任务 T3）。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
+      "line": 207,
+      "snippet": "| A 概率层 | 选号改变中奖概率 | **不可能**（解析） | ★★★★★ |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
+      "line": 213,
+      "snippet": "> **红线**：C 层的 +121% 是\"**中奖时奖金**\"提升，**不是**中奖概率提升。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+      "line": 165,
+      "snippet": "这些**不改变中奖概率**，只让选号落在主流形态上。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+      "line": 195,
+      "snippet": "| 单注组合总数 | C(35,5) × C(12,2) = **21,425,712** |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+      "line": 203,
+      "snippet": "**任何选号技巧都不改变分母21,425,712。** 数学上\"预测\"不可能。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_facts.py",
+      "line": 121,
+      "snippet": "\"不涉及号码选择：本条不改变任何中奖概率（affects_win_probability=false）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_facts.py",
+      "line": 176,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-8 不变，期望回报提升被极小概率折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_facts.py",
+      "line": 241,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-8 不变，期望回报的提升被极小中奖概率大幅折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_strategy.py",
+      "line": 40,
+      "snippet": "\"只在中奖时兑现。中奖概率 4.67e-08 不变，期望回报的提升被极小概率大幅折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "line": 91,
+      "snippet": "\"本条只涉及数据一致性，不涉及中奖概率（恒 1/21,425,712）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "line": 169,
+      "snippet": "\"不涉及中奖概率（恒 1/21,425,712）；本条只关乎撞号密度的时变。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "line": 204,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-08 不变。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "line": 377,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-08 不变，期望回报的提升被极小中奖概率大幅折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "line": 394,
+      "snippet": "\"不涉及中奖概率。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_strategy.py",
+      "line": 52,
+      "snippet": "\"只在中奖时兑现。中奖概率 4.67e-08 不变，期望回报的提升被极小概率大幅折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.py",
+      "line": 10,
+      "snippet": "纪律: L1/L2/L5/L6/L7/L8/L9/L10/L11/L12。红线: 不涉及中奖概率 (恒 1/21,425,712)。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py",
+      "line": 152,
+      "snippet": "P1 = 1.0 / 21425712.0"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py",
+      "line": 153,
+      "snippet": "P2 = 20.0 / 21425712.0"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.json",
+      "line": 19,
+      "snippet": "\"p1\": \"1/21425712\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.json",
+      "line": 20,
+      "snippet": "\"p2\": \"20/21425712\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "line": 36,
+      "snippet": "P1 = 1.0 / 21425712.0"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "line": 37,
+      "snippet": "P2 = 20.0 / 21425712.0"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "line": 118,
+      "snippet": "\"conventions\": {\"p1\": \"1/21425712\", \"p2\": \"20/21425712\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "line": 263,
+      "snippet": "T = 21425712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 61,
+      "snippet": "\"单注（2 元）：p=1/21,425,712，期望回报率 = 返奖率 51%。\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 62,
+      "snippet": "\"复式/胆拖：中奖概率与成本同比例放大（n 注 = n×单注），每元回报率不变。\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 72,
+      "snippet": "\"不涉及中奖概率（恒 1/21,425,712）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 105,
+      "snippet": "\"不涉及中奖概率（恒 1/21,425,712）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 147,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-08 不变。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 187,
+      "snippet": "\"只在中奖时兑现：中奖概率 4.67e-08 不变；长期期望仍为负（−0.98 元/注）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 261,
+      "snippet": "\"不涉及中奖概率。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "line": 298,
+      "snippet": "\"只涉及被选中率结构，不涉及开出率与中奖概率。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json",
+      "line": 12,
+      "snippet": "\"note\": \"基线：中奖概率 = 1/T，期望回报率 = 返奖率 51%\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json",
+      "line": 17,
+      "snippet": "\"note\": \"数学上恒等于 C(m,5) 注独立单式票的组合；中奖概率线性放大，每元回报率与单注相同\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py",
+      "line": 95,
+      "snippet": "\"note\": \"基线：中奖概率 = 1/T，期望回报率 = 返奖率 51%\"},"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py",
+      "line": 97,
+      "snippet": "\"note\": \"数学上恒等于 C(m,5) 注独立单式票的组合；中奖概率线性放大，每元回报率与单注相同\"},"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py",
+      "line": 148,
+      "snippet": "# 凯利分数 f* = (b·p − q)/b。彩票：p = 中奖概率，q = 1−p，b = 赔率（净赔）。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/fix_r05_housekeeping.py",
+      "line": 127,
+      "snippet": "g = g.replace(\"| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 25 | round04 ✅ / round05 计划中 |\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/fix_r05_housekeeping.py",
+      "line": 128,
+      "snippet": "\"| `dlt` | 超级大乐透 | 21,425,712 | 4.667289469773513e-08 | 51% | 32 | round05 ✅ |\")"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/apply_r06_strategy.py",
+      "line": 68,
+      "snippet": "\"不改变中奖概率（4.67e-08 恒定）；长期期望回报仍为负（约 −0.98 元/注）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/apply_r06_strategy.py",
+      "line": 104,
+      "snippet": "\"只在中奖时兑现。中奖概率 4.67e-08 不变，期望回报提升被极小概率大幅折现。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/apply_r07_facts.py",
+      "line": 140,
+      "snippet": "\"只涉及被选中率结构，不涉及开出率与中奖概率（恒 1/21,425,712）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.py",
+      "line": 35,
+      "snippet": "P2 = 20.0 / 21425712.0         # 二等奖单注概率（5+1：后区 20 种）"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.json",
+      "line": 3,
+      "snippet": "\"T\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py",
+      "line": 17,
+      "snippet": "L8  中奖概率不变性用解析精确枚举（不估计）；金额部分一/二等用实测锚点。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py",
+      "line": 41,
+      "snippet": "T = T_FRONT * T_BACK      # 21,425,712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py",
+      "line": 196,
+      "snippet": "\"三条红线（不提高中奖概率 / 只作用于浮动奖 / 负期望）全部仍然成立。\")"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/apply_r09_facts.py",
+      "line": 130,
+      "snippet": "\"S_j 是相对撞号强度（被买概率的代理），不涉及开出率与中奖概率（F-0001 恒成立）。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.py",
+      "line": 31,
+      "snippet": "P2 = 20.0 / 21425712.0     # 二等奖每注概率（5+1）"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
+      "line": 2,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
+      "line": 4,
+      "snippet": "\"as_fraction\": \"1/21425712\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
+      "line": 5,
+      "snippet": "\"decimal\": 4.67e-08"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
+      "line": 17,
+      "snippet": "\"prob\": 4.67e-08,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
+      "line": 18,
+      "snippet": "\"one_in\": 21425712.0"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py",
+      "line": 6,
+      "snippet": "2. 全文检索「中奖概率 / 4.667e-08 / 21,425,712 / 21425712」的出现位置，"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py",
+      "line": 18,
+      "snippet": "T = comb(35, 5) * comb(12, 2)  # 21,425,712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py",
+      "line": 37,
+      "snippet": "assert T == 21425712, f\"总组合校验失败: {T}\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py",
+      "line": 43,
+      "snippet": "PAT_PROB = re.compile(r\"(中奖概率|4\\.667e-08|4\\.67e-08|21[,]?425[,]?712|21425712)\")"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/simulation_results.json",
+      "line": 3,
+      "snippet": "\"claim\": \"任何选号方式都不改变单注中奖概率\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/simulation_results.json",
+      "line": 5,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/simulation_results.json",
+      "line": 73,
+      "snippet": "\"verdict\": \"两者命中数均以理论期望 0.9335 为中心，无系统差异。解析上：只要选号不改变号码被摇出的概率，任何\\\"技巧\\\"的 p 恒等于 N/21425712。\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy.json",
+      "line": 14,
+      "snippet": "\"total_combinations\": 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy.json",
+      "line": 224,
+      "snippet": "\"reason\": \"本仓库最严重的表述错误。避开连号作用于『与他人重号的人数』（奖金分母），不作用于『是否中奖』。中奖概率恒为 1/21,425,712，任何选号方式都无法改变。\""
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy.json",
+      "line": 239,
+      "snippet": "\"claim\": \"任何选号方式都不能改变单注的中奖概率\","
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 14,
+      "snippet": "> **本策略不提高中奖概率 —— 这是数学事实，谁都改不了。**"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 38,
+      "snippet": "C(35,5) × C(12,2) = 324,632 × 66 = 21,425,712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 41,
+      "snippet": "每个组合被开出的概率 = 1 ÷ 21,425,712 ≈ **0.0000047%**。这是物理事实，"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 233,
+      "snippet": "| ① 解析可证 | 数学上必然成立 | 中奖概率 = 1/21,425,712 |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 238,
+      "snippet": "### 减损 3：只在中奖时兑现，而中奖概率极小"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 240,
+      "snippet": "+109% 说的是\"**中奖时**的奖金\"。但中奖概率是 0.0000047%，"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 271,
+      "snippet": "| **依据\"预测\"加倍投注 / 追损加注** | 没有任何方法能提高中奖概率，且游戏负期望。加倍只会**按比例放大亏损**（F-0001, F-0002） |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 295,
+      "snippet": "| 策略带来的改变 | 中奖时**可能**多分钱；中奖概率**不变** |"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
+      "line": 298,
+      "snippet": "（T = 21,425,712）。这个式子是**线性的** —— 意味着："
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 9,
+      "snippet": "A. 概率层（已解析可证）：选号方式是否改变中奖概率 —— 用均匀随机抽样做对照。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 63,
+      "snippet": "# A. 概率层：任何选号方式都不改变中奖概率"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 68,
+      "snippet": "p1 = 1.0 / 21425712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 72,
+      "snippet": "'claim': '任何选号方式都不改变单注中奖概率',"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 73,
+      "snippet": "'first_prize_prob': 1.0 / 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 74,
+      "snippet": "'total_combinations': 21425712,"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 240,
+      "snippet": "'注意：这不改变中奖概率，只在中奖时减少同奖人数、提高单注奖金。'"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 251,
+      "snippet": "# D. 对照基线：随机选号 vs \"技巧\"选号 —— 中奖概率无差异"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 255,
+      "snippet": "两者中奖概率都 = N/21425712 → 期望命中数相同，差异不应显著。"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 258,
+      "snippet": "p = N / 21425712"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
+      "line": 270,
+      "snippet": "'解析上：只要选号不改变号码被摇出的概率，任何\"技巧\"的 p 恒等于 N/21425712。'"
+    },
+    {
+      "path": "labs/lottery/studies/_template/strategy/strategy.json",
+      "line": 10,
+      "snippet": "\"text\": \"本策略不改变中奖概率。选号方式无法影响是否命中，只能影响中奖时是否与他人共享奖金。\","
+    },
+    {
+      "path": "memory/facts/ACTIVE.md",
+      "line": 7,
+      "snippet": "| F-0001 | 任何选号方式都不能改变单注的中奖概率 | analytic | high | initial | - | round02 |"
+    },
+    {
+      "path": "memory/facts/INDEX.md",
+      "line": 17,
+      "snippet": "| F-0001 | global | 任何选号方式都不能改变单注的中奖概率 | established | ★★★★★ | `probability` | `analytic` | round02 |"
+    },
+    {
+      "path": "memory/journal/round02.md",
+      "line": 104,
+      "snippet": "| 单注组合总数 | **21,425,712** = C(35,5)×C(12,2) | 解析 |"
+    },
+    {
+      "path": "memory/journal/round04.md",
+      "line": 60,
+      "snippet": "3. 逐条检查识别假设与 caveats，确认没有越界表述（红线：不声称改变中奖概率）。"
+    },
+    {
+      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "line": 263,
+      "snippet": "| **验收判据** | T-050 落地后：全文检索「中奖概率/4.67e-08/21,425,712」均带奖级限定；validate 新增口径检查能抓同类问题 |"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "line": 73,
+      "snippet": "P(任中) = 419335/21425712 = **0.019572（1/51.1）**，相差 **419,343 倍**。"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "line": 114,
+      "snippet": "validate 增加口径检查（出现「中奖概率」且上下文无奖级限定 → WARN/FAIL）。"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "line": 115,
+      "snippet": "范围：F-0001 表述校正 + 全文检索「4.67e-08 / 21,425,712」逐处标注 + 校验规则落地。"
+    },
+    {
+      "path": "spec/fact.schema.json",
+      "line": 98,
+      "snippet": "\"description\": \"红线字段：恒为 false。彩票的选号方式在数学上不可能改变中奖概率，任何声称能提高中奖概率的结论一律拒收。\""
+    },
+    {
+      "path": "spec/README.md",
+      "line": 36,
+      "snippet": "选号方式在数学上不可能改变中奖概率（分母 = 全部组合数，固定）。"
+    },
+    {
+      "path": "spec/README.md",
+      "line": 37,
+      "snippet": "任何声称能提高中奖概率的结论**拒收**，不是\"待商榷\"，是结构性拒绝。"
+    },
+    {
+      "path": "spec/README.md",
+      "line": 40,
+      "snippet": "对外输出必须明确告诉消费者：本策略不提高中奖概率。"
+    },
+    {
+      "path": "spec/strategy.schema.json",
+      "line": 57,
+      "snippet": "\"description\": \"红线：本策略集不改变中奖概率，恒为 false。\""
+    },
+    {
+      "path": "src/spc/api.py",
+      "line": 133,
+      "snippet": "\"因此策略只作用于中奖时的奖金，不作用于中奖概率。\""
+    },
+    {
+      "path": "src/spc/api.py",
+      "line": 262,
+      "snippet": "⚠️ **本方法不改变中奖概率**（恒为 1/T）。它只保证产出的号码"
+    },
+    {
+      "path": "src/spc/strategy.py",
+      "line": 44,
+      "snippet": "\"本策略集不提高中奖概率，这是数学事实（{boundary}）。\""
+    },
+    {
+      "path": "src/spc/strategy.py",
+      "line": 93,
+      "snippet": "f\"必须为 False（本策略不提高中奖概率）\""
+    },
+    {
+      "path": "src/spc/validate.py",
+      "line": 1550,
+      "snippet": "(\"AI_CONTEXT.md\", \"21,425,712\", \"单注组合总数（§3）\"),"
+    },
+    {
+      "path": "src/spc/validate.py",
+      "line": 1788,
+      "snippet": "4.667e-08 出现在 FACTS/文档多处，一处改错现有校验不报警。"
+    },
+    {
+      "path": "src/spc/validate.py",
+      "line": 1808,
+      "snippet": "m_int = re.search(r\"\\d{1,3}(?:,\\d{3})+\", claim)      # 21,425,712"
+    },
+    {
+      "path": "tests/test_core.py",
+      "line": 100,
+      "snippet": "# 1.1 所有可执行特征都不应声称影响中奖概率"
+    },
+    {
+      "path": "tests/test_core.py",
+      "line": 328,
+      "snippet": "check(T == 21_425_712, f\"T = {T:,}（期望 21,425,712）\")"
+    },
+    {
+      "path": "tests/test_flywheel.py",
+      "line": 87,
+      "snippet": "\"claim\": \"任何选号方式都不能改变单注的中奖概率\"}]"
+    },
+    {
+      "path": "tests/test_flywheel.py",
+      "line": 89,
+      "snippet": "\"claim\": \"某策略可提高中奖概率\"}"
+    },
+    {
+      "path": "tests/test_flywheel.py",
+      "line": 94,
+      "snippet": "\"D2: 范畴断言（提高中奖概率）与 F-0001 红线冲突可见\")"
+    },
+    {
+      "path": "tests/test_flywheel.py",
+      "line": 97,
+      "snippet": "\"claim\": \"投注方式不改变中奖概率\"}"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "line": 31,
+      "snippet": "| T | 21,425,712 | 840 |"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "line": 193,
+      "snippet": "f\"T = {sp['total_combinations']}（= C(9,3)×C(5,2) = 84×10，不是 dlt 的 21,425,712）\")"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "line": 517,
+      "snippet": "# `width=2` 里必然出现，一并查会误报；而 35 / 12 / 21425712 没有任何"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "line": 519,
+      "snippet": "forbidden_int = {35, 12, 21425712}"
+    },
+    {
+      "path": "tests/test_shadow_game.py",
+      "line": 521,
+      "snippet": "check(not hitn, \"代码里不含 dlt 的号码池常量（35 / 12 / 21425712）\""
+    },
+    {
+      "path": "tests/fixtures/shadow/strategy/strategy.json",
+      "line": 11,
+      "snippet": "\"text\": \"影子彩种是框架通用性测试夹具，不存在真实投注场景。这里仍完整保留与真实彩种一致的两条红线（负期望 / 不改中奖概率），是为了验证『红线结构』本身也是彩种无关的 —— 换个彩种，这两条恒值不许变。\""
+    },
+    {
+      "path": "tests/fixtures/shadow/strategy/strategy.json",
+      "line": 90,
+      "snippet": "\"claim\": \"任何选号方式都不能改变单注的中奖概率\","
+    }
+  ],
+  "n_hits_without_qualifier": 184
+}

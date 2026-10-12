@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.depmap — 跨文件依赖图（DEPENDENCY_MAP.md 生成源，C 升级）。
 
 仓库级 AI 理解的关键缺口是「跨文件/多跳依赖」（SWE-QA 的瓶颈）：
@@ -7,7 +7,7 @@
 
 覆盖的关系：
   1. 策略 → 结论：strategy.json rules[].evidence_refs / avoid_list[].refuted_by → FACTS
-  2. 彩种特征 → 原语：game.yaml features[].primitive → framework/core/features.py
+  2. 彩种特征 → 原语：game.yaml features[].primitive → platform/core/features.py
   3. 数据 → 契约：game.yaml / FACTS / strategy 声明的 schema → spec/*.schema.json
   4. 结论 → 证据：FACTS evidence.source / script → 文件（锚定链）
 
@@ -91,7 +91,7 @@ def build_dependencies(root: str | None = None,
                 if ev.get("source_sha256"):
                     deps.append((f"FACTS:{fid}", "sha256锚→", src or "?"))
 
-    # 3. 彩种特征 → 原语（game.yaml features → framework/core/features.py）
+    # 3. 彩种特征 → 原语（game.yaml features → platform/core/features.py）
     gy = os.path.join(root, gprefix, "game.yaml")
     if os.path.exists(gy):
         try:

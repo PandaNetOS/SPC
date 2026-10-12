@@ -1,0 +1,604 @@
+{
+  "schema_version": "1.4",
+  "game": "dlt",
+  "generated_at": "2026-10-11",
+  "generated_by": "spc-cli/0.1.0",
+  "data_version": "dlt_full_2933",
+  "rules_epoch": "E6",
+  "disclaimer": {
+    "is_negative_ev": true,
+    "changes_win_probability": false,
+    "text": "本策略集不提高中奖概率，这是数学事实（单注一等奖概率恒为 1/21,425,712）。彩票是负期望游戏：全奖级口径下，每 2 元投注的长期数学期望回报约 0.27 元，净期望约 −1.73 元/注。本策略唯一的作用是在极小概率中奖时，减少与他人重号的人数、提高单注奖金；该收益受『一/二等奖单期总额封顶 1 亿元』条款稀释，且只在中奖时兑现。请理性购彩，量力而行，不得借贷投注。"
+  },
+  "boundary": {
+    "total_combinations": 21425712,
+    "first_prize_probability": 4.667289469773513e-08,
+    "any_prize_probability": 0.019572,
+    "return_rate": 0.51,
+    "optimizable_target": "expected_bonus_given_win",
+    "note": "期望回报可分解为 E = Σ_j P_j × (池_j / 中奖注数_j)。其中 P_j 由号码空间决定、与选号无关；唯一可被选号影响的是『中奖注数_j』。因此本策略集只作用于中奖时的奖金，不作用于中奖概率。★ r08 起 expected_bonus_given_win 的分母口径为『中任意奖级』：P(任中)=0.019572（1/51.1），其中固定奖（三~七等）占全奖级期望的 34.98% 且与选号完全无关，选号只能作用于浮动奖（一、二等）的 65.02%（F-0036）。",
+    "net_expected_per_2yuan": -1.7275,
+    "net_expected_note": "★ r08 更正：此前 -0.98 是头奖口径下的表述，漏算固定奖支出。全奖级口径（口径B，L5 剔除 1000 万单注封顶饱和期）为 -1.7275 元/2元注（口径A 含封顶为 -1.6647）。见 F-0036。",
+    "fixed_prize_share": 0.349833,
+    "optimizable_share": 0.650167,
+    "metric_scope": "all_tiers",
+    "metric_scope_note": "★ r08 起 expected_bonus_given_win 的分母口径 = 中任意奖级（0.019572），而非中一等奖（4.667e-08）。R-001/R-003 的 magnitude_pct 已由头奖口径换算为全奖级口径，原值保留在 magnitude_pct_head_prize_only 供对照。见 F-0036。"
+  },
+  "rules": [
+    {
+      "id": "R-001",
+      "statement": "避开含两个及以上相邻号对的形态（如 12-13-14 形成 2 对连号；单对连号如 12-13 不在此列——阈值是相邻号对数量 >= 2）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "has_run_ge2 == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": [
+        "F-0003",
+        "F-0004",
+        "F-0017",
+        "F-0019",
+        "F-0020",
+        "F-0021",
+        "F-0022",
+        "F-0036"
+      ],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "metric_scope": "all_tiers",
+        "direction": "increase",
+        "magnitude_pct": 26.42,
+        "ci95": [
+          0.4487,
+          0.4543
+        ],
+        "changes_win_probability": false,
+        "caveats": [
+          "★ r08 口径变更：magnitude_pct 由头奖口径的 40.64% 换算为全奖级口径的 26.42%（F-0036）。换算依据：固定奖（三~七等）占全奖级期望 34.98% 且与选号无关，规则只能作用于剩余 65.02% 的浮动奖。方向不变，幅度下调约 35%。",
+          "magnitude_pct_head_prize_only = 40.64（保留原值做对照）；换算式 = 40.64 × optimizable_share(0.650167)。",
+          "109.39% 是『未计封顶』的后段口径上界（全样本口径为 120.59%）。计入现行 E6 的 1 亿元总额封顶后，实测锚点下净值约 40.6%（F-0022 / F-0017）；低注数情形会被单注 1000 万上限抹平至 0%。",
+          "校准口径已由 r04 从全样本 1.3603 改为后段 1.2472（F-0022）；含封顶净值对校准口径不敏感（封顶饱和）。",
+          "该数字来自条件份额模拟（依赖人群权重模型，含 1 个校准参数 α），属『模型估计』而非数学事实，置信度仅 ★★★☆☆。",
+          "只在中奖时兑现。中**一等奖**概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关（F-0036）。",
+          "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实。",
+          "【分期与归因已复核】效应仍成立但随时间弱化；『衰减过半』是均值比口径的说法，稳健口径为 0.65~0.83（F-0020）。弱化与 2013-08 号码结构变点同期，且前段数据本身不自洽（F-0019 / F-0021）—— 因此本规则的幅度不应按全样本恒定外推。"
+        ],
+        "magnitude_pct_head_prize_only": 40.64,
+        "magnitude_pct_with_cap": 40.64,
+        "magnitude_pct_with_cap_note": "【头奖口径，已弃用为主口径】计 1 亿总额封顶后的实测锚点净值（F-0017）；121.48 为未计封顶上界。低注数情形会被单注 1000 万上限抹平至 0%。保留供口径对照。",
+        "magnitude_pct_full_sample_nocap": 120.59,
+        "magnitude_pct_note": "★ r08 起主口径为全奖级 26.42%（F-0036）。历史数字均为头奖口径：未计封顶上界后段 109.39% / 全样本 120.59%，含封顶实测锚点 40.64%。换算式 = 头奖口径幅度 × optimizable_share(0.650167)。"
+      },
+      "applicable_epochs": [
+        "E6"
+      ],
+      "effectiveness_grade": "B",
+      "effectiveness_basis": "后段观测 R=1.2472（CI 下界 1.036）+ r11 F-0042 平台期 + r12 时序 hold-out 测试窗方向一致（cf=0.9531）——统计确立"
+    },
+    {
+      "id": "R-002",
+      "statement": "投注组合内**禁止出现完全相同的号码**（买 K 注相同号码 = 自我摊薄：K=10、锚点 m=6 时每元期望回报损失 56.2%，见 F-0027）；号码不同但结构同构的组合**不在此列**（F-0028 已证：期望奖金与方差均无益）",
+      "kind": "portfolio_spread",
+      "scope": "cross",
+      "machine_rule": {
+        "predicate": "has_identical_tickets == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": [
+        "F-0027",
+        "F-0028"
+      ],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "direction": "increase",
+        "magnitude_pct": 65.49,
+        "ci95": [
+          64.86,
+          66.16
+        ],
+        "changes_win_probability": false,
+        "caveats": [
+          "【r06 语义重构（用户批准）】旧 predicate has_duplicated_structure（结构同构）经量化后期望效应与方差理由均不成立（F-0028，Q-012 判据 not_established）—— 故不再 penalize 结构同构。",
+          "真正有害的『重复』是**完全相同号码**：K 注相同 → 每元期望回报 = (1+m)/(K+m)；锚点 m=6 下 K=2/5/10 损失 12.5%/36.4%/56.2%（F-0027，解析结论）。",
+          "predicate has_identical_tickets 为 r06 新增跨注特征（identical_ticket_count >= 1），需**整组号码**上下文（platform/core/portfolio.py 的 judge_cross() 执行）。",
+          "本规则的 magnitude_pct 不填单一数字：修复增益依赖组内重复注数 K 与外部同号注数 m，解析式为 (K-1)/(K+m)（m=6 时 K=2 → +14.3%、K=10 → +128.6% 的上限参照）。",
+          "不改变中奖概率（4.67e-08 恒定，中任意奖级 0.019572 亦恒定）；长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径 F-0036）。"
+        ],
+        "note": "K=10 注相同号码修复为单注的期望增益（后段口径，m=一等奖中出注数经验分布）；K=2 → 20.72% [20.23,21.23]、K=5 → 47.82% [47.09,48.53]（F-0037，round09）"
+      },
+      "applicable_epochs": [],
+      "effectiveness_grade": "A",
+      "effectiveness_basis": "dup_share_ratio 解析公式 (1+m)/(K+m)（F-0027），数学恒真无模型假设"
+    },
+    {
+      "id": "R-003",
+      "statement": "避开『生日号区』：前区号码**不要全部落在 1~31**（max 须 >= 32）。与 R-001（避开连号）叠加：撞号系数 0.476 → 0.425，未计封顶期望奖金提升 +111.2% → **+136.2%**（F-0029）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "has_run_ge2 == true or all_birthday_zone == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": [
+        "F-0003",
+        "F-0004",
+        "F-0022",
+        "F-0029",
+        "F-0036"
+      ],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "metric_scope": "all_tiers",
+        "direction": "increase",
+        "magnitude_pct": 27.18,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "★ r08 口径变更：magnitude_pct 由头奖口径的 41.80% 换算为全奖级口径的 27.18%（F-0036）。换算依据：规则只能作用于浮动奖（占全奖级期望 65.02%），固定奖（三~七等）占 34.98% 且与选号无关。",
+          "magnitude_pct_head_prize_only = 41.80（保留原值做对照）；换算式 = 41.80 × optimizable_share(0.650167)。",
+          "数字来自条件份额模拟（F-0029），依赖人群权重模型（连号 α=12.7815 + 生日号偏好 1.25，F-0022 校准），属『模型估计』，置信度 ★★★☆☆。",
+          "含封顶口径：锚点 n0=6 处与 R-001 同为 +41.8%（单注 1000 万上限饱和抹平）；n0=9 处 +112.2% vs R-001 +110.6%。",
+          "与 R-001 叠加执行：R-001 已排除连号（has_run_ge2==true），R-003 在其上再排除生日号区（all_birthday_zone==true，即 max<=31）。",
+          "只在中奖时兑现。中**一等奖**概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关（F-0036）。",
+          "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实。"
+        ],
+        "magnitude_pct_head_prize_only": 41.8,
+        "magnitude_pct_with_cap": 41.8,
+        "magnitude_pct_with_cap_note": "【头奖口径，已弃用为主口径】锚点 n0=6（E6 基准注数）下的含封顶净值（F-0029/F-0017）；n0=9 处为 +112.2%。保留供口径对照。"
+      },
+      "applicable_epochs": [
+        "E6"
+      ],
+      "effectiveness_grade": "B",
+      "effectiveness_basis": "F-0029 条件份额模拟 + r11 F-0043 代理确认（生日号区注数比稳定 ~1.2）+ r12 测试窗 cf=0.8721 方向一致——统计确立（量级含模型估计成分）"
+    },
+    {
+      "id": "R-004",
+      "statement": "避开『连号 + 生日号区 + 镜像对』：run>=2 排除、max<=31（全生日号区）排除、存在镜像对（c[i]+c[j]==36）排除——R-001 与 R-003 的叠加再排除镜像对（F-0044/F-0045：测试窗 906.4 万 vs 随机 708.7 万，+27.9%；walk-forward 4/5 步正增益方向一致）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "has_run_ge2 == true or all_birthday_zone == true or has_mirror_pair == true",
+        "action": "exclude",
+        "weight": null
+      },
+      "evidence_refs": [
+        "F-0003",
+        "F-0004",
+        "F-0022",
+        "F-0029",
+        "F-0036",
+        "F-0044",
+        "F-0045",
+        "F-0046",
+        "F-0047"
+      ],
+      "confidence": 3,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "metric_scope": "all_tiers",
+        "direction": "increase",
+        "magnitude_pct": 27.9,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "r12 时序 hold-out 测试窗（394 期）：R001_norun_high_mirror 预期奖金 906.4 万 vs 随机 708.7 万（+27.9%，cf=0.7819，池占比 13.13%），bootstrap 95% CI [725.6 万, 1000 万] 下界高于随机基线（F-0044）",
+          "r13 walk-forward（150 期窗 × 5 步）：正增益步 4/5（80%）、中位增益约 +150 万元、3/5 步为本步最优，方向一致（F-0045）",
+          "r14 单步显著修正：150 期窗下单步 95% CI 仅 1/5 步显著 >0（F-0047）——B 档证据以『方向一致性 + v1 全窗 CI 下界高于随机』为主，单步显著弱",
+          "r14 机制证据：后段高区（max>=32）撞号比 0.9117 [0.8537,0.9716] 显著<1（F-0046），max>=32 避让成分有直接撞号证据",
+          "镜像对避让（36-x 配对）未单独显著（F-0041/F-0046 镜像对 1.0089 不显著），作为 R-001/R-003 之上的叠加过滤，其独立增益未被单形态确认——组合口径整体提升来自 F-0044/F-0045",
+          "只在中奖时兑现。中**一等奖**概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关（F-0036）",
+          "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实"
+        ]
+      },
+      "applicable_epochs": [
+        "E6"
+      ],
+      "effectiveness_grade": "B",
+      "effectiveness_basis": "r12 测试窗 +27.9%（CI 下界高于随机）+ r13 walk-forward 4/5 步正增益方向一致 + r14 F-0046 高区撞号<1 机制证据（单步显著 1/5 见 F-0047）——统计确立（用户批准，r14.1 落地）"
+    },
+    {
+      "id": "R-005",
+      "statement": "偏好冷门形态：选号时优先满足以下条件之一——前区含35（front_has_35）、前区最小间隔=2（front_min_gap==2，无连号但有等差对）、后区同尾（如2和12，back_same_tail>=1）。这些形态撞号率低于平均（ratio 0.62~0.80），选中时中一等奖分奖人数更少（F-0049）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "front_has_35 == true OR front_min_gap == 2 OR back_same_tail >= 1",
+        "action": "prefer",
+        "weight": 1.2
+      },
+      "evidence_refs": [
+        "F-0038",
+        "F-0041",
+        "F-0048",
+        "F-0049"
+      ],
+      "confidence": 2,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "metric_scope": "all_tiers",
+        "direction": "increase",
+        "magnitude_pct": null,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "★ r18 置换检验校正：40 个形态多重比较的 max|r| 置换检验 p=0.2235（B=2000），整体不显著——筛出的冷门形态可能含假阳性",
+          "★ r18 稳健复核：中位数比 + 10% 截尾均值三口径一致的有 front_max_ge31 / front_mingap_eq2 / back_same_tail；back_all_even 中位数口径 ratio=1.0（效应消失），已从本规则移除",
+          "效应量级（均值比）：front_mingap_eq2=0.794、front_max_ge31=0.795、back_same_tail=0.619（n=50 功效有限）",
+          "front_max_ge31 与 F-0038/F-0048 一致（35 号偏低、生日段更易撞号）；front_mingap_eq2 与 R-001 互补（连号拥挤 → 间隔=2 冷门）",
+          "与 R-001~R-004 的关系：R-001~R-004 是 exclude（排除拥挤形态），R-005 是 prefer（偏向冷门形态），两者互补",
+          "prefer 权重 1.2 为初始拍定值，未经优化；实际组合搜索时应作为候选特征纳入搜索空间",
+          "只在中奖时兑现。中一等奖概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关",
+          "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实"
+        ]
+      },
+      "applicable_epochs": [
+        "E6"
+      ],
+      "effectiveness_grade": "C",
+      "effectiveness_basis": "r17 宽筛 40 形态 + r18 置换检验（p=0.22，整体不显著）+ r18 稳健复核（3/4 形态三口径一致）——探索性，未走 walk-forward，用户批准 r17 落地、r18 修正"
+    }
+  ],
+  "avoid_list": [
+    {
+      "id": "A-001",
+      "statement": "追冷号 / 追热号 / 计算遗漏值",
+      "refuted_by": [
+        "F-0008"
+      ],
+      "reason": "号码序列不可预测（ACF 置换检验家族 p=0.0004 但样本外 R²=−0.083，全负）。前后半程 Top/Bottom 交叉无延续性。『遗漏值』是赌徒谬误的量化形式。"
+    },
+    {
+      "id": "A-002",
+      "statement": "用历史频率选号（如『35 号长期超抽所以该买』）",
+      "refuted_by": [
+        "F-0006"
+      ],
+      "reason": "前区号码分布的偏离仅存在于 2013-08 之前；切点后段 χ²=32.1（p=0.562）已完全均匀。当前不存在可利用的频率偏倚。"
+    },
+    {
+      "id": "A-003",
+      "statement": "按星期 / 周期选号",
+      "refuted_by": [
+        "F-0012",
+        "F-0008"
+      ],
+      "reason": "号码无星期效应（销量有，p=0.0004，但那是销量）。FFT 去趋势差分后在 2–80 期范围内无显著谱峰。开奖日历周期（lag 3/7/14）在 ACF 中不显著——存活的是 lag 6/10/18/23，与日历不对应。"
+    },
+    {
+      "id": "A-004",
+      "statement": "用机器学习 / 神经网络预测号码或和值",
+      "refuted_by": [
+        "F-0008"
+      ],
+      "reason": "OLS / Ridge / RF / GBDT / LSTM 在严格时序 CV 下 R² 全负（RF R²=−0.296、OLS R²=−0.075）；单号分类 AUC≈0.5（等价随机）。全样本看似微弱的信号，一旦做真正的时间序列外推立即失效。"
+    },
+    {
+      "id": "A-005",
+      "statement": "依据『组合冷热（heat）』指标选号",
+      "refuted_by": [
+        "F-0009"
+      ],
+      "reason": "HAC/Newey-West 稳健标准误下 heat 失效（t 从 +2.41 降至 +1.80，p 从 0.0158 升至 0.0714）。且 heat 与 sum_z/span_z 高度共线，换定义后效应符号会翻转（IRR 1.053 ↔ 0.842）。历史报告的显著性未做过度离散与稳健标准误校正。"
+    },
+    {
+      "id": "A-006",
+      "statement": "选『冷后区』或基于后区历史规律选号",
+      "refuted_by": [
+        "F-0011",
+        "F-0025"
+      ],
+      "reason": "『开出率』与『被选中率』必须分开（L7）：后区 66 组合的开出率与均匀一致（χ²=64.09，MC p=0.51，F-0011 复现）；但后区**被选中率**（人群密度）并不均匀 —— 过散布 8.72×，最热/最冷对密度比 2.25×（F-0025）。不过该结构不可靠利用：前/后段交叉验证的避让收益 K=5/10 仅约 1~3%、95%CI 含 0，且『热门对』排名跨期漂移（F-0025）。故『按后区历史规律选号』仍然是被驳回的做法 —— 驳回理由由『没有结构』更正为『结构存在但不可靠可利用』。"
+    },
+    {
+      "id": "A-007",
+      "statement": "依据『预测』加倍投注 / 追损加注",
+      "refuted_by": [
+        "F-0001",
+        "F-0002",
+        "F-0008"
+      ],
+      "reason": "不存在可提高中奖概率的选号方法（解析结论），序列不可预测，且游戏为负期望（净期望 −1.7275 元/2元注，全奖级口径 F-0036）。加倍投注只会按比例放大负期望，不改变方向。"
+    },
+    {
+      "id": "A-008",
+      "statement": "把『避开连号』理解为『提高中奖率』",
+      "refuted_by": [
+        "F-0001"
+      ],
+      "reason": "本仓库最严重的表述错误。避开连号作用于『与他人重号的人数』（奖金分母），不作用于『是否中奖』。一等奖概率恒为 1/21,425,712（各奖级概率均恒定），任何选号方式都无法改变。"
+    },
+    {
+      "id": "A-009",
+      "statement": "按『奖池累积期 / 高奖池』择时加注（等奖池大了再买）",
+      "refuted_by": [
+        "F-0023",
+        "F-0024"
+      ],
+      "reason": "在可观测的一/二等奖派发口径下不存在稳健的『高期望期』：全局期初奖池分位 top−bottom 的每元期望派发差+0.090（F-0023）由 epoch 组成与 2019 年一次性奖池排空驱动，剔除 2019 后归零；现行 E6 下无显著效应（+0.017, p=0.30）。另外，用『派发额/销售额』衡量择时会误判 —— 高奖池期每注均价下降造成的组成效应会伪装成收益（F-0024）。唯一的机制候选（E6 规则文本『奖池>=8 亿时三至七等奖 +20%~40%』）缺少三至七等奖实发数据，无法核验（L10）。"
+    }
+  ],
+  "evidence_index": [
+    {
+      "id": "F-0001",
+      "claim": "任何选号方式都不能改变单注的中奖概率",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0002",
+      "claim": "彩票是负期望游戏：现行返奖率 51%，每 2 元投注的长期数学期望回报约 1.02 元",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0003",
+      "claim": "连号形态（run>=2）的投注人群密度更高，撞号效应真实存在",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0004",
+      "claim": "在固定预算下避开连号形态，可提高『中奖时的期望奖金』—— 未计封顶的上界为 109%（后段口径）/121%（全样本口径），计入封顶后实测锚点下约 41%",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0006",
+      "claim": "前区号码分布存在结构变化，最优切点为 2013-08（χ²=185.0，在 234 个候选中排名第 1），且为渐变过程",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0008",
+      "claim": "开奖序列不可预测：所有 ML/时序模型在严格时间序列外推下 R² 均为负",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0009",
+      "claim": "『组合冷热（heat）』对中奖注数没有稳健效应，历史报告的显著性为伪显著",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0011",
+      "claim": "后区与前统计独立（互信息 0.203 < 置换基准 0.209），后区号码的『开出率』均匀；但这**不等于**后区人群偏好均匀 —— 后区的『被选中率』显著非均匀（见 F-0025）。原表述『不存在可利用的偏好结构』混淆了两个口径",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0012",
+      "claim": "销量存在星期效应（周六 > 周一/周三），但号码不存在星期效应",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0017",
+      "claim": "把 1 亿封顶纳入条件份额模拟后，避开连号的期望奖金提升由 121.48%（未计封顶）降为实测锚点下约 41.4%，且低注数情形下会被单注上限抹平至 0",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0019",
+      "claim": "2013-08 之前那段数据在『号码分布—中出注数—销售额』三者间不自洽：前区号码分布严重偏高端（χ²=251.5，P(前区全部<=31)=0.395 vs 精确 0.5234，z=−7.98），且由中出注数反推的投注量超出售额允许上限（均价 1.75~1.87 元/注 < 最低票价 2 元）；后段两项均自洽",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0020",
+      "claim": "F-0003 的分期『衰减过半』是估计量依赖的：均值比口径给出 post/pre = 0.592（w1）/ 0.498（w2），稳健口径（中位数比 / 10% 截尾 / 剔除最大 3 期）给出 0.65~0.83；前段 w1 均值比 2.107 在被剔掉最大 1 期后即降到 1.719、3 期后 1.466",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0021",
+      "claim": "撞号效应的弱化与 F-0006 的 2013-08 号码结构变点同期（滚动窗口 W=300/400/500 的数据驱动最优切点落在 2013-04~2014-04），且不是销量规模稀释造成的（NB2 以 log(销量/2) 为 offset，run×post 交互 IRR=0.596 [0.462,0.769]（w1）/0.521（w2））",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0022",
+      "claim": "把 F-0004 的校准口径从全样本 1.3603 改为后段 1.2472 后，未计封顶的收益上界由 121.5% 降为 109.4%，而含 1 亿元总额封顶的实测锚点净值几乎不变（41.0% → 40.6%）",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0023",
+      "claim": "在可观测的一/二等奖派发口径下不存在稳健的『高期望期』：全局期初奖池分位 top−bottom 的每元期望派发差 +0.090 [0.073,0.104] 由 epoch 组成与 E4 段 2019 年一次性奖池排空驱动，剔除 2019 后 E4 差降至 +0.002（不显著）；现行 E6 差 +0.017（p=0.30）",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0024",
+      "claim": "用『派发额/销售额』(r_t) 衡量择时价值会误判：E4 段剔除 2019 后 r_t 仍随奖池显著上升（+0.067）而每元期望派发 er_t 无变化（+0.002），差异来自高奖池期追加投注占比下降导致的每注均价变化",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0025",
+      "claim": "后区撞号结构存在但不可靠可利用：后区 66 对的『被选中率』强烈非均匀（过散布 8.72×，MC p<1e-4；最热对/最冷对密度比 2.25×），而『开出率』均匀（χ²=64.1，MC p=0.51）；前/后段交叉验证的避让收益K=5/10 仅约 1.1%/3.0%，95%CI 含 0",
+      "status": "established",
+      "confidence": 4
+    },
+    {
+      "id": "F-0027",
+      "claim": "『买 K 注完全相同的号码』会自我摊薄：若中奖，K 注同时命中一等奖、总奖金被 K 份瓜分，每元期望回报比 = (1+m)/(K+m)（m=其他同号注数）；锚点 m=6 下，K=2/5/10 的每元回报分别为单注的 87.5%/63.6%/43.8%（损失 12.5%/36.4%/56.2%）",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0028",
+      "claim": "R-002 判定的『结构同构』（gap 向量相同但号码不同）不改变期望奖金：10 注同构 vs 10 注分散的期望撞号差 +0.024（CI [-0.011, 0.064] 含 0）、未计封顶每注奖金增益 +5.24%（CI [-2.1, 14.3] 含 0）、含封顶增益 0%（单注上限饱和）；且同构组撞号方差反而更低（cf 标准差 0.0105 vs 0.0172）。按 Q-012 判据，R-002 的 magnitude_pct 应标 not_established，权重应为 1.0（不 penalize）",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0029",
+      "claim": "同时避开连号（run>=2）与生日号区（max<=31）的覆盖，条件撞号系数由随机基线 1.005 降至 0.425（仅避开连号为 0.476）；未计封顶的期望奖金提升 +136.2%（R-001 为 +111.2%，增量 +25pp）；含封顶在锚点 n0=6 处同为 +41.8%（单注上限饱和）、n0=9 处 +112.2%（vs R-001 +110.6%）",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0036",
+      "claim": "全奖级口径 P(任中)=0.019572（1/51.1），固定奖占全奖级期望 34.98% 且与选号无关；R-001 +40.64%→+26.42%、R-003 +41.80%→+27.18%，净期望 -0.98→-1.7275 元/2元注",
+      "status": "established",
+      "confidence": 5
+    },
+    {
+      "id": "F-0044",
+      "claim": "时序 hold-out（后段 1973 期 60/20/20，测试窗 396 期只评估一次）实测撞号避让组合的中奖时期望奖金样本外提升：避连号（R-001）743.5 万 vs 随机 708.7 万（+4.9%）；叠加避生日号区（R-003）812.6 万（+14.7%）；再加避镜像对（验证窗最优组合）906.4 万（+27.9%，bootstrap CI [725.6,1000] 万，下界高于随机、方向一致）——R-001/R-003 获 B 档样本外确认，镜像对为新候选未入策略；不改变任何奖级中奖概率（一等奖恒 1/21,425,712）",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0045",
+      "claim": "R_new规则（R001_norun_high_mirror：避连号+避生日号区+避镜像对）经walk-forward滚动再训练二次样本外确认：5步（150期评估窗）中4步相对随机取得正的中奖时期望奖金增益（80%），中位增益约+150万元、累计约+604万元，其中3/5步为该步窗口最优规则；此提升不改变任一奖级（1-9等）的中奖概率。",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0046",
+      "claim": "后段（2013-08-28 起 1973 期）形态撞号比细分：高区（max>=32）组合撞号比 0.9117（CI [0.8537,0.9716]）显著低于基线，即开奖号码落在高区时一等奖中奖注数密度更低——支持人群偏好低区生日号、高区避让机制有效；两连（run=2）1.0046 不显著，三连及以上（run>=3）点估计 1.2423 但 CI [0.9604,1.6143] 宽（n=96）未达显著。此密度差异不改变任一奖级中奖概率。",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0047",
+      "claim": "R_new 规则 walk-forward 单步统计显著性修正：150 期评估窗下 R_new 相对随机的『中奖时期望奖金』增益点估计 4/5 步为正（同 F-0045），但单步 95% CI 仅 1/5 步显著大于 0（step3 CI [594,906,2,913,333] 元）——小窗命中样本（约 20 期）使 CI 宽，F-0045 的『二次确认』应理解为方向一致性证据而非单步显著证据。此数字不改变任一奖级中奖概率。",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0038",
+      "claim": "逐号偏好结构真实存在但精细度高于『生日段』假设：后段逐号相对撞号强度 S_j（1.0=无偏好）在号码间有明显分异（如 9/11/19 偏高 ≈1.09-1.10，35 偏低 0.89），OLS 逐号项",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0041",
+      "claim": "『随机性错觉』形态的撞号溢价仅存在于三连号（等差 1）：期含三连号撞号比 1.1287（CI [1.0351, 1.2243]）显著高于基线；等差 2/3/5 三连、等差对、全奇、全偶、镜像对、低区聚",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0048",
+      "claim": "H-002『生日偏好按号递减』三段检验：点估计全序单调（S_j 均值 1.0213 > 0.9947 > 0.9580），但仅端点差显著（1-12 − 32-35 = +0.0633，CI [+0.0",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0049",
+      "claim": "round17 全形态宽筛：40 个 boolean 形态撞号比（后段 1973 期，B=2000 bootstrap），5 个形态 CI 不跨 1。r18 置换检验 max|r| 校正 p=0.22",
+      "status": "tentative",
+      "confidence": 2
+    }
+  ],
+  "convenience": {
+    "positioning": "可行域约束/代价变量（非收益变量）：五种投注方式（单注/复式/胆拖/倍投/追加）每元期望回报率数学等价（F-0026 ★5，均落在 51% 返奖率内）；便利性只影响购买操作成本、票面复杂度与兑奖便利，不改变 ROI。策略默认选便利性最优解：单式多注（如 10 注×2 元一张票）。",
+    "is_decision_variable": true,
+    "affects_expected_return": false,
+    "modes": [
+      {
+        "id": "single",
+        "name": "单注",
+        "rating": "high",
+        "note": "一张票 N 行，操作最简、兑奖直观；策略默认形态（配合 R-001/R-002/R-003 生成 N 注分散号码）。"
+      },
+      {
+        "id": "compound",
+        "name": "复式",
+        "rating": "medium",
+        "note": "选号展开为多注（如 6+2=12 注 24 元）；票面复杂、金额大、兑奖需按展开核对；同预算下期望与单式等价（F-0026），仅方差更小。"
+      },
+      {
+        "id": "dan_tuo",
+        "name": "胆拖",
+        "rating": "low",
+        "note": "胆码+拖码组合展开；操作最复杂、易出错，便利性最差；期望与复式等价（F-0026）。"
+      },
+      {
+        "id": "multiplier",
+        "name": "倍投",
+        "rating": "high",
+        "note": "操作简单（同注 K 倍），但 K 注相同号码=自我摊薄（F-0027 ★5，K=10 每元回报仅 43.8%），触发 R-002 排除，便利性再高也不应采用。"
+      },
+      {
+        "id": "extra",
+        "name": "追加",
+        "rating": "high",
+        "note": "+1 元操作简单，但只参与一二等浮动奖、独立口径 ROI ≈ −63%（比基本注 −49% 更差），只提高方差；不推荐。"
+      }
+    ]
+  },
+  "experience": {
+    "positioning": "情绪体验维度（非收益变量）：购彩效用 = 期待效用（开奖前，anticipation）+ 结果愉悦度（开奖后，= f(奖级) − 预期基线）。策略通过『预期校准』优化愉悦度——把基线调到现实，中奖时超预期更喜、不中时少失落（anticipation-disappointment utility 模型）。",
+    "affects_expected_return": false,
+    "anticipation": {
+      "model": "anticipation-disappointment utility（He, Dyer & Butler 2018, J. Multi-Criteria Decision Analysis；anticipatory utility，Loewenstein 1987）",
+      "design": "每周小额（如 10 注/期）→ 每周一次期待仪式，期待频率=愉悦频率；一次性大额 → 期待集中、落差更大。"
+    },
+    "expectation_calibration": {
+      "base_line": "中奖多为小额固定奖（三~七等，占全奖级期望 34.98% 且与选号无关）；一等奖概率恒为 1/21,425,712。",
+      "rule": "把预期基线设在『大概率中小额』而非『大奖幻想』：中 5 元=超预期小确幸，不中=轻度失落而非深度失望。CLI 每次生成号码时展示『现实预期』行。"
+    }
+  },
+  "psychology": {
+    "positioning": "外部学术锚点（非仓库数据核验结论，不改变策略数字）：解释『大众选号偏好造成号码拥挤』的机制，支撑 R-001/R-003 撞号避让与 A-001~A-005 排除清单。仅供机制理解与可信度参考，不得当作用户可独立核验的证据。",
+    "is_external_evidence": true,
+    "affects_expected_return": false,
+    "refs": [
+      {
+        "ref": "Rogers (1998) The Cognitive Psychology of Lottery Gambling: A Theoretical Review, Journal of Gambling Studies",
+        "maps_to": [
+          "R-003",
+          "A-001",
+          "A-005"
+        ],
+        "role": "综述：热/冷号码信念、生日号偏好、near-miss 错觉、不现实乐观 —— 大众偏差导致号码拥挤的机制基础。"
+      },
+      {
+        "ref": "Hardoon et al. (2001) Underlying Cognitions in the Selection of Lottery Tickets, Journal of Clinical Psychology",
+        "maps_to": [
+          "R-001"
+        ],
+        "role": "实证：人偏好『看起来随机』的号码 —— 连号形态被回避/少被选，构成 R-001 的撞号依据。"
+      },
+      {
+        "ref": "Suetens, Galbo-Jørgensen & Tyran (2016) Predicting Lotto Numbers, Journal of the European Economic Association",
+        "maps_to": [
+          "A-001"
+        ],
+        "role": "自然实验：赌徒谬误（上期开出后少买 2%）+ 热手谬误（变热后加买 1%/周）—— 追冷热号是大众普遍偏差，已被仓库数据证伪（F-0008）。"
+      },
+      {
+        "ref": "Kahneman & Tversky (1979) Prospect Theory: An Analysis of Decision under Risk, Econometrica",
+        "maps_to": [
+          "disclaimer"
+        ],
+        "role": "理论：低概率被高权重（overweighting of small probabilities）—— 解释负期望下仍购买彩票的吸引力。"
+      },
+      {
+        "ref": "Langer (1975) The Illusion of Control, Journal of Personality and Social Psychology",
+        "maps_to": [
+          "R-003",
+          "experience"
+        ],
+        "role": "实证：控制幻觉 —— 选择/熟悉感（如生日号）提升参与感与信心，是生日号情感依附的来源（experience 的娱乐价值依据）。"
+      }
+    ]
+  },
+  "provenance": {
+    "iteration": "round14",
+    "generator": "apply_r06_strategy.py (user-approved)",
+    "evidence_hash": "db0fa44fb956a57d17be2085050b58d54d2fdc5c00247ade1050f954090ee377",
+    "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。 ★ 元数据增强（非研究轮）：schema_version 1.2→1.3，新增 convenience（购彩便利性）/ experience（情绪体验与预期校准）/ psychology（心理学外部锚点）三组元数据；均为非收益变量（affects_expected_return=false），不改变策略数字与 evidence_hash。 ★ r14.1（用户批准 T-052）：新增 R-004（R-001+R-003 叠加再排除镜像对，evidence_refs F-0044/F-0045/F-0046/F-0047），effectiveness_grade=B。"
+  }
+}

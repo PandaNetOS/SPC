@@ -1,4 +1,4 @@
-# round03 — 撞号效应稳健性检验与封顶修正
+﻿# round03 — 撞号效应稳健性检验与封顶修正
 
 > **版本**：`1.0` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -140,11 +140,11 @@
 | 文件 | 改动 |
 |---|---|
 | `memory/facts/FACTS.jsonl` | 15 → **18 条**（+F-0016/F-0017/F-0018；F-0015 → superseded；F-0003/F-0004 更新） |
-| `games/dlt/strategy/strategy.json` | R-001 `expected_value_impact` 同步；`evidence_index` 9 → **12 条**；`provenance.iteration = round03` |
-| `games/dlt/iterations/round03/scripts/` | **新建**：6 脚本 + 3 JSON |
-| `games/dlt/iterations/round03/{FINDINGS,HANDOFF}.md` | **新建** |
-| `games/dlt/iterations/round03/manifest.json` | → `status: delivered` |
-| `games/dlt/iterations/round04/{TASK_BRIEF.md,manifest.json}` | **新建**（planned） |
+| `labs/lottery/studies/dlt/strategy/strategy.json` | R-001 `expected_value_impact` 同步；`evidence_index` 9 → **12 条**；`provenance.iteration = round03` |
+| `labs/lottery/studies/dlt/iterations/round03/scripts/` | **新建**：6 脚本 + 3 JSON |
+| `labs/lottery/studies/dlt/iterations/round03/{FINDINGS,HANDOFF}.md` | **新建** |
+| `labs/lottery/studies/dlt/iterations/round03/manifest.json` | → `status: delivered` |
+| `labs/lottery/studies/dlt/iterations/round04/{TASK_BRIEF.md,manifest.json}` | **新建**（planned） |
 | `memory/workbench/OPEN_QUESTIONS.md` | 1.0 → **1.1**；Q-001/Q-002/Q-004 标 answered；新增 Q-010/Q-011 |
 | `memory/workbench/TODO.md` | 1.0 → **1.1**；清算 r03 任务；新增 T-013/T-023/T-033/T-043 |
 

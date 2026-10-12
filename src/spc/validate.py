@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.validate — 契约校验器
 
 校验四类对象（受 spec/*.schema.json 约束）：
@@ -121,7 +121,7 @@ def validate_game(game: str, repo_root: str | None = None,
                   rep: ValidationReport | None = None) -> ValidationReport:
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
-    path = os.path.join(root, "games", game, "game.yaml")
+    path = os.path.join(root, "labs", "lottery", "studies", game, "game.yaml")
     if not os.path.exists(path):
         rep.err(f"game {game}: 配置不存在 {path}")
         return rep
@@ -143,7 +143,7 @@ def validate_game(game: str, repo_root: str | None = None,
 
     _jsonschema_check(cfg, "game_config.schema.json", f"game.yaml[{game}]", rep)
 
-    # 特征声明可执行性（framework/core 的静态检查）
+    # 特征声明可执行性（platform/core 的静态检查）
     # 这是「machine_rule.predicate 可被求值」的前提：
     # 若 features[] 声明了不存在的 primitive、或 args 缺参数，
     # 则所有引用该特征的规则都无法执行。
@@ -172,7 +172,7 @@ def validate_game(game: str, repo_root: str | None = None,
                 f"单注 {n_single} / 跨注 {n_cross})"
             )
     except ImportError as e:
-        rep.warn(f"game {game}: 无法加载 framework/core 做特征声明检查（{e}）")
+        rep.warn(f"game {game}: 无法加载 platform/core 做特征声明检查（{e}）")
 
     # 红线：奖金规则不影响号码分布
     for e in (cfg.get("prize_model") or {}).get("epochs", []):
@@ -618,7 +618,7 @@ def validate_strategy(game: str, repo_root: str | None = None,
     """校验 strategy.json：schema + 红线 + evidence_refs 外键存在。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
-    p = os.path.join(root, "games", game, "strategy", "strategy.json")
+    p = os.path.join(root, "labs", "lottery", "studies", game, "strategy", "strategy.json")
     if not os.path.exists(p):
         rep.warn(f"game {game}: strategy.json 不存在，跳过（尚未生成？）")
         return rep
@@ -755,10 +755,10 @@ def validate_strategy(game: str, repo_root: str | None = None,
             classify_rules,
         )
     except ImportError as e:
-        rep.warn(f"strategy[{game}]: 无法加载 framework/core 做 predicate 检查（{e}）")
+        rep.warn(f"strategy[{game}]: 无法加载 platform/core 做 predicate 检查（{e}）")
         return rep
 
-    cfg_path = os.path.join(root, "games", game, "game.yaml")
+    cfg_path = os.path.join(root, "labs", "lottery", "studies", game, "game.yaml")
     cfg: dict[str, Any] | None = None
     if os.path.exists(cfg_path):
         try:
@@ -851,7 +851,7 @@ def validate_iterations(game: str, repo_root: str | None = None,
     """校验各轮 manifest.json。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
-    it_dir = os.path.join(root, "games", game, "iterations")
+    it_dir = os.path.join(root, "labs", "lottery", "studies", game, "iterations")
     if not os.path.isdir(it_dir):
         rep.warn(f"game {game}: iterations/ 不存在")
         return rep
@@ -1187,7 +1187,7 @@ def _check_readme_tree_versions(root: str, rep: "ValidationReport") -> None:
     把行内**紧跟在文件名后**的 `vX.Y` 与 versions.json 中该路径的 content_version 比对。
 
     只比对「含 / 的路径」（嵌套文件）；顶层文件已由文件头版本行机制覆盖。
-    要点：同名嵌套 README.md（如 framework/README.md）的版本号写在箭头说明里，
+    要点：同名嵌套 README.md（如 platform/README.md）的版本号写在箭头说明里，
     不是『文件名后紧跟 v』，本检查自然不会误匹配到顶层 README.md。
     未在 versions.json 登记的路径（如未登记的 README.md）跳过，不误报。
     """
@@ -1293,7 +1293,7 @@ def _check_readme_tree_versions(root: str, rep: "ValidationReport") -> None:
 # ★ 速览表计数一致性：手工维护的「N 条结论」必须等于 FACTS.jsonl 实际条数。
 #
 #   背景（r03 发现的第二类下游漏洞）：consumes 管得住「引用某条结论」，
-#   却管不住「表格里写的结论**总数**」—— games/INDEX.md 写「15」、
+#   却管不住「表格里写的结论**总数**」—— labs/lottery/INDEX.md 写「15」、
 #   AI_CONTEXT.md 写「FACTS.jsonl（15 条）」，而实盘已是 18 条，
 #   两种情况下校验依然全绿。
 #
@@ -1301,7 +1301,7 @@ def _check_readme_tree_versions(root: str, rep: "ValidationReport") -> None:
 #   台账实际条数（只统计 status != superseded 的活跃结论数 + 全部条数，
 #   两个口径都接受，因为不同文档可能选用不同口径，但**数字必须真实存在**）。
 _COUNT_LABEL_FILES = (
-    "games/INDEX.md",
+    "labs/lottery/INDEX.md",
     "AI_CONTEXT.md",
     "README.md",
     "memory/INDEX.md",
@@ -1578,21 +1578,21 @@ def _check_open_questions_consistency(root: str, rep: ValidationReport) -> None:
 
 # 受管目录：这些目录下的**每个**文件都必须登记进 versions.json。
 # 排除（不要求登记）：数据（*/data/**，走 SHA256 清单）、夹具（tests/fixtures）、
-# 模板（framework/protocol/templates）、运行残留（__pycache__/.git/.idea 等）。
+# 模板（platform/protocol/templates）、运行残留（__pycache__/.git/.idea 等）。
 _MANAGED_PREFIXES = (
     "",               # 根层文件
     "src/",
-    "framework/core/",
-    "framework/tools/",
-    "framework/protocol/",
-    "framework/methodology/",
+    "platform/core/",
+    "platform/tools/",
+    "platform/protocol/",
+    "platform/methodology/",
     "spec/",
     "tools/",
     "cli/",
     "memory/",
     "tests/",
     "docs/",
-    "games/dlt/",
+    "labs/lottery/studies/dlt/",
 )
 _STRUCT_EXCLUDE_DIRS = {
     ".git", "__pycache__", ".idea", ".workbuddy", ".github",
@@ -1731,8 +1731,8 @@ def _check_ai_entry_completeness(root: str, rep: ValidationReport) -> None:
     anchors: list[tuple[str, str]] = [  # (text, label)
         (txt, label) for _f, txt, label in _AI_ENTRY_STATIC_ANCHORS
     ]
-    # 动态锚：strategy 的唯一可优化量（彩种目录动态发现，不硬编码）
-    gd = os.path.join(root, "games")
+    # 动态锚：strategy 的唯一可优化量（研究组目录动态发现，不硬编码）
+    gd = os.path.join(root, "labs", "lottery", "studies")
     first_game = None
     if os.path.isdir(gd):
         for _n in sorted(os.listdir(gd)):
@@ -1740,7 +1740,7 @@ def _check_ai_entry_completeness(root: str, rep: ValidationReport) -> None:
                 first_game = _n
                 break
     if first_game:
-        sp = os.path.join(root, "games", first_game, "strategy", "strategy.json")
+        sp = os.path.join(root, "labs", "lottery", "studies", first_game, "strategy", "strategy.json")
         if os.path.exists(sp):
             try:
                 with open(sp, encoding="utf-8") as f:
@@ -2086,7 +2086,7 @@ def _check_todo_landed_sync(root: str, rep: ValidationReport) -> None:
 
     landed: dict[str, str] = {}   # tid → 出处轮
     for g, n in delivered_round_dirs(root):
-        mf = os.path.join(root, "games", g, "iterations", f"round{n:02d}", "manifest.json")
+        mf = os.path.join(root, "labs", "lottery", "studies", g, "iterations", f"round{n:02d}", "manifest.json")
         try:
             man = json.load(open(mf, encoding="utf-8"))
         except Exception:
@@ -2137,7 +2137,7 @@ def _check_compression_freshness(root: str, rep: ValidationReport) -> None:
     if gap > 5:
         rep.warn(
             f"记忆压缩: 距上次压缩已 {gap} 轮（round{compressed_round:02d} → round{cur:02d}）"
-            f"—— 运行 `python framework/tools/compress_memory.py --write`"
+            f"—— 运行 `python platform/tools/compress_memory.py --write`"
         )
     else:
         rep.ok(f"记忆压缩: 距上次压缩 {gap} 轮（≤5，正常）")
@@ -2292,9 +2292,9 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     root = repo_root or _ROOT
     rep = ValidationReport()
 
-    # 彩种
+    # 研究组
     games = []
-    gd = os.path.join(root, "games")
+    gd = os.path.join(root, "labs", "lottery", "studies")
     if os.path.isdir(gd):
         for name in sorted(os.listdir(gd)):
             if name.startswith("_") or name.startswith("."):
@@ -2302,7 +2302,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
             if os.path.isfile(os.path.join(gd, name, "game.yaml")):
                 games.append(name)
     if not games:
-        rep.warn("games/ 下未发现任何彩种（含 game.yaml 的目录）")
+        rep.warn("labs/lottery/studies/ 下未发现任何研究组（含 game.yaml 的目录）")
 
     for g in games:
         validate_game(g, root, rep)
@@ -2342,10 +2342,10 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
         "memory/lessons/LESSONS.md",
         "memory/INDEX.md",
         "docs/VERSIONING_DOCS.md",
-        "framework/protocol/ITERATION_PROTOCOL.md",
-        "framework/protocol/MEMORY_PROTOCOL.md",
-        "framework/methodology/MATH_BOUNDARY.md",
-        "framework/methodology/STATISTICAL_DISCIPLINE.md",
+        "platform/protocol/ITERATION_PROTOCOL.md",
+        "platform/protocol/MEMORY_PROTOCOL.md",
+        "platform/methodology/MATH_BOUNDARY.md",
+        "platform/methodology/STATISTICAL_DISCIPLINE.md",
         "spec/README.md",
         "spec/VERSIONING.md",
         "spec/version_index.schema.json",

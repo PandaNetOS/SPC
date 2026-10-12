@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """跨注层（L3 / scope: cross）测试 —— 无需 pytest，直接 `python tests/test_cross_scope.py`
 
 ## 为什么单独一个文件
@@ -89,8 +89,8 @@ def section(t: str) -> None:
     print(f"\n{'=' * 72}\n{t}\n{'=' * 72}")
 
 
-CFG = yaml.safe_load(open(os.path.join(_ROOT, "games/dlt/game.yaml"), encoding="utf-8"))
-ST = json.load(open(os.path.join(_ROOT, "games/dlt/strategy/strategy.json"), encoding="utf-8"))
+CFG = yaml.safe_load(open(os.path.join(_ROOT, "labs/lottery/studies/dlt/game.yaml"), encoding="utf-8"))
+ST = json.load(open(os.path.join(_ROOT, "labs/lottery/studies/dlt/strategy/strategy.json"), encoding="utf-8"))
 
 
 # ================================================================ 1. 跨注原语（纯数学）

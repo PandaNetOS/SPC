@@ -1,4 +1,4 @@
-# PROPOSAL — 单注层通用架构（Single-Ticket Core）
+﻿# PROPOSAL — 单注层通用架构（Single-Ticket Core）
 
 > **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -17,7 +17,7 @@
 | # | 缺口 | 现状 | 后果 |
 |---|---|---|---|
 | **G1** | **没有号码生成器** | `CONSUMING.md` 明确写「求值语义属于消费方，本仓库只承诺规则是什么」。`machine_rule.predicate` 是一串**给人看的字符串**，没有任何代码能执行它 | 用户要号码时，只能由 AI 临时手写拒绝采样脚本（本次就是这么做的），**不可复现、无校验、无版本** |
-| **G2** | **单注级能力散在彩种目录** | 特征计算在 `games/dlt/data/tools/_load.py`，撞号模拟在 `games/dlt/strategy/strategy_simulation.py` | 接入第二个彩种时要复制粘贴。**违反「唯一硬标准」** |
+| **G2** | **单注级能力散在彩种目录** | 特征计算在 `labs/lottery/studies/dlt/data/tools/_load.py`，撞号模拟在 `labs/lottery/studies/dlt/strategy/strategy_simulation.py` | 接入第二个彩种时要复制粘贴。**违反「唯一硬标准」** |
 | **G3** | **多注/组合层完全未建模** | R-002（结构分散）只有推论，`magnitude_pct: null`。`open_questions` 的 Q-001~Q-008 **全是单注策略问题**，组合分散度无对应条目 | 对外输出给出了一条**未量化**的规则，用户无法判断该不该听 |
 
 **共同点**：三者都卡在同一个位置 —— **"一注号码"这个对象，框架里没有一等公民的身份**。
@@ -34,14 +34,14 @@
 1. 把「一注号码」抽象成框架的**一等公民**（`Ticket`），特征计算由 `game.yaml` 声明驱动
 2. 提供**彩种无关**的 `predicate` 求值器，让 `machine_rule` 从「给人看的字符串」变成「可执行且可校验的约束」
 3. 提供**通用生成器**（拒绝采样 / 加权采样），任何彩种配置即可用
-4. **不引入跨彩种硬编码**：`framework/core/` 里不得出现 `35` / `12` / `"dlt"`
+4. **不引入跨彩种硬编码**：`platform/core/` 里不得出现 `35` / `12` / `"dlt"`
 5. 让 G1/G2/G3 有一个**统一的落点**，而不是三处打补丁
 
 ### 非目标（本轮明确不做）
 
 | 不做 | 原因 |
 |---|---|
-| 迁移 `strategy_simulation.py` 的统计逻辑到 core | 那是「已发生的复用」才该做的抽象，目前只有一个彩种。**违反 `framework/core/README.md` 的实践原则** |
+| 迁移 `strategy_simulation.py` 的统计逻辑到 core | 那是「已发生的复用」才该做的抽象，目前只有一个彩种。**违反 `platform/core/README.md` 的实践原则** |
 | 量化 R-002（组合分散度） | 那是**研究问题**（Q-009），不是架构问题。架构要为它**预留位置**，但不替它下结论 |
 | 建 Web UI / 前端 | 用户已明确范围在「单注层的通用架构」 |
 | 修改 `strategy.json` 的 `rules` | 规则是研究产物，不由代码生成（`ITERATION_GUIDE.md` §4.3） |
@@ -115,7 +115,7 @@ features:
 框架侧：
 
 ```python
-# framework/core/features.py —— 全是彩种无关原语
+# platform/core/features.py —— 全是彩种无关原语
 PRIMITIVES = {
     "sum":                  lambda z, **kw: sum(z),
     "span":                 lambda z, **kw: max(z) - min(z),
@@ -190,22 +190,22 @@ def spread_penalty(cfg, tickets, rules) -> float:
 
 | 层 | 位置 | 允许出现 | 禁止出现 |
 |---|---|---|---|
-| 原语 | `framework/core/features.py` | 纯数学函数 | 彩种参数、字段名 |
-| 求值 | `framework/core/evaluate.py` | 读 `cfg['features']` 机械执行 | 判断「哪条结论对」 |
-| 判定 | `framework/core/judge.py` | 读 `rules[].machine_rule` | 生成规则 |
-| 生成 | `framework/core/generate.py` | 拒绝/加权采样 | 彩种专属采样逻辑 |
+| 原语 | `platform/core/features.py` | 纯数学函数 | 彩种参数、字段名 |
+| 求值 | `platform/core/evaluate.py` | 读 `cfg['features']` 机械执行 | 判断「哪条结论对」 |
+| 判定 | `platform/core/judge.py` | 读 `rules[].machine_rule` | 生成规则 |
+| 生成 | `platform/core/generate.py` | 拒绝/加权采样 | 彩种专属采样逻辑 |
 | 配置 | `games/<id>/game.yaml` | 值、参数、原语选择 | 代码 |
 | 规则 | `games/<id>/strategy/strategy.json` | 规则内容 | — |
 
 **依赖方向（不可逆）**：
 
 ```
-cli/  →  src/spc/  →  framework/core/  →  (无依赖)
+cli/  →  src/spc/  →  platform/core/  →  (无依赖)
                                       ↑
                             games/<id>/game.yaml（仅作数据输入）
 ```
 
-`framework/core/` **不得 import 任何 `games/` 下的 Python 代码**，只读 `game.yaml`。
+`platform/core/` **不得 import 任何 `games/` 下的 Python 代码**，只读 `game.yaml`。
 
 ---
 
@@ -213,10 +213,10 @@ cli/  →  src/spc/  →  framework/core/  →  (无依赖)
 
 | 文件 | 改动 | 破坏性 |
 |---|---|---|
-| `games/dlt/game.yaml` | `features[]` 从 `formula: "sum(front)"` 改为 `primitive: sum, args: {zone: front}` | ⚠️ **是**（`config_version` 需 1.0 → 2.0） |
+| `labs/lottery/studies/dlt/game.yaml` | `features[]` 从 `formula: "sum(front)"` 改为 `primitive: sum, args: {zone: front}` | ⚠️ **是**（`config_version` 需 1.0 → 2.0） |
 | `spec/game_config.schema.json` | `features[]` 增加 `primitive`/`args`，`formula` 降为可选的人类可读注释 | ⚠️ **是** |
 | `spec/strategy.schema.json` | `predicate` 加 pattern 约束 | ✅ 否（收紧，现有值合规） |
-| `framework/core/*.py` | **新建** 5 个模块 | 新增 |
+| `platform/core/*.py` | **新建** 5 个模块 | 新增 |
 | `src/spc/api.py` | 加 `SmartPick.evaluate()/judge()/pick()` | 新增 |
 | `cli/main.py` | 加 `pick` / `eval` 命令 | 新增 |
 | `docs/CONSUMING.md` | 改写 §"predicate 是给人看的字符串" | ⚠️ 是（立场变更） |
@@ -239,10 +239,10 @@ cli/  →  src/spc/  →  framework/core/  →  (无依赖)
 
 | 设计 | 对齐的原则 |
 |---|---|
-| `Ticket` 用 `dict[str, tuple]` 而非 `front/back` | `framework/core/README.md`「禁止出现 'dlt'」 |
+| `Ticket` 用 `dict[str, tuple]` 而非 `front/back` | `platform/core/README.md`「禁止出现 'dlt'」 |
 | 特征用「原语注册表」而非 `eval(formula)` | 安全 + 「框架不知道'连号'是什么，只执行声明」 |
 | `predicate` DSL 故意做弱 | 与四条红线同一思路：**结构性拒收**优于文档劝告 |
-| L3 只留接口、强制 `NotImplementedError` | `framework/core/README.md`「不为可能的复用做抽象」+ CLI「未实现必须明确报错」 |
+| L3 只留接口、强制 `NotImplementedError` | `platform/core/README.md`「不为可能的复用做抽象」+ CLI「未实现必须明确报错」 |
 | 不迁移 `strategy_simulation.py` | 同上 —— 只有一个彩种时看不出哪里真通用 |
 
 **与 `game.py` 现有 `compute_space()` 的关系**：
@@ -255,19 +255,19 @@ cli/  →  src/spc/  →  framework/core/  →  (无依赖)
 
 | # | 步骤 | 产出 | 可验证判据 |
 |---|---|---|---|
-| 1 | 写 `framework/core/features.py` 原语库 | ~12 个纯数学原语 | 单测：每个原语对固定输入给固定输出 |
-| 2 | 写 `framework/core/ticket.py` | `Ticket` + `validate(cfg)` | 非法票（越界/重复/个数错）全部报错 |
+| 1 | 写 `platform/core/features.py` 原语库 | ~12 个纯数学原语 | 单测：每个原语对固定输入给固定输出 |
+| 2 | 写 `platform/core/ticket.py` | `Ticket` + `validate(cfg)` | 非法票（越界/重复/个数错）全部报错 |
 | 3 | 改造 `game.yaml` 的 `features[]` 为原语声明 | 11 个特征改写 | `validate --game dlt` 通过 |
 | 4 | 更新 `spec/game_config.schema.json` | `primitive`/`args` 支持 | 旧格式被拒（确认破坏性） |
-| 5 | 写 `framework/core/evaluate.py` + `judge.py` | 求值与判定 | 对 `strategy.json` 的 R-001 求值，结果与手工一致 |
+| 5 | 写 `platform/core/evaluate.py` + `judge.py` | 求值与判定 | 对 `strategy.json` 的 R-001 求值，结果与手工一致 |
 | 6 | 收紧 `spec/strategy.schema.json` 的 `predicate` | pattern | 故意写错的 predicate 被 schema 拒收 |
-| 7 | 写 `framework/core/generate.py` | 拒绝/加权采样 | `pick --n 10` 全部满足 R-001 |
+| 7 | 写 `platform/core/generate.py` | 拒绝/加权采样 | `pick --n 10` 全部满足 R-001 |
 | 8 | 加 CLI `pick` / `eval` 命令 | 2 个命令 | `pick` 输出格式与本次手写的一致 |
 | 9 | 加 `tests/` 用例（红线测试最高优先） | 测试 | 全绿 |
 | 10 | 更新 `CONSUMING.md` / `VERSIONING.md` / `AI_CONTEXT.md` | 文档 | 立场表述一致 |
 | 11 | 跑 `validate --all` + 提交推送 | commit | 31+ 项全绿，单 main 分支 |
 
-**规模估计**：~600–800 行（含测试），`framework/core/` 从 0 到 5 个模块。
+**规模估计**：~600–800 行（含测试），`platform/core/` 从 0 到 5 个模块。
 
 ---
 
@@ -298,9 +298,9 @@ cli/  →  src/spc/  →  framework/core/  →  (无依赖)
 
 | # | 问题 | 决策 | 落地位置 |
 |---|---|---|---|
-| D1 | `features` 改造方式 | **B 原语注册表** | `framework/core/features.py`（21 个原语）+ `games/dlt/game.yaml`（11 个特征改写） |
-| D2 | 是否提供求值器 | **提供参考实现** | `framework/core/judge.py`；`docs/CONSUMING.md` §6 立场已改写 |
-| D3 | `predicate` DSL 强度 | **弱 DSL** | `spec/strategy.schema.json` 的 `pattern` + `framework/core/judge.py` 的 `parse_predicate()` |
+| D1 | `features` 改造方式 | **B 原语注册表** | `platform/core/features.py`（21 个原语）+ `labs/lottery/studies/dlt/game.yaml`（11 个特征改写） |
+| D2 | 是否提供求值器 | **提供参考实现** | `platform/core/judge.py`；`docs/CONSUMING.md` §6 立场已改写 |
+| D3 | `predicate` DSL 强度 | **弱 DSL** | `spec/strategy.schema.json` 的 `pattern` + `platform/core/judge.py` 的 `parse_predicate()` |
 | D4 | 是否同时补 Q-009 | **分开做**（架构已落地，Q-009 仍未写入） | `memory/workbench/OPEN_QUESTIONS.md` 待补 |
 
 ### 10.2 与提案的偏差
@@ -308,7 +308,7 @@ cli/  →  src/spc/  →  framework/core/  →  (无依赖)
 | 项 | 提案 | 实际 | 原因 |
 |---|---|---|---|
 | 原语数量 | ~12 个 | **21 个** | 实现时发现「连号」需要 3 个不同的量（对数 / 阈值对数 / 布尔），且 `count_in_range` / `max_in_range` / `sum_mod` 是常见需求 |
-| `framework/core/` 模块数 | 5 个 | **6 个** | 增加 `game_util.py` —— 把 T / p1 / 声明校验从 `game.py` 下沉为纯函数，避免循环依赖 |
+| `platform/core/` 模块数 | 5 个 | **6 个** | 增加 `game_util.py` —— 把 T / p1 / 声明校验从 `game.py` 下沉为纯函数，避免循环依赖 |
 | 步骤 9 测试规模 | 未估 | **92 项** | 红线 4 项 + 原语 30 项 + Ticket 校验 15 项 + DSL 14 项 + 作用域 8 项 + 数学 6 项 + 端到端 9 项 + 声明检查 6 项 |
 
 ### 10.3 ★ 落地过程中发现的结构性问题（提案未预见）
@@ -383,7 +383,7 @@ python cli/main.py eval --game dlt --ticket "04 18 22 23 24 + 01 06"
 | # | 缺口 | 状态 |
 |---|---|---|
 | G1（无生成器） | ✅ 闭合 —— `pick` 命令 + `SmartPick.pick()` + `generate.py`，可复现（`--seed`） |
-| G2（单注能力散在彩种目录） | ✅ 闭合 —— 21 原语 + Ticket + 求值 + 判定全在 `framework/core/`，彩种只提供 `game.yaml` 声明 |
+| G2（单注能力散在彩种目录） | ✅ 闭合 —— 21 原语 + Ticket + 求值 + 判定全在 `platform/core/`，彩种只提供 `game.yaml` 声明 |
 | G3（多注层未建模） | ⚠️ **部分闭合** —— L3 接口已建（`spread_penalty` / 跨注规则上报），但**量化研究仍未做**（Q-009 未写入） |
 
 > G3 的剩余部分**不是架构问题**，是研究问题。架构已为它预留了位置。

@@ -12,7 +12,7 @@
 > **教训与结论同等重要**：结论告诉你做什么，教训告诉你别做什么。
 > 后者往往更省时间。
 
-**来源**：`games/dlt/iterations/round02/known_errors.md`（原 E1–E9），
+**来源**：`labs/lottery/studies/dlt/iterations/round02/known_errors.md`（原 E1–E9），
 经重新组织为本文件，并补充每条对应的**检测方法**。
 
 ---
@@ -27,7 +27,7 @@
 | **正确做法** | 先算 `var/mean`；>1.5 则禁用 Poisson，改 QuasiPoisson / NegBin2，并配 HAC 稳健标准误 |
 | **检测** | 建模前固定执行：`print(df[y].var()/df[y].mean())` |
 | **相关结论** | F-0009 |
-| **脚本** | `games/dlt/data/tools/overdispersion_and_hac.py` |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/overdispersion_and_hac.py` |
 
 > ⚠️ **反面陷阱**：改用 NegBin 后 heat 又"显著"了（p=2.6e-11）。
 > **换模型让结论变显著，不等于结论正确** —— 还要查共线、查口径、查分期。
@@ -45,7 +45,7 @@
 | **正确做法** | 期望频数 < 5 的格一律用蒙特卡洛精确检验（B=10000+） |
 | **检测** | 检验前打印 `(observed/expected).min()`，关注最小期望频数 |
 | **相关结论** | F-0010 |
-| **脚本** | `games/dlt/data/tools/exact_tests.py` |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/exact_tests.py` |
 
 ---
 
@@ -59,7 +59,7 @@
 | **正确做法** | ① 全候选切点扫描（`t` 从 300 到 `n-300`，步长 ≤10）；② `ruptures` 多模型（Pelt/Binseg × l2/rbf）交叉验证；③ 画"切点-统计量"曲线判断峰形；④ 用宽峰判断渐变 |
 | **检测** | 报告中若出现"2015 年之前/之后"这类按年表述，立即质疑 |
 | **相关结论** | F-0006 · F-0007 |
-| **脚本** | `games/dlt/data/tools/changepoint_scan.py`、`changepoint_refine.py` |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/changepoint_scan.py`、`changepoint_refine.py` |
 
 > **扩展教训**：变点分析还应检查**混杂物是否同位置**。
 > 2013-08 前后无规则变更 → 可排除"规则导致号码突变"。
@@ -77,7 +77,7 @@
 | **正确做法** | ① 置换检验（打乱 ≥10000 次）得每个 lag 的经验零分布；② 家族错误率校正（max\|r\| 联合检验）；③ **必须做样本外时间序列外推**并报告 R² |
 | **检测** | 任何"显著"结论缺样本外验证，一律标 `tentative` 而非 `established` |
 | **相关结论** | F-0008 |
-| **脚本** | `games/dlt/data/tools/acf_permutation_test.py` |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/acf_permutation_test.py` |
 
 > **关键区分**：置换 p=0.0004 说明"信号是真的"，样本外 R²=−0.083 说明"信号没用"。
 > **这两件事不矛盾。** 把"统计显著"读成"可用"是最常见的越界。
@@ -115,7 +115,7 @@
 | **正确做法** | 逐期滚动：`cum` 只累加到 `t-1`。见 known_errors 的 `heat_past` 示例代码 |
 | **检测** | 任何"预测"类分析，先问："这个特征在第 t 期是怎么算出来的？" |
 | **相关结论** | F-0009 |
-| **脚本** | `games/dlt/data/tools/_load.py` 的 `heat` 是**全样本口径**，仅供复现历史讨论 |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/_load.py` 的 `heat` 是**全样本口径**，仅供复现历史讨论 |
 
 ---
 
@@ -129,7 +129,7 @@
 | **正确做法** | 两个概念在报告中**必须用不同小节、不同措辞**；理论开出分布用精确枚举（枚举全部 324632 组合）而非近似 |
 | **检测** | 若某段同时出现"更易开出"和"更多人中"，立即要求拆分 |
 | **相关结论** | F-0003 · F-0005 · **F-0011 → F-0025（r04 第二实例）** |
-| **脚本** | `games/dlt/data/tools/consecutive_exact_check.py` |
+| **脚本** | `labs/lottery/studies/dlt/data/tools/consecutive_exact_check.py` |
 
 > **r04 第二实例（同一教训的另一种形态）**：`F-0011` 里写过「后区号码不存在可利用的偏好结构」，
 > 但它的证据全是**开出率**（66 组合频次 vs 均匀期望，χ²=64.09，MC p=0.51）。
@@ -150,7 +150,7 @@
 | **正确做法** | 按主张类型选方法：<br>· 概率不变性 → **解析给出**<br>· 形态被摇出频率 → **精确枚举**<br>· 形态人群密度 → **观测量 + Bootstrap CI**<br>· 中奖时奖金 → **条件份额模拟**（唯一必须模拟的量）<br>· "能否统计检验" → **功效分析** |
 | **检测** | 任何 `for` 循环里出现"是否中一等奖"的判断，立即质疑设计 |
 | **相关结论** | F-0001 · F-0004 |
-| **脚本** | `games/dlt/strategy/strategy_simulation.py` |
+| **脚本** | `labs/lottery/studies/dlt/strategy/strategy_simulation.py` |
 
 > **本教训的核心是"边界意识"**：模拟不是万能的，它有明确的能力边界。
 > 越过边界使用它，得到的数字看起来精确，实际毫无信息。
@@ -167,7 +167,7 @@
 | **正确做法** | ① 按 epoch 分段（共 7 段）；② 声明所用规则版本（`evidence.rules_epoch`）；③ 号码类分析**除外** —— 号码结构从未改变，可跨全期合并 |
 | **检测** | 任何涉及奖金/奖级的结论，缺 `rules_epoch` 字段即视为无效 |
 | **相关结论** | F-0014 · F-0015 |
-| **文档** | `games/dlt/rules_history.md`、`games/dlt/data/derived/08_rules_epoch_summary.json` |
+| **文档** | `labs/lottery/studies/dlt/rules_history.md`、`labs/lottery/studies/dlt/data/derived/08_rules_epoch_summary.json` |
 
 > **本教训的副产品是一条正面结论**：因为号码结构从未改变，
 > **号码分布分析可以跨全期合并** —— 这大大简化了数据结构分析。
@@ -184,7 +184,7 @@
 | **正确做法** | 任何"某规则已生效/已触发"的断言，**必须先做事件计数**（`trigger_count = (x >= threshold).sum()`），再谈影响；`trigger_count == 0` 时结论只能是"该条款在当前样本下未触发"，不能是"影响为 X%" |
 | **检测** | 结论中出现"已触发/已生效/实测达到"等措辞时，立即追问：**触发次数是多少？写在哪一行日志/数据上？** 拿不出计数的，一律降为 `proposed` 或删除 |
 | **相关结论** | F-0015（superseded）→ F-0016 · F-0017 |
-| **脚本** | `games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`（S1 解析层：封顶触发统计 0/102） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`（S1 解析层：封顶触发统计 0/102） |
 
 > **本条与 L8 的分工**：L8 说"别用模拟验证解析事实"；L10 说"别把条款文本当发生事实"。
 > 前者关于**方法越界**，后者关于**证据层级**（规则文本 ≠ 观测事件）。
@@ -203,7 +203,7 @@
 | **正确做法** | ① 锚点优先取**已经在数据里观测到的统计量**（`median(w1)`），而不是从别的量**反推**；② 若必须反推，先写出量纲/口径等式并逐项核对；③ 对锚点做**合理性区间检查**（如"每期一等奖注数应在 1~50 之间"），超出则中止 |
 | **检测** | 任何"由 A 除以 B 得到基准量"的写法，先问：**A 和 B 是同一口径的吗？** 再看产出值是否落在常识区间内 |
 | **相关结论** | F-0017（锚点已修正为实测口径） |
-| **脚本** | `games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`（S2 实测锚点层，含 `why_fixed` 注释） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`（S2 实测锚点层，含 `why_fixed` 注释） |
 
 > **口语版**：**名字像 ≠ 口径对**。奖池余额、当期可分配额、单注理论奖金是三个不同的量。
 > 反推得到的锚点，其误差会被模拟层放大，且不会触发任何异常 —— 只会输出一个错的百分比。
@@ -220,7 +220,7 @@
 | **正确做法** | ① 引入新估计量时，**先问它和旧的有什么函数关系**；② 要求新估计量在**变换不变性**上与原估计量不同（如中位数比 vs 均值比，前者对重尾/极端值稳健，后者不稳健 —— 这才是真正的独立口径）；③ 结论中显式声明"哪些是独立证据，哪些是同一证据的换皮" |
 | **检测** | 结论中出现"两套方法互相印证"时，立即核对：**两套方法的点估计是否数值相同或成固定比例？** 相同则不构成交叉验证 |
 | **相关结论** | F-0018（独立口径 = 中位数比，非 NB2 IRR） |
-| **脚本** | `games/dlt/iterations/round03/scripts/b2_robust_estimators.py`（含 `★_caveat_on_independence` 标注） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round03/scripts/b2_robust_estimators.py`（含 `★_caveat_on_independence` 标注） |
 
 > **口语版**：**换个名字不算换个人证**。
 > 真正的交叉验证要求两条证据在**失效模式**上不同 ——
@@ -240,7 +240,7 @@
 | **正确做法** | ① 任何相对幅度必须**同时给出估计量口径**；② 重尾 / 稀疏计数场景**默认用稳健口径**（中位数 / 截尾），均值比只作对照；③ 至少给出一种「剔除极端值后是否仍成立」的检验；④ 两个口径都报时，明确哪个用于对外 |
 | **检测** | 报告里出现「减半 / 翻倍 / 提升 N%」时，追问：**换成中位数比或截尾比，还是这个数吗？剔掉最大 3 期呢？** 变化超过 20% 就必须并列报告 |
 | **相关结论** | F-0020（本条的直接来源）· F-0003 · F-0018 |
-| **脚本** | `games/dlt/iterations/round04/scripts/decay_cause.py`（S2 多估计量对照） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py`（S2 多估计量对照） |
 
 > **口语版**：**数字没有错，尺子有两把。** 报告不写尺子，等于让读者自己挑一把 — 而读者总会挑最响的那把。
 > 与 L5（重尾禁止比均值）的分工：L5 说「这类数据别用均值」；L13 说「**任何时候都要报出你用的是哪把尺子，并做稳健对照**」。
@@ -257,7 +257,7 @@
 | **正确做法** | ① 切段之后、比较之前，先做**可行性核算**：反推出来的量是否落在物理/规则允许的区间（票价 ≥2 元、注数 ≤ 销售额/最低票价）；② 做**分布检验**（号码分布 vs 精确均匀）；③ 检查该段的记录方式字段（是否有校验标志、覆盖率为 0）；④ 不自洽的段只能用于**描述**，不能用作**基线**；⑤ 处置写成「哪一侧错**未判定**」也是合格结论 |
 | **检测** | 任何跨段比较的报告，先问三句：**这段的数据自己前后对得上吗？反推量落在允许区间吗？记录方式与另一段相同吗？** 三问没有答案，比较结论一律标 `tentative` |
 | **相关结论** | F-0019 · F-0020 · F-0021 · F-0006 |
-| **脚本** | `games/dlt/iterations/round04/scripts/decay_cause.py`（S1 数据口径层） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py`（S1 数据口径层） |
 
 > **口语版**：**先确认尺子本身没坏，再去量两段长短。**
 > 与 L11（锚点口径不可反推）的分工：L11 管「某个基准量取得对不对」；L14 管「**整段数据能不能当基线**」。
@@ -273,7 +273,7 @@
 | **正确做法** | ① 研究脚本的命中清单**必须逐条分类**（真数字错误 / 语义正确 / 规则引述），全部处理完才能收尾——「先看清单全貌，再动手改」；② 校验器检查范围**从登记表自动派生**（受管文件全集），删除手写白名单；③ 规则描述类文本（四件套/OQ 验收判据）用「名词引用豁免」（『中奖概率』带闭合引号 → 跳过），而不是从扫描清单里剔除文件 |
 | **检测** | ① 修复轮收尾前问：命中清单里的每一项，属于「改了 / 判为正确 / 豁免」哪一类？有未分类的项 = 未完成；② validate 源码里 grep 手写文件清单常量 → 应不存在，检查范围应来自 versions.json 派生 |
 | **相关结论** | F-0039 · Q-017（r10.1 根治延伸） |
-| **脚本** | `games/dlt/iterations/round10/scripts/t050_calibration.py`（扫描）+ `src/spc/validate.py::_prob_calibration_files`（自动派生） |
+| **脚本** | `labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py`（扫描）+ `src/spc/validate.py::_prob_calibration_files`（自动派生） |
 
 > **口语版**：**搜到了不等于修完了；校验器要扫「所有文件」，不是「我记得的文件」。**
 > 与 Q-017 的关系：Q-017 是「概率口径为何没自动纠正」的根因记录；L15 是「修复轮命中清单 + 校验器清单」两条漏链的通用教训，适用于任何口径/一致性类根治。

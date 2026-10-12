@@ -1,0 +1,98 @@
+{
+  "round": "round15",
+  "game": "dlt",
+  "title": "轮次号与待办状态双源治理轮：T-057 + T-058 + T-059（★R）+ T-060（★T）+ T-061",
+  "status": "delivered",
+  "started_at": "2026-10-12",
+  "finished_at": "2026-10-12",
+  "executor": "AI（用户选定「A 组治理轮」范围后自主执行）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [
+      "F-0044",
+      "F-0045",
+      "F-0046",
+      "F-0047"
+    ],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round14/HANDOFF.md",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round15/TASK_BRIEF.md",
+    "note": "任务书（render_task_brief --round 15 生成）：本轮必做 0 个 —— 待办池仅剩 T-025(external-data)/T-032(unverifiable)，T-052 已落地但漏勾。实际工作来自开轮侦察发现的 4 个同源缺陷（用户批准 A 组治理轮范围）。"
+  },
+  "outputs": {
+    "new_fact_ids": [],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [],
+    "strategy_landed": [],
+    "actual_updates": [
+      "T-057 → tools/render_task_brief.py：os.makedirs 由无条件执行移入 --write 分支（dry-run 不再建 roundNN 空目录）",
+      "T-058 → src/spc/validate.py + tools/render_task_brief.py：新增 delivered_round_dirs()，轮号判据改为「含 manifest.json」；重校准警告 7 轮回落为真实的 5 轮，轮号 round16 → round14",
+      "T-059 → src/spc/validate.py：新增 ★R _check_iteration_counter_sync（current_iteration == 最新已收尾轮，否则报错）",
+      "T-060 → src/spc/validate.py：新增 ★T _check_todo_landed_sync（已 delivered 轮 strategy_landed 中的 T-nnn 必须在 TODO 勾选）；当场抓出并修正 T-052",
+      "T-061 → tools/render_task_brief.py：_render_brief 无可执行候选时输出 0 个并给处置建议，不再把资源缺口型提升为必做",
+      "TODO: T-052 → done（补 r14.1 落地记录）；新增 T-057/T-058/T-059/T-060/T-061 并标 done；T-020 存疑仅标注、未改勾选状态"
+    ],
+    "open_questions": [
+      "Q-006",
+      "Q-016"
+    ],
+    "framework_revision": {
+      "proposed": [
+        "SOP §8 顺序约束补充：bump_iteration 必须在 roundNN/manifest.json 写完后跑（★R 引入）",
+        "待办池派生通道：从 OPEN_QUESTIONS / HYPOTHESES / validate 警告生成 T-nnn，解决任务源枯竭"
+      ],
+      "accepted": [],
+      "rejected": [
+        "泛化「落后 N 轮」告警（r14.2 已否决：实测 26/69 条噪音淹没真信号）—— 本轮 ★T 延续「只认显式登记」的窄口径原则"
+      ]
+    }
+  },
+  "deliverables": [
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round15/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round15/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round15/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round15/manifest.json",
+      "kind": "manifest"
+    },
+    {
+      "path": "src/spc/validate.py",
+      "kind": "script"
+    },
+    {
+      "path": "tools/render_task_brief.py",
+      "kind": "script"
+    },
+    {
+      "path": "tools/count_tests.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_round_counter_sync.py",
+      "kind": "script"
+    },
+    {
+      "path": "tests/test_ai_readability.py",
+      "kind": "script"
+    },
+    {
+      "path": "memory/workbench/TODO.md",
+      "kind": "report"
+    }
+  ]
+}

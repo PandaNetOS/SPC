@@ -1,0 +1,71 @@
+{
+  "round": "round08",
+  "game": "dlt",
+  "title": "体系升级批：A+Z 任务书参数化 + Y 研究资本化 + C1 收尾自动化 + X 并行研究池",
+  "status": "delivered",
+  "started_at": "2026-10-11",
+  "finished_at": "2026-10-11",
+  "executor": "AI（MainAgent 直接执行；用户「开工全部实施」批准 C+X+Y+Z 组合方案）",
+  "supersedes_round": null,
+  "inputs": {
+    "data_version": "dlt_full_2933",
+    "upstream_fact_ids": [],
+    "previous_handoff": "labs/lottery/studies/dlt/iterations/round08/HANDOFF.md（本批补写，r08 原研究批未落四件套）",
+    "task_brief": "labs/lottery/studies/dlt/iterations/round08/TASK_BRIEF.md（本批未新开轮，沿用 r08 任务编排）",
+    "forbidden_fact_ids": [],
+    "note": "用户连续追问「能否定义一轮完成多少/有没有更好方案」→ 依次提出 A 参数化 → B 双轨 → C 自治闭环 → X+Y+Z 组合，用户拍板全部实施。"
+  },
+  "outputs": {
+    "new_fact_ids": [],
+    "superseded_fact_ids": [],
+    "refuted_fact_ids": [],
+    "new_lesson_ids": [],
+    "new_question_ids": [],
+    "new_hypothesis_ids": [],
+    "closed_hypothesis_ids": [],
+    "strategy_updated": false,
+    "strategy_pending_user_approval": [],
+    "actual_updates": [
+      "A+Z：render_task_brief.py 加 --top N + resource 字段（T-025 external-data / T-032 unverifiable 前置降备选）",
+      "Y：research_lib/ 方法库新建（stats.py / stability.py / README.md）+ tests/test_research_lib.py 18 项",
+      "C1：tools/finish_round.py 新建（六步收尾自动化）；count_tests.py 加 --inject（T-045 计数自举注入）+ TEST_COVERAGE 表",
+      "X：ITERATION_SOP_v2.md 增 §9 并行研究池协议 + §8 第10步引 finish_round.py；render_task_brief.py 加并行建议段",
+      "versions.json：222 条（+6 登记：research_lib 4 + test_research_lib + finish_round；SOP/任务书/count_tests note 更新）",
+      "四件套补齐：round08 FINDINGS/HANDOFF/manifest + journal（机制检查抓住的历史遗留）",
+      "tests/README.md：计数自举注入（12 文件，合计 463 全绿）"
+    ],
+    "questions_closed": []
+  },
+  "deliverables": [
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round08/manifest.json",
+      "kind": "manifest"
+    }
+  ],
+  "open_questions": [
+    "Q-005",
+    "Q-006",
+    "Q-008",
+    "Q-009",
+    "Q-011",
+    "Q-015",
+    "Q-016"
+  ],
+  "framework_revision": {
+    "proposed": [
+      "SOP §8 收尾清单第 10 步：收尾自动化 finish_round.py（已实施，C1）",
+      "SOP §9：并行研究池协议（研究可并行、入库串行过三闸门；已实施，X）",
+      "研究资本化：第二次复用的统计逻辑提炼进 research_lib/（已实施，Y）"
+    ],
+    "accepted": [],
+    "rejected": []
+  }
+}

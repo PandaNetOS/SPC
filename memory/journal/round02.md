@@ -1,4 +1,4 @@
-# round02.md — 迭代日志（round02：v4 素材结构化入库）
+﻿# round02.md — 迭代日志（round02：v4 素材结构化入库）
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -41,9 +41,9 @@
 
 ```
 spec/          5 个 JSON Schema + VERSIONING.md   ← 契约层（稳定接口）
-framework/     protocol/ methodology/ tools/ core/ ← 框架层（彩种无关）
+platform/     protocol/ methodology/ tools/ core/ ← 框架层（彩种无关）
 memory/        facts/ journal/ lessons/ workbench/ ← 记忆层（本仓库的核心差异）
-games/dlt/     game.yaml data/ iterations/ strategy/ ← 彩种层（插件）
+labs/lottery/studies/dlt/     game.yaml data/ iterations/ strategy/ ← 彩种层（插件）
 src/ cli/      校验器与生成器
 ```
 
@@ -51,17 +51,17 @@ src/ cli/      校验器与生成器
 
 | v4 原位置 | 新位置 | 处理 |
 |---|---|---|
-| `01_data/*.csv` `*.jsonl` | `games/dlt/data/raw/` | 原样搬迁，SHA256 校验一致 |
-| `02_derived/*` | `games/dlt/data/derived/` | 原样搬迁 |
-| `03_tools/*.py` | `games/dlt/data/tools/` | 搬迁 + 修正路径（`01_data/` → `raw/`）|
-| `05_build_scripts/*` | `games/dlt/data/build_scripts/` | 搬迁 + 修正路径 |
-| `06_RULES_HISTORY.md` | `games/dlt/rules_history.md` | 原位保留（彩种级口径） |
-| `07_strategy_simulation/*` | `games/dlt/strategy/` | 搬迁（`*_results.json` 即策略证据） |
-| `00_TASK_BRIEF.md` | `games/dlt/iterations/round02/TASK_BRIEF.md` | 归入轮次 |
-| `04_priority_tasks.md` | `games/dlt/iterations/round02/PRIORITY_TASKS.md` | 归入轮次 |
-| `05_known_errors.md` | `games/dlt/iterations/round02/known_errors.md`（留档）<br>+ **`memory/lessons/LESSONS.md`（提炼，主用）** | **拆成两份**：教训独立成库 |
-| `03_findings/_legacy/*` | `games/dlt/iterations/round02/legacy_findings/` | 归档，带使用门槛 |
-| `manifest.json` | `games/dlt/manifest_v4_source.json` | 保留为溯源 |
+| `01_data/*.csv` `*.jsonl` | `labs/lottery/studies/dlt/data/raw/` | 原样搬迁，SHA256 校验一致 |
+| `02_derived/*` | `labs/lottery/studies/dlt/data/derived/` | 原样搬迁 |
+| `03_tools/*.py` | `labs/lottery/studies/dlt/data/tools/` | 搬迁 + 修正路径（`01_data/` → `raw/`）|
+| `05_build_scripts/*` | `labs/lottery/studies/dlt/data/build_scripts/` | 搬迁 + 修正路径 |
+| `06_RULES_HISTORY.md` | `labs/lottery/studies/dlt/rules_history.md` | 原位保留（彩种级口径） |
+| `07_strategy_simulation/*` | `labs/lottery/studies/dlt/strategy/` | 搬迁（`*_results.json` 即策略证据） |
+| `00_TASK_BRIEF.md` | `labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md` | 归入轮次 |
+| `04_priority_tasks.md` | `labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md` | 归入轮次 |
+| `05_known_errors.md` | `labs/lottery/studies/dlt/iterations/round02/known_errors.md`（留档）<br>+ **`memory/lessons/LESSONS.md`（提炼，主用）** | **拆成两份**：教训独立成库 |
+| `03_findings/_legacy/*` | `labs/lottery/studies/dlt/iterations/round02/legacy_findings/` | 归档，带使用门槛 |
+| `manifest.json` | `labs/lottery/studies/dlt/manifest_v4_source.json` | 保留为溯源 |
 
 ### 2.3 提炼记忆层
 
@@ -146,7 +146,7 @@ src/ cli/      校验器与生成器
 
 ## 6. 下一步（交给 round03）
 
-**round03 的优先攻击顺序**（详见 `games/dlt/iterations/round03/TASK_BRIEF.md`）：
+**round03 的优先攻击顺序**（详见 `labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md`）：
 
 1. `T-001` `T-002` `T-003` — P0 三项，**直接关乎现有对外输出的正确性**
    T-003 尤其重要：现在给用户的 +121% 是**未计封顶的上界**，而封顶已被实测触发（F-0015）
@@ -155,7 +155,7 @@ src/ cli/      校验器与生成器
 
 **给 round03 执行者的提醒**：
 
-- 先读 `AI_CONTEXT.md`（单一入口），再读 `games/dlt/iterations/round03/TASK_BRIEF.md`
+- 先读 `AI_CONTEXT.md`（单一入口），再读 `labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md`
 - 本轮结论**不是 ground truth**。`F-0004` 是模型估计（★★★☆☆），请独立复核
 - 引用任何结论前**必读其 `caveats`** —— 本仓库把减损项写进台账就是为了这个
 - **不要引用 F-0007**（已推翻）
@@ -172,7 +172,7 @@ src/ cli/      校验器与生成器
 | `memory/lessons/LESSONS.md` | 教训库（L1–L9） |
 | `memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md` | 工作记忆（8 问 + 5 假设 + 42 待办） |
 | `memory/journal/round02.md` | 本文件 |
-| `games/dlt/` 全部内容 | 拆解重排后的彩种数据与产出 |
-| `games/dlt/iterations/round02/` | 轮次归档（任务书/优先级/已知错误/legacy findings） |
-| `games/dlt/strategy/strategy.json` | 对外策略输出（首版） |
-| `games/dlt/iterations/round03/TASK_BRIEF.md` | 下一轮任务书（占位，由 HANDOFF 生成） |
+| `labs/lottery/studies/dlt/` 全部内容 | 拆解重排后的彩种数据与产出 |
+| `labs/lottery/studies/dlt/iterations/round02/` | 轮次归档（任务书/优先级/已知错误/legacy findings） |
+| `labs/lottery/studies/dlt/strategy/strategy.json` | 对外策略输出（首版） |
+| `labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md` | 下一轮任务书（占位，由 HANDOFF 生成） |

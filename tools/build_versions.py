@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """build_versions.py — 穷举全仓库文件，生成 versions.json
 
 ⚠️ **已降级为参考实现（T-044，r13 根治）**：
@@ -54,14 +54,14 @@ RULES: list[tuple[str, str, str]] = [
     (r"^spec/VERSIONING\.md$",                        "B", "doc"),
     (r"^spec/README\.md$",                            "B", "doc"),
 
-    (r"^framework/protocol/templates/.*\.md$",        "B", "template"),
-    (r"^framework/protocol/.*\.md$",                  "B", "protocol"),
-    (r"^framework/methodology/.*\.md$",               "B", "methodology"),
-    (r"^framework/core/.*\.py$",                      "B", "framework_core"),
-    (r"^framework/core/README\.md$",                  "B", "doc"),
-    (r"^framework/tools/.*\.py$",                     "B", "framework_tool"),
-    (r"^framework/README\.md$",                       "B", "doc"),
-    (r"^framework/INDEX\.md$",                        "B", "index"),
+    (r"^platform/protocol/templates/.*\.md$",        "B", "template"),
+    (r"^platform/protocol/.*\.md$",                  "B", "protocol"),
+    (r"^platform/methodology/.*\.md$",               "B", "methodology"),
+    (r"^platform/core/.*\.py$",                      "B", "framework_core"),
+    (r"^platform/core/README\.md$",                  "B", "doc"),
+    (r"^platform/tools/.*\.py$",                     "B", "framework_tool"),
+    (r"^platform/README\.md$",                       "B", "doc"),
+    (r"^platform/INDEX\.md$",                        "B", "index"),
 
     (r"^memory/facts/FACTS\.jsonl$",                  "A", "fact_ledger"),
     (r"^memory/facts/INDEX\.md$",                     "A", "fact_index"),
@@ -70,10 +70,10 @@ RULES: list[tuple[str, str, str]] = [
     (r"^memory/journal/.*\.md$",                      "A", "journal"),
     (r"^memory/INDEX\.md$",                           "A", "index"),
 
-    (r"^games/_template/game\.yaml$",                 "C", "game_config"),
-    (r"^games/_template/strategy/strategy\.json$",    "C", "strategy"),
-    (r"^games/_template/.*",                          "B", "template_game"),
-    (r"^games/INDEX\.md$",                            "B", "index"),
+    (r"^labs/lottery/studies/_template/game\.yaml$",                 "C", "game_config"),
+    (r"^labs/lottery/studies/_template/strategy/strategy\.json$",    "C", "strategy"),
+    (r"^labs/lottery/studies/_template/.*",                          "B", "template_game"),
+    (r"^labs/lottery/INDEX\.md$",                            "B", "index"),
 
     (r"^games/.*/game\.yaml$",                        "C", "game_config"),
     (r"^games/.*/strategy/strategy\.json$",           "C", "strategy"),
@@ -110,25 +110,25 @@ CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
     "memory/journal/round02.md":           ("1.0", "r02", "整理入库轮"),
     "memory/journal/round03.md":           ("1.0", "r03", "复核轮（含 1 次自我纠错）"),
     "memory/INDEX.md":                     ("1.0", "r02", "记忆层说明"),
-    "games/dlt/rules_history.md":          ("1.1", "r03", "E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记）"),
-    "games/dlt/strategy/STRATEGY_GUIDE.md": ("1.1", "r03", "面向普通读者的策略说明书（人话版）；r03 同步封顶修正"),
-    "games/dlt/iterations/round02/FINDINGS.md":     ("1.0", "r02", "整理入库轮发现"),
-    "games/dlt/iterations/round02/HANDOFF.md":      ("1.0", "r02", "r02→r03 交接"),
-    "games/dlt/iterations/round02/TASK_BRIEF.md":   ("1.0", "r02", "已交付"),
-    "games/dlt/iterations/round02/PRIORITY_TASKS.md": ("1.0", "r02", None),
-    "games/dlt/iterations/round02/known_errors.md": ("1.0", "r02", "E1~E9 避坑手册"),
-    "games/dlt/iterations/round02/legacy_findings/README.md": ("1.0", "r02", "归档，设使用门槛"),
-    "games/dlt/iterations/round03/TASK_BRIEF.md":   ("1.0", "r03", "已交付"),
-    "games/dlt/iterations/round03/FINDINGS.md":     ("1.0", "r03", "复核轮发现（含自我纠错）"),
-    "games/dlt/iterations/round03/HANDOFF.md":      ("1.0", "r03", "r03→r04 交接"),
-    "games/dlt/iterations/round04/TASK_BRIEF.md":   ("1.0", "r04", "planned"),
+    "labs/lottery/studies/dlt/rules_history.md":          ("1.1", "r03", "E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记）"),
+    "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md": ("1.1", "r03", "面向普通读者的策略说明书（人话版）；r03 同步封顶修正"),
+    "labs/lottery/studies/dlt/iterations/round02/FINDINGS.md":     ("1.0", "r02", "整理入库轮发现"),
+    "labs/lottery/studies/dlt/iterations/round02/HANDOFF.md":      ("1.0", "r02", "r02→r03 交接"),
+    "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md":   ("1.0", "r02", "已交付"),
+    "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md": ("1.0", "r02", None),
+    "labs/lottery/studies/dlt/iterations/round02/known_errors.md": ("1.0", "r02", "E1~E9 避坑手册"),
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/README.md": ("1.0", "r02", "归档，设使用门槛"),
+    "labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md":   ("1.0", "r03", "已交付"),
+    "labs/lottery/studies/dlt/iterations/round03/FINDINGS.md":     ("1.0", "r03", "复核轮发现（含自我纠错）"),
+    "labs/lottery/studies/dlt/iterations/round03/HANDOFF.md":      ("1.0", "r03", "r03→r04 交接"),
+    "labs/lottery/studies/dlt/iterations/round04/TASK_BRIEF.md":   ("1.0", "r04", "planned"),
 }
 
 # ★ C 级的内容版本（人工维护）。仅服务于「下游新鲜度检查」：
 #   校验器要判断「引用了某结论的契约文件，在结论被推翻后是否同步更新过」。
 #   ref_version 答「它声明的 schema 版本」；content_version 答「内容改过几版」。
 C_CONTENT_VERSIONS: dict[str, tuple[str, str, str | None]] = {
-    "games/dlt/strategy/strategy.json": ("1.1", "r03", "r03 同步 R-001 封顶修正（F-0015→F-0016/F-0017）"),
+    "labs/lottery/studies/dlt/strategy/strategy.json": ("1.1", "r03", "r03 同步 R-001 封顶修正（F-0015→F-0016/F-0017）"),
 }
 
 # ★ 下游依赖声明（人工维护）：path → 该文档**引用了哪些结论**（F-xxxx）。
@@ -146,27 +146,27 @@ CONSUMES: dict[str, list[str]] = {
     # 面向普通读者的说明书：引用了撞号效应、封顶、期望回报三类结论
     # 注：F-0015 不列入 —— 本文档只在「更正说明」里提到它已作废，
     #     属历史沿革式提及，非依赖；列进来会造成永久告警（噪音）。
-    "games/dlt/strategy/STRATEGY_GUIDE.md": [
+    "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md": [
         "F-0001", "F-0002", "F-0003", "F-0004", "F-0006", "F-0008",
         "F-0009", "F-0011", "F-0012", "F-0016", "F-0017", "F-0019",
         "F-0020", "F-0021", "F-0022", "F-0025", "F-0026", "F-0027",
         "F-0028", "F-0029",
     ],
     # 机器契约：avoid_list 的证据编号
-    "games/dlt/strategy/strategy.json": [
+    "labs/lottery/studies/dlt/strategy/strategy.json": [
         "F-0001", "F-0003", "F-0004", "F-0006", "F-0008", "F-0009", "F-0011", "F-0012",
     ],
     # 规则历史：封顶条款与 epoch 划分
-    "games/dlt/rules_history.md": ["F-0014", "F-0015", "F-0016"],
+    "labs/lottery/studies/dlt/rules_history.md": ["F-0014", "F-0015", "F-0016"],
 }
 
 # 归档条目（A 级，但状态标 archived）
 ARCHIVED = {
-    "games/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html",
-    "games/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt",
-    "games/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt",
-    "games/dlt/iterations/round02/legacy_findings/round2_main_report.md",
-    "games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt",
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html",
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt",
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt",
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+    "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt",
 }
 
 # B 级文档的版本（含框架文档）
@@ -177,24 +177,24 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
     "versions.json":                              ("1.0", "r02"),
     "spec/README.md":                             ("1.0", "r02"),
     "spec/VERSIONING.md":                         ("1.0", "r02"),
-    "framework/README.md":                        ("1.0", "r02"),
-    "framework/INDEX.md":                         ("1.0", "r02"),
-    "framework/core/README.md":                   ("1.0", "r02"),
-    "framework/protocol/README.md":               ("1.0", "r02"),
-    "framework/protocol/ITERATION_PROTOCOL.md":   ("1.1", "r03"),
-    "framework/protocol/MEMORY_PROTOCOL.md":      ("1.0", "r02"),
-    "framework/protocol/templates/TASK_BRIEF.template.md": ("1.0", "r02"),
-    "framework/protocol/templates/FINDINGS.template.md":   ("1.0", "r02"),
-    "framework/protocol/templates/HANDOFF.template.md":    ("1.0", "r02"),
-    "framework/methodology/MATH_BOUNDARY.md":              ("1.0", "r02"),
-    "framework/methodology/STATISTICAL_DISCIPLINE.md":     ("1.0", "r02"),
+    "platform/README.md":                        ("1.0", "r02"),
+    "platform/INDEX.md":                         ("1.0", "r02"),
+    "platform/core/README.md":                   ("1.0", "r02"),
+    "platform/protocol/README.md":               ("1.0", "r02"),
+    "platform/protocol/ITERATION_PROTOCOL.md":   ("1.1", "r03"),
+    "platform/protocol/MEMORY_PROTOCOL.md":      ("1.0", "r02"),
+    "platform/protocol/templates/TASK_BRIEF.template.md": ("1.0", "r02"),
+    "platform/protocol/templates/FINDINGS.template.md":   ("1.0", "r02"),
+    "platform/protocol/templates/HANDOFF.template.md":    ("1.0", "r02"),
+    "platform/methodology/MATH_BOUNDARY.md":              ("1.0", "r02"),
+    "platform/methodology/STATISTICAL_DISCIPLINE.md":     ("1.0", "r02"),
     "docs/ARCHITECTURE.md":                       ("1.0", "r02"),
     "docs/CONSUMING.md":                          ("1.1", "r02"),
     "docs/ITERATION_GUIDE.md":                    ("1.0", "r02"),
     "docs/METHODOLOGY.md":                        ("1.0", "r02"),
     "docs/PROPOSAL_SINGLE_TICKET_CORE.md":        ("1.0", "r02"),
     "docs/VERSIONING_DOCS.md":                    ("1.3", "r03"),
-    "games/INDEX.md":                             ("1.1", "r03"),
+    "labs/lottery/INDEX.md":                             ("1.1", "r03"),
     "tests/README.md":                            ("1.0", "r02"),
 }
 
@@ -202,12 +202,12 @@ DOC_VERSIONS: dict[str, tuple[str, str]] = {
 # ref 支持点号路径（如 inputs.data_version）
 C_LEVELS: dict[str, tuple[str, str, str | None]] = {
     # path: (ref_field, ref_value, note)
-    "games/dlt/game.yaml":                          ("config_version", "2.0", "★ 2026-10-11 由 1.0 升 2.0（features 原语化）"),
-    "games/_template/game.yaml":                    ("config_version", "2.0", "2026-10-11 与 dlt 同步升至 2.0（features 原语化）"),
-    "games/_template/strategy/strategy.json":       ("config_version", "2.0", "模板策略，2026-10-11 随 game.yaml 同步至 2.0"),
-    "games/dlt/strategy/strategy.json":             ("schema_version", "1.0", "契约版本；内容版本见 content_version"),
-    "games/dlt/iterations/round02/manifest.json":   ("inputs.data_version", "dlt_full_2933", None),
-    "games/dlt/iterations/round03/manifest.json":   ("inputs.data_version", "dlt_full_2933", None),
+    "labs/lottery/studies/dlt/game.yaml":                          ("config_version", "2.0", "★ 2026-10-11 由 1.0 升 2.0（features 原语化）"),
+    "labs/lottery/studies/_template/game.yaml":                    ("config_version", "2.0", "2026-10-11 与 dlt 同步升至 2.0（features 原语化）"),
+    "labs/lottery/studies/_template/strategy/strategy.json":       ("config_version", "2.0", "模板策略，2026-10-11 随 game.yaml 同步至 2.0"),
+    "labs/lottery/studies/dlt/strategy/strategy.json":             ("schema_version", "1.0", "契约版本；内容版本见 content_version"),
+    "labs/lottery/studies/dlt/iterations/round02/manifest.json":   ("inputs.data_version", "dlt_full_2933", None),
+    "labs/lottery/studies/dlt/iterations/round03/manifest.json":   ("inputs.data_version", "dlt_full_2933", None),
     "pyproject.toml":                               ("project.version", "0.1.0", "包版本"),
     # spec schema 自身无版本字段（它『约束』别人的 schema_version，自己不声明）
     # → 只登记，不比对（version_ref 留空）
@@ -370,8 +370,8 @@ def main() -> int:
             {
                 "version": "1.0",
                 "date": "2026-10-10",
-                "scope": "framework/",
-                "change": "单注层通用架构落地（framework/core/ 6 模块 / 21 原语），记为 framework_version 1.0。",
+                "scope": "platform/",
+                "change": "单注层通用架构落地（platform/core/ 6 模块 / 21 原语），记为 framework_version 1.0。",
             },
         ],
     }

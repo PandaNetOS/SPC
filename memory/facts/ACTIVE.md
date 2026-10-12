@@ -1,6 +1,6 @@
-# 当前有效结论清单（ACTIVE VIEW）
+﻿# 当前有效结论清单（ACTIVE VIEW）
 
-> 由 `framework/tools/compress_memory.py --write` 生成 ｜ 当前轮 round12 ｜ 权威源 `memory/facts/FACTS.jsonl`（台账保留全部历史，本视图只列可用结论）
+> 由 `platform/tools/compress_memory.py --write` 生成 ｜ 当前轮 round12 ｜ 权威源 `memory/facts/FACTS.jsonl`（台账保留全部历史，本视图只列可用结论）
 
 | F-id | 结论 | 类型 | 置信度 | 变更通道 | 重校准 | 确立轮 |
 |---|---|---|---|---|---|---|

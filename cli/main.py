@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """cli/main.py — spc 命令行入口
 
@@ -51,7 +51,7 @@ from spc.validate import (  # noqa: E402
     validate_strategy,
 )
 
-# framework/core 是彩种无关的计算核心，不在 src/ 包内
+# platform/core 是彩种无关的计算核心，不在 src/ 包内
 sys.path.insert(0, os.path.join(_ROOT, "framework"))
 from core import Ticket  # noqa: E402
 
@@ -422,7 +422,7 @@ def cmd_new_game(args) -> int:
 
     if not os.path.isdir(src):
         print(f"✗ 模板不存在: {os.path.relpath(src, _ROOT)}")
-        print("  请先创建 games/_template/（见 games/_template/README.md）")
+        print("  请先创建 labs/lottery/studies/_template/（见 labs/lottery/studies/_template/README.md）")
         return 1
     if os.path.exists(dst):
         print(f"✗ 目标已存在: {os.path.relpath(dst, _ROOT)}")
@@ -437,7 +437,7 @@ def cmd_new_game(args) -> int:
     print(f"  3. 建 games/{args.game_id}/iterations/round01/TASK_BRIEF.md")
     print(f"  4. python cli/main.py validate --game {args.game_id}")
     print()
-    print("⚠️ 不要修改 framework/ 与 src/ 的任何一行 —— 若需要改，说明框架分离没做好。")
+    print("⚠️ 不要修改 platform/ 与 src/ 的任何一行 —— 若需要改，说明框架分离没做好。")
     return 0
 
 

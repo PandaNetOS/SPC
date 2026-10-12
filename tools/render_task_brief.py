@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """tools/render_task_brief.py — 下轮任务书生成器（B+G 升级）。
 
 从 memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP-N 与
@@ -17,7 +17,7 @@
 用法：
     python tools/render_task_brief.py [--round NN] [--top N] [--write]
         # 默认下一轮 = 当前最大轮 + 1；--top 控制本轮必做任务数（默认 3）；
-        # --write 写 games/dlt/iterations/roundNN/TASK_BRIEF.md
+        # --write 写 labs/lottery/studies/dlt/iterations/roundNN/TASK_BRIEF.md
     python tools/render_task_brief.py --score   # 只打印评分榜
 
 依据：DOLPHIN（idea 生成→反馈闭环）、主动学习（按不确定性/价值采样）。
@@ -117,7 +117,7 @@ def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_
     # 头部版本行：单一来源 = versions.json 登记（勿手写/硬编码）
     try:
         from spc.versions import registered_version, version_line
-        path = f"games/dlt/iterations/round{rnd:02d}/TASK_BRIEF.md"
+        path = f"labs/lottery/studies/dlt/iterations/round{rnd:02d}/TASK_BRIEF.md"
         cv, it, upd = registered_version(root, path)
         if cv:
             lines += ["", version_line(cv, it, upd), ""]

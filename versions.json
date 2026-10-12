@@ -179,7 +179,7 @@
       "note": "r15: §6.2 追加『manifest 先于 bump』顺序约束；新增 §6.7 轮次号唯一判据"
     },
     {
-      "path": "framework/INDEX.md",
+      "path": "platform/INDEX.md",
       "level": "B",
       "kind": "index",
       "content_version": "1.1",
@@ -188,7 +188,7 @@
       "status": "active"
     },
     {
-      "path": "framework/README.md",
+      "path": "platform/README.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -197,7 +197,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/README.md",
+      "path": "platform/core/README.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.1",
@@ -206,7 +206,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/__init__.py",
+      "path": "platform/core/__init__.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -215,7 +215,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/evaluate.py",
+      "path": "platform/core/evaluate.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -224,7 +224,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/features.py",
+      "path": "platform/core/features.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -234,7 +234,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "framework/core/game_util.py",
+      "path": "platform/core/game_util.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -243,7 +243,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/generate.py",
+      "path": "platform/core/generate.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -252,7 +252,7 @@
       "status": "active"
     },
     {
-      "path": "framework/core/judge.py",
+      "path": "platform/core/judge.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -261,14 +261,14 @@
       "status": "active"
     },
     {
-      "path": "framework/core/portfolio.py",
+      "path": "platform/core/portfolio.py",
       "level": "B",
       "kind": "framework_core",
       "note": "★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross",
       "status": "active"
     },
     {
-      "path": "framework/core/ticket.py",
+      "path": "platform/core/ticket.py",
       "level": "B",
       "kind": "framework_core",
       "content_version": null,
@@ -277,7 +277,7 @@
       "status": "active"
     },
     {
-      "path": "framework/methodology/MATH_BOUNDARY.md",
+      "path": "platform/methodology/MATH_BOUNDARY.md",
       "level": "B",
       "kind": "methodology",
       "content_version": "1.1",
@@ -287,7 +287,7 @@
       "note": "r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）"
     },
     {
-      "path": "framework/methodology/STATISTICAL_DISCIPLINE.md",
+      "path": "platform/methodology/STATISTICAL_DISCIPLINE.md",
       "level": "B",
       "kind": "methodology",
       "content_version": "1.0",
@@ -296,7 +296,7 @@
       "status": "active"
     },
     {
-      "path": "framework/protocol/ITERATION_PROTOCOL.md",
+      "path": "platform/protocol/ITERATION_PROTOCOL.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.2",
@@ -306,7 +306,7 @@
       "note": "r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏"
     },
     {
-      "path": "framework/protocol/MEMORY_PROTOCOL.md",
+      "path": "platform/protocol/MEMORY_PROTOCOL.md",
       "level": "B",
       "kind": "protocol",
       "content_version": "1.2",
@@ -316,7 +316,7 @@
       "note": "r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定"
     },
     {
-      "path": "framework/protocol/README.md",
+      "path": "platform/protocol/README.md",
       "level": "B",
       "kind": "protocol",
       "content_version": "1.0",
@@ -325,7 +325,7 @@
       "status": "active"
     },
     {
-      "path": "framework/protocol/templates/FINDINGS.template.md",
+      "path": "platform/protocol/templates/FINDINGS.template.md",
       "level": "B",
       "kind": "template",
       "content_version": "1.0",
@@ -334,7 +334,7 @@
       "status": "active"
     },
     {
-      "path": "framework/protocol/templates/HANDOFF.template.md",
+      "path": "platform/protocol/templates/HANDOFF.template.md",
       "level": "B",
       "kind": "template",
       "content_version": "1.0",
@@ -343,7 +343,7 @@
       "status": "active"
     },
     {
-      "path": "framework/protocol/templates/TASK_BRIEF.template.md",
+      "path": "platform/protocol/templates/TASK_BRIEF.template.md",
       "level": "B",
       "kind": "template",
       "content_version": "1.0",
@@ -352,7 +352,7 @@
       "status": "active"
     },
     {
-      "path": "framework/tools/compress_memory.py",
+      "path": "platform/tools/compress_memory.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -362,7 +362,7 @@
       "status": "active"
     },
     {
-      "path": "framework/tools/ingate.py",
+      "path": "platform/tools/ingate.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.1",
@@ -372,7 +372,7 @@
       "status": "active"
     },
     {
-      "path": "framework/tools/memory.py",
+      "path": "platform/tools/memory.py",
       "level": "B",
       "kind": "framework_tool",
       "content_version": null,
@@ -382,7 +382,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/INDEX.md",
+      "path": "labs/lottery/INDEX.md",
       "level": "B",
       "kind": "index",
       "content_version": "1.2",
@@ -392,37 +392,37 @@
       "note": "彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ / round05 计划中）"
     },
     {
-      "path": "games/_template/README.md",
+      "path": "labs/lottery/studies/_template/README.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/data/build_scripts/README.md",
+      "path": "labs/lottery/studies/_template/data/build_scripts/README.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/data/derived/README.md",
+      "path": "labs/lottery/studies/_template/data/derived/README.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/data/raw/README.md",
+      "path": "labs/lottery/studies/_template/data/raw/README.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/data/tools/README.md",
+      "path": "labs/lottery/studies/_template/data/tools/README.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/game.yaml",
+      "path": "labs/lottery/studies/_template/game.yaml",
       "level": "C",
       "kind": "game_config",
       "version_ref": "config_version",
@@ -431,13 +431,13 @@
       "status": "active"
     },
     {
-      "path": "games/_template/iterations/round01/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/_template/iterations/round01/TASK_BRIEF.md",
       "level": "B",
       "kind": "template_game",
       "status": "active"
     },
     {
-      "path": "games/_template/strategy/strategy.json",
+      "path": "labs/lottery/studies/_template/strategy/strategy.json",
       "level": "C",
       "kind": "strategy",
       "version_ref": "config_version",
@@ -446,73 +446,73 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/data/build_scripts/build_derived_v4.py",
+      "path": "labs/lottery/studies/dlt/data/build_scripts/build_derived_v4.py",
       "level": "D",
       "kind": "build_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/build_scripts/hash_and_list.py",
+      "path": "labs/lottery/studies/dlt/data/build_scripts/hash_and_list.py",
       "level": "D",
       "kind": "build_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/build_scripts/validate_package_v4.py",
+      "path": "labs/lottery/studies/dlt/data/build_scripts/validate_package_v4.py",
       "level": "D",
       "kind": "build_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/01_yearly_stats.csv",
+      "path": "labs/lottery/studies/dlt/data/derived/01_yearly_stats.csv",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/02_front_number_frequency.csv",
+      "path": "labs/lottery/studies/dlt/data/derived/02_front_number_frequency.csv",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/03_back_number_frequency.csv",
+      "path": "labs/lottery/studies/dlt/data/derived/03_back_number_frequency.csv",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/04_structure_distribution_exact.json",
+      "path": "labs/lottery/studies/dlt/data/derived/04_structure_distribution_exact.json",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/05_back_combo_66.csv",
+      "path": "labs/lottery/studies/dlt/data/derived/05_back_combo_66.csv",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/06_acf_lag1to60.csv",
+      "path": "labs/lottery/studies/dlt/data/derived/06_acf_lag1to60.csv",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/07_data_quality_report.json",
+      "path": "labs/lottery/studies/dlt/data/derived/07_data_quality_report.json",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/derived/08_rules_epoch_summary.json",
+      "path": "labs/lottery/studies/dlt/data/derived/08_rules_epoch_summary.json",
       "level": "D",
       "kind": "derived_data",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/raw/dlt_full_2933.csv",
+      "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
       "level": "D",
       "kind": "raw_data",
       "sha256": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
@@ -520,7 +520,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/data/raw/dlt_full_2933.jsonl",
+      "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl",
       "level": "D",
       "kind": "raw_data",
       "sha256": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d",
@@ -528,55 +528,55 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/_load.py",
+      "path": "labs/lottery/studies/dlt/data/tools/_load.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/acf_permutation_test.py",
+      "path": "labs/lottery/studies/dlt/data/tools/acf_permutation_test.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/changepoint_refine.py",
+      "path": "labs/lottery/studies/dlt/data/tools/changepoint_refine.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/changepoint_scan.py",
+      "path": "labs/lottery/studies/dlt/data/tools/changepoint_scan.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/consecutive_exact_check.py",
+      "path": "labs/lottery/studies/dlt/data/tools/consecutive_exact_check.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/exact_tests.py",
+      "path": "labs/lottery/studies/dlt/data/tools/exact_tests.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/overdispersion_and_hac.py",
+      "path": "labs/lottery/studies/dlt/data/tools/overdispersion_and_hac.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/data/tools/validate_data.py",
+      "path": "labs/lottery/studies/dlt/data/tools/validate_data.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active"
     },
     {
-      "path": "games/dlt/game.yaml",
+      "path": "labs/lottery/studies/dlt/game.yaml",
       "level": "C",
       "kind": "game_config",
       "version_ref": "config_version",
@@ -587,7 +587,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round02/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -597,7 +597,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -607,7 +607,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/PRIORITY_TASKS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -616,7 +616,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -626,7 +626,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/known_errors.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/known_errors.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -636,7 +636,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/README.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/README.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -646,7 +646,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -656,7 +656,7 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -666,7 +666,7 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -676,7 +676,7 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/round2_main_report.md",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -686,7 +686,7 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
-      "path": "games/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt",
+      "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -696,7 +696,7 @@
       "note": "历史归档，设使用门槛（防锚定）"
     },
     {
-      "path": "games/dlt/iterations/round02/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round02/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "version_ref": "inputs.data_version",
@@ -704,7 +704,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round03/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -714,7 +714,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round03/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -724,7 +724,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -734,7 +734,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round03/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "version_ref": "inputs.data_version",
@@ -742,7 +742,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/apply_r03_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_facts.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -751,7 +751,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/apply_r03_strategy.py",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_strategy.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -760,7 +760,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/b2_robust_estimators.json",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/b2_robust_estimators.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -769,7 +769,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/b2_robust_estimators.py",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/b2_robust_estimators.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -778,7 +778,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/b2_split_stability.json",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/b2_split_stability.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -787,7 +787,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/b2_split_stability.py",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/b2_split_stability.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -796,7 +796,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/cap_adjusted_uplift.json",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -805,7 +805,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round03/scripts/cap_adjusted_uplift.py",
+      "path": "labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -814,7 +814,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round04/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -823,7 +823,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round04/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -832,7 +832,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round04/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -842,13 +842,13 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round04/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/apply_r04_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -857,7 +857,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/apply_r04_strategy.py",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_strategy.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -866,7 +866,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/back_collision.json",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -875,7 +875,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/back_collision.py",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -884,7 +884,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/decay_cause.json",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -893,7 +893,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/decay_cause.py",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -902,7 +902,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.json",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -911,7 +911,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
+      "path": "labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -920,7 +920,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round05/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -930,7 +930,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round05/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -940,7 +940,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -950,7 +950,7 @@
       "note": "已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 r06）"
     },
     {
-      "path": "games/dlt/iterations/round05/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round05/manifest.json",
       "level": "B",
       "kind": "manifest",
       "content_version": "1.0",
@@ -960,7 +960,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/apply_r05_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -970,7 +970,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/bet_structure.json",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -980,7 +980,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/bet_structure.py",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -990,7 +990,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/fix_r05_housekeeping.py",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/fix_r05_housekeeping.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1000,7 +1000,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/sync_r05_versions.py",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/sync_r05_versions.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1010,7 +1010,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/timing_weekday.json",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1020,7 +1020,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round05/scripts/timing_weekday.py",
+      "path": "labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1030,7 +1030,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round06/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1040,7 +1040,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round06/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1050,7 +1050,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round06/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1060,7 +1060,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round06/manifest.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1070,7 +1070,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/research/ai_readability_proposal.md",
+      "path": "labs/lottery/studies/dlt/iterations/round06/research/ai_readability_proposal.md",
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
@@ -1080,7 +1080,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/research/flywheel_upgrade_plan.md",
+      "path": "labs/lottery/studies/dlt/iterations/round06/research/flywheel_upgrade_plan.md",
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
@@ -1090,7 +1090,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/add_v2_fields.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/add_v2_fields.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1100,7 +1100,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/apply_r06_strategy.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/apply_r06_strategy.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1110,7 +1110,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/fix_rename_remainder.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/fix_rename_remainder.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1120,7 +1120,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/probe_r06.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/probe_r06.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1130,7 +1130,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/probe_v2.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/probe_v2.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1140,7 +1140,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/rename_spc.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/rename_spc.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1150,7 +1150,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/smoke_ingate.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/smoke_ingate.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1160,7 +1160,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/smoke_r06.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/smoke_r06.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1170,7 +1170,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/sync_guide_v14.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/sync_guide_v14.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1180,7 +1180,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/sync_structure_registration.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/sync_structure_registration.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1190,7 +1190,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/sync_v2_final.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/sync_v2_final.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1200,7 +1200,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/sync_v2_versions.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/sync_v2_versions.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1210,7 +1210,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round06/scripts/versions_r06_strategy.py",
+      "path": "labs/lottery/studies/dlt/iterations/round06/scripts/versions_r06_strategy.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1220,7 +1220,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round07/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1230,7 +1230,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round07/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1240,7 +1240,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round07/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1250,7 +1250,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round07/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "version_ref": "inputs.data_version",
@@ -1260,7 +1260,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/apply_r07_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/apply_r07_facts.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1270,7 +1270,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t013_recalibrate.json",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t013_recalibrate.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1280,7 +1280,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t013_recalibrate.py",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t013_recalibrate.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1290,7 +1290,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t014_forensics.json",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1300,7 +1300,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t014_forensics.py",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1310,7 +1310,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t015_external.json",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t015_external.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1320,7 +1320,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t015_external.py",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t015_external.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1330,7 +1330,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t016_holiday.json",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t016_holiday.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1340,7 +1340,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round07/scripts/t016_holiday.py",
+      "path": "labs/lottery/studies/dlt/iterations/round07/scripts/t016_holiday.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1350,7 +1350,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round08/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round08/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1360,7 +1360,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round08/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round08/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1370,7 +1370,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round08/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round08/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "content_version": null,
@@ -1380,7 +1380,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round08/scripts/all_tiers_expectation.json",
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.json",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1390,7 +1390,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round08/scripts/all_tiers_expectation.py",
+      "path": "labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1400,7 +1400,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round09/FINDINGS.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1410,7 +1410,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round09/HANDOFF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1420,7 +1420,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round09/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1430,7 +1430,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round09/manifest.json",
       "level": "C",
       "kind": "iteration_manifest",
       "content_version": null,
@@ -1440,7 +1440,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/apply_r09_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/apply_r09_facts.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1450,7 +1450,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t013_recalibrate_r09.json",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1460,7 +1460,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t013_recalibrate_r09.py",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1470,7 +1470,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t020_number_weight.json",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t020_number_weight.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1480,7 +1480,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t020_number_weight.py",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t020_number_weight.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1490,7 +1490,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t046_r002_quantify.json",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t046_r002_quantify.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1500,7 +1500,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round09/scripts/t046_r002_quantify.py",
+      "path": "labs/lottery/studies/dlt/iterations/round09/scripts/t046_r002_quantify.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1510,7 +1510,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round10/FINDINGS.md",
       "level": "A",
       "kind": "findings",
       "content_version": "1.1",
@@ -1520,7 +1520,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round10/HANDOFF.md",
       "level": "A",
       "kind": "handoff",
       "content_version": "1.1",
@@ -1530,7 +1530,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round10/TASK_BRIEF.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -1540,7 +1540,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round10/manifest.json",
       "level": "A",
       "kind": "manifest",
       "content_version": "1.0",
@@ -1550,7 +1550,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/apply_r10_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/apply_r10_facts.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1560,7 +1560,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t021_sales_endogeneity.json",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t021_sales_endogeneity.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1570,7 +1570,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t021_sales_endogeneity.py",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t021_sales_endogeneity.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1580,7 +1580,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t022_illusion.json",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t022_illusion.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1590,7 +1590,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t022_illusion.py",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t022_illusion.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1600,7 +1600,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t028_recalibrate_r10.json",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t028_recalibrate_r10.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1610,7 +1610,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t028_recalibrate_r10.py",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t028_recalibrate_r10.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1620,7 +1620,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t050_calibration.json",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json",
       "level": "A",
       "kind": "report",
       "content_version": "1.0",
@@ -1630,7 +1630,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round10/scripts/t050_calibration.py",
+      "path": "labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py",
       "level": "A",
       "kind": "script",
       "content_version": "1.0",
@@ -1640,7 +1640,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round11/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round11/FINDINGS.md",
       "level": "B",
       "kind": "findings",
       "content_version": "1.0",
@@ -1649,7 +1649,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round11/HANDOFF.md",
       "level": "B",
       "kind": "handoff",
       "content_version": "1.0",
@@ -1658,7 +1658,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
+      "path": "labs/lottery/studies/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md",
       "level": "B",
       "kind": "design",
       "content_version": "1.0",
@@ -1667,7 +1667,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round11/TASK_BRIEF.md",
       "level": "B",
       "kind": "task_brief",
       "content_version": "1.0",
@@ -1676,7 +1676,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round11/manifest.json",
       "level": "D",
       "kind": "manifest",
       "iteration": "r11",
@@ -1684,7 +1684,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/scripts/apply_r11_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round11/scripts/apply_r11_facts.py",
       "level": "C",
       "kind": "apply_script",
       "content_version": "1.0",
@@ -1693,7 +1693,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.json",
+      "path": "labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.json",
       "level": "D",
       "kind": "research_output",
       "iteration": "r11",
@@ -1701,7 +1701,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/scripts/t023_roll_decay.py",
+      "path": "labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.py",
       "level": "C",
       "kind": "research_script",
       "content_version": "1.0",
@@ -1710,7 +1710,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/scripts/t024_proxy.json",
+      "path": "labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.json",
       "level": "D",
       "kind": "research_output",
       "iteration": "r11",
@@ -1718,7 +1718,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round11/scripts/t024_proxy.py",
+      "path": "labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.py",
       "level": "C",
       "kind": "research_script",
       "content_version": "1.0",
@@ -1727,7 +1727,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "games/dlt/iterations/round12/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round12/FINDINGS.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1737,7 +1737,7 @@
       "note": "r12 研究结论"
     },
     {
-      "path": "games/dlt/iterations/round12/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round12/HANDOFF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1747,7 +1747,7 @@
       "note": "r12→r13 交接"
     },
     {
-      "path": "games/dlt/iterations/round12/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round12/TASK_BRIEF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1757,7 +1757,7 @@
       "note": "r12 任务书（T-049/T-030/T-040）"
     },
     {
-      "path": "games/dlt/iterations/round12/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round12/manifest.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1767,7 +1767,7 @@
       "note": "r12 manifest"
     },
     {
-      "path": "games/dlt/iterations/round12/scripts/t030_effectiveness.py",
+      "path": "labs/lottery/studies/dlt/iterations/round12/scripts/t030_effectiveness.py",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -1777,7 +1777,7 @@
       "note": "T-030 三档标准写入"
     },
     {
-      "path": "games/dlt/iterations/round12/scripts/t049_holdout.json",
+      "path": "labs/lottery/studies/dlt/iterations/round12/scripts/t049_holdout.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1787,7 +1787,7 @@
       "note": "T-049 结果"
     },
     {
-      "path": "games/dlt/iterations/round12/scripts/t049_holdout.py",
+      "path": "labs/lottery/studies/dlt/iterations/round12/scripts/t049_holdout.py",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -1797,7 +1797,7 @@
       "note": "T-049 hold-out 评测"
     },
     {
-      "path": "games/dlt/iterations/round13/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round13/FINDINGS.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1807,7 +1807,7 @@
       "note": "r13 研究结论"
     },
     {
-      "path": "games/dlt/iterations/round13/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round13/HANDOFF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1817,7 +1817,7 @@
       "note": "r13 交接"
     },
     {
-      "path": "games/dlt/iterations/round13/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round13/TASK_BRIEF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1827,7 +1827,7 @@
       "note": "r13 任务书（T-051/T-044/T-045）"
     },
     {
-      "path": "games/dlt/iterations/round13/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round13/manifest.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1837,7 +1837,7 @@
       "note": "r13 manifest"
     },
     {
-      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.json",
+      "path": "labs/lottery/studies/dlt/iterations/round13/scripts/t051_walkforward.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1847,7 +1847,7 @@
       "note": "T-051 结果"
     },
     {
-      "path": "games/dlt/iterations/round13/scripts/t051_walkforward.py",
+      "path": "labs/lottery/studies/dlt/iterations/round13/scripts/t051_walkforward.py",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -1857,7 +1857,7 @@
       "note": "T-051 walk-forward 评测"
     },
     {
-      "path": "games/dlt/iterations/round14/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round14/FINDINGS.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1867,7 +1867,7 @@
       "note": "r14 研究结论"
     },
     {
-      "path": "games/dlt/iterations/round14/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round14/HANDOFF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1877,7 +1877,7 @@
       "note": "r14 交接"
     },
     {
-      "path": "games/dlt/iterations/round14/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round14/TASK_BRIEF.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "B",
@@ -1887,7 +1887,7 @@
       "note": "r14 任务书（T-052 待批准/T-053/T-054）"
     },
     {
-      "path": "games/dlt/iterations/round14/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round14/manifest.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1897,7 +1897,7 @@
       "note": "r14 manifest"
     },
     {
-      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.json",
+      "path": "labs/lottery/studies/dlt/iterations/round14/scripts/t053_shape_ratios.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1907,7 +1907,7 @@
       "note": "T-053 结果"
     },
     {
-      "path": "games/dlt/iterations/round14/scripts/t053_shape_ratios.py",
+      "path": "labs/lottery/studies/dlt/iterations/round14/scripts/t053_shape_ratios.py",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -1917,7 +1917,7 @@
       "note": "T-053 形态撞号比复验"
     },
     {
-      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
+      "path": "labs/lottery/studies/dlt/iterations/round14/scripts/t054_walkforward_ci.json",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "D",
@@ -1927,7 +1927,7 @@
       "note": "T-054 结果"
     },
     {
-      "path": "games/dlt/iterations/round14/scripts/t054_walkforward_ci.py",
+      "path": "labs/lottery/studies/dlt/iterations/round14/scripts/t054_walkforward_ci.py",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -1937,7 +1937,7 @@
       "note": "T-054 walk-forward 每步 CI"
     },
     {
-      "path": "games/dlt/iterations/round15/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round15/FINDINGS.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -1947,7 +1947,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round15/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round15/HANDOFF.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -1957,7 +1957,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round15/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round15/TASK_BRIEF.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -1967,7 +1967,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round15/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round15/manifest.json",
       "level": "D",
       "kind": "manifest",
       "content_version": null,
@@ -1977,7 +1977,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/TASK_BRIEF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round16/TASK_BRIEF.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -1987,7 +1987,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/FINDINGS.md",
+      "path": "labs/lottery/studies/dlt/iterations/round16/FINDINGS.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -1997,7 +1997,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/HANDOFF.md",
+      "path": "labs/lottery/studies/dlt/iterations/round16/HANDOFF.md",
       "level": "B",
       "kind": "doc",
       "content_version": "1.0",
@@ -2007,7 +2007,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/manifest.json",
+      "path": "labs/lottery/studies/dlt/iterations/round16/manifest.json",
       "level": "D",
       "kind": "manifest",
       "content_version": null,
@@ -2017,7 +2017,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/apply_r16_facts.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/apply_r16_facts.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2027,7 +2027,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/b2_fill_evidence_index.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/b2_fill_evidence_index.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2037,7 +2037,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t064_h002_segment.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2047,7 +2047,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t013_recalibrate_r09.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2057,7 +2057,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t028_recalibrate_r10.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2067,7 +2067,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t013_recalibrate_r09.json",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.json",
       "level": "D",
       "kind": "data",
       "content_version": null,
@@ -2077,7 +2077,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t028_recalibrate_r10.json",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.json",
       "level": "D",
       "kind": "data",
       "content_version": null,
@@ -2087,7 +2087,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t064_h002_segment.json",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.json",
       "level": "D",
       "kind": "data",
       "content_version": null,
@@ -2097,7 +2097,7 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/iterations/round16/scripts/t020_number_weight.py",
+      "path": "labs/lottery/studies/dlt/iterations/round16/scripts/t020_number_weight.py",
       "level": "C",
       "kind": "script",
       "content_version": "1.0",
@@ -2107,13 +2107,13 @@
       "status": "active"
     },
     {
-      "path": "games/dlt/manifest_v4_source.json",
+      "path": "labs/lottery/studies/dlt/manifest_v4_source.json",
       "level": "D",
       "kind": "source_manifest",
       "status": "active"
     },
     {
-      "path": "games/dlt/rules_history.md",
+      "path": "labs/lottery/studies/dlt/rules_history.md",
       "level": "A",
       "kind": "rules_history",
       "content_version": "1.1",
@@ -2129,7 +2129,7 @@
       "consumes_superseded": "historical"
     },
     {
-      "path": "games/dlt/strategy/STRATEGY_GUIDE.md",
+      "path": "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md",
       "level": "A",
       "kind": "doc",
       "content_version": "2.0",
@@ -2170,13 +2170,13 @@
       "follows_current": true
     },
     {
-      "path": "games/dlt/strategy/simulation_results.json",
+      "path": "labs/lottery/studies/dlt/strategy/simulation_results.json",
       "level": "D",
       "kind": "analysis_output",
       "status": "active"
     },
     {
-      "path": "games/dlt/strategy/strategy.json",
+      "path": "labs/lottery/studies/dlt/strategy/strategy.json",
       "level": "C",
       "kind": "contract",
       "version_ref": "schema_version",
@@ -2208,7 +2208,7 @@
       "follows_current": true
     },
     {
-      "path": "games/dlt/strategy/strategy_simulation.py",
+      "path": "labs/lottery/studies/dlt/strategy/strategy_simulation.py",
       "level": "D",
       "kind": "analysis_script",
       "status": "active",
@@ -2977,8 +2977,8 @@
     {
       "version": "1.1",
       "date": "2026-10-11",
-      "scope": "framework/",
-      "change": "跨注层（L3）从『只上报』升级为『可执行』，记为 framework_version 1.1。新增 framework/core/portfolio.py（Portfolio 一等公民 + evaluate_cross + judge_cross）；features.py 新增 CROSS_PRIMITIVES 独立注册表（5 个跨注原语），与单注原语分开注册、混用结构性拒收；game.yaml 与 strategy.json 新增 scope: single/cross 声明（config 2.0→2.1 / schema 1.0→1.1）；judge.classify_rules() 三路切分（single / cross / undeclared），'跨注'与'拼错'不再混为一谈；validate_strategy() 对未声明特征由 warning 升为 error，并对跨注规则做真样本冒烟执行。修复 1.0 的契约缺口：R-002 引用了从未声明、且全仓库无执行入口的跨注特征。登记文件 124 → 126。"
+      "scope": "platform/",
+      "change": "跨注层（L3）从『只上报』升级为『可执行』，记为 framework_version 1.1。新增 platform/core/portfolio.py（Portfolio 一等公民 + evaluate_cross + judge_cross）；features.py 新增 CROSS_PRIMITIVES 独立注册表（5 个跨注原语），与单注原语分开注册、混用结构性拒收；game.yaml 与 strategy.json 新增 scope: single/cross 声明（config 2.0→2.1 / schema 1.0→1.1）；judge.classify_rules() 三路切分（single / cross / undeclared），'跨注'与'拼错'不再混为一谈；validate_strategy() 对未声明特征由 warning 升为 error，并对跨注规则做真样本冒烟执行。修复 1.0 的契约缺口：R-002 引用了从未声明、且全仓库无执行入口的跨注特征。登记文件 124 → 126。"
     },
     {
       "version": "1.0",
@@ -2989,8 +2989,8 @@
     {
       "version": "1.0",
       "date": "2026-10-10",
-      "scope": "framework/",
-      "change": "单注层通用架构落地（framework/core/ 6 模块 / 21 原语），记为 framework_version 1.0。"
+      "scope": "platform/",
+      "change": "单注层通用架构落地（platform/core/ 6 模块 / 21 原语），记为 framework_version 1.0。"
     },
     {
       "version": "1.2",

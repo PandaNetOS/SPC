@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """影子彩种回归测试 —— 无需 pytest，直接 `python tests/test_shadow_game.py`
 
 ## 这个文件守的是什么
 
 本仓库的**唯一硬标准**是：
 
-> 加入第二个彩种，不得修改 `framework/` 或 `src/` 的任何一行代码。
+> 加入第二个彩种，不得修改 `platform/` 或 `src/` 的任何一行代码。
 
 这条标准此前**从未被验证过**（`memory/workbench/TODO.md` 的 T-031，P3）。
 原因很现实：仓库里只有一个彩种（dlt），而"只有一个实例"恰恰是
@@ -13,7 +13,7 @@
 `if game == "dlt"` 这种代码就永远不会被发现。
 
 本文件补的就是这个缺口：造一个**处处不同**的第二个彩种（影子彩种 `shadow`），
-让它走完全部真实路径，然后断言 `framework/` 与 `src/` 里没有它的痕迹。
+让它走完全部真实路径，然后断言 `platform/` 与 `src/` 里没有它的痕迹。
 
 ## 为什么叫"影子"
 
@@ -35,7 +35,7 @@
 ## 本文件的三段命题
 
 1. **能跑通** —— 装载 / 校验 / 求值 / 判定 / 跨注 / 生成，全链路在影子彩种上可用
-2. **没作弊** —— `framework/` 与 `src/` 的代码里没有 dlt 的区名、特征名、号码池常量
+2. **没作弊** —— `platform/` 与 `src/` 的代码里没有 dlt 的区名、特征名、号码池常量
 3. **真通用** —— 换个区数（单区变体）照样能跑，不靠"恰好两区"
 """
 from __future__ import annotations
@@ -89,7 +89,7 @@ from spc.game import (  # noqa: E402
 
 _FIX = os.path.join(_HERE, "fixtures", "shadow")
 _DLT_CFG = yaml.safe_load(
-    open(os.path.join(_ROOT, "games/dlt/game.yaml"), encoding="utf-8")
+    open(os.path.join(_ROOT, "labs/lottery/studies/dlt/game.yaml"), encoding="utf-8")
 )
 
 _PASS = 0
@@ -134,7 +134,7 @@ def section(t: str) -> None:
 # 影子彩种必须走 **真实的** `games/<id>/game.yaml` 路径，否则测的是"喂个 dict 给函数"
 # 而不是"接入第二个彩种"。所以这里造一个临时仓库根，把夹具复制成 games/shadow/。
 #
-# validate_game() 会按 repo_root 拼 `spec/` 与 `framework/` 的路径，
+# validate_game() 会按 repo_root 拼 `spec/` 与 `platform/` 的路径，
 # 因此这两个目录也要一并复制（省得它只能降级成 warning）。
 
 def _make_repo_root() -> str:
@@ -489,7 +489,7 @@ def _scan(pkg_dir: str) -> tuple[set[str], set[int]]:
 
 
 def test_iron_law() -> None:
-    section("9. 铁律：framework/ 与 src/ 里没有 dlt 的任何痕迹")
+    section("9. 铁律：platform/ 与 src/ 里没有 dlt 的任何痕迹")
 
     packages = [
         os.path.join(_ROOT, "framework", "core"),
@@ -510,7 +510,7 @@ def test_iron_law() -> None:
         "front_sum", "back_sum", "front_span",
     }
     hit = sorted(forbidden_str & strs)
-    check(not hit, f"framework/core + src/spc 代码里不含 dlt 专有字符串"
+    check(not hit, f"platform/core + src/spc 代码里不含 dlt 专有字符串"
                    + ("" if not hit else f"：{hit}"))
 
     # 号码池常量。为什么只查这三个：2 / 5 这类小整数在 `len(s) < 2`、
@@ -534,7 +534,7 @@ def test_iron_law() -> None:
                 elif isinstance(node, ast.ImportFrom) and node.module:
                     imported.add(node.module)
     check(not any(m.startswith("games") for m in imported),
-          f"framework/ 与 src/ 不 import games/ 下的模块（共 {len(imported)} 个 import）")
+          f"platform/ 与 src/ 不 import games/ 下的模块（共 {len(imported)} 个 import）")
 
     # 反向自证：本测试用的两套配置彼此独立，且**都没改过**框架
     check(len(single_feature_keys(CFG)) == 5 and len(single_feature_keys(_DLT_CFG)) == 12,

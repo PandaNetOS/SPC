@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.memory — 记忆层接口
 
-本模块是 `framework/tools/memory.py` 的再导出 + 面向仓库的便捷封装。
+本模块是 `platform/tools/memory.py` 的再导出 + 面向仓库的便捷封装。
 
 分工：
-  - `framework/tools/memory.py` —— 通用实现（彩种无关，可被外部复用）
+  - `platform/tools/memory.py` —— 通用实现（彩种无关，可被外部复用）
   - `src/spc/memory.py` —— 本仓库的绑定（自动定位仓库根）
 
 用法：
@@ -17,13 +17,13 @@ from __future__ import annotations
 import os
 import sys
 
-# 让 framework/tools 可导入（框架层不在 src/ 下）
+# 让 platform/tools 可导入（框架层不在 src/ 下）
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-_TOOLS = os.path.join(_ROOT, "framework", "tools")
+_TOOLS = os.path.join(_ROOT, "platform", "tools")
 if _TOOLS not in sys.path:
     sys.path.insert(0, _TOOLS)
 
-from memory import (  # noqa: E402  (framework/tools/memory.py)
+from memory import (  # noqa: E402  (platform/tools/memory.py)
     Memory as _Memory,
     MemoryError,
     RedLineViolation,

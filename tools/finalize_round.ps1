@@ -1,4 +1,4 @@
-# finalize_round.ps1 — Generate manifest draft from git diff
+﻿# finalize_round.ps1 — Generate manifest draft from git diff
 # Usage: .\finalize_round.ps1 -RoundName round18 [-BaseCommit HEAD~N]
 
 param(
@@ -19,7 +19,7 @@ $changedFiles | ForEach-Object { Write-Host "  $_" }
 
 # 2. Detect strategy update
 $strategyUpdated = $false
-foreach ($f in @("games/dlt/strategy/strategy.json", "games/dlt/strategy/STRATEGY_GUIDE.md")) {
+foreach ($f in @("labs/lottery/studies/dlt/strategy/strategy.json", "labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md")) {
     if ($changedFiles -contains $f) {
         $strategyUpdated = $true
         Write-Host "  [!] Strategy file changed: $f" -ForegroundColor Red
@@ -59,8 +59,8 @@ $manifest = [ordered]@{
     inputs = [ordered]@{
         data_version = "dlt_full_2933"
         upstream_fact_ids = @()
-        previous_handoff = "games/dlt/iterations/<prev>/HANDOFF.md"
-        task_brief = "games/dlt/iterations/$RoundName/TASK_BRIEF.md"
+        previous_handoff = "labs/lottery/studies/dlt/iterations/<prev>/HANDOFF.md"
+        task_brief = "labs/lottery/studies/dlt/iterations/$RoundName/TASK_BRIEF.md"
     }
     outputs = [ordered]@{
         new_fact_ids = @()
@@ -76,7 +76,7 @@ $manifest = [ordered]@{
     deliverables = $deliverables
 }
 
-$draftPath = "games/dlt/iterations/$RoundName/manifest.json.draft"
+$draftPath = "labs/lottery/studies/dlt/iterations/$RoundName/manifest.json.draft"
 $manifest | ConvertTo-Json -Depth 10 | Out-File $draftPath -Encoding UTF8
 Write-Host "`n[4/4] Draft: $draftPath" -ForegroundColor Green
 

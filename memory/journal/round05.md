@@ -1,10 +1,10 @@
-# journal — round05 叙事
+﻿# journal — round05 叙事
 
 > **版本**：`1.0` ｜ 轮次 `r05` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **性质**：本轮的完整叙事（不是证据层，也不是交接层）。
-> 证据在 `games/dlt/iterations/round05/FINDINGS.md`，交接在 `HANDOFF.md`，机器登记在 `manifest.json`。
+> 证据在 `labs/lottery/studies/dlt/iterations/round05/FINDINGS.md`，交接在 `HANDOFF.md`，机器登记在 `manifest.json`。
 
 ---
 

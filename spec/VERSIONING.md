@@ -1,4 +1,4 @@
-# VERSIONING.md — 版本与兼容策略
+﻿# VERSIONING.md — 版本与兼容策略
 
 > **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -66,7 +66,7 @@
 
 ### 为什么这么严
 
-`games/dlt/iterations/round02/known_errors.md` 记录了 E6（前视偏差）：
+`labs/lottery/studies/dlt/iterations/round02/known_errors.md` 记录了 E6（前视偏差）：
 用全样本统计量做"预测"会得出看似显著、实则无用的结论。
 数据层一旦被静默修改，所有建立在它之上的结论都会**在无人察觉的情况下失效**。
 SHA256 是这个链条上唯一廉价的断点探测器。
@@ -94,7 +94,7 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 | 日期 | 变更 | 影响 |
 |---|---|---|
 | 2026-10-10 | 初始契约：`fact` / `strategy` / `game_config` / `iteration` 四个 schema，均 v1.0 / 1.0 | 建立仓库基线 |
-| 2026-10-10 | **`game_config` 主版本 1.0 → 2.0**：`features[]` 新增 `primitive`（枚举于框架原语注册表）、`args`（含 `zone` / `threshold` / `lo` / `hi` / `modulus`）、`note`；`formula` 降级为纯注释字段（不参与求值） | **破坏性**（若消费方曾按 `formula` 字符串求值，须改为按 `primitive` + `args` 求值）。**旧 config 仍可读**，`framework/core/evaluate.py` 会跳过无 `primitive` 的特征并显式提示 |
+| 2026-10-10 | **`game_config` 主版本 1.0 → 2.0**：`features[]` 新增 `primitive`（枚举于框架原语注册表）、`args`（含 `zone` / `threshold` / `lo` / `hi` / `modulus`）、`note`；`formula` 降级为纯注释字段（不参与求值） | **破坏性**（若消费方曾按 `formula` 字符串求值，须改为按 `primitive` + `args` 求值）。**旧 config 仍可读**，`platform/core/evaluate.py` 会跳过无 `primitive` 的特征并显式提示 |
 | 2026-10-10 | **`strategy.schema.json` 次版本提升**：`machine_rule.predicate` 新增受限 DSL `pattern`（`<feature_key> <op> <literal>`，同连接词 `and`/`or`，禁括号/嵌套/混用/右侧非字面量） | **收紧校验**。原为自由字符串，现非法表达式在校验阶段被拒收。已发布的 `dlt` 策略两条 predicate 均合规 |
 | 2026-10-10 | **`iteration.schema.json` 次版本提升**：`started_at` 放宽为可空；`new_lesson_ids` pattern 由 `^L-[0-9]{2}$` 放宽为 `^L-?[0-9]{1,2}$`（仓内实际写法为 `L1`..`L9` 无补零）；新增可选字段 `planned_tasks`（下轮任务计划）与 `outputs_planned` | 向后兼容 |
 | 2026-10-10 | **`fact.schema.json` 次版本提升**：`evidence.effect` 放宽为 `["object","null"]` | 向后兼容（部分结论无效应量） |
@@ -116,7 +116,7 @@ F-0007 (round02, status=superseded, superseded_by=F-0019)
 **升级检查清单**：
 
 1. 每个 `formula` 对应的计算能否由框架 21 个原语之一表达？
-   `python cli/main.py games` 后查 `framework/core/README.md` 的原语表
+   `python cli/main.py games` 后查 `platform/core/README.md` 的原语表
 2. 参数落在 `args` 里，**不要**写进 `formula`
 3. 多区彩种必须显式写 `args.zone`；单区彩种可省略
 4. 升级后跑 `python cli/main.py validate --game <id> -v`，
