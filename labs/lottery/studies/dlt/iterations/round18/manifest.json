@@ -29,7 +29,7 @@
       "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py：稳健复核脚本",
       "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json：稳健复核结果",
       "labs/lottery/studies/dlt/strategy/strategy.json：R-005 修正",
-      "memory/facts/FACTS.jsonl：F-0049 更新（claim/caveats/evidence）"
+      "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl：F-0049 更新（claim/caveats/evidence）"
     ],
     "framework_revision": {
       "proposed": [],
@@ -47,6 +47,6 @@
     {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py", "kind": "script"},
     {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json", "kind": "data"},
     {"path": "labs/lottery/studies/dlt/strategy/strategy.json", "kind": "config"},
-    {"path": "memory/facts/FACTS.jsonl", "kind": "data"}
+    {"path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl", "kind": "data"}
   ]
 }

@@ -154,7 +154,7 @@
 | 文件 | 原因 |
 |---|---|
 | `VERSION_INDEX.md` | 自身就是索引，头部已有全局版本信息 |
-| `memory/facts/INDEX.md` | 由 `cli index` 生成，版本在生成器里加 |
+| `labs/lottery/studies/dlt/memory/facts/INDEX.md` | 由 `cli index` 生成，版本在生成器里加 |
 | 所有 `.py` | 见 §3.2 |
 | `spec/*.schema.json` | 见 §3.3 |
 
@@ -303,7 +303,7 @@ current_iteration 只作为 stats 打印、从不参与判定。
 
 | 该标 `true` | 不该标 |
 |---|---|
-| 入口 / 速览 / 索引 / 策略 / 事实库等**每轮必更或必复核**者：`README.md`、`AI_CONTEXT.md`、`AI_MAP.md`、`DEPENDENCY_MAP.md`、`FLYWHEEL_HEALTH.md`、`VERSION_INDEX.md`、`versions.json`、`OPEN_QUESTIONS.md`、`TODO.md`、`FACTS.jsonl`、`STRATEGY_GUIDE.md`、`strategy.json` | 轮次产物（`roundNN/*`）与 `memory/journal/` —— 它们的轮次**天生属于产出那一轮**，强制对齐会抹掉真实信息；长期稳定的文档 —— 标了会每轮被迫假升级 |
+| 入口 / 速览 / 索引 / 策略 / 事实库等**每轮必更或必复核**者：`README.md`、`AI_CONTEXT.md`、`AI_MAP.md`、`DEPENDENCY_MAP.md`、`FLYWHEEL_HEALTH.md`、`VERSION_INDEX.md`、`versions.json`、`OPEN_QUESTIONS.md`、`TODO.md`、`FACTS.jsonl`、`STRATEGY_GUIDE.md`、`strategy.json` | 轮次产物（`roundNN/*`）与 `labs/lottery/studies/dlt/memory/journal/` —— 它们的轮次**天生属于产出那一轮**，强制对齐会抹掉真实信息；长期稳定的文档 —— 标了会每轮被迫假升级 |
 
 **为什么不做「落后 N 轮就告警」的泛化规则**：实测一次刷出 26 条（限 `.md` 时）
 ／69 条（含代码）**无操作价值**的告警，会淹没真正的错误信号

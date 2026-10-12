@@ -134,7 +134,7 @@ df = pd.read_csv("labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
 
 ## 4. 动手前必读：方法论纪律
 
-**先读 `memory/lessons/LESSONS.md`** —— 它记录了 14 条已付学费的错误。
+**先读 `labs/lottery/studies/dlt/memory/lessons/LESSONS.md`** —— 它记录了 14 条已付学费的错误。
 对照速查：
 
 | id | 一句话禁令 | 检查方式 |
@@ -180,7 +180,7 @@ df = pd.read_csv("labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
 
 ## 5. 已经确定的结论（速览）
 
-**权威源是 `memory/facts/FACTS.jsonl`（49 条）**，此处只列最重要的几条。
+**权威源是 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（49 条）**，此处只列最重要的几条。
 引用前**必读该条的 `caveats`**。
 
 | id | 结论 | 置信度 |
@@ -304,11 +304,11 @@ df = pd.read_csv("labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
 【开始一轮】
 1. 读本文件（AI_CONTEXT.md）
 2. 读 VERSION_INDEX.md §0 + §2-A               ← ★ 先知道「我读的是哪一版」
-3. 读 memory/lessons/LESSONS.md               ← ★ 最重要的一步
+3. 读 labs/lottery/studies/dlt/memory/lessons/LESSONS.md               ← ★ 最重要的一步
 4. 读 games/<game>/iterations/roundNN/TASK_BRIEF.md   ← 这轮要做什么
-5. 读 memory/facts/INDEX.md                   ← 已有结论速览
-6. 读 memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md ← 从哪继续
-7. 需要精确数字时读 memory/facts/FACTS.jsonl（注意 caveats）
+5. 读 labs/lottery/studies/dlt/memory/facts/INDEX.md                   ← 已有结论速览
+6. 读 labs/lottery/studies/dlt/memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md ← 从哪继续
+7. 需要精确数字时读 labs/lottery/studies/dlt/memory/facts/FACTS.jsonl（注意 caveats）
 
 【做分析】
 8. 严格套用 LESSONS 的检测方法；每个结论写可复现脚本

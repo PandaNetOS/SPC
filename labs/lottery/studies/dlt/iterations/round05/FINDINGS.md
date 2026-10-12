@@ -265,7 +265,7 @@ $PY labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.py
 # 落地（幂等，可重复运行）
 $PY labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py
 $PY cli/main.py rehash                # 新结论的证据锚定
-$PY cli/main.py index                 # 重生成 memory/facts/INDEX.md
+$PY cli/main.py index                 # 重生成 labs/lottery/studies/dlt/memory/facts/INDEX.md
 
 # 校验
 $PY cli/main.py validate --all -v
@@ -283,7 +283,7 @@ $PY tests/test_core.py
 |---|---|---|
 | `round05/scripts/bet_structure.py` | `bet_structure.json` | ✅ 已跑通（S1–S5 全链路；含封顶/nocap 双口径 + n0 敏感性） |
 | `round05/scripts/timing_weekday.py` | `timing_weekday.json` | ✅ 已跑通（星期×撞号 NB2 + Bootstrap + AR(1) + 节假日） |
-| `round05/scripts/apply_r05_facts.py` | 更新 `memory/facts/FACTS.jsonl` | ✅ 已执行（25 → 32 条；新增 7 条） |
+| `round05/scripts/apply_r05_facts.py` | 更新 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | ✅ 已执行（25 → 32 条；新增 7 条） |
 
 ---
 

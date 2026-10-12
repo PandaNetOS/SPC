@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """versions.py — 版本索引的读取与一致性校验
 
 核心职责：
@@ -185,7 +185,7 @@ def verify_versions(repo_root: str) -> dict:
 
         # 1.3 A/B 级 .md 必须有文件内版本行且与索引一致
         if lvl in ("A", "B") and path.endswith(".md") and cv:
-            if path in ("VERSION_INDEX.md", "memory/facts/INDEX.md"):
+            if path in ("VERSION_INDEX.md", "labs/lottery/studies/dlt/memory/facts/INDEX.md"):
                 continue  # 派生物，版本由生成器负责
             n_verline_need += 1
             got = _file_version_line(full)

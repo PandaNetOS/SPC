@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """tools/derive_tasks.py — 待办池任务源派生（r16，★源自救）
 
 ## 为什么要有这个工具
@@ -13,8 +13,8 @@ r15 收尾时待办池被消耗到**可执行候选 = 0**，任务书只能输�
 
 | 源 | 取什么 | 说明 |
 |---|---|---|
-| `memory/workbench/OPEN_QUESTIONS.md` | 状态 = `open` 的 Q-nnn | 问题本身就是任务定义（含方法/验收判据） |
-| `memory/workbench/HYPOTHESES.md` | 状态 = `unverified` / `partial` 的 H-nnn | 未验证假设 = 未做的检验 |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | 状态 = `open` 的 Q-nnn | 问题本身就是任务定义（含方法/验收判据） |
+| `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` | 状态 = `unverified` / `partial` 的 H-nnn | 未验证假设 = 未做的检验 |
 | `python cli/main.py validate --all` 的警告 | 按类别归并 | 告警清单即欠账清单 |
 
 ## 设计取舍

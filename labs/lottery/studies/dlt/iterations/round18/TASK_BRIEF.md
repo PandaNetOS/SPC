@@ -1,4 +1,4 @@
-# TASK_BRIEF —— round18 任务书
+﻿# TASK_BRIEF —— round18 任务书
 
 > 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成
 > （派生物草稿，人工确认后可改）。本轮必做 **1** 个（`--top 3` 可调）。
@@ -12,7 +12,7 @@
 
 ## 本轮必做任务（引用 TODO 原条目）
 
-- [ ] **T-063** —— 来源：`memory/workbench/TODO.md` 的 `P4` 段（评分 30）。
+- [ ] **T-063** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `P4` 段（评分 30）。
 
 ## ⚠ 资源缺口型备选（不占本批预算，数据就绪后自动进入候选）
 

@@ -536,7 +536,7 @@ def test_versions() -> None:
         pass
 
     _tmp = tempfile.mkdtemp(prefix="sc_fresh_")
-    # 最小结论台账：F-0099 已被 F-0100 取代（必须放在 memory/facts/ 固定路径）
+    # 最小结论台账：F-0099 已被 F-0100 取代（必须放在 labs/lottery/studies/dlt/memory/facts/ 固定路径）
     _os.makedirs(_os.path.join(_tmp, "memory", "facts"), exist_ok=True)
     with open(_os.path.join(_tmp, "memory", "facts", "FACTS.jsonl"), "w", encoding="utf-8") as f:
         f.write(_json.dumps({

@@ -30,7 +30,7 @@ python cli/main.py new-game <game_id>
 
 - 不需要 → ✅ 框架分离成立
 - 需要 → ⚠️ **停下**。这是框架缺了抽象，不是彩种的锅。补进框架，并记入
-  `memory/lessons/LESSONS.md`。
+  `labs/lottery/studies/dlt/memory/lessons/LESSONS.md`。
 
 ## 各彩种目录速览
 
@@ -66,7 +66,7 @@ games/
 | `memory/` 的全局结论（`game: "global"`） | 该彩种专属结论（`game: "<id>"`） |
 | `src/` + `cli/` 全部代码 | `iterations/` 与 `strategy/` |
 
-`memory/facts/FACTS.jsonl` 里的 `game` 字段区分归属：
+`labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` 里的 `game` 字段区分归属：
 
 - `"global"` —— 跨彩种成立的结论（如 F-0001 概率不可变）
 - `"dlt"` —— 仅对该彩种成立的结论（如 F-0003 连号人群更密）

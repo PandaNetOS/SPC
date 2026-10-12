@@ -273,7 +273,7 @@
 
 - [x] **T-041** 自动化：`cli/main.py index` 从 `FACTS.jsonl` 重生成 `INDEX.md` ✅ **已实现（误报，命令位早已落地）**
       `cli/main.py` 的 `index` 子命令（`cmd_index` → `mem.write_index()`）**已实现**，
-      `memory/facts/INDEX.md` 由 CLI 生成（`v1.2`，勿手改）。本条为误报，清账。
+      `labs/lottery/studies/dlt/memory/facts/INDEX.md` 由 CLI 生成（`v1.2`，勿手改）。本条为误报，清账。
 
 - [x] **T-042** 校验器增强：证据哈希 ✅ **r03 框架迭代·提案 C 已落地**
       `src/spc/evidence.py` 双锚定（事实级 `evidence.source_sha256` + 策略级 `provenance.evidence_hash`）；
@@ -298,8 +298,8 @@
 
 ## 已完成（本轮）
 
-> r04 开始时已按约定清空本节。r03 的完成项见 `memory/journal/round03.md`；
-> r04 的完成项见 `memory/journal/round04.md` 与 `labs/lottery/studies/dlt/iterations/round04/HANDOFF.md` §1。
+> r04 开始时已按约定清空本节。r03 的完成项见 `labs/lottery/studies/dlt/memory/journal/round03.md`；
+> r04 的完成项见 `labs/lottery/studies/dlt/memory/journal/round04.md` 与 `labs/lottery/studies/dlt/iterations/round04/HANDOFF.md` §1。
 
 ---
 

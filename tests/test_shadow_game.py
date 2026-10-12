@@ -7,7 +7,7 @@
 
 > 加入第二个彩种，不得修改 `platform/` 或 `src/` 的任何一行代码。
 
-这条标准此前**从未被验证过**（`memory/workbench/TODO.md` 的 T-031，P3）。
+这条标准此前**从未被验证过**（`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 T-031，P3）。
 原因很现实：仓库里只有一个彩种（dlt），而"只有一个实例"恰恰是
 最容易让通用性假象存活的状态 —— 只要你从没接过第二个，
 `if game == "dlt"` 这种代码就永远不会被发现。

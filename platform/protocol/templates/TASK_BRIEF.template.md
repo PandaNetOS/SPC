@@ -1,4 +1,4 @@
-# TASK_BRIEF.md — roundNN 任务书（模板）
+﻿# TASK_BRIEF.md — roundNN 任务书（模板）
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -104,8 +104,8 @@ Bootstrap 比值与 95%CI。
 |---|---|---|
 | 脚本 | `games/<game>/iterations/roundNN/scripts/*.py` | 每个数字对应一个脚本 |
 | 发现 | `games/<game>/iterations/roundNN/FINDINGS.md` | 证据与数字 |
-| 结论 | `memory/facts/FACTS.jsonl`（追加 `F-00xx` 段） | 预估 2–4 条 |
-| 问题 | `memory/workbench/OPEN_QUESTIONS.md`（新增 `Q-0xx`） | 从 caveats 转化 |
+| 结论 | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（追加 `F-00xx` 段） | 预估 2–4 条 |
+| 问题 | `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md`（新增 `Q-0xx`） | 从 caveats 转化 |
 | 交接 | `games/<game>/iterations/roundNN/HANDOFF.md` | 含下轮建议 |
 
 ---

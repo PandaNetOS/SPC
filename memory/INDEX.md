@@ -1,4 +1,4 @@
-# memory/ — 记忆层
+﻿# memory/ — 记忆层
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -45,13 +45,13 @@
     ↓
 读 games/<id>/iterations/roundNN/TASK_BRIEF.md   ← 这轮要做什么
     ↓
-读 memory/lessons/LESSONS.md                      ← ★ 先读这个，避免重犯
+读 labs/lottery/studies/dlt/memory/lessons/LESSONS.md                      ← ★ 先读这个，避免重犯
     ↓
-读 memory/facts/INDEX.md                          ← 速览已有结论
+读 labs/lottery/studies/dlt/memory/facts/INDEX.md                          ← 速览已有结论
     ↓（需要精确数字时）
-读 memory/facts/FACTS.jsonl                       ← 权威源，注意 caveats
+读 labs/lottery/studies/dlt/memory/facts/FACTS.jsonl                       ← 权威源，注意 caveats
     ↓
-读 memory/workbench/{OPEN_QUESTIONS,HYPOTHESES}.md ← 从哪继续
+读 labs/lottery/studies/dlt/memory/workbench/{OPEN_QUESTIONS,HYPOTHESES}.md ← 从哪继续
 
 【做完一轮】写 HANDOFF.md → 生成下轮 TASK_BRIEF.md
     ↓

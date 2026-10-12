@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 """tools/render_task_brief.py — 下轮任务书生成器（B+G 升级）。
 
-从 memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP-N 与
+从 labs/lottery/studies/dlt/memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP-N 与
 下轮任务书草稿 —— 把「AI 恰好想到挑哪个」变成可机械复核的排序。
 
 评分（B+G：TODO 条目加 value 字段，0-100；无 value 时按 P 级基础分）：
@@ -153,7 +153,7 @@ def _render_brief(root: str, items: list[dict], rnd: int, top_n: int = _DEFAULT_
         src = f"`{it['priority']}` 段（评分 {it['score']}）"
         if it.get("resource"):
             src += f"，⚠ 资源依赖: {it['resource']}"
-        lines.append(f"- [ ] **{it['tid']}** —— 来源：`memory/workbench/TODO.md` 的 {src}。")
+        lines.append(f"- [ ] **{it['tid']}** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 {src}。")
     if resource_waiting:
         lines += [
             "",

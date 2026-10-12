@@ -286,7 +286,7 @@ cli/  →  src/spc/  →  platform/core/  →  (无依赖)
 
 - ❌ 不改 `strategy.json` 的 `rules` 内容（规则是研究产物）
 - ❌ 不迁移 `strategy_simulation.py`（未发生复用）
-- ❌ 不动 `memory/facts/FACTS.jsonl`（本轮无新结论）
+- ❌ 不动 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（本轮无新结论）
 - ❌ 不新增 Q-009（属 D4）
 - ❌ 不建 Web UI
 
@@ -301,7 +301,7 @@ cli/  →  src/spc/  →  platform/core/  →  (无依赖)
 | D1 | `features` 改造方式 | **B 原语注册表** | `platform/core/features.py`（21 个原语）+ `labs/lottery/studies/dlt/game.yaml`（11 个特征改写） |
 | D2 | 是否提供求值器 | **提供参考实现** | `platform/core/judge.py`；`docs/CONSUMING.md` §6 立场已改写 |
 | D3 | `predicate` DSL 强度 | **弱 DSL** | `spec/strategy.schema.json` 的 `pattern` + `platform/core/judge.py` 的 `parse_predicate()` |
-| D4 | 是否同时补 Q-009 | **分开做**（架构已落地，Q-009 仍未写入） | `memory/workbench/OPEN_QUESTIONS.md` 待补 |
+| D4 | 是否同时补 Q-009 | **分开做**（架构已落地，Q-009 仍未写入） | `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` 待补 |
 
 ### 10.2 与提案的偏差
 

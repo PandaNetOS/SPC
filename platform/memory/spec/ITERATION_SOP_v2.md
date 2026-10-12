@@ -91,7 +91,7 @@ revision 必须落到 status ∈ {superseded, refuted}（validate 强制）。
 ## 7. 记忆压缩（每 5 轮一次，`platform/tools/compress_memory.py --write`）
 
 - 只读 + 生成视图，**不移动/不删除数据**（审计留痕优先）。
-- 产物：`memory/facts/ACTIVE.md`（当前有效结论清单，与台账分离解决信噪比）
+- 产物：`labs/lottery/studies/dlt/memory/facts/ACTIVE.md`（当前有效结论清单，与台账分离解决信噪比）
   + merge 候选（同 category+claim_type ≥3 条）+ 到期清单。
 
 ## 8. 收尾清单（每轮必过）

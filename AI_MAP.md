@@ -54,29 +54,29 @@
 
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
-- `memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
-- `memory/facts/FACTS.jsonl` — r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47
-- `memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
-- `memory/journal/round02.md` — 整理入库轮
-- `memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
-- `memory/journal/round04.md`
-- `memory/journal/round05.md` — 叙事：R-002 量化不成立 + H-005 证伪
-- `memory/journal/round06.md` — r06 叙事（元层轮）
-- `memory/journal/round07.md` — r07 叙事（研究轮）
-- `memory/journal/round08.md` — 体系升级批执行日志
-- `memory/journal/round09.md` — 策略量化轮执行日志
-- `memory/journal/round10.md` — r10 执行日志
-- `memory/journal/round11.md` — r11 执行日志（含 schema 踩坑序列与 BOM 根治）
-- `memory/journal/round12.md` — r12 执行日志
-- `memory/journal/round13.md` — r13 执行日志
-- `memory/journal/round14.md` — r14 执行日志
-- `memory/journal/round15.md` — r15 执行日志（治理轮）
-- `memory/journal/round16.md` — r16 执行日志（告警清零 + 任务源机制轮）
-- `memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
-- `memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
-- `memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
-- `memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
-- `memory/workbench/TODO.md` — r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08…
+- `labs/lottery/studies/dlt/memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
+- `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` — r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47
+- `labs/lottery/studies/dlt/memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
+- `labs/lottery/studies/dlt/memory/journal/round02.md` — 整理入库轮
+- `labs/lottery/studies/dlt/memory/journal/round03.md` — 复核轮（含 1 次自我纠错）
+- `labs/lottery/studies/dlt/memory/journal/round04.md`
+- `labs/lottery/studies/dlt/memory/journal/round05.md` — 叙事：R-002 量化不成立 + H-005 证伪
+- `labs/lottery/studies/dlt/memory/journal/round06.md` — r06 叙事（元层轮）
+- `labs/lottery/studies/dlt/memory/journal/round07.md` — r07 叙事（研究轮）
+- `labs/lottery/studies/dlt/memory/journal/round08.md` — 体系升级批执行日志
+- `labs/lottery/studies/dlt/memory/journal/round09.md` — 策略量化轮执行日志
+- `labs/lottery/studies/dlt/memory/journal/round10.md` — r10 执行日志
+- `labs/lottery/studies/dlt/memory/journal/round11.md` — r11 执行日志（含 schema 踩坑序列与 BOM 根治）
+- `labs/lottery/studies/dlt/memory/journal/round12.md` — r12 执行日志
+- `labs/lottery/studies/dlt/memory/journal/round13.md` — r13 执行日志
+- `labs/lottery/studies/dlt/memory/journal/round14.md` — r14 执行日志
+- `labs/lottery/studies/dlt/memory/journal/round15.md` — r15 执行日志（治理轮）
+- `labs/lottery/studies/dlt/memory/journal/round16.md` — r16 执行日志（告警清零 + 任务源机制轮）
+- `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
+- `platform/memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
+- `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
+- `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
+- `labs/lottery/studies/dlt/memory/workbench/TODO.md` — r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08…
 
 ## 策略输出
 - `labs/lottery/studies/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0

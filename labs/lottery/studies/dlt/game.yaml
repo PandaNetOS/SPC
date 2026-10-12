@@ -389,7 +389,7 @@ features:
 
 # ---------------------------------------------------------------- 奖金模型
 # ⚠️ 规则变更频繁：跨 epoch 不可直接比较奖金金额。
-#    详见 rules_history.md，以及 memory/lessons/LESSONS.md 的 L9。
+#    详见 rules_history.md，以及 labs/lottery/studies/dlt/memory/lessons/LESSONS.md 的 L9。
 prize_model:
   current_epoch: E6
   return_rate: 0.51

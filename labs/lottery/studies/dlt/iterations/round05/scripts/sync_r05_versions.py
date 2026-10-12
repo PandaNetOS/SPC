@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """sync_r05_versions.py — 同步工作台文件版本行 + README 树标注 + versions.json iteration。"""
 import io, sys, os, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
@@ -39,9 +39,9 @@ vp = os.path.join(ROOT, "versions.json")
 v = json.load(open(vp, encoding="utf-8"))
 for e in v["entries"]:
     if e["path"] in [
-        "memory/workbench/TODO.md",
-        "memory/workbench/HYPOTHESES.md",
-        "memory/workbench/OPEN_QUESTIONS.md",
+        "labs/lottery/studies/dlt/memory/workbench/TODO.md",
+        "labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md",
+        "labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md",
         "AI_CONTEXT.md",
         "README.md",
     ]:

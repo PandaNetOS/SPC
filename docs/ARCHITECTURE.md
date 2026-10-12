@@ -137,12 +137,12 @@ L3 Portfolio   portfolio.py   ★ 2.1 起已实现：整组一等公民 + 跨注
 
 | 记忆 | 半衰期 | 存储 | 权威性 |
 |---|---|---|---|
-| 结论台账 | 长期（有状态机） | `memory/facts/FACTS.jsonl` | **权威源** |
-| 教训库 | 永久（只增不删） | `memory/lessons/LESSONS.md` | **最高** |
-| 迭代日志 | 中（一轮一份） | `memory/journal/roundNN.md` | 过程记录 |
-| 工作记忆 | 短（每轮清空重构） | `memory/workbench/` | 待验证 |
+| 结论台账 | 长期（有状态机） | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | **权威源** |
+| 教训库 | 永久（只增不删） | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | **最高** |
+| 迭代日志 | 中（一轮一份） | `labs/lottery/studies/dlt/memory/journal/roundNN.md` | 过程记录 |
+| 工作记忆 | 短（每轮清空重构） | `labs/lottery/studies/dlt/memory/workbench/` | 待验证 |
 
-`memory/facts/INDEX.md` 是**派生物**，由 CLI 从 JSONL 生成，**不要手改**。
+`labs/lottery/studies/dlt/memory/facts/INDEX.md` 是**派生物**，由 CLI 从 JSONL 生成，**不要手改**。
 
 ## 自我迭代的三个机械传导
 
@@ -150,7 +150,7 @@ L3 Portfolio   portfolio.py   ★ 2.1 起已实现：整组一等公民 + 跨注
 
 1. **caveats → 开放问题**
    每条结论的 `caveats` 非空被校验器强制。每条 caveat 转成一个
-   `memory/workbench/OPEN_QUESTIONS.md` 条目，进 `TODO.md`，带脚本路径与验收判据。
+   `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` 条目，进 `TODO.md`，带脚本路径与验收判据。
 
 2. **HANDOFF → 下轮 TASK_BRIEF**
    协议 §4.3 要求：收轮时必须生成 `iterations/round(N+1)/TASK_BRIEF.md`。
@@ -171,8 +171,8 @@ data/tools/*.py  →  data/derived/*    ← 分析，结果落盘
          ▼
 iterations/roundNN/FINDINGS.md        ← 结论（含引用类别标注）
          │
-         ├──→  memory/facts/FACTS.jsonl   ← 新结论/取代/推翻
-         ├──→  memory/workbench/          ← caveats 转的开放问题
+         ├──→  labs/lottery/studies/dlt/memory/facts/FACTS.jsonl   ← 新结论/取代/推翻
+         ├──→  labs/lottery/studies/dlt/memory/workbench/          ← caveats 转的开放问题
          └──→  strategy/strategy.json     ← 若影响对外策略（CLI 重建）
          │
          ▼
@@ -182,7 +182,7 @@ iterations/roundNN/HANDOFF.md         ← 交接 + 生成下轮 TASK_BRIEF
 
 ## 为什么这样分
 
-见 `platform/methodology/` 与 `memory/lessons/LESSONS.md`。核心动机：
+见 `platform/methodology/` 与 `labs/lottery/studies/dlt/memory/lessons/LESSONS.md`。核心动机：
 
 - **框架与彩种分离** → 第二个彩种不需要复制粘贴 5000 行分析代码
 - **契约优先** → 红线不可能被"不小心"违反，也不可能被后来的 AI 悄悄改掉

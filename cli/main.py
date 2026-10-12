@@ -4,7 +4,7 @@
 
 命令：
     validate   校验契约（schema / 红线 / 外键 / 双向取代 / 文件存在性 / 版本一致性）
-    index      从 FACTS.jsonl 重生成 memory/facts/INDEX.md
+    index      从 FACTS.jsonl 重生成 labs/lottery/studies/dlt/memory/facts/INDEX.md
     rehash     ★ 重算证据锚定哈希（结论 source_sha256 / 策略 evidence_hash）
     versions   ★ 版本一致性检查（文件内版本行 ↔ versions.json ↔ VERSION_INDEX.md）
     strategy   重新生成 games/<game>/strategy/strategy.json
@@ -319,7 +319,7 @@ def cmd_facts(args) -> int:
     for f in sorted(facts, key=lambda x: x["id"]):
         print(f"{f['id']}  {f['game']:7s} {STARS(f['confidence'])}  "
               f"[{f['status']}]  {f['claim']}")
-    print(f"\n共 {len(facts)} 条。权威源：memory/facts/FACTS.jsonl")
+    print(f"\n共 {len(facts)} 条。权威源：labs/lottery/studies/dlt/memory/facts/FACTS.jsonl")
     return 0
 
 
@@ -361,14 +361,14 @@ def cmd_questions(args) -> int:
     mem = Memory(_ROOT)
     qs = mem.open_questions()
     if not qs:
-        print("（未解析到开放问题；检查 memory/workbench/OPEN_QUESTIONS.md 格式）")
+        print("（未解析到开放问题；检查 labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md 格式）")
         return 0
     open_only = [q for q in qs if q[1] == "open"]
     for qid, status, title in qs:
         mark = "○" if status == "open" else "●"
         print(f"{mark} {qid}  [{status}]  {title}")
     print(f"\n共 {len(qs)} 个，其中 open {len(open_only)} 个。")
-    print("文件：memory/workbench/OPEN_QUESTIONS.md")
+    print("文件：labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md")
     return 0
 
 

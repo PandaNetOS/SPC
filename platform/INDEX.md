@@ -29,7 +29,7 @@
 1. protocol/ITERATION_PROTOCOL.md     ← 知道流程
 2. methodology/STATISTICAL_DISCIPLINE.md  ← ★ 过一遍检查清单
 3. methodology/MATH_BOUNDARY.md       ← 知道边界在哪
-4. memory/lessons/LESSONS.md          ← ★ 知道哪些坑踩过
+4. labs/lottery/studies/dlt/memory/lessons/LESSONS.md          ← ★ 知道哪些坑踩过
 5. games/<id>/iterations/roundNN/TASK_BRIEF.md  ← 知道这轮做什么
 ```
 

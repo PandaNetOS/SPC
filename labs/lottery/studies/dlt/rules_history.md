@@ -1,4 +1,4 @@
-# 06_RULES_HISTORY.md — 超级大乐透投注规则变更史与现行规则
+﻿# 06_RULES_HISTORY.md — 超级大乐透投注规则变更史与现行规则
 
 > **版本**：`1.1` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -85,7 +85,7 @@
   > r03 逐期核算（`F-0016`）：E6 共 102 期一等奖总额**最大值仅 0.9788 亿元**，
   > **封顶从未触发**。26113 期 37 注仅 239 万，是**正常的除号摊薄**，
   > 并非封顶所致（该期总额 0.8852 亿 < 1 亿，根本未达阈值）。
-  > 详见 `memory/facts/FACTS.jsonl` 的 `F-0015`（superseded）→ `F-0016`。
+  > 详见 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` 的 `F-0015`（superseded）→ `F-0016`。
 
 ---
 

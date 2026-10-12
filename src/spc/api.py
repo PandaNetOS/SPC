@@ -291,7 +291,7 @@ class SmartPick:
 
     def lessons_header(self) -> str:
         """返回教训库的相对路径（AI 应自行读取 —— 本库不解析 markdown）。"""
-        return "memory/lessons/LESSONS.md"
+        return "labs/lottery/studies/dlt/memory/lessons/LESSONS.md"
 
     def best_reference(self) -> str:
         """给 AI 的单一入口提示。"""

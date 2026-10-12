@@ -179,13 +179,13 @@
 
 | 文件 | 变化 |
 |---|---|
-| `memory/facts/FACTS.jsonl` | **新建**，15 条 |
-| `memory/facts/INDEX.md` | **新建**（由 `cli/main.py index` 生成） |
-| `memory/lessons/LESSONS.md` | **新建**，L1–L9（从 v4 的 E1–E9 提炼 + 补「检测方法」） |
-| `memory/workbench/OPEN_QUESTIONS.md` | **新建**，Q-001 ~ Q-008 |
-| `memory/workbench/HYPOTHESES.md` | **新建**，H-001 ~ H-005 |
-| `memory/workbench/TODO.md` | **新建**，T-001 ~ T-042 |
-| `memory/journal/round02.md` | **新建** |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | **新建**，15 条 |
+| `labs/lottery/studies/dlt/memory/facts/INDEX.md` | **新建**（由 `cli/main.py index` 生成） |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | **新建**，L1–L9（从 v4 的 E1–E9 提炼 + 补「检测方法」） |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | **新建**，Q-001 ~ Q-008 |
+| `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` | **新建**，H-001 ~ H-005 |
+| `labs/lottery/studies/dlt/memory/workbench/TODO.md` | **新建**，T-001 ~ T-042 |
+| `labs/lottery/studies/dlt/memory/journal/round02.md` | **新建** |
 | `memory/INDEX.md` | **新建**（记忆层说明） |
 
 ---
@@ -223,10 +223,10 @@ python cli/main.py validate --all -v
 | `platform/protocol/{ITERATION,MEMORY}_PROTOCOL.md` + 3 模板 | 协议层 |
 | `platform/methodology/{MATH_BOUNDARY,STATISTICAL_DISCIPLINE}.md` | 方法论 |
 | `platform/tools/memory.py` | 记忆读写库 |
-| `memory/facts/FACTS.jsonl` + `INDEX.md` | 结论台账（15 条） |
-| `memory/lessons/LESSONS.md` | 教训库（L1–L9） |
-| `memory/workbench/*` | 工作记忆（8 问 + 5 假设 + 42 待办） |
-| `memory/journal/round02.md` | 本轮日志 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` + `INDEX.md` | 结论台账（15 条） |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | 教训库（L1–L9） |
+| `labs/lottery/studies/dlt/memory/workbench/*` | 工作记忆（8 问 + 5 假设 + 42 待办） |
+| `labs/lottery/studies/dlt/memory/journal/round02.md` | 本轮日志 |
 | `labs/lottery/studies/dlt/game.yaml` | 彩种配置（7 epoch / 11 特征） |
 | `labs/lottery/studies/dlt/rules_history.md` | 规则变更史 |
 | `labs/lottery/studies/dlt/data/**` | 数据（raw/derived/tools/build_scripts） |

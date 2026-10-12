@@ -1,4 +1,4 @@
-# MEMORY_PROTOCOL.md — 记忆协议
+﻿# MEMORY_PROTOCOL.md — 记忆协议
 
 > **版本**：`1.2` ｜ 轮次 `r03` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -15,10 +15,10 @@
 
 | 记忆 | 位置 | 记什么 | 半衰期 | 写策略 |
 |---|---|---|---|---|
-| **结论** | `memory/facts/FACTS.jsonl` | 世界是什么样的 | 长（除非被推翻） | **追加**，带取代链 |
-| **日志** | `memory/journal/roundNN.md` | 每轮做了什么、为什么 | 永久留档，不重读 | 每轮一文件，只增 |
-| **教训** | `memory/lessons/LESSONS.md` | 我们怎么把自己搞错的 | **永久有效** | **只增不删** |
-| **工作记忆** | `memory/workbench/*` | 还没做完的 | **极短** | 高频更新，可删 |
+| **结论** | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 世界是什么样的 | 长（除非被推翻） | **追加**，带取代链 |
+| **日志** | `labs/lottery/studies/dlt/memory/journal/roundNN.md` | 每轮做了什么、为什么 | 永久留档，不重读 | 每轮一文件，只增 |
+| **教训** | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | 我们怎么把自己搞错的 | **永久有效** | **只增不删** |
+| **工作记忆** | `labs/lottery/studies/dlt/memory/workbench/*` | 还没做完的 | **极短** | 高频更新，可删 |
 
 **为什么要分四类**：因为它们若混在一起，短命的东西会淹没长寿的东西。
 尤其**教训必须独立**——它是唯一"读一次省几小时"的记忆类型，
@@ -280,12 +280,12 @@ TODO 的待办（可执行）
 
 ```
 1. AI_CONTEXT.md                          ← 单一入口
-2. memory/lessons/LESSONS.md              ← ★ 先读这个
+2. labs/lottery/studies/dlt/memory/lessons/LESSONS.md              ← ★ 先读这个
 3. games/<g>/iterations/roundNN/TASK_BRIEF.md
-4. memory/facts/INDEX.md                  ← 速览
-5. memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md
-6. memory/facts/FACTS.jsonl               ← 仅在需要精确数字/caveats 时
-7. memory/journal/roundNN-1.md            ← 仅在需要过程背景时
+4. labs/lottery/studies/dlt/memory/facts/INDEX.md                  ← 速览
+5. labs/lottery/studies/dlt/memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md
+6. labs/lottery/studies/dlt/memory/facts/FACTS.jsonl               ← 仅在需要精确数字/caveats 时
+7. labs/lottery/studies/dlt/memory/journal/roundNN-1.md            ← 仅在需要过程背景时
 ```
 
 **为什么 `LESSONS.md` 排第二**：它最省时间。读懂 9 条禁令，
@@ -301,14 +301,14 @@ TODO 的待办（可执行）
 
 | # | 动作 | 目标文件 |
 |---|---|---|
-| 1 | 追加新结论 | `memory/facts/FACTS.jsonl` |
+| 1 | 追加新结论 | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` |
 | 2 | 更新被取代的结论（双向） | 同上 |
-| 3 | 追加新教训（含检测方法） | `memory/lessons/LESSONS.md` |
-| 4 | 更新问题池 | `memory/workbench/OPEN_QUESTIONS.md` |
-| 5 | 更新假设池 | `memory/workbench/HYPOTHESES.md` |
-| 6 | 清算待办 | `memory/workbench/TODO.md` |
-| 7 | 写轮次日志 | `memory/journal/roundNN.md` |
-| 8 | 重生成索引 | `memory/facts/INDEX.md`（`cli/main.py index`） |
+| 3 | 追加新教训（含检测方法） | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` |
+| 4 | 更新问题池 | `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` |
+| 5 | 更新假设池 | `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` |
+| 6 | 清算待办 | `labs/lottery/studies/dlt/memory/workbench/TODO.md` |
+| 7 | 写轮次日志 | `labs/lottery/studies/dlt/memory/journal/roundNN.md` |
+| 8 | 重生成索引 | `labs/lottery/studies/dlt/memory/facts/INDEX.md`（`cli/main.py index`） |
 | 9 | 校验 | `python cli/main.py validate --all` |
 
 **第 4 步的传导最关键**：新结论的每条 `caveat` → 逐条转为 `OPEN_QUESTIONS`。

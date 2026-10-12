@@ -34,7 +34,7 @@
   "evidence_index": {},
 
   "provenance": {
-    "facts_file": "memory/facts/FACTS.jsonl",
+    "facts_file": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
     "iteration": "round01",
     "notes": "占位。用 python cli/main.py strategy --game <id> 重建本文件的 boundary 与 evidence_index；rules 与 avoid_list 不由代码生成。"
   }

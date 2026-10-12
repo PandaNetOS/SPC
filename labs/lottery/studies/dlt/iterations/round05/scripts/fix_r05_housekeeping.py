@@ -46,15 +46,15 @@ def bump(path, **kw):
             hit = True
     return hit
 
-bump("memory/facts/FACTS.jsonl",
+bump("labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
      content_version="1.5", note="32 条结论（F-0001~F-0032；F-0015/F-0007 superseded）；r05 新增 F-0026~F-0032（投注方式/时间因素）")
-bump("memory/facts/INDEX.md",
+bump("labs/lottery/studies/dlt/memory/facts/INDEX.md",
      content_version="1.5", note="派生物，由 cli index 生成（32 条）")
-bump("memory/workbench/HYPOTHESES.md",
+bump("labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md",
      content_version="1.2", note="H-001~H-006；r04：H-004 被 F-0023 推翻；r05：H-005 被 F-0030 证伪（方向相反）、新增 H-006")
-bump("memory/workbench/OPEN_QUESTIONS.md",
+bump("labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md",
      content_version="1.4", note="15 问，7 answered（Q-001/Q-002/Q-004 r03；Q-003/Q-007/Q-010 r04；Q-012 r05）")
-bump("memory/workbench/TODO.md",
+bump("labs/lottery/studies/dlt/memory/workbench/TODO.md",
      content_version="1.6", note="r05 清算 T-011/T-202/T-205/T-206；新增 T-016（H-006）；T-014/T-015 顺延 r06 首推")
 bump("labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md",
      status="active", note="已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 r06）")
@@ -71,7 +71,7 @@ new_entries = [
      "content_version": "1.0", "iteration": "r05", "note": "r05→r06 交接；策略变更待用户批准", "updated_at": TODAY, "status": "active"},
     {"path": "labs/lottery/studies/dlt/iterations/round05/manifest.json", "level": "B", "kind": "manifest",
      "content_version": "1.0", "iteration": "r05", "note": "", "updated_at": TODAY, "status": "active"},
-    {"path": "memory/journal/round05.md", "level": "B", "kind": "journal",
+    {"path": "labs/lottery/studies/dlt/memory/journal/round05.md", "level": "B", "kind": "journal",
      "content_version": "1.0", "iteration": "r05", "note": "叙事：R-002 量化不成立 + H-005 证伪", "updated_at": TODAY, "status": "active"},
     {"path": "labs/lottery/studies/dlt/iterations/round06/TASK_BRIEF.md", "level": "A", "kind": "iteration_artifact",
      "content_version": "1.0", "iteration": "r06", "note": "由 round05 HANDOFF 转写（planned；T-201 前段取证首推）", "updated_at": TODAY, "status": "active"},
@@ -115,8 +115,8 @@ patch(os.path.join(ROOT, "README.md"), [
 patch(os.path.join(ROOT, "AI_CONTEXT.md"), [
     ("> **版本**：`1.4` ｜ 轮次 `r04` ｜ 更新 2026-10-11",
      "> **版本**：`1.5` ｜ 轮次 `r05` ｜ 更新 2026-10-11"),
-    ("**权威源是 `memory/facts/FACTS.jsonl`（25 条）**，此处只列最重要的几条。",
-     "**权威源是 `memory/facts/FACTS.jsonl`（32 条）**，此处只列最重要的几条。"),
+    ("**权威源是 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（25 条）**，此处只列最重要的几条。",
+     "**权威源是 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（32 条）**，此处只列最重要的几条。"),
 ])
 
 # ============================================================

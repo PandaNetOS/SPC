@@ -55,7 +55,7 @@ features:
 
 # ---------------------------------------------------------------- 奖金模型
 # ⚠️ 红线：epochs[].sum_affects_numbers 必须恒为 false。
-#    依据：奖金规则变更不改变号码分布（见 memory/facts/FACTS.jsonl F-0014）。
+#    依据：奖金规则变更不改变号码分布（见 labs/lottery/studies/dlt/memory/facts/FACTS.jsonl F-0014）。
 prize_model:
   current_epoch: E0
   return_rate: 0.51           # ← 改成实际返奖率；未知填 null

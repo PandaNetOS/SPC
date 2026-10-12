@@ -26,8 +26,8 @@
 | 输入 | 路径 | 说明 |
 |---|---|---|
 | 原始数据 | `games/PLACEHOLDER_ID/data/raw/` | 占位 |
-| 既有结论 | `memory/facts/FACTS.jsonl` | 新彩种通常为空 |
-| 教训库 | `memory/lessons/LESSONS.md` | **动手前必读 L1–L9** |
+| 既有结论 | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 新彩种通常为空 |
+| 教训库 | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | **动手前必读 L1–L9** |
 
 ## 4. 方法
 
@@ -51,7 +51,7 @@
 - `iterations/round01/HANDOFF.md`
 - `iterations/round01/manifest.json`
 - `iterations/round02/TASK_BRIEF.md` ← **收轮时必须生成，否则迭代链断裂**
-- 新增 `memory/facts/FACTS.jsonl` 条目（如有）
+- 新增 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` 条目（如有）
 
 ## 7. 明确不做
 

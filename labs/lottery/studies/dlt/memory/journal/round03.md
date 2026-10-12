@@ -139,14 +139,14 @@
 
 | 文件 | 改动 |
 |---|---|
-| `memory/facts/FACTS.jsonl` | 15 → **18 条**（+F-0016/F-0017/F-0018；F-0015 → superseded；F-0003/F-0004 更新） |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 15 → **18 条**（+F-0016/F-0017/F-0018；F-0015 → superseded；F-0003/F-0004 更新） |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | R-001 `expected_value_impact` 同步；`evidence_index` 9 → **12 条**；`provenance.iteration = round03` |
 | `labs/lottery/studies/dlt/iterations/round03/scripts/` | **新建**：6 脚本 + 3 JSON |
 | `labs/lottery/studies/dlt/iterations/round03/{FINDINGS,HANDOFF}.md` | **新建** |
 | `labs/lottery/studies/dlt/iterations/round03/manifest.json` | → `status: delivered` |
 | `labs/lottery/studies/dlt/iterations/round04/{TASK_BRIEF.md,manifest.json}` | **新建**（planned） |
-| `memory/workbench/OPEN_QUESTIONS.md` | 1.0 → **1.1**；Q-001/Q-002/Q-004 标 answered；新增 Q-010/Q-011 |
-| `memory/workbench/TODO.md` | 1.0 → **1.1**；清算 r03 任务；新增 T-013/T-023/T-033/T-043 |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | 1.0 → **1.1**；Q-001/Q-002/Q-004 标 answered；新增 Q-010/Q-011 |
+| `labs/lottery/studies/dlt/memory/workbench/TODO.md` | 1.0 → **1.1**；清算 r03 任务；新增 T-013/T-023/T-033/T-043 |
 
 ---
 

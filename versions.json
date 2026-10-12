@@ -2227,7 +2227,7 @@
       "status": "active"
     },
     {
-      "path": "memory/facts/ACTIVE.md",
+      "path": "labs/lottery/studies/dlt/memory/facts/ACTIVE.md",
       "level": "D",
       "kind": "report",
       "iteration": "r06",
@@ -2236,7 +2236,7 @@
       "status": "active"
     },
     {
-      "path": "memory/facts/FACTS.jsonl",
+      "path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
       "level": "A",
       "kind": "facts",
       "content_version": "1.5",
@@ -2247,7 +2247,7 @@
       "follows_current": true
     },
     {
-      "path": "memory/facts/INDEX.md",
+      "path": "labs/lottery/studies/dlt/memory/facts/INDEX.md",
       "level": "A",
       "kind": "fact_index",
       "content_version": "1.5",
@@ -2257,7 +2257,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round02.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round02.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2267,7 +2267,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round03.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round03.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2277,7 +2277,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round04.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round04.md",
       "level": "A",
       "kind": "iteration_artifact",
       "content_version": "1.0",
@@ -2286,7 +2286,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round05.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round05.md",
       "level": "B",
       "kind": "journal",
       "content_version": "1.0",
@@ -2296,7 +2296,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round06.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round06.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2306,7 +2306,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round07.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round07.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2316,7 +2316,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round08.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round08.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2326,7 +2326,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round09.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round09.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2336,7 +2336,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round10.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round10.md",
       "level": "A",
       "kind": "journal",
       "content_version": "1.0",
@@ -2346,7 +2346,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round11.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round11.md",
       "level": "C",
       "kind": "journal",
       "content_version": "1.0",
@@ -2355,7 +2355,7 @@
       "updated_at": "2026-10-11"
     },
     {
-      "path": "memory/journal/round12.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round12.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -2365,7 +2365,7 @@
       "note": "r12 执行日志"
     },
     {
-      "path": "memory/journal/round13.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round13.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -2375,7 +2375,7 @@
       "note": "r13 执行日志"
     },
     {
-      "path": "memory/journal/round14.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round14.md",
       "updated_at": "2026-10-11",
       "status": "active",
       "level": "C",
@@ -2385,7 +2385,7 @@
       "note": "r14 执行日志"
     },
     {
-      "path": "memory/journal/round15.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round15.md",
       "level": "C",
       "kind": "doc",
       "content_version": "1.0",
@@ -2395,7 +2395,7 @@
       "status": "active"
     },
     {
-      "path": "memory/journal/round16.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round16.md",
       "level": "C",
       "kind": "doc",
       "content_version": "1.0",
@@ -2405,7 +2405,7 @@
       "status": "active"
     },
     {
-      "path": "memory/lessons/LESSONS.md",
+      "path": "labs/lottery/studies/dlt/memory/lessons/LESSONS.md",
       "level": "A",
       "kind": "lesson_library",
       "content_version": "1.3",
@@ -2415,7 +2415,7 @@
       "status": "active"
     },
     {
-      "path": "memory/spec/ITERATION_SOP_v2.md",
+      "path": "platform/memory/spec/ITERATION_SOP_v2.md",
       "level": "A",
       "kind": "doc",
       "content_version": "1.3",
@@ -2425,7 +2425,7 @@
       "status": "active"
     },
     {
-      "path": "memory/workbench/HYPOTHESES.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md",
       "level": "A",
       "kind": "workbench",
       "content_version": "1.2",
@@ -2435,7 +2435,7 @@
       "status": "active"
     },
     {
-      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md",
       "level": "A",
       "kind": "doc",
       "content_version": "1.7",
@@ -2446,7 +2446,7 @@
       "follows_current": true
     },
     {
-      "path": "memory/workbench/TODO.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/TODO.md",
       "level": "A",
       "kind": "doc",
       "content_version": "2.2",

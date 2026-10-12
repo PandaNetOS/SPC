@@ -4,7 +4,7 @@
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是"动手前的检查清单"。**
-> `memory/lessons/LESSONS.md` 记录**具体的历史错误**；
+> `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` 记录**具体的历史错误**；
 > 本文件把那些错误抽象成**可执行的检查流程**。
 >
 > 彩种无关。任何分析都应逐项过一遍。

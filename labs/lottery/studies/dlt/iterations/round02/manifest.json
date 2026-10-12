@@ -60,7 +60,7 @@
     {
       "path": "labs/lottery/studies/dlt/iterations/round02/known_errors.md",
       "kind": "report",
-      "note": "v4 的 05_known_errors.md（E1–E9）留档；已提炼到 memory/lessons/LESSONS.md"
+      "note": "v4 的 05_known_errors.md（E1–E9）留档；已提炼到 labs/lottery/studies/dlt/memory/lessons/LESSONS.md"
     },
     {
       "path": "labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md",
@@ -78,17 +78,17 @@
       "note": "F-0001 ~ F-0005 的证据源"
     },
     {
-      "path": "memory/facts/FACTS.jsonl",
+      "path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
       "kind": "data",
       "note": "15 条结论台账"
     },
     {
-      "path": "memory/lessons/LESSONS.md",
+      "path": "labs/lottery/studies/dlt/memory/lessons/LESSONS.md",
       "kind": "report",
       "note": "L1–L9，每条含「检测方法」"
     },
     {
-      "path": "memory/journal/round02.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round02.md",
       "kind": "report",
       "note": "本轮日志，含对框架本身的改进建议 §5"
     },

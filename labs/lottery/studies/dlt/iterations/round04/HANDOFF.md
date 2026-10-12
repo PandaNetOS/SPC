@@ -185,16 +185,16 @@ F-0003（1.3603）、F-0018（中位数比 1.5）、F-0004（121% 上界）全�
 
 | 文件 | 变化 |
 |---|---|
-| `memory/facts/FACTS.jsonl` | 18 → **25 条**（+F-0019~F-0025；更新 F-0003/F-0004/F-0011）；7 条新结论已锚定 `source_sha256` |
-| `memory/facts/INDEX.md` | 由 `cli index` 重生成（v1.4） |
-| `memory/lessons/LESSONS.md` | 新增 **L13 / L14**；L7 追加第二个实例（F-0011）→ v1.2 |
-| `memory/workbench/OPEN_QUESTIONS.md` | Q-003/Q-007/Q-010 标 answered；新增 Q-013~Q-016 → v1.3 |
-| `memory/workbench/TODO.md` | 清算 T-010/T-012/T-013；新增 P1/P2 项 → v1.5 |
-| `memory/workbench/HYPOTHESES.md` | H-004 标 refuted（F-0023）；H-002 补 F-0025 交叉引用 → v1.1 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 18 → **25 条**（+F-0019~F-0025；更新 F-0003/F-0004/F-0011）；7 条新结论已锚定 `source_sha256` |
+| `labs/lottery/studies/dlt/memory/facts/INDEX.md` | 由 `cli index` 重生成（v1.4） |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | 新增 **L13 / L14**；L7 追加第二个实例（F-0011）→ v1.2 |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | Q-003/Q-007/Q-010 标 answered；新增 Q-013~Q-016 → v1.3 |
+| `labs/lottery/studies/dlt/memory/workbench/TODO.md` | 清算 T-010/T-012/T-013；新增 P1/P2 项 → v1.5 |
+| `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` | H-004 标 refuted（F-0023）；H-002 补 F-0025 交叉引用 → v1.1 |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | R-001 口径 / A-006 更正 / A-009 新增 / evidence_index 17 条 |
 | `labs/lottery/studies/dlt/game.yaml` | round03/round04 状态改为 delivered；`cap_rules.observed_trigger` 按 F-0016 更正（「从未触发」） |
 | `labs/lottery/studies/dlt/iterations/round04/` | FINDINGS / HANDOFF / manifest（delivered）/ 5 个脚本 + 3 个 JSON |
-| `memory/journal/round04.md` | 新建 |
+| `labs/lottery/studies/dlt/memory/journal/round04.md` | 新建 |
 | `labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md` | **新建**（迭代链不断） |
 
 ---
@@ -234,8 +234,8 @@ python tests/test_core.py                # → 323 项（5 个测试文件合计
 | `labs/lottery/studies/dlt/iterations/round04/HANDOFF.md` | 本文件 |
 | `labs/lottery/studies/dlt/iterations/round04/manifest.json` | 机器可读登记（delivered） |
 | `labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md` | 下一轮任务书 |
-| `memory/facts/FACTS.jsonl` · `memory/facts/INDEX.md` | 结论台账 + 速览 |
-| `memory/lessons/LESSONS.md` · `memory/workbench/*` · `memory/journal/round04.md` | 记忆层 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` · `labs/lottery/studies/dlt/memory/facts/INDEX.md` | 结论台账 + 速览 |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` · `labs/lottery/studies/dlt/memory/workbench/*` · `labs/lottery/studies/dlt/memory/journal/round04.md` | 记忆层 |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | 对外契约（口径 + 驳回项） |
 | `labs/lottery/studies/dlt/game.yaml` | 轮次状态 + 封顶观测更正 |
 

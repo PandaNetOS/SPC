@@ -7,7 +7,7 @@ MEM1（arXiv 2506.15841）『推理驱动的记忆巩固 + 战略性丢弃』；
 原则（与 superseded 纪律一致）：
   · 只读 FACTS.jsonl，**不移动、不删除任何数据**（审计留痕优先）
   · 输出两个产物：
-      1. memory/facts/ACTIVE.md —— 『当前有效结论清单』（与台账分离，
+      1. labs/lottery/studies/dlt/memory/facts/ACTIVE.md —— 『当前有效结论清单』（与台账分离，
          解决信噪比：失效条目保留在台账，但 active 视图只给可用结论）
       2. 压缩统计 + merge 候选（同 category 多条 active，提示是否可合并）
   · 动态锚点到期清单：recalibrate_every 到期 → 提示走 update 通道重校准
@@ -97,7 +97,7 @@ def render_active_md(facts: list[dict], cur: int) -> str:
         "# 当前有效结论清单（ACTIVE VIEW）",
         "",
         f"> 由 `platform/tools/compress_memory.py --write` 生成 ｜ 当前轮 round{cur:02d}"
-        f" ｜ 权威源 `memory/facts/FACTS.jsonl`（台账保留全部历史，本视图只列可用结论）",
+        f" ｜ 权威源 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（台账保留全部历史，本视图只列可用结论）",
         "",
         "| F-id | 结论 | 类型 | 置信度 | 变更通道 | 重校准 | 确立轮 |",
         "|---|---|---|---|---|---|---|",

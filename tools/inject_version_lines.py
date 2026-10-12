@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """inject_version_lines.py — 按 versions.json 给 .md 文件插入/更新版本行
 
 版本行格式（紧跟 H1 标题之后，空一行）：
@@ -33,7 +33,7 @@ TAIL = "｜ 版本规则见 `docs/VERSIONING_DOCS.md`"
 
 # 这些文件不插（自动生成的派生物 / 有自身格式）
 SKIP = {
-    "memory/facts/INDEX.md",   # 由 cli index 生成，版本在生成器里加
+    "labs/lottery/studies/dlt/memory/facts/INDEX.md",   # 由 cli index 生成，版本在生成器里加
     "VERSION_INDEX.md",        # 自身就是索引，头部已有版本信息
     "versions.json",           # JSON，无 markdown 头
 }

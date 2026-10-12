@@ -17,9 +17,9 @@
 
 ## 本轮必做任务（引用 TODO 原条目）
 
-- [ ] **T-049** —— 来源：`memory/workbench/TODO.md` 的 `P2` 段（评分 90）。
-- [ ] **T-030** —— 来源：`memory/workbench/TODO.md` 的 `P3` 段（评分 40）。
-- [ ] **T-040** —— 来源：`memory/workbench/TODO.md` 的 `P4` 段（评分 20）。
+- [ ] **T-049** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `P2` 段（评分 90）。
+- [ ] **T-030** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `P3` 段（评分 40）。
+- [ ] **T-040** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `P4` 段（评分 20）。
 
 ## ⚠ 资源缺口型备选（不占本批预算，数据就绪后自动进入候选）
 

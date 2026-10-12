@@ -87,7 +87,7 @@ for rel in ("docs/ARCHITECTURE.md", "docs/METHODOLOGY.md",
             "labs/lottery/studies/dlt/iterations/round02/FINDINGS.md",
             "labs/lottery/studies/dlt/iterations/round02/HANDOFF.md",
             "labs/lottery/studies/dlt/iterations/round05/HANDOFF.md",
-            "memory/workbench/TODO.md", "memory/spec/ITERATION_SOP_v2.md"):
+            "labs/lottery/studies/dlt/memory/workbench/TODO.md", "platform/memory/spec/ITERATION_SOP_v2.md"):
     edit(os.path.join(ROOT, rel), doc_pairs, "docs")
 
 # 7. versions.json 根级 repo 字段

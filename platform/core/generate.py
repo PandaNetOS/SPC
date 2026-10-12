@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.core.generate — 通用号码生成器（彩种无关）
 
 ## 为什么在这里（而不是交给消费方）
@@ -270,7 +270,7 @@ def spread_penalty(cfg: dict[str, Any], tickets: Sequence[Ticket]) -> float:
 
     ⚠️ **本函数未被量化验证。** 它实现了 `strategy.json` 的 R-002 的精神，
     但 R-002 的 `magnitude_pct` 是 `null` —— 本仓库**从未做过**组合优化的
-    模拟实验（见 `memory/workbench/OPEN_QUESTIONS.md` 的 Q-009 提案）。
+    模拟实验（见 `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` 的 Q-009 提案）。
 
     ⚠️ 更重要：**本函数的结果与期望中奖注数无关。**
     期望中奖注数恒为 `N / T`（线性），与结构分散度无关。

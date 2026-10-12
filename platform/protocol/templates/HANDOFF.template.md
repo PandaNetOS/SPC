@@ -1,4 +1,4 @@
-# HANDOFF.md — roundNN 交接（模板）
+﻿# HANDOFF.md — roundNN 交接（模板）
 
 > **版本**：`1.0` ｜ 轮次 `r02` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
@@ -130,12 +130,12 @@
 
 | 文件 | 变化 |
 |---|---|
-| `memory/facts/FACTS.jsonl` | +n 条，改 m 条 |
-| `memory/lessons/LESSONS.md` | +n 条（`L<sub>id</sub>`） |
-| `memory/workbench/OPEN_QUESTIONS.md` | +n 问，`Q-0xx` 标 answered |
-| `memory/workbench/HYPOTHESES.md` | `H-00x` 标 verified / refuted |
-| `memory/workbench/TODO.md` | 清 n 项，新增 m 项 |
-| `memory/journal/roundNN.md` | 新建 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | +n 条，改 m 条 |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | +n 条（`L<sub>id</sub>`） |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | +n 问，`Q-0xx` 标 answered |
+| `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` | `H-00x` 标 verified / refuted |
+| `labs/lottery/studies/dlt/memory/workbench/TODO.md` | 清 n 项，新增 m 项 |
+| `labs/lottery/studies/dlt/memory/journal/roundNN.md` | 新建 |
 
 ---
 
@@ -170,9 +170,9 @@ python cli/main.py validate --all
 | `games/<game>/iterations/roundNN/HANDOFF.md` | 本文件 |
 | `games/<game>/iterations/roundNN/manifest.json` | 机器可读索引 |
 | `games/<game>/iterations/roundNN/scripts/*.py` | 复现脚本 |
-| `memory/facts/FACTS.jsonl` | 更新 |
-| `memory/lessons/LESSONS.md` | 更新 |
-| `memory/journal/roundNN.md` | 新建 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 更新 |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | 更新 |
+| `labs/lottery/studies/dlt/memory/journal/roundNN.md` | 新建 |
 | `games/<game>/strategy/strategy.json` | 若策略变化则更新 |
 
 ---

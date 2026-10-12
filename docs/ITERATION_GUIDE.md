@@ -12,7 +12,7 @@
 cat AI_CONTEXT.md
 
 # 2) 读教训库（这一步最容易被跳过，也最容易导致返工）
-cat memory/lessons/LESSONS.md
+cat labs/lottery/studies/dlt/memory/lessons/LESSONS.md
 
 # 3) 读本轮任务书
 cat games/<id>/iterations/roundNN/TASK_BRIEF.md
@@ -115,12 +115,12 @@ python cli/main.py validate --all
 ### 4.1 更新记忆（四项，缺一不可）
 
 ```bash
-# 1) 追加新结论到 memory/facts/FACTS.jsonl
+# 1) 追加新结论到 labs/lottery/studies/dlt/memory/facts/FACTS.jsonl
 #    用 Memory.add_fact()，它会强制红线检查与 source 存在性
 # 2) 重生成 INDEX（派生物，不要手改）
 python cli/main.py index
-# 3) 写 memory/journal/roundNN.md（本轮的完整叙事）
-# 4) 更新 memory/workbench/（caveats → OPEN_QUESTIONS → TODO）
+# 3) 写 labs/lottery/studies/dlt/memory/journal/roundNN.md（本轮的完整叙事）
+# 4) 更新 labs/lottery/studies/dlt/memory/workbench/（caveats → OPEN_QUESTIONS → TODO）
 ```
 
 ### 4.2 结论演化的写法
@@ -224,7 +224,7 @@ python cli/main.py validate --facts           # 只查台账
 - [ ] 做了主动证伪，并诚实声明"没做的检验"
 - [ ] `FACTS.jsonl` 无双向取代不一致
 - [ ] `INDEX.md` 已重生成
-- [ ] `memory/journal/roundNN.md` 已写
+- [ ] `labs/lottery/studies/dlt/memory/journal/roundNN.md` 已写
 - [ ] `workbench` 已更新（caveats → 新问题）
 - [ ] `manifest.json` 合规于 `iteration.schema.json`
 - [ ] `framework_revision.proposed` 已写

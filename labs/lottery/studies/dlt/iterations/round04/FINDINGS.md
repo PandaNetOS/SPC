@@ -258,7 +258,7 @@ $PY labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.py
 $PY labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py
 $PY labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_strategy.py
 $PY cli/main.py rehash                # 新结论的证据锚定
-$PY cli/main.py index                 # 重生成 memory/facts/INDEX.md
+$PY cli/main.py index                 # 重生成 labs/lottery/studies/dlt/memory/facts/INDEX.md
 
 # 校验
 $PY cli/main.py validate --all -v
@@ -277,7 +277,7 @@ $PY tests/test_core.py
 | `round04/scripts/decay_cause.py` | `decay_cause.json` | ✅ 已跑通（含 r03 分期结果的内置复现断言） |
 | `round04/scripts/prize_mechanism_tobit.py` | `prize_mechanism_tobit.json` | ✅ 已跑通（Tobit 用 scipy Nelder-Mead + 数值 Hessian） |
 | `round04/scripts/back_collision.py` | `back_collision.json` | ✅ 已跑通（条件二项 MLE + MC 精确检验） |
-| `round04/scripts/apply_r04_facts.py` | 更新 `memory/facts/FACTS.jsonl` | ✅ 已执行（18 → 25 条；更新 3 条） |
+| `round04/scripts/apply_r04_facts.py` | 更新 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | ✅ 已执行（18 → 25 条；更新 3 条） |
 | `round04/scripts/apply_r04_strategy.py` | 更新 `labs/lottery/studies/dlt/strategy/strategy.json` | ✅ 已执行（R-001 口径、A-006 更正、A-009 新增） |
 
 ---

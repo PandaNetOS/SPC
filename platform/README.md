@@ -32,7 +32,7 @@
 - 不需要 → 分离成立
 
 > 这个标准目前**尚未被检验** —— 因为仓库里只有 `labs/lottery/studies/dlt/` 一个彩种。
-> 见 `memory/workbench/TODO.md` 的 `T-031`。
+> 见 `labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `T-031`。
 >
 > **但结构已经为它准备好了**：`Ticket` 的区名来自 `machine.zones`（可变长，
 > 不硬编码 `front`/`back`）；特征求值走 `primitive` + `args` 注册表

@@ -134,10 +134,10 @@
 |---|---|---|
 | 脚本 | `labs/lottery/studies/dlt/iterations/round03/scripts/*.py` | 3 个（cap_adjusted / b2_split / b2_robust） |
 | 发现 | `labs/lottery/studies/dlt/iterations/round03/FINDINGS.md` | 证据与数字 |
-| 结论 | `memory/facts/FACTS.jsonl` | 预估：更新 `F-0003`、`F-0004`；新增 0–2 条 |
+| 结论 | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 预估：更新 `F-0003`、`F-0004`；新增 0–2 条 |
 | 策略 | `labs/lottery/studies/dlt/strategy/strategy.json` | 更新 `R-001.expected_value_impact` |
-| 问题 | `memory/workbench/OPEN_QUESTIONS.md` | `Q-001`/`Q-002`/`Q-004` 标 `answered`；从新 caveats 生成新问题 |
-| 待办 | `memory/workbench/TODO.md` | 清算 `T-001`/`T-002`/`T-003` |
+| 问题 | `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | `Q-001`/`Q-002`/`Q-004` 标 `answered`；从新 caveats 生成新问题 |
+| 待办 | `labs/lottery/studies/dlt/memory/workbench/TODO.md` | 清算 `T-001`/`T-002`/`T-003` |
 | 交接 | `labs/lottery/studies/dlt/iterations/round03/HANDOFF.md` | 含 round04 建议 |
 | 下一轮 | `labs/lottery/studies/dlt/iterations/round04/TASK_BRIEF.md` | **必须生成** |
 

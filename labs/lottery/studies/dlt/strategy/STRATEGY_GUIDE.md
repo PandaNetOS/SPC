@@ -5,7 +5,7 @@
 
 > **这份文档是给"人"看的**。不需要懂 `predicate`、`ci95`、`epoch` 这些术语。
 > 如果你要写代码调用策略，请看 `docs/CONSUMING.md`；
-> 如果你想看某个数字是怎么算出来的，请看 `memory/facts/INDEX.md` 与各轮 `FINDINGS.md`。
+> 如果你想看某个数字是怎么算出来的，请看 `labs/lottery/studies/dlt/memory/facts/INDEX.md` 与各轮 `FINDINGS.md`。
 
 ---
 
@@ -371,7 +371,7 @@ r12 时序 hold-out（F-0044）：此组合测试窗预期奖金 **906.4 万 vs 
 | 想了解 | 看哪里 |
 |---|---|
 | 策略的机器契约（工具开发者） | [strategy.json](strategy.json) + [CONSUMING.md](../../../docs/CONSUMING.md) |
-| 每条结论的完整论证 | [INDEX.md](../../../memory/facts/INDEX.md) → 各轮 `FINDINGS.md` |
+| 每条结论的完整论证 | [INDEX.md](../../../labs/lottery/studies/dlt/memory/facts/INDEX.md) → 各轮 `FINDINGS.md` |
 | 规则 6 次变更的细节 | [rules_history.md](../rules_history.md) |
 | 数字是怎么算出来的 | [strategy_simulation.py](strategy_simulation.py) |
 | 下一阶段（L3 组合优化）怎么评测 | [T048_HOLDOUT_DESIGN.md](../iterations/round11/T048_HOLDOUT_DESIGN.md)（r11 设计，评测脚本待 r12） |

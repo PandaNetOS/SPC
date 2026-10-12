@@ -94,7 +94,7 @@ F-0041 之外**新的显著拥挤形态**，并产出候选规则清单。
 | 筛选脚本 | `scripts/t070_feature_screen.py` | 统一入口 |
 | 筛选结果 | `scripts/t070_feature_screen.json` | 105 形态全量结果 |
 | 发现 | `FINDINGS.md` | 候选清单 + 证伪清单 |
-| 结论 | `memory/facts/FACTS.jsonl` | 预计 1-3 条（候选规则总览） |
+| 结论 | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 预计 1-3 条（候选规则总览） |
 | 交接 | `HANDOFF.md` | 含第二轮严格验证建议 |
 
 ---

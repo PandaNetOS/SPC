@@ -66,7 +66,7 @@
         "new_lesson_ids": {
           "type": "array",
           "items": {"type": "string", "pattern": "^L-?[0-9]{1,2}$"},
-          "description": "教训 id。仓内约定为 L1 / L2 … L9（见 memory/lessons/LESSONS.md 的标题）。同时接受 L-01 形式。"
+          "description": "教训 id。仓内约定为 L1 / L2 … L9（见 labs/lottery/studies/dlt/memory/lessons/LESSONS.md 的标题）。同时接受 L-01 形式。"
         },
         "new_question_ids": {"type": "array", "items": {"type": "string", "pattern": "^Q-[0-9]{3}$"}},
         "strategy_updated": {"type": "boolean", "default": false}

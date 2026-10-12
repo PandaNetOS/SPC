@@ -480,7 +480,7 @@ def validate_facts(repo_root: str | None = None,
     """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats + claim_type + 证据锚定。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
-    facts_path = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    facts_path = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
     if not os.path.exists(facts_path):
         rep.err(f"FACTS.jsonl 不存在: {facts_path}")
         return rep
@@ -596,7 +596,7 @@ def validate_facts(repo_root: str | None = None,
 
 def load_fact_ids(repo_root: str | None = None) -> set[str]:
     root = repo_root or _ROOT
-    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
     ids: set[str] = set()
     if not os.path.exists(p):
         return ids
@@ -1027,7 +1027,7 @@ def _load_superseded_facts(root: str) -> dict[str, str]:
     只关心『已被推翻』的结论 —— 下游若仍引用且未更新，即为沉默。
     """
     out: dict[str, str] = {}
-    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
     if not os.path.exists(p):
         return out
     with open(p, encoding="utf-8") as f:
@@ -1315,7 +1315,7 @@ _COUNT_PATTERNS = (
 
 def _check_summary_counts(root: str, rep: ValidationReport) -> None:
     """校验速览表里的「N 条结论」是否与台账实际条数一致。"""
-    fp = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    fp = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
     if not os.path.exists(fp):
         return
     total = 0
@@ -1895,7 +1895,7 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
                 if not os.path.exists(full):
                     rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
             # 3b. upstream_fact_ids 必须在 FACTS.jsonl 里存在
-            facts_p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+            facts_p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
             if os.path.isfile(facts_p):
                 valid_ids = set()
                 with open(facts_p, encoding="utf-8") as ff:
@@ -2063,7 +2063,7 @@ def _check_iteration_counter_sync(root: str, rep: ValidationReport) -> None:
 def _check_todo_landed_sync(root: str, rep: ValidationReport) -> None:
     """★ T（r15 新增，A4）：已落地的策略变更必须在待办池勾选 ——
     已 `delivered` 轮 manifest 的 `outputs.strategy_landed` 中出现且能解析出 T-nnn 的，
-    `memory/workbench/TODO.md` 里对应条目不得仍是 `- [ ]`。
+    `labs/lottery/studies/dlt/memory/workbench/TODO.md` 里对应条目不得仍是 `- [ ]`。
 
     背景：T-052（R_new 落地为 R-004）在 r14.1 经用户批准后已实际落地
     （strategy.json 出现 R-004，grade=B，refs F-0044~F-0047），
@@ -2107,7 +2107,7 @@ def _check_todo_landed_sync(root: str, rep: ValidationReport) -> None:
     for tid, rnd in bad:
         rep.err(
             f"待办状态滞后：{tid} 已在 {rnd} 落地（manifest `outputs.strategy_landed` 有记录），"
-            f"但 `memory/workbench/TODO.md` 仍是 `- [ ]`。"
+            f"但 `labs/lottery/studies/dlt/memory/workbench/TODO.md` 仍是 `- [ ]`。"
             f"待办池是 render_task_brief 的唯一输入源，滞后会让下一轮任务书重复推出已完成项。"
             f"请勾选并补落地记录"
         )
@@ -2227,7 +2227,7 @@ def _check_critical_numbers(root: str, rep: ValidationReport) -> None:
     依据：tests/README「结论数字与 game.yaml 重算结果一致」暂缓项 ——
     4.667e-08 出现在 FACTS/文档多处，一处改错现有校验不报警。
     """
-    fp = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    fp = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
     if not os.path.exists(fp):
         return
     claim = ""
@@ -2339,7 +2339,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
         "AI_CONTEXT.md",
         "VERSION_INDEX.md",
         "versions.json",
-        "memory/lessons/LESSONS.md",
+        "labs/lottery/studies/dlt/memory/lessons/LESSONS.md",
         "memory/INDEX.md",
         "docs/VERSIONING_DOCS.md",
         "platform/protocol/ITERATION_PROTOCOL.md",

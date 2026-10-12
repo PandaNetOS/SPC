@@ -327,7 +327,7 @@ class Memory:
             with open(p, encoding="utf-8") as f:
                 d = json.load(f)
             for e in d.get("entries") or []:
-                if e.get("path") == "memory/facts/FACTS.jsonl":
+                if e.get("path") == "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl":
                     return e.get("content_version") or "1.0"
         except (OSError, json.JSONDecodeError):
             pass
@@ -353,7 +353,7 @@ class Memory:
         stars = lambda c: "★" * c + "☆" * (5 - c)
 
         out: list[str] = []
-        out.append("# memory/facts/INDEX.md — 结论台账速览")
+        out.append("# labs/lottery/studies/dlt/memory/facts/INDEX.md — 结论台账速览")
         out.append("")
         out.append("> **本文件由 `cli/main.py index` 从 `FACTS.jsonl` 自动生成。请勿手工编辑。**")
         out.append("> 权威源是 `FACTS.jsonl`（每行一条，受 `spec/fact.schema.json` 约束）。")

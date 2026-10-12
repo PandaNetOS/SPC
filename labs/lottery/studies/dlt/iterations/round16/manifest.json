@@ -58,7 +58,7 @@
     "framework_revision": {
       "proposed": [
         "SOP 补充：NOOP 重校准必须同时刷新 established_in（仅写 recalibrated_roundNN 不清告警）—— 本轮发现但列为范围外，未改 SOP 文档",
-        "derive_tasks 扫描源扩展到 memory/lessons/LESSONS.md 与 platform/methodology 待办项（告警已清零后需新任务源）"
+        "derive_tasks 扫描源扩展到 labs/lottery/studies/dlt/memory/lessons/LESSONS.md 与 platform/methodology 待办项（告警已清零后需新任务源）"
       ],
       "accepted": [],
       "rejected": [
@@ -136,19 +136,19 @@
       "kind": "report"
     },
     {
-      "path": "memory/facts/FACTS.jsonl",
+      "path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
       "kind": "data"
     },
     {
-      "path": "memory/workbench/TODO.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/TODO.md",
       "kind": "report"
     },
     {
-      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md",
       "kind": "report"
     },
     {
-      "path": "memory/workbench/HYPOTHESES.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md",
       "kind": "report"
     }
   ]

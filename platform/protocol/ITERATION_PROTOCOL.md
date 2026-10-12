@@ -74,8 +74,8 @@
 `TASK_BRIEF` 的内容**必须来自**：
 
 1. 上一轮的 `HANDOFF.md`（首选）
-2. `memory/workbench/TODO.md` 的 P0/P1 项
-3. `memory/workbench/OPEN_QUESTIONS.md` 的高优先级问题
+2. `labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 P0/P1 项
+3. `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` 的高优先级问题
 4. `FACTS.jsonl` 某条的 `caveats`
 
 **禁止**凭空提出与本仓库记忆无关的任务。
@@ -167,13 +167,13 @@
 
 | 产出 | 更新到 |
 |---|---|
-| 新结论 | **追加** `memory/facts/FACTS.jsonl` → 重生成 `INDEX.md` |
+| 新结论 | **追加** `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` → 重生成 `INDEX.md` |
 | 被取代的结论 | 改 `status` + 填**双向** `supersedes`/`superseded_by` |
-| 新教训 | **追加** `memory/lessons/LESSONS.md`（含**检测方法**） |
+| 新教训 | **追加** `labs/lottery/studies/dlt/memory/lessons/LESSONS.md`（含**检测方法**） |
 | 新问题 | 更新 `workbench/OPEN_QUESTIONS.md` |
 | 假设变化 | 更新 `workbench/HYPOTHESES.md` |
 | 待办清算 | 更新 `workbench/TODO.md`（完成的移到「已完成」节） |
-| 本轮过程 | 新写 `memory/journal/roundNN.md` |
+| 本轮过程 | 新写 `labs/lottery/studies/dlt/memory/journal/roundNN.md` |
 | **★ 下游同步** | **结论被 superseded 时**，检查所有 `consumes` 引用它的下游文档（`versions.json` 的 `consumes` 字段），同步内容 + 升 `content_version` |
 
 ### ★ 下游同步（r03 血的教训）

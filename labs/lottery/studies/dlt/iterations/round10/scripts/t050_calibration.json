@@ -832,42 +832,42 @@
       "snippet": "\"text\": \"本策略不改变中奖概率。选号方式无法影响是否命中，只能影响中奖时是否与他人共享奖金。\","
     },
     {
-      "path": "memory/facts/ACTIVE.md",
+      "path": "labs/lottery/studies/dlt/memory/facts/ACTIVE.md",
       "line": 7,
       "snippet": "| F-0001 | 任何选号方式都不能改变单注的中奖概率 | analytic | high | initial | - | round02 |"
     },
     {
-      "path": "memory/facts/INDEX.md",
+      "path": "labs/lottery/studies/dlt/memory/facts/INDEX.md",
       "line": 17,
       "snippet": "| F-0001 | global | 任何选号方式都不能改变单注的中奖概率 | established | ★★★★★ | `probability` | `analytic` | round02 |"
     },
     {
-      "path": "memory/journal/round02.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round02.md",
       "line": 104,
       "snippet": "| 单注组合总数 | **21,425,712** = C(35,5)×C(12,2) | 解析 |"
     },
     {
-      "path": "memory/journal/round04.md",
+      "path": "labs/lottery/studies/dlt/memory/journal/round04.md",
       "line": 60,
       "snippet": "3. 逐条检查识别假设与 caveats，确认没有越界表述（红线：不声称改变中奖概率）。"
     },
     {
-      "path": "memory/workbench/OPEN_QUESTIONS.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md",
       "line": 263,
       "snippet": "| **验收判据** | T-050 落地后：全文检索「中奖概率/4.67e-08/21,425,712」均带奖级限定；validate 新增口径检查能抓同类问题 |"
     },
     {
-      "path": "memory/workbench/TODO.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/TODO.md",
       "line": 73,
       "snippet": "P(任中) = 419335/21425712 = **0.019572（1/51.1）**，相差 **419,343 倍**。"
     },
     {
-      "path": "memory/workbench/TODO.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/TODO.md",
       "line": 114,
       "snippet": "validate 增加口径检查（出现「中奖概率」且上下文无奖级限定 → WARN/FAIL）。"
     },
     {
-      "path": "memory/workbench/TODO.md",
+      "path": "labs/lottery/studies/dlt/memory/workbench/TODO.md",
       "line": 115,
       "snippet": "范围：F-0001 表述校正 + 全文检索「4.67e-08 / 21,425,712」逐处标注 + 校验规则落地。"
     },

@@ -29,7 +29,7 @@
       "labs/lottery/studies/dlt/game.yaml 新增 23 个特征声明，config_version 2.2 → 2.3",
       "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py：40 形态撞号比筛选脚本",
       "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json：筛选结果输出",
-      "memory/facts/FACTS.jsonl 追加 F-0049（tentative）"
+      "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl 追加 F-0049（tentative）"
     ],
     "framework_revision": {
       "proposed": [],
@@ -46,6 +46,6 @@
     {"path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json", "kind": "data"},
     {"path": "platform/core/features.py", "kind": "code"},
     {"path": "labs/lottery/studies/dlt/game.yaml", "kind": "config"},
-    {"path": "memory/facts/FACTS.jsonl", "kind": "data"}
+    {"path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl", "kind": "data"}
   ]
 }

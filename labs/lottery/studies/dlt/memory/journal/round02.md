@@ -59,13 +59,13 @@ src/ cli/      校验器与生成器
 | `07_strategy_simulation/*` | `labs/lottery/studies/dlt/strategy/` | 搬迁（`*_results.json` 即策略证据） |
 | `00_TASK_BRIEF.md` | `labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md` | 归入轮次 |
 | `04_priority_tasks.md` | `labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md` | 归入轮次 |
-| `05_known_errors.md` | `labs/lottery/studies/dlt/iterations/round02/known_errors.md`（留档）<br>+ **`memory/lessons/LESSONS.md`（提炼，主用）** | **拆成两份**：教训独立成库 |
+| `05_known_errors.md` | `labs/lottery/studies/dlt/iterations/round02/known_errors.md`（留档）<br>+ **`labs/lottery/studies/dlt/memory/lessons/LESSONS.md`（提炼，主用）** | **拆成两份**：教训独立成库 |
 | `03_findings/_legacy/*` | `labs/lottery/studies/dlt/iterations/round02/legacy_findings/` | 归档，带使用门槛 |
 | `manifest.json` | `labs/lottery/studies/dlt/manifest_v4_source.json` | 保留为溯源 |
 
 ### 2.3 提炼记忆层
 
-**`memory/facts/FACTS.jsonl`（15 条）** —— 每条含 id / 状态 / 置信度 1–5 /
+**`labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`（15 条）** —— 每条含 id / 状态 / 置信度 1–5 /
 结构化证据（效应量 + CI）/ **减损项** / 演化链（`supersedes` ↔ `superseded_by`）。
 
 来源映射：
@@ -84,11 +84,11 @@ src/ cli/      校验器与生成器
 | 独立性检验 | F-0011（后区独立） |
 | 校验脚本输出 | F-0012（销量星期效应）、F-0013（重复组合正常） |
 
-**`memory/lessons/LESSONS.md`（L1–L9）** —— 每条含
+**`labs/lottery/studies/dlt/memory/lessons/LESSONS.md`（L1–L9）** —— 每条含
 **症状 / 后果 / 正确做法 / 检测方法** 四段。相比 v4 的错误清单，
 补了「**检测方法**」一栏（"下次怎么早发现"），这是从"记录错误"升级为"防止错误"。
 
-**`memory/workbench/`** —— 8 个开放问题（**全部来自 FACTS 的 caveats**）、
+**`labs/lottery/studies/dlt/memory/workbench/`** —— 8 个开放问题（**全部来自 FACTS 的 caveats**）、
 5 个假设、42 项待办。
 
 > 关键洞察：**每条 caveat 都是一个下一代任务**。
@@ -168,10 +168,10 @@ src/ cli/      校验器与生成器
 | 路径 | 说明 |
 |---|---|
 | `spec/*.schema.json` ×4 + `README.md` + `VERSIONING.md` | 契约层 |
-| `memory/facts/FACTS.jsonl` + `INDEX.md` | 结论台账（15 条） |
-| `memory/lessons/LESSONS.md` | 教训库（L1–L9） |
-| `memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md` | 工作记忆（8 问 + 5 假设 + 42 待办） |
-| `memory/journal/round02.md` | 本文件 |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` + `INDEX.md` | 结论台账（15 条） |
+| `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` | 教训库（L1–L9） |
+| `labs/lottery/studies/dlt/memory/workbench/{OPEN_QUESTIONS,HYPOTHESES,TODO}.md` | 工作记忆（8 问 + 5 假设 + 42 待办） |
+| `labs/lottery/studies/dlt/memory/journal/round02.md` | 本文件 |
 | `labs/lottery/studies/dlt/` 全部内容 | 拆解重排后的彩种数据与产出 |
 | `labs/lottery/studies/dlt/iterations/round02/` | 轮次归档（任务书/优先级/已知错误/legacy findings） |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | 对外策略输出（首版） |

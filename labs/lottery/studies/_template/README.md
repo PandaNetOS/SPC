@@ -18,7 +18,7 @@ python cli/main.py new-game <game_id>
 **加入这个彩种时，是否需要改 `platform/` 或 `src/` 的任何一行？**
 
 - 不需要 → 框架分离是成功的，继续。
-- 需要 → **停下来**。不是"绕过"，而是框架缺了一处抽象。记进 `memory/lessons/LESSONS.md`，
+- 需要 → **停下来**。不是"绕过"，而是框架缺了一处抽象。记进 `labs/lottery/studies/dlt/memory/lessons/LESSONS.md`，
   并在下一轮 `framework_revision` 里提出。
 
 ## 目录约定
@@ -43,7 +43,7 @@ games/<id>/
 
 ## 不要做的事
 
-- ❌ 不要往 `game.yaml` 里塞"分析结论" —— 结论进 `memory/facts/FACTS.jsonl`
+- ❌ 不要往 `game.yaml` 里塞"分析结论" —— 结论进 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl`
 - ❌ 不要在 `platform/` 里写彩种专属分支（`if game == "xxx"`）
 - ❌ 不要手写 `strategy.json` 的 `boundary` —— 用 `python cli/main.py strategy --game <id>` 重算
 - ❌ 不要跳过 `iterations/roundNN/TASK_BRIEF.md` 直接产出结论 —— 违反反锚定协议

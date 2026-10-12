@@ -189,14 +189,14 @@
 
 | 文件 | 变化 |
 |---|---|
-| `memory/facts/FACTS.jsonl` | 15 → **18 条**（+F-0016/F-0017/F-0018；F-0015 标 superseded） |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 15 → **18 条**（+F-0016/F-0017/F-0018；F-0015 标 superseded） |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | R-001 `expected_value_impact` 同步；`evidence_index` 9 → **12 条**；`provenance.iteration = round03` |
 | `labs/lottery/studies/dlt/iterations/round03/scripts/` | **新建**，6 个脚本 + 3 个 JSON 产出 |
-| `memory/workbench/OPEN_QUESTIONS.md` | 待更新（Q-001/Q-002/Q-004 标 answered；新增 Q-010/Q-011） |
-| `memory/workbench/TODO.md` | 待更新（清算 T-001/T-002/T-003） |
+| `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` | 待更新（Q-001/Q-002/Q-004 标 answered；新增 Q-010/Q-011） |
+| `labs/lottery/studies/dlt/memory/workbench/TODO.md` | 待更新（清算 T-001/T-002/T-003） |
 | `labs/lottery/studies/dlt/iterations/round03/FINDINGS.md` | **新建** |
 | `labs/lottery/studies/dlt/iterations/round03/HANDOFF.md` | 本文件 |
-| `memory/journal/round03.md` | 待更新 |
+| `labs/lottery/studies/dlt/memory/journal/round03.md` | 待更新 |
 
 ---
 
@@ -238,7 +238,7 @@ python cli/main.py validate --all
 | `labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_strategy.py` | 策略落地 |
 | `labs/lottery/studies/dlt/iterations/round03/FINDINGS.md` | 本轮证据层 |
 | `labs/lottery/studies/dlt/iterations/round03/HANDOFF.md` | 本文件 |
-| `memory/facts/FACTS.jsonl` | 18 条（+3，1 条 superseded） |
+| `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | 18 条（+3，1 条 superseded） |
 | `labs/lottery/studies/dlt/strategy/strategy.json` | R-001 同步 + evidence_index 扩充 |
 
 ---

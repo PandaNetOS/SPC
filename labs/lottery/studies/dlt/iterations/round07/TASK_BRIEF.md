@@ -13,7 +13,7 @@
 
 ## 本轮 P0 任务（必做，引用 TODO 原条目）
 
-- [ ] **T-014** —— 来源：`memory/workbench/TODO.md` 的 `P1` 段（评分 90）。
+- [ ] **T-014** —— 来源：`labs/lottery/studies/dlt/memory/workbench/TODO.md` 的 `P1` 段（评分 90）。
 
 ## 验收判据
 

@@ -4,7 +4,7 @@
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > 轮次：round11（T-048，r08 新增）｜ 状态：**设计文档，本轮不落 L2 实现**
-> 出处：`memory/workbench/TODO.md` P2 段 T-048
+> 出处：`labs/lottery/studies/dlt/memory/workbench/TODO.md` P2 段 T-048
 > 上游规则原料：F-0004（避开连号 → 中奖时期望奖金 +109% 后段口径 / +41% 含封顶）、
 > F-0029（避开连号+生日号区 → 条件撞号系数 0.425，期望奖金 +136% 未封顶）、
 > F-0027（同号 K 注自我摊薄 (1+m)/(K+m)）、F-0042（r11：连号撞号效应进入平台期）、

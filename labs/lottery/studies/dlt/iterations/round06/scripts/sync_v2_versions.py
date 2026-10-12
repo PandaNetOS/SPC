@@ -2,8 +2,8 @@
 """sync_v2_versions.py — v2.0 机制落地的版本登记与 README 同步。
 
 1. versions.json：
-   - 新增：platform/tools/ingate.py、compress_memory.py、memory/spec/ITERATION_SOP_v2.md、
-     memory/facts/ACTIVE.md、round06/add_v2_fields.py、smoke_ingate.py、probe_v2.py
+   - 新增：platform/tools/ingate.py、compress_memory.py、platform/memory/spec/ITERATION_SOP_v2.md、
+     labs/lottery/studies/dlt/memory/facts/ACTIVE.md、round06/add_v2_fields.py、smoke_ingate.py、probe_v2.py
    - 更新 note：spec/fact.schema.json（v2.0 字段）、src/spc/validate.py（v2.0 检查）
 2. README.md：记忆层行提及 v2.0 机制；校验行不变（32 条 / 67 项 / 325 项）。
 3. 重渲染 VERSION_INDEX.md。
@@ -38,11 +38,11 @@ new_entries = [
      "content_version": "1.0", "iteration": "r06",
      "note": "记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）",
      "updated_at": TODAY, "status": "active"},
-    {"path": "memory/spec/ITERATION_SOP_v2.md", "level": "A", "kind": "doc",
+    {"path": "platform/memory/spec/ITERATION_SOP_v2.md", "level": "A", "kind": "doc",
      "content_version": "1.0", "iteration": "r06",
      "note": "证据门控式迭代规范 v2.0：三层信念基/原子操作/三闸门/矛盾双通道/INV1-3/重校准/压缩",
      "updated_at": TODAY, "status": "active"},
-    {"path": "memory/facts/ACTIVE.md", "level": "D", "kind": "report",
+    {"path": "labs/lottery/studies/dlt/memory/facts/ACTIVE.md", "level": "D", "kind": "report",
      "content_version": "1.0", "iteration": "r06",
      "note": "当前有效结论清单（与台账分离，compress_memory 生成）", "updated_at": TODAY, "status": "active"},
     {"path": "labs/lottery/studies/dlt/iterations/round06/scripts/add_v2_fields.py", "level": "A", "kind": "script",

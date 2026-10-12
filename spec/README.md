@@ -20,7 +20,7 @@
 
 | 文件 | 约束什么 | 权威消费者 |
 |---|---|---|
-| `fact.schema.json` | 一条研究结论（`memory/facts/FACTS.jsonl` 每行） | 记忆层、策略生成器 |
+| `fact.schema.json` | 一条研究结论（`labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` 每行） | 记忆层、策略生成器 |
 | `strategy.schema.json` | 对外输出的彩种策略规则集 | **所有外部工具** |
 | `game_config.schema.json` | 彩种声明式配置（`games/<id>/game.yaml`） | 框架核心 |
 | `iteration.schema.json` | 一轮迭代的元数据（`iterations/roundNN/manifest.json`） | AI 协议、自我迭代 |

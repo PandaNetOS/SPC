@@ -254,7 +254,7 @@ assert abs(cf_norun - 0.4528) < 0.003
 | `round03/scripts/cap_adjusted_uplift.py` | `cap_adjusted_uplift.json` | ✅ 已跑通（含复现断言） |
 | `round03/scripts/b2_split_stability.py` | `b2_split_stability.json` | ✅ 已跑通 |
 | `round03/scripts/b2_robust_estimators.py` | `b2_robust_estimators.json` | ✅ 已跑通 |
-| `round03/scripts/apply_r03_facts.py` | 更新 `memory/facts/FACTS.jsonl` | ✅ 已执行（15 → 18 条） |
+| `round03/scripts/apply_r03_facts.py` | 更新 `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` | ✅ 已执行（15 → 18 条） |
 | `round03/scripts/apply_r03_strategy.py` | 更新 `labs/lottery/studies/dlt/strategy/strategy.json` | ✅ 已执行 |
 
 ---

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """spc.strategy — 策略生成与消费
 
 两个方向：
@@ -220,7 +220,7 @@ def build_strategy(game: str, repo_root: str | None = None,
         if f is None:
             raise StrategyError(
                 f"strategy.json 引用了不存在的结论 {fid}。"
-                f"请先确认该结论已在 memory/facts/FACTS.jsonl 中。"
+                f"请先确认该结论已在 labs/lottery/studies/dlt/memory/facts/FACTS.jsonl 中。"
             )
         idx.append(
             {

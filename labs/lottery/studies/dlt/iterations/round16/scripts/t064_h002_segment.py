@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 """t062_h002_segment.py — H-002 三段单调预测检验（r16）
 
-## 假设原文（memory/workbench/HYPOTHESES.md H-002）
+## 假设原文（labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md H-002）
 
 > 生日偏好不是「`max ≤ 31` 一刀切」，而是**按号递减**：1–12 最强（月），
 > 13–31 次之（日），32–35 最弱。可证伪预测：逐号权重应满足 1–12 > 13–31 > 32–35。
