@@ -223,6 +223,12 @@
       缺口只是 TODO 条目缺 `✅ → F-xxxx` 记录。已补 T-020 完成记录（→ F-0038）、
       Q-006 → answered（15/15）、并在记录里留痕误判来源，防止后人再踩。
 
+- [x] **T-070** value: 60 ★ r17：全形态穷举筛选 + R-005 落地 ✅ **r17 完成** → F-0049
+      40 个 boolean 形态撞号比筛选（B=2000 bootstrap），4 个显著冷门形态落地为 R-005（prefer，权重 1.2，C 档）：
+      front_mingap_eq2 / front_max_ge31 / back_all_even / back_same_tail
+      29 个形态不显著（同尾聚集/吉祥号/忌讳号/全奇全偶/镜像对等均无证据）
+      护栏：validate 新增"目录最大轮次 > current_iteration 时报 ERROR"
+
 - [ ] **T-025** E6 固定奖加成是否真实发生（Q-016）★ r04 新增 `resource: external-data`
       需三至七等奖实发额（外部数据源）；先做事件计数再谈影响（L10）
       产出：新增 F-0xxx（拿到数据后）或保持 blocked

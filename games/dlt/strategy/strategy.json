@@ -203,6 +203,44 @@
       ],
       "effectiveness_grade": "B",
       "effectiveness_basis": "r12 测试窗 +27.9%（CI 下界高于随机）+ r13 walk-forward 4/5 步正增益方向一致 + r14 F-0046 高区撞号<1 机制证据（单步显著 1/5 见 F-0047）——统计确立（用户批准，r14.1 落地）"
+    },
+    {
+      "id": "R-005",
+      "statement": "偏好冷门形态：选号时优先满足以下条件之一——前区含35（front_has_35）、前区最小间隔=2（front_min_gap==2，无连号但有等差对）、后区全偶（back_even_count==2）、后区同尾（如2和12，back_same_tail>=1）。这些形态撞号率显著低于平均（ratio 0.62~0.82），选中时中一等奖分奖人数更少（F-0049）",
+      "kind": "collision_avoidance",
+      "scope": "single",
+      "machine_rule": {
+        "predicate": "front_has_35 == true OR front_min_gap == 2 OR back_even_count == 2 OR back_same_tail >= 1",
+        "action": "prefer",
+        "weight": 1.2
+      },
+      "evidence_refs": [
+        "F-0049"
+      ],
+      "confidence": 2,
+      "expected_value_impact": {
+        "metric": "expected_bonus_given_win",
+        "metric_scope": "all_tiers",
+        "direction": "increase",
+        "magnitude_pct": null,
+        "ci95": null,
+        "changes_win_probability": false,
+        "caveats": [
+          "★ r17 第一轮宽筛结果（tentative）：40 个形态中筛出 4 个显著冷门（ratio CI 不跨 1），但未做多重比较置换校正、未做 NB2 重尾复核、未走 walk-forward hold-out",
+          "效应量级：front_mingap_eq2 ratio=0.794（CI[0.722,0.877]）、front_max_ge31 ratio=0.795（CI[0.715,0.886]）、back_all_even ratio=0.815（CI[0.721,0.919]）、back_same_tail ratio=0.619（CI[0.485,0.762]，n=50 功效有限）",
+          "back_same_tail 样本量小（n=50），前后两段方向一致但统计功效有限，需更多数据确认",
+          "front_max_ge31 前半段 CI 边缘（[0.684,1.001]），效应在后半段更强，可能是时变效应",
+          "与 R-001~R-004 的关系：R-001~R-004 是 exclude（排除拥挤形态），R-005 是 prefer（偏向冷门形态），两者互补——exclude 去掉人多买的，prefer 偏向人少买的",
+          "prefer 权重 1.2 为初始拍定值，未经优化；实际组合搜索时应作为候选特征纳入搜索空间",
+          "只在中奖时兑现。中一等奖概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关",
+          "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实"
+        ]
+      },
+      "applicable_epochs": [
+        "E6"
+      ],
+      "effectiveness_grade": "C",
+      "effectiveness_basis": "r17 第一轮宽筛 40 形态撞号比 Bootstrap CI（B=2000），4 个形态 CI 不跨 1 且前后两段方向一致，但未过多重比较校正、未走 walk-forward——模型估计（用户批准，r17 落地）"
     }
   ],
   "avoid_list": [
