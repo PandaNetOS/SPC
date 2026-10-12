@@ -1872,10 +1872,18 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
                     f"收轮SOP: {name} FINDINGS.md 缺少证伪/修正章节"
                     f" —— 协议要求主动说明本轮推翻/修正/未验证了哪些结论"
                 )
-        # 2. TASK_BRIEF.md 必须存在
+        # 2. TASK_BRIEF.md 必须存在且内容完整
         tp = os.path.join(round_dir, "TASK_BRIEF.md")
         if not os.path.exists(tp):
             rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 TASK_BRIEF.md（收尾不完整）")
+        else:
+            tb = open(tp, encoding="utf-8").read()
+            tb_keywords = ("目标", "验收", "输入", "方法")
+            if not any(k in tb for k in tb_keywords):
+                rep.err(
+                    f"收轮SOP: {name} TASK_BRIEF.md 内容不完整"
+                    f" —— 应含目标/验收判据/输入/方法等必填项"
+                )
         # 3. deliverables 声明的文件实际存在
         try:
             m = json.load(open(mf, encoding="utf-8"))
@@ -1886,6 +1894,19 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
                 full = os.path.join(root, p)
                 if not os.path.exists(full):
                     rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
+            # 3b. upstream_fact_ids 必须在 FACTS.jsonl 里存在
+            facts_p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+            if os.path.isfile(facts_p):
+                valid_ids = set()
+                with open(facts_p, encoding="utf-8") as ff:
+                    for line in ff:
+                        try:
+                            valid_ids.add(json.loads(line).get("id"))
+                        except Exception:
+                            pass
+                for fid in (m.get("inputs") or {}).get("upstream_fact_ids") or []:
+                    if fid not in valid_ids:
+                        rep.err(f"收轮SOP: {name} manifest upstream_fact_ids 引用不存在的结论: {fid}")
         except Exception:
             pass
     if checked:
