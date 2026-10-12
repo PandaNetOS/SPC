@@ -1,30 +1,51 @@
 # -*- coding: utf-8 -*-
-"""spc.core.ticket — 一注号码（彩种无关的一等公民）
+"""spc.core.ticket — 一条观测记录（通用一等公民，不绑定任何具体问题）
+
+## 这是什么
+
+一条「观测记录」是研究对象的最小单位。它由多个「维度」组成，
+每个维度有一组取值。区名/维度名来自配置，不硬编码。
+
+```python
+# 彩票：一条选号记录
+Record({"front": (3, 11, 17, 24, 32), "back": (4, 9)})
+
+# 股票：一条 K 线记录（未来扩展）
+Record({"open": 10.5, "close": 11.2, "volume": 100000})
+
+# 医学：一条病例记录（未来扩展）
+Record({"age": 45, "blood_pressure": 120, "diagnosis": "hypertension"})
+```
 
 ## 为什么需要这个类
 
-框架此前只有两端：
+平台此前只有两端：
 
 ```
-machine.zones  →  compute_space()  →  T / 一等奖概率       （号码空间级）
+machine.zones  →  compute_space()  →  T / 基础概率       （观测空间级）
 strategy.json  →  load_strategy()  →  规则                 （规则级）
 ```
 
-**中间那层「拿一注号码，算它的特征、判它合规、给它打分」是缺的。**
+**中间那层「拿一条记录，算它的特征、判它合规、给它打分」是缺的。**
 缺了它，就必须由每个消费方自己实现 —— 这正是 `machine_rule.predicate`
 一直只是「给人看的字符串」的根因。
 
-## 核心设计：不写死区名
+## 核心设计：不写死维度名
 
-`Ticket` **不含 `front` / `back`**。区名来自 `machine.zones`，长度可变：
+`Record`（别名 `Ticket`）**不含 `front` / `back`**。维度名来自 `machine.zones`，长度可变：
 
 ```python
-Ticket({"front": (3, 11, 17, 24, 32), "back": (4, 9)})   # 大乐透（2 区）
-Ticket({"main": (1, 2, 3, 4, 5, 6, 7)})                  # 单区 7 选 7
+Record({"front": (3, 11, 17, 24, 32), "back": (4, 9)})   # 大乐透（2 维）
+Record({"main": (1, 2, 3, 4, 5, 6, 7)})                  # 单维 7 选 7
 ```
 
-若写死 `front`/`back`，就等于把某个彩种的字段名硬编码进框架 ——
+若写死 `front`/`back`，就等于把某个彩种的字段名硬编码进平台 ——
 违反「唯一硬标准」。
+
+## 向后兼容
+
+- `Ticket` 是 `Record` 的别名，现有代码无需修改
+- `ticket_from_any()` 是 `record_from_any()` 的别名
 """
 from __future__ import annotations
 
@@ -221,3 +242,20 @@ def ticket_from_any(obj: Any, cfg: dict[str, Any] | None = None) -> Ticket:
     if cfg is not None:
         t.check(cfg)
     return t
+
+
+# ============================================================
+# 抽象升级：Record 是 Ticket 的通用别名
+# ============================================================
+# Ticket = Record（一条观测记录）
+# 现有代码用 Ticket，新代码推荐用 Record
+# 两者完全等价
+
+Record = Ticket
+RecordError = TicketError
+record_from_any = ticket_from_any
+
+__all__ = [
+    "Ticket", "TicketError", "ticket_from_any",
+    "Record", "RecordError", "record_from_any",  # 通用别名
+]
