@@ -1851,6 +1851,15 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
             fp = os.path.join(round_dir, "FINDINGS.md")
             if not os.path.exists(fp):
                 rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 FINDINGS.md（收尾不完整）")
+            else:
+                # 1b. FINDINGS 必须含证伪/修正章节（主动证伪义务）
+                ft = open(fp, encoding="utf-8").read()
+                falsify_keywords = ("推翻", "修正", "证伪", "未验证", "失败", "refute", "overturn")
+                if not any(k in ft for k in falsify_keywords):
+                    rep.err(
+                        f"收轮SOP: {name} FINDINGS.md 缺少证伪/修正章节"
+                        f" —— 协议要求主动说明本轮推翻/修正/未验证了哪些结论"
+                    )
             # 2. TASK_BRIEF.md 必须存在
             tp = os.path.join(round_dir, "TASK_BRIEF.md")
             if not os.path.exists(tp):
@@ -1872,25 +1881,63 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
 
 
 def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
-    """★ S（r11 根治 / r14.2 泛化）：策略文档随轮同步 —— 最近一次 strategy_updated=true 的收尾轮，
-    该彩种 STRATEGY_GUIDE.md 与 strategy.json 的登记轮次必须 >= 该轮，否则说明策略文档漏更新。
+    """★ S（r11 根治 / r14.2 泛化 / r19 双保险）：策略文档随轮同步。
 
-    背景（用户多次追问「策略文档漏更新」）：validate 此前只做版本行一致性
-    （文件内 == 登记 == 索引），策略文档不 bump 时三者一致、照样全绿 ——
-    轮次推进后策略依据变化（如 r11 的 F-0042/F-0043）没有机械拦截。
-    本检查把「策略文档版本 >= 最新策略更新轮」变成硬性校验。
-
-    r14.2 泛化：目标**不再硬编码两个字面量路径**，改由 versions.json 的登记派生
-    （`games/<game>/strategy/` 下的说明书与契约）—— 新增彩种自动纳入护栏。
-    这是同一个病灶的第二次复发：r11 只治了当时想到的两个文件，
-    README/AI_CONTEXT 等落在护栏外，r14 才暴露。护栏必须由登记驱动，不能由清单驱动。
-
-    已标 `follows_current=true` 的条目在此跳过：它们由更严的「轮次停滞检查」
-    （iteration 必须 == current_iteration）覆盖，避免同一个问题报两遍。
+r19 修复两个漏洞：
+1. 原检查依赖 manifest 的 strategy_updated 标记，手写漏标则空转 → 新增 mtime 对比：
+   strategy.json 比 STRATEGY_GUIDE.md 新则报警（说明书可能漏更新）。
+2. follows_current=true 的条目原交给"轮次停滞检查"，但该检查空转（统计值 None）
+   → 本函数内联动态检查：follows_current=true 的条目 iteration 必须 == current_iteration。
     """
     it_root = os.path.join(root, "games")
     if not os.path.isdir(it_root):
         return
+    vp = os.path.join(root, "versions.json")
+    if not os.path.isfile(vp):
+        return
+    try:
+        v = json.load(open(vp, encoding="utf-8"))
+    except Exception:
+        return
+    entries = v.get("entries", [])
+    current_iter = v.get("current_iteration", "")
+
+    # ---- 检查 1：follows_current=true 的条目轮次必须对齐 current_iteration ----
+    re_target = re.compile(r"^games/([^/]+)/strategy/(STRATEGY_GUIDE\.md|strategy\.json)$")
+    for e in entries:
+        if not e.get("follows_current"):
+            continue
+        path = e.get("path") or ""
+        m = re_target.match(path)
+        if not m:
+            continue
+        it = e.get("iteration") or ""
+        if it != current_iter:
+            label = "STRATEGY_GUIDE.md" if "STRATEGY" in path else "strategy.json"
+            rep.err(
+                f"策略同步: {label}（{path}）登记轮次 {it} 落后于 current_iteration {current_iter}"
+                f" —— 策略文档未随轮次同步"
+            )
+
+    # ---- 检查 2：mtime 对比 —— strategy.json 比 STRATEGY_GUIDE.md 新则报警 ----
+    for g in sorted(os.listdir(it_root)):
+        strat_dir = os.path.join(it_root, g, "strategy")
+        if not os.path.isdir(strat_dir):
+            continue
+        sj = os.path.join(strat_dir, "strategy.json")
+        sg = os.path.join(strat_dir, "STRATEGY_GUIDE.md")
+        if not os.path.isfile(sj) or not os.path.isfile(sg):
+            continue
+        sj_mtime = os.path.getmtime(sj)
+        sg_mtime = os.path.getmtime(sg)
+        # strategy.json 比 STRATEGY_GUIDE.md 新超过 60 秒 → 可能漏更新
+        if sj_mtime > sg_mtime + 60:
+            rep.err(
+                f"策略同步: games/{g}/strategy/strategy.json 比 STRATEGY_GUIDE.md 新 "
+                f"（mtime 差 {int(sj_mtime - sg_mtime)}s）—— 策略契约已改但说明书未同步"
+            )
+
+    # ---- 检查 3（保留原有）：manifest strategy_updated 标记触发的轮次对齐 ----
     latest_by_game: dict[str, int] = {}
     for g in sorted(os.listdir(it_root)):
         it_dir = os.path.join(it_root, g, "iterations")
@@ -1899,7 +1946,7 @@ def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
         for name in sorted(os.listdir(it_dir)):
             mf = os.path.join(it_dir, name, "manifest.json")
             if not os.path.isfile(mf):
-                continue  # 未收尾轮（当前轮）跳过
+                continue
             try:
                 m = json.load(open(mf, encoding="utf-8"))
             except Exception:
@@ -1912,53 +1959,30 @@ def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
                     continue
                 if rn > latest_by_game.get(g, 0):
                     latest_by_game[g] = rn
-    if not latest_by_game:
-        return
-    vp = os.path.join(root, "versions.json")
-    if not os.path.isfile(vp):
-        return
-    try:
-        v = json.load(open(vp, encoding="utf-8"))
-    except Exception:
-        return
-    entries = v.get("entries", [])
-    by_path = {x.get("path"): x for x in entries}
 
-    # 未登记检查：有 strategy_updated 收尾轮的彩种，两份策略文件必须在索引里
+    by_path = {x.get("path"): x for x in entries}
     for g, latest in sorted(latest_by_game.items()):
         for fn, label in (("STRATEGY_GUIDE.md", "策略说明书 STRATEGY_GUIDE.md"),
                           ("strategy.json", "策略契约 strategy.json")):
             path = f"games/{g}/strategy/{fn}"
             if path not in by_path:
                 rep.err(f"策略同步: {label}（{path}）未登记 versions.json，无法核对轮次")
-
-    # 轮次判据：目标由登记派生（r14.2），不再硬编码路径清单
-    re_target = re.compile(r"^games/([^/]+)/strategy/(STRATEGY_GUIDE\.md|strategy\.json)$")
-    checked = 0
-    for e in entries:
-        path = e.get("path") or ""
-        m = re_target.match(path)
-        if not m:
-            continue
-        if e.get("follows_current"):
-            continue  # 已由更严的轮次停滞检查覆盖，不重复报
-        g, fn = m.group(1), m.group(2)
-        latest = latest_by_game.get(g)
-        if not latest:
-            continue  # 该彩种尚无 strategy_updated 的收尾轮
-        label = ("策略说明书 STRATEGY_GUIDE.md" if fn.endswith(".md")
-                 else "策略契约 strategy.json")
         want = f"r{latest:02d}"
-        checked += 1
-        it = e.get("iteration") or ""
-        if it != want:
-            rep.err(
-                f"策略同步: {label}（{path}）登记轮次 {it} 落后于最新策略更新轮 {want}"
-                f" —— round{latest:02d} strategy_updated=true，策略依据有变化，"
-                f"请同步该轮证据并 bump 登记"
-            )
-    if checked:
-        rep.ok(f"策略同步: {checked} 个策略文档版本均已跟上最新策略更新轮")
+        for e in entries:
+            path = e.get("path") or ""
+            m = re_target.match(path)
+            if not m:
+                continue
+            if m.group(1) != g:
+                continue
+            if e.get("follows_current"):
+                continue  # 已由检查 1 覆盖
+            it = e.get("iteration") or ""
+            if it != want:
+                rep.err(
+                    f"策略同步: {path} 登记轮次 {it} 落后于最新策略更新轮 {want}"
+                )
+    rep.ok("策略同步: 文档对齐 + mtime 双保险检查完成")
 
 def _check_iteration_counter_sync(root: str, rep: ValidationReport) -> None:
     """★ R（r15 新增，A3）：轮次号双源一致性 —— versions.json 的 `current_iteration`
