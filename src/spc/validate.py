@@ -884,6 +884,33 @@ def validate_iterations(game: str, repo_root: str | None = None,
 
     if n:
         rep.ok(f"iterations: 检查了 {n} 个 manifest.json")
+
+    # 护栏：目录最大轮次 vs versions.json current_iteration
+    # 防止"做了一轮但没收尾（不更新 current_iteration）"
+    import re as _re
+    max_dir_round = 0
+    for name in os.listdir(it_dir):
+        mt = _re.match(r"round(\d+)$", name)
+        if mt:
+            max_dir_round = max(max_dir_round, int(mt.group(1)))
+    if max_dir_round:
+        vj = os.path.join(root, "versions.json")
+        if os.path.isfile(vj):
+            try:
+                with open(vj, encoding="utf-8") as f:
+                    vdata = json.load(f)
+                cur = vdata.get("current_iteration", "r00")
+                mt2 = _re.match(r"r(\d+)$", cur)
+                cur_num = int(mt2.group(1)) if mt2 else 0
+                if max_dir_round > cur_num:
+                    rep.err(
+                        f"iterations/ 目录存在 round{max_dir_round:02d}，"
+                        f"但 versions.json current_iteration 仍为 {cur} —— "
+                        f"轮次未收尾（没收轮）"
+                    )
+            except (json.JSONDecodeError, OSError):
+                pass
+
     return rep
 
 
