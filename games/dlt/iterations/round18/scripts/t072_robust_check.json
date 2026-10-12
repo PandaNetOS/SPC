@@ -1,0 +1,57 @@
+{
+  "front_max_ge31": {
+    "n_in": 1056,
+    "n_out": 917,
+    "mean_ratio": 0.7947069875400714,
+    "median_ratio": 0.75,
+    "trimmed_mean_ratio": 0.8251487344963195,
+    "w_in_mean": 4.3418560606060606,
+    "w_out_mean": 5.463467829880043,
+    "w_in_median": 3.0,
+    "w_out_median": 4.0
+  },
+  "front_mingap_eq2": {
+    "n_in": 533,
+    "n_out": 1440,
+    "mean_ratio": 0.7938213810816225,
+    "median_ratio": 0.75,
+    "trimmed_mean_ratio": 0.883010019056506,
+    "w_in_mean": 4.088180112570356,
+    "w_out_mean": 5.15,
+    "w_in_median": 3.0,
+    "w_out_median": 4.0
+  },
+  "back_all_even": {
+    "n_in": 423,
+    "n_out": 1550,
+    "mean_ratio": 0.815119421636582,
+    "median_ratio": 1.0,
+    "trimmed_mean_ratio": 0.8792900399272365,
+    "w_in_mean": 4.127659574468085,
+    "w_out_mean": 5.063870967741935,
+    "w_in_median": 3.0,
+    "w_out_median": 3.0
+  },
+  "back_same_tail": {
+    "n_in": 50,
+    "n_out": 1923,
+    "mean_ratio": 0.6190744466800805,
+    "median_ratio": 0.6666666666666666,
+    "trimmed_mean_ratio": 0.7130895250703293,
+    "w_in_mean": 3.04,
+    "w_out_mean": 4.9105564222568905,
+    "w_in_median": 2.0,
+    "w_out_median": 3.0
+  },
+  "front_run_and_birthday": {
+    "n_in": 548,
+    "n_out": 1425,
+    "mean_ratio": 1.1291569834047983,
+    "median_ratio": 1.3333333333333333,
+    "trimmed_mean_ratio": 1.1207564126963987,
+    "w_in_mean": 5.3010948905109485,
+    "w_out_mean": 4.6947368421052635,
+    "w_in_median": 4.0,
+    "w_out_median": 3.0
+  }
+}

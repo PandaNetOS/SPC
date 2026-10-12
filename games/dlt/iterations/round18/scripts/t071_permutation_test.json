@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "seed": 20261012,
+    "bootstrap_B": 2000,
+    "n_periods": 1973,
+    "n_features": 40
+  },
+  "observed": {
+    "max_abs_dev": 0.3809255533199195
+  },
+  "permutation_test": {
+    "p_value": 0.2235,
+    "threshold_95": 0.5729464091993925,
+    "conclusion": "不显著"
+  },
+  "significant_features_after_correction": []
+}

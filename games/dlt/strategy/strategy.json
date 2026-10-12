@@ -206,15 +206,18 @@
     },
     {
       "id": "R-005",
-      "statement": "偏好冷门形态：选号时优先满足以下条件之一——前区含35（front_has_35）、前区最小间隔=2（front_min_gap==2，无连号但有等差对）、后区全偶（back_even_count==2）、后区同尾（如2和12，back_same_tail>=1）。这些形态撞号率显著低于平均（ratio 0.62~0.82），选中时中一等奖分奖人数更少（F-0049）",
+      "statement": "偏好冷门形态：选号时优先满足以下条件之一——前区含35（front_has_35）、前区最小间隔=2（front_min_gap==2，无连号但有等差对）、后区同尾（如2和12，back_same_tail>=1）。这些形态撞号率低于平均（ratio 0.62~0.80），选中时中一等奖分奖人数更少（F-0049）",
       "kind": "collision_avoidance",
       "scope": "single",
       "machine_rule": {
-        "predicate": "front_has_35 == true OR front_min_gap == 2 OR back_even_count == 2 OR back_same_tail >= 1",
+        "predicate": "front_has_35 == true OR front_min_gap == 2 OR back_same_tail >= 1",
         "action": "prefer",
         "weight": 1.2
       },
       "evidence_refs": [
+        "F-0038",
+        "F-0041",
+        "F-0048",
         "F-0049"
       ],
       "confidence": 2,
@@ -226,11 +229,11 @@
         "ci95": null,
         "changes_win_probability": false,
         "caveats": [
-          "★ r17 第一轮宽筛结果（tentative）：40 个形态中筛出 4 个显著冷门（ratio CI 不跨 1），但未做多重比较置换校正、未做 NB2 重尾复核、未走 walk-forward hold-out",
-          "效应量级：front_mingap_eq2 ratio=0.794（CI[0.722,0.877]）、front_max_ge31 ratio=0.795（CI[0.715,0.886]）、back_all_even ratio=0.815（CI[0.721,0.919]）、back_same_tail ratio=0.619（CI[0.485,0.762]，n=50 功效有限）",
-          "back_same_tail 样本量小（n=50），前后两段方向一致但统计功效有限，需更多数据确认",
-          "front_max_ge31 前半段 CI 边缘（[0.684,1.001]），效应在后半段更强，可能是时变效应",
-          "与 R-001~R-004 的关系：R-001~R-004 是 exclude（排除拥挤形态），R-005 是 prefer（偏向冷门形态），两者互补——exclude 去掉人多买的，prefer 偏向人少买的",
+          "★ r18 置换检验校正：40 个形态多重比较的 max|r| 置换检验 p=0.2235（B=2000），整体不显著——筛出的冷门形态可能含假阳性",
+          "★ r18 稳健复核：中位数比 + 10% 截尾均值三口径一致的有 front_max_ge31 / front_mingap_eq2 / back_same_tail；back_all_even 中位数口径 ratio=1.0（效应消失），已从本规则移除",
+          "效应量级（均值比）：front_mingap_eq2=0.794、front_max_ge31=0.795、back_same_tail=0.619（n=50 功效有限）",
+          "front_max_ge31 与 F-0038/F-0048 一致（35 号偏低、生日段更易撞号）；front_mingap_eq2 与 R-001 互补（连号拥挤 → 间隔=2 冷门）",
+          "与 R-001~R-004 的关系：R-001~R-004 是 exclude（排除拥挤形态），R-005 是 prefer（偏向冷门形态），两者互补",
           "prefer 权重 1.2 为初始拍定值，未经优化；实际组合搜索时应作为候选特征纳入搜索空间",
           "只在中奖时兑现。中一等奖概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关",
           "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实"
@@ -240,7 +243,7 @@
         "E6"
       ],
       "effectiveness_grade": "C",
-      "effectiveness_basis": "r17 第一轮宽筛 40 形态撞号比 Bootstrap CI（B=2000），4 个形态 CI 不跨 1 且前后两段方向一致，但未过多重比较校正、未走 walk-forward——模型估计（用户批准，r17 落地）"
+      "effectiveness_basis": "r17 宽筛 40 形态 + r18 置换检验（p=0.22，整体不显著）+ r18 稳健复核（3/4 形态三口径一致）——探索性，未走 walk-forward，用户批准 r17 落地、r18 修正"
     }
   ],
   "avoid_list": [
@@ -472,6 +475,30 @@
       "claim": "R_new 规则 walk-forward 单步统计显著性修正：150 期评估窗下 R_new 相对随机的『中奖时期望奖金』增益点估计 4/5 步为正（同 F-0045），但单步 95% CI 仅 1/5 步显著大于 0（step3 CI [594,906,2,913,333] 元）——小窗命中样本（约 20 期）使 CI 宽，F-0045 的『二次确认』应理解为方向一致性证据而非单步显著证据。此数字不改变任一奖级中奖概率。",
       "status": "established",
       "confidence": 3
+    },
+    {
+      "id": "F-0038",
+      "claim": "逐号偏好结构真实存在但精细度高于『生日段』假设：后段逐号相对撞号强度 S_j（1.0=无偏好）在号码间有明显分异（如 9/11/19 偏高 ≈1.09-1.10，35 偏低 0.89），OLS 逐号项",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0041",
+      "claim": "『随机性错觉』形态的撞号溢价仅存在于三连号（等差 1）：期含三连号撞号比 1.1287（CI [1.0351, 1.2243]）显著高于基线；等差 2/3/5 三连、等差对、全奇、全偶、镜像对、低区聚",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0048",
+      "claim": "H-002『生日偏好按号递减』三段检验：点估计全序单调（S_j 均值 1.0213 > 0.9947 > 0.9580），但仅端点差显著（1-12 − 32-35 = +0.0633，CI [+0.0",
+      "status": "established",
+      "confidence": 3
+    },
+    {
+      "id": "F-0049",
+      "claim": "round17 全形态宽筛：40 个 boolean 形态撞号比（后段 1973 期，B=2000 bootstrap），5 个形态 CI 不跨 1。r18 置换检验 max|r| 校正 p=0.22",
+      "status": "tentative",
+      "confidence": 2
     }
   ],
   "convenience": {
@@ -571,7 +598,7 @@
   "provenance": {
     "iteration": "round14",
     "generator": "apply_r06_strategy.py (user-approved)",
-    "evidence_hash": "fd02f1e224cb448592215704422dc884e1543d1bf4d9ba5b0329e93d3851b88f",
+    "evidence_hash": "db0fa44fb956a57d17be2085050b58d54d2fdc5c00247ade1050f954090ee377",
     "note": "r06（用户批准三项）：R-002 语义重构为『禁止完全相同号码』（F-0027/F-0028），权重语义由 penalize 0.5 改为 exclude；新增 R-003（避开连号+生日号区，F-0029）。evidence_hash = 全部被引结论规范视图的 SHA256。 ★ r08：口径由头奖改为全奖级（F-0036），schema_version 1.1→1.2。 ★ 元数据增强（非研究轮）：schema_version 1.2→1.3，新增 convenience（购彩便利性）/ experience（情绪体验与预期校准）/ psychology（心理学外部锚点）三组元数据；均为非收益变量（affects_expected_return=false），不改变策略数字与 evidence_hash。 ★ r14.1（用户批准 T-052）：新增 R-004（R-001+R-003 叠加再排除镜像对，evidence_refs F-0044/F-0045/F-0046/F-0047），effectiveness_grade=B。"
   }
 }
