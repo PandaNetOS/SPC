@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StudyConfig",
+  "description": "研究组配置 schema（通用，彩种无关）",
+  "type": "object",
+  "required": ["study_id", "lab", "created_at", "data"],
+  "properties": {
+    "study_id": {
+      "type": "string",
+      "description": "研究组唯一标识（如 dlt / ssq / hs300_etf）"
+    },
+    "lab": {
+      "type": "string",
+      "description": "所属实验室（如 lottery / stock / medical）"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date",
+      "description": "创建日期"
+    },
+    "data": {
+      "type": "object",
+      "required": ["raw"],
+      "properties": {
+        "raw": {
+          "type": "object",
+          "required": ["path"],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "原始数据文件相对路径"
+            },
+            "sha256": {
+              "type": "string",
+              "description": "原始数据文件 SHA256 哈希"
+            }
+          }
+        },
+        "derived": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" },
+            "files": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "rebuild_script": { "type": "string" }
+          }
+        }
+      }
+    },
+    "features": {
+      "type": "array",
+      "description": "特征声明列表",
+      "items": {
+        "type": "object",
+        "required": ["name", "primitive"],
+        "properties": {
+          "name": { "type": "string" },
+          "primitive": { "type": "string" },
+          "args": { "type": "object" },
+          "scope": {
+            "type": "string",
+            "enum": ["single", "cross"],
+            "default": "single"
+          },
+          "formula": {
+            "type": "string",
+            "description": "给人看的注释，不参与求值"
+          }
+        }
+      }
+    },
+    "machine": {
+      "type": "object",
+      "description": "研究问题特定的机器参数（如号码池大小、选几个号）"
+    }
+  }
+}
