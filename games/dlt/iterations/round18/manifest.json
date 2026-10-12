@@ -1,0 +1,23 @@
+{
+  "round": 18,
+  "date": "2026-10-12",
+  "data_version": "dlt_full_2933",
+  "tasks_completed": [
+    "t071_permutation_test",
+    "t072_robust_check",
+    "R-005_correction",
+    "F-0049_update"
+  ],
+  "files": [
+    "TASK_BRIEF.md",
+    "FINDINGS.md",
+    "HANDOFF.md",
+    "manifest.json",
+    "scripts/t071_permutation_test.py",
+    "scripts/t071_permutation_test.json",
+    "scripts/t072_robust_check.py",
+    "scripts/t072_robust_check.json"
+  ],
+  "facts_updated": ["F-0049"],
+  "strategy_updated": ["R-005"]
+}
