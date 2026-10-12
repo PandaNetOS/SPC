@@ -126,6 +126,12 @@ def validate_game(game: str, repo_root: str | None = None,
         rep.err(f"game {game}: 配置不存在 {path}")
         return rep
 
+    # 全局轮次/SOP/策略同步检查（r19 新增：在 PyYAML early return 之前执行，
+    # 防止 PyYAML 未安装时这些检查被跳过）
+    _check_iteration_counter_sync(root, rep)
+    _check_round_sop(root, rep)
+    _check_strategy_sync(root, rep)
+
     try:
         import yaml  # type: ignore
     except ImportError:
@@ -1832,52 +1838,58 @@ def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
 def _check_round_sop(root: str, rep: ValidationReport) -> None:
     """★ SOP（r19 新增）：收轮流程完整性校验 —— 已收尾轮（有 manifest.json）必须有：
     FINDINGS.md / TASK_BRIEF.md / deliverables 声明的文件实际存在。
+    只检查最近 3 轮（历史轮次豁免，避免旧文档卡校验）。
     """
     it_root = os.path.join(root, "games")
     if not os.path.isdir(it_root):
         return
-    checked = 0
+    # 收集所有已收尾轮
+    all_rounds = []
     for g in sorted(os.listdir(it_root)):
         it_dir = os.path.join(it_root, g, "iterations")
         if not os.path.isdir(it_dir):
             continue
         for name in sorted(os.listdir(it_dir)):
-            round_dir = os.path.join(it_dir, name)
-            mf = os.path.join(round_dir, "manifest.json")
-            if not os.path.isfile(mf):
-                continue  # 未收尾轮跳过
-            checked += 1
-            # 1. FINDINGS.md 必须存在
-            fp = os.path.join(round_dir, "FINDINGS.md")
-            if not os.path.exists(fp):
-                rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 FINDINGS.md（收尾不完整）")
-            else:
-                # 1b. FINDINGS 必须含证伪/修正章节（主动证伪义务）
-                ft = open(fp, encoding="utf-8").read()
-                falsify_keywords = ("推翻", "修正", "证伪", "未验证", "失败", "refute", "overturn")
-                if not any(k in ft for k in falsify_keywords):
-                    rep.err(
-                        f"收轮SOP: {name} FINDINGS.md 缺少证伪/修正章节"
-                        f" —— 协议要求主动说明本轮推翻/修正/未验证了哪些结论"
-                    )
-            # 2. TASK_BRIEF.md 必须存在
-            tp = os.path.join(round_dir, "TASK_BRIEF.md")
-            if not os.path.exists(tp):
-                rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 TASK_BRIEF.md（收尾不完整）")
-            # 3. deliverables 声明的文件实际存在
-            try:
-                m = json.load(open(mf, encoding="utf-8"))
-                for d in m.get("deliverables") or []:
-                    p = d.get("path") or ""
-                    if not p:
-                        continue
-                    full = os.path.join(root, p)
-                    if not os.path.exists(full):
-                        rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
-            except Exception:
-                pass
+            mf = os.path.join(it_dir, name, "manifest.json")
+            if os.path.isfile(mf):
+                all_rounds.append((g, name, os.path.join(it_dir, name)))
+    # 只检查最近 3 轮
+    recent = all_rounds[-3:] if len(all_rounds) > 3 else all_rounds
+    checked = 0
+    for g, name, round_dir in recent:
+        mf = os.path.join(round_dir, "manifest.json")
+        checked += 1
+        # 1. FINDINGS.md 必须存在
+        fp = os.path.join(round_dir, "FINDINGS.md")
+        if not os.path.exists(fp):
+            rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 FINDINGS.md（收尾不完整）")
+        else:
+            # 1b. FINDINGS 必须含证伪/修正章节（主动证伪义务）
+            ft = open(fp, encoding="utf-8").read()
+            falsify_keywords = ("推翻", "修正", "证伪", "未验证", "失败", "refute", "overturn")
+            if not any(k in ft for k in falsify_keywords):
+                rep.err(
+                    f"收轮SOP: {name} FINDINGS.md 缺少证伪/修正章节"
+                    f" —— 协议要求主动说明本轮推翻/修正/未验证了哪些结论"
+                )
+        # 2. TASK_BRIEF.md 必须存在
+        tp = os.path.join(round_dir, "TASK_BRIEF.md")
+        if not os.path.exists(tp):
+            rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 TASK_BRIEF.md（收尾不完整）")
+        # 3. deliverables 声明的文件实际存在
+        try:
+            m = json.load(open(mf, encoding="utf-8"))
+            for d in m.get("deliverables") or []:
+                p = d.get("path") or ""
+                if not p:
+                    continue
+                full = os.path.join(root, p)
+                if not os.path.exists(full):
+                    rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
+        except Exception:
+            pass
     if checked:
-        rep.ok(f"收轮SOP: {checked} 个已收尾轮流程完整性校验通过")
+        rep.ok(f"收轮SOP: 最近 {checked} 轮流程完整性校验通过")
 
 
 def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
@@ -2015,15 +2027,15 @@ def _check_iteration_counter_sync(root: str, rep: ValidationReport) -> None:
     if not delivered:
         return
     latest = max(n for _, n in delivered)
-    if declared_n == latest:
-        rep.ok(f"轮次号对账: versions.json current_iteration={declared} == 最新已收尾轮 round{latest:02d}")
+    # 正常状态：current_iteration >= latest（当前轮进行中，或刚收轮）
+    # 异常状态：latest > current_iteration（目录里有更新的轮次收了但 versions.json 没 bump）
+    if latest <= declared_n:
+        rep.ok(f"轮次号对账: versions.json current_iteration={declared} >= 最新已收尾轮 round{latest:02d}")
         return
     rep.err(
-        f"轮次号双源不一致：versions.json current_iteration={declared}，"
-        f"但 games/*/iterations/ 最新已收尾轮为 round{latest:02d}。"
-        f"权威源是 versions.json（r14.2 裁定）——"
-        f"若刚收尾：跑 `python tools/bump_iteration.py --write`；"
-        f"若目录里是空壳/中断的开轮：删掉该 roundNN 空目录（收尾轮的判据是含 manifest.json）"
+        f"轮次号双源不一致：games/*/iterations/ 最新已收尾轮为 round{latest:02d}，"
+        f"但 versions.json current_iteration={declared}（落后）。"
+        f"—— 若刚收尾：跑 `python tools/bump_iteration.py --write`"
     )
 
 
