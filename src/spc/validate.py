@@ -1829,6 +1829,48 @@ def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
         rep.ok(f"HANDOFF 模板: {checked} 个已收尾轮 HANDOFF 均结构化")
 
 
+def _check_round_sop(root: str, rep: ValidationReport) -> None:
+    """★ SOP（r19 新增）：收轮流程完整性校验 —— 已收尾轮（有 manifest.json）必须有：
+    FINDINGS.md / TASK_BRIEF.md / deliverables 声明的文件实际存在。
+    """
+    it_root = os.path.join(root, "games")
+    if not os.path.isdir(it_root):
+        return
+    checked = 0
+    for g in sorted(os.listdir(it_root)):
+        it_dir = os.path.join(it_root, g, "iterations")
+        if not os.path.isdir(it_dir):
+            continue
+        for name in sorted(os.listdir(it_dir)):
+            round_dir = os.path.join(it_dir, name)
+            mf = os.path.join(round_dir, "manifest.json")
+            if not os.path.isfile(mf):
+                continue  # 未收尾轮跳过
+            checked += 1
+            # 1. FINDINGS.md 必须存在
+            fp = os.path.join(round_dir, "FINDINGS.md")
+            if not os.path.exists(fp):
+                rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 FINDINGS.md（收尾不完整）")
+            # 2. TASK_BRIEF.md 必须存在
+            tp = os.path.join(round_dir, "TASK_BRIEF.md")
+            if not os.path.exists(tp):
+                rep.err(f"收轮SOP: {name} 有 manifest.json 但缺 TASK_BRIEF.md（收尾不完整）")
+            # 3. deliverables 声明的文件实际存在
+            try:
+                m = json.load(open(mf, encoding="utf-8"))
+                for d in m.get("deliverables") or []:
+                    p = d.get("path") or ""
+                    if not p:
+                        continue
+                    full = os.path.join(root, p)
+                    if not os.path.exists(full):
+                        rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
+            except Exception:
+                pass
+    if checked:
+        rep.ok(f"收轮SOP: {checked} 个已收尾轮流程完整性校验通过")
+
+
 def _check_strategy_sync(root: str, rep: ValidationReport) -> None:
     """★ S（r11 根治 / r14.2 泛化）：策略文档随轮同步 —— 最近一次 strategy_updated=true 的收尾轮，
     该彩种 STRATEGY_GUIDE.md 与 strategy.json 的登记轮次必须 >= 该轮，否则说明策略文档漏更新。
@@ -2223,6 +2265,7 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_ai_map_rendered(root, rep)           # P1 机器地图派生物
     _check_ai_entry_completeness(root, rep)     # P2 入口完整性
     _check_handoff_structure(root, rep)         # H 交接模板化
+    _check_round_sop(root, rep)              # SOP 收轮流程完整性（r19）
     _check_compression_freshness(root, rep)     # I 压缩到期
     _check_flywheel_health(root, rep)           # K 飞轮仪表盘
     _check_calibration(root, rep)               # D1 置信度校准
