@@ -107,11 +107,15 @@
 | 检查项 | 判据 |
 |---|---|
 | 四件套完整 | 有 manifest.json 必须有 FINDINGS.md / TASK_BRIEF.md / HANDOFF.md |
+| TASK_BRIEF 内容完整 | 含「目标/验收/输入/方法」关键词 |
+| FINDINGS 证伪章节 | 含「推翻/修正/证伪/未验证/失败」关键词（主动证伪义务） |
 | HANDOFF 结构化 | 至少 4 个 ## 段，命中 3/6 关键词（结论/遗留/下轮/建议/风险） |
 | deliverables 存在 | manifest 声明的文件路径实际存在 |
-| 策略文档同步 | `strategy_updated=true` 的轮次，STRATEGY_GUIDE.md / strategy.json 登记轮次 ≥ 该轮 |
-| 轮次号对账 | `current_iteration` == 最新已收尾轮（含 manifest.json 的 roundNN） |
+| upstream_fact_ids 真实 | manifest 声明的上游结论 id 必须在 FACTS.jsonl 里存在 |
+| 策略文档同步（双保险） | ① follows_current=true 的文件 iteration 必须 == current_iteration；② strategy.json 比 STRATEGY_GUIDE.md 新 60s+ 则报警 |
+| 轮次号对账 | 最新已收尾轮（有 manifest）> current_iteration → ERROR（目录里收了但 versions.json 没 bump） |
 | 目录轮次护栏 | 目录最大轮次 > current_iteration → ERROR（漏收轮拦截） |
+| SOP 检查范围 | 只查最近 3 轮，历史轮次豁免 |
 
 **收轮辅助脚本**：`tools/finalize_round.ps1`
 - 从 `git diff` 自动列出本轮改动文件

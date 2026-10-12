@@ -293,6 +293,112 @@ print(f'中位数 = {y.median()}, IQR = {y.quantile(.75)-y.quantile(.25)}, max =
 
 ---
 
+## 9. 新方法模块（r19 新增）
+
+> 以下方法已实现为 `framework/core/stats.py` 中的可调用函数。
+
+### 9.1 FDR 校正（Benjamini-Hochberg）
+
+**什么时候用**：探索性研究（筛 k 个候选找信号）。
+
+**与置换检验（FWER）的区别**：
+- FWER（置换 max|r|）：控制"至少一个假阳性"的概率 → 确认性研究
+- FDR（BH）：控制"假发现占总发现的比例" → 探索性研究
+
+**用法**：
+```python
+from spc.core.stats import bh_fdr
+reject, adjusted_p = bh_fdr(pvalues, alpha=0.05)
+```
+
+### 9.2 Rolling-origin 交叉验证
+
+**什么时候用**：时序数据的样本外验证，只切一刀不够时。
+
+**用法**：
+```python
+from spc.core.stats import rolling_origin_cv
+splits = rolling_origin_cv(data, min_train=60, test_window=10, step=10)
+```
+
+### 9.3 贝叶斯因子
+
+**什么时候用**：想知道"效应 > 0 的后验概率是多少"，而不只是"零假设对不对"。
+
+**用法**：
+```python
+from spc.core.stats import bayes_factor_normal
+result = bayes_factor_normal(observed_effect=0.3, se=0.1)
+# result['bf10']: Bayes Factor
+# result['post_prob_h1']: H₁ 后验概率
+```
+
+### 9.4 元分析
+
+**什么时候用**：多条同主题结论需要合并出综合效应量。
+
+**用法**：
+```python
+from spc.core.stats import meta_analysis
+result = meta_analysis(effect_sizes=[0.2, 0.25, 0.18],
+                       standard_errors=[0.05, 0.06, 0.07])
+# result['fe_estimate']: 固定效应估计
+# result['i_squared']: 异质性 I² (%)
+```
+
+### 9.5 前视偏差检查
+
+**什么时候用**：写特征脚本后，检查有没有不小心用了未来数据。
+
+**用法**：
+```python
+from spc.core.stats import check_lookahead_bias
+result = check_lookahead_bias("scripts/feature.py")
+```
+
+### 9.6 confidence 自动评分
+
+**什么时候用**：给 FACTS 条目打分时，不用人工凭感觉。
+
+**用法**：
+```python
+from spc.core.stats import auto_confidence_score
+result = auto_confidence_score(n=2000, effect_size=0.2,
+                               robust=True, out_of_sample=True)
+# result['score']: 1-5 分
+# result['grade']: low/moderate/high
+```
+
+### 9.7 策略效果监控
+
+**什么时候用**：策略落地后，持续监控预期效果 vs 实际效果。
+
+**用法**：
+```python
+from spc.core.stats import monitor_strategy_effect
+result = monitor_strategy_effect(expected_effect=-0.2,
+                                 observed_effect=-0.15,
+                                 observed_se=0.05)
+# result['status']: ok / warning / critical
+```
+
+---
+
+## 10. 预注册机制（r19 新增）
+
+**核心原则**：区分探索性研究和验证性研究。
+
+| 类型 | TASK_BRIEF 标记 | 结论状态 | 说明 |
+|---|---|---|---|
+| **探索性** | `exploratory: true` | 强制 `tentative` | 筛候选、找信号、试方法 |
+| **验证性** | `confirmatory: true` | 可标 `established` | 验证某个特定假设 |
+
+**为什么重要**：防止 p-hacking——试了 100 种定义后挑出一个"显著"的，当成发现。
+
+**实现**：TASK_BRIEF 模板已加「研究类型」字段，收轮时 validate 检查。
+
+---
+
 ## 8. 与 LESSONS 的对应
 
 | 本文件节 | 对应教训 |

@@ -19,6 +19,7 @@
 | **轮次** | `roundNN` |
 | **彩种** | `<game_id>` |
 | **性质** | 新的分析证据 / 复核已有结论 / 整理入库轮 / 框架重构 |
+| **研究类型** | exploratory（探索性）/ confirmatory（验证性）—— 探索性结论强制 tentative |
 | **日期** | `YYYY-MM-DD` |
 | **数据版本** | `<data_version>`（如 `dlt_full_2933`） |
 | **上游** | `roundNN-1/HANDOFF.md` · 关联结论 `F-xxxx` · 关联问题 `Q-xxxx` |

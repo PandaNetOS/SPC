@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>SPC SOP 流程图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f5f5f5; padding: 30px; }
+  h1 { text-align: center; margin-bottom: 30px; color: #333; }
+  .flow { max-width: 900px; margin: 0 auto; }
+  .stage { background: #fff; border-radius: 8px; padding: 15px 20px; margin-bottom: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; }
+  .stage-title { font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #1a73e8; }
+  .stage-items { font-size: 13px; color: #555; line-height: 1.8; }
+  .arrow { text-align: center; font-size: 24px; color: #999; margin: 5px 0; }
+  .branch { display: flex; gap: 15px; margin: 10px 0; }
+  .branch .stage { flex: 1; }
+  .gate { background: #fff3e0; border-left: 4px solid #ff9800; }
+  .gate .stage-title { color: #e65100; }
+  .check { background: #e8f5e9; border-left: 4px solid #4caf50; }
+  .check .stage-title { color: #2e7d32; }
+  .redline { background: #ffebee; border-left: 4px solid #f44336; }
+  .redline .stage-title { color: #c62828; }
+  .sub { font-size: 12px; color: #888; margin-top: 5px; }
+  .loop { text-align: center; font-size: 12px; color: #1a73e8; margin: 10px 0; font-style: italic; }
+</style>
+</head>
+<body>
+<h1>SPC 标准操作流程（SOP）</h1>
+<div class="flow">
+
+  <!-- 开轮 -->
+  <div class="stage">
+    <div class="stage-title">① 开轮</div>
+    <div class="stage-items">
+      • 写 TASK_BRIEF.md（目标 / 验收判据 / 输入 / 方法 / 陷阱提醒）<br>
+      • 更新 versions.json：current_iteration → rNN+1
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <!-- 执行 -->
+  <div class="stage">
+    <div class="stage-title">② 执行</div>
+    <div class="stage-items">
+      • 跑分析脚本 scripts/*.py（记录种子、B 值、数据版本）<br>
+      • 写 FINDINGS.md（结论 + 数字 + CI + 证伪章节）
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <!-- 证据入库三闸门 -->
+  <div class="stage gate">
+    <div class="stage-title">③ 证据入库（三闸门）</div>
+    <div class="stage-items">
+      <b>G1 schema</b> → 格式合规（claim / confidence / source_sha256）<br>
+      <b>G2 矛盾检测</b> → 与已有结论冲突？降 tentative 或拒绝<br>
+      <b>G3 锚定</b> → source 文件 SHA256 锚定，漂移可检出<br>
+      <span class="sub">通过后写入 FACTS.jsonl（Add / Modify / Supersede 原子操作）</span>
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <!-- 收轮 -->
+  <div class="stage">
+    <div class="stage-title">④ 收轮</div>
+    <div class="stage-items">
+      • 写 HANDOFF.md（结论 / 遗留问题 / 下轮建议 / 风险提示）<br>
+      • 写 manifest.json（deliverables + upstream_fact_ids + strategy_updated）
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <!-- validate 校验 -->
+  <div class="stage check">
+    <div class="stage-title">⑤ validate --all（自动校验，全绿才能 commit）</div>
+    <div class="stage-items">
+      ✓ 四件套完整（manifest 配 FINDINGS / TASK_BRIEF / HANDOFF）<br>
+      ✓ TASK_BRIEF 内容完整（含目标/验收/输入/方法）<br>
+      ✓ FINDINGS 证伪章节（含推翻/修正/证伪/未验证/失败）<br>
+      ✓ HANDOFF 结构化（4+ 段，命中 3/6 关键词）<br>
+      ✓ deliverables 文件实际存在<br>
+      ✓ upstream_fact_ids 在 FACTS.jsonl 里真实存在<br>
+      ✓ 策略文档同步双保险（follows_current + mtime 对比）<br>
+      ✓ 轮次号对账（最新已收尾轮 ≤ current_iteration）<br>
+      ✓ 目录轮次护栏（目录最大轮次 ≤ current_iteration）
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <!-- commit push -->
+  <div class="stage">
+    <div class="stage-title">⑥ commit + push</div>
+    <div class="stage-items">
+      • 用户确认后 push 到远程 main<br>
+      • 收轮辅助脚本：tools/finalize_round.ps1（git diff 自动生成 manifest 草稿）
+    </div>
+  </div>
+
+  <div class="loop">↻ 下一轮（迭代链不断）</div>
+
+  <!-- 分隔 -->
+  <hr style="margin: 30px 0; border: none; border-top: 2px dashed #ccc;">
+
+  <!-- 策略落地路径 -->
+  <h2 style="text-align: center; color: #333; margin-bottom: 20px;">策略落地路径（从发现到规则）</h2>
+
+  <div class="stage">
+    <div class="stage-title">宽筛发现效应</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage">
+    <div class="stage-title">Bootstrap 95% CI + 分期稳健性</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage">
+    <div class="stage-title">置换检验 max|r| 多重比较校正</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage">
+    <div class="stage-title">重尾稳健复核（中位数 / 截尾均值）</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage">
+    <div class="stage-title">时序 hold-out 样本外验证</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage gate">
+    <div class="stage-title">用户批准（红线：未经批准不得落地）</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="stage check">
+    <div class="stage-title">写入 strategy.json（带 effectiveness_grade）</div>
+    <div class="stage-items">
+      <b>A 档 数学恒真</b>：解析可证 → R-002<br>
+      <b>B 档 统计确立</b>：观测显著 + hold-out → R-001 / R-003 / R-004<br>
+      <b>C 档 模型估计</b>：样本有限，标注假设 → R-005
+    </div>
+  </div>
+
+  <!-- 分隔 -->
+  <hr style="margin: 30px 0; border: none; border-top: 2px dashed #ccc;">
+
+  <!-- 红线 -->
+  <h2 style="text-align: center; color: #c62828; margin-bottom: 20px;">红线（任何 SOP 不得违反）</h2>
+  <div class="stage redline">
+    <div class="stage-items" style="color: #c62828;">
+      1. 选号不改变中奖概率（各奖级概率恒定）<br>
+      2. 负期望游戏 —— 策略只影响"中奖时分多少"<br>
+      3. 未经用户批准不得落地策略规则<br>
+      4. 未经用户确认不得 push 远程<br>
+      5. 远程节点（192.168.30.51）数据不得删除<br>
+      6. 测试数据必须在 D:\test\ 下，不得污染仓库目录
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
