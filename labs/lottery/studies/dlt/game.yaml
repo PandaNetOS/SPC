@@ -475,16 +475,69 @@ prize_model:
       note: 奖池 >= 8 亿时三至七等奖提升 20%–40%
 
 # ---------------------------------------------------------------- 数据
+# ================================================================
+# 数据自备（CP-002 P1/P2）：声明式数据源
+# 管道（platform/ingest/）只跑通用逻辑；"从哪来、字段怎么映射"全在下面。
+# 换彩种 = 复制本段改映射，不改 platform/ 一行。
+# ================================================================
+data_source:
+  endpoints:
+    - url: "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry"
+      parser: json
+  params:
+    gameNo: "85"          # 大乐透游戏编号
+    provinceId: "0"
+    isVerify: "1"
+  page_param: pageNo
+  size_param: pageSize
+  page_size: 100
+  max_pages: 60
+  total_field: "value.total"
+  list_path: ["value", "list"]
+
+  # 奖级数组：先按 group 建索引，再按 group 号取
+  prizes_key: prizeLevelList
+  prize_index_key: "group"
+  # group: 101/201=一等(+追加), 301/401=二等(+追加), 501=三等, 601=四等, 701=五等, 801=六等, 901=七等
+  # 路径形如 prizeIndex.<group>.<stakeCount|stakeAmountFormat>
+
+  # 号码串形如 "09 18 22 25 35 01 10" → zones 段声明如何切分（通用规则，非彩种知识）
+  draw_result_field: lotteryDrawResult
+  zones:
+    - { prefix: front, start: 0, count: 5 }
+    - { prefix: back,  start: 5, count: 2 }
+
+  field_map:
+    draw_num:           lotteryDrawNum
+    date:               lotteryDrawTime
+    pool_yuan:          poolBalanceAfterdraw
+    sale_yuan:          totalSaleAmount
+    prize1_winners:     prizeIndex.101.stakeCount
+    prize1_amount_yuan: prizeIndex.101.stakeAmountFormat
+    prize2_winners:     prizeIndex.301.stakeCount
+    prize2_amount_yuan: prizeIndex.301.stakeAmountFormat
+    # ★ 三至七等奖：解 Q-016（E6 固定奖加成）的关键字段
+    prize3_winners:     prizeIndex.501.stakeCount
+    prize3_amount_yuan: prizeIndex.501.stakeAmountFormat
+    prize4_winners:     prizeIndex.601.stakeCount
+    prize4_amount_yuan: prizeIndex.601.stakeAmountFormat
+    prize5_winners:     prizeIndex.701.stakeCount
+    prize5_amount_yuan: prizeIndex.701.stakeAmountFormat
+    prize6_winners:     prizeIndex.801.stakeCount
+    prize6_amount_yuan: prizeIndex.801.stakeAmountFormat
+    prize7_winners:     prizeIndex.901.stakeCount
+    prize7_amount_yuan: prizeIndex.901.stakeAmountFormat
+
 data:
   raw:
     path: labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv
     format: csv
     encoding: utf-8-sig
-    n_draws: 2933
+    n_draws: 2934
     first_draw_num: "07001"
-    last_draw_num: "26115"
-    date_range: ["2007-05-30", "2026-10-10"]
-    sha256: "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7"
+    last_draw_num: "26116"
+    date_range: ["2007-05-30", "2026-10-12"]
+    sha256: "b4cb2494141ddefac1de7f75f65f86e180afcc003231234707360270cf923c9c"
 
   derived:
     path: labs/lottery/studies/dlt/data/derived

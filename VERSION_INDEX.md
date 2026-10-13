@@ -47,7 +47,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 131 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 124 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 129 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 39 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 53 |
 
@@ -326,6 +326,11 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `proposals/PROPOSALS.md` | `1.1` | `r19` | active | r19: 台账补 CP-002 行（accepted，framework_version 计划 1.1→1.2） |
 | `labs/lottery/CAPABILITIES.md` | `1.0` | `r19` | active | r19 新增：彩票域实验室层能力里程碑台账（CHANGE_PROTOCOL §3.3 字段台账；domain_version 初建 0.1） |
 | `proposals/CP-002.md` | `1.3` | `r19` | active | r19: v1.3 P0 已实现 —— validate.py 三道闸门（数据需求清单完整性/可满足性 + 数据新鲜度），历史轮次 r19 基准豁免；P1-P3（接入管道）待做 |
+| `platform/ingest/__init__.py` | —（见备注） | `—` | active | 数据接入管道（CP-002 P1/P2）入口 |
+| `platform/ingest/fetch.py` | —（见备注） | `—` | active | HTTP 拉取（标准库 urllib，彩种无关） |
+| `platform/ingest/normalize.py` | —（见备注） | `—` | active | 声明式字段映射归一（含奖级索引与号码切分） |
+| `platform/ingest/seal.py` | —（见备注） | `—` | active | 封版：SHA256 + 原子写 + 区间报告 |
+| `platform/ingest/pipeline.py` | —（见备注） | `—` | active | 管道编排与 CLI（fetch→normalize→merge→seal） |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -333,7 +338,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 |---|---|---|---|
 | `labs/lottery/studies/_template/game.yaml` | `config_version` | `2.0` | 2026-10-11 与 dlt 同步升至 2.0（features 原语化） |
 | `labs/lottery/studies/_template/strategy/strategy.json` | `config_version` | `2.0` | 模板策略，2026-10-11 随 game.yaml 同步至 2.0 |
-| `labs/lottery/studies/dlt/game.yaml` | `config_version` | `2.3` | r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2 |
+| `labs/lottery/studies/dlt/game.yaml` | `config_version` | `2.3` | r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2 ｜ r19: +data_source 段（CP-002 声明式数据源） |
 | `labs/lottery/studies/dlt/iterations/round02/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `labs/lottery/studies/dlt/iterations/round03/manifest.json` | `inputs.data_version` | `dlt_full_2933` |  |
 | `labs/lottery/studies/dlt/iterations/round04/manifest.json` | `—` | `—` |  |
@@ -387,8 +392,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `labs/lottery/studies/dlt/data/derived/06_acf_lag1to60.csv` | `derived_data` | — |  |
 | `labs/lottery/studies/dlt/data/derived/07_data_quality_report.json` | `derived_data` | — |  |
 | `labs/lottery/studies/dlt/data/derived/08_rules_epoch_summary.json` | `derived_data` | — |  |
-| `labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv` | `raw_data` | `9e92848e184c7715…` | SHA256 为准，不做内容版本 |
-| `labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl` | `raw_data` | `11a1714e9c850a7d…` | SHA256 为准，不做内容版本 |
+| `labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv` | `raw_data` | `b4cb2494141ddefa…` | r19: +26116 期（2026-10-12），经 CP-002 接入管道写入；2933 → 2934 期，新增三至七等奖列 |
+| `labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl` | `raw_data` | `69006d2171d56f7b…` | r19: 随 CSV 同步 +26116 期 |
 | `labs/lottery/studies/dlt/data/tools/_load.py` | `analysis_script` | — |  |
 | `labs/lottery/studies/dlt/data/tools/acf_permutation_test.py` | `analysis_script` | — |  |
 | `labs/lottery/studies/dlt/data/tools/changepoint_refine.py` | `analysis_script` | — |  |
@@ -442,10 +447,10 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `test` | 15 | B | `tests/test_ai_readability.py`<br>`tests/test_claim_type.py`<br>`tests/test_consumes_completeness.py`<br>`tests/test_core.py`<br>`tests/test_cross_scope.py`<br>`tests/test_evidence_anchor.py`<br>`tests/test_flywheel.py`<br>`tests/test_meta_variables.py`<br>`tests/test_open_questions_consistency.py`<br>`tests/test_research_lib.py`<br>`tests/test_round_counter_sync.py`<br>`tests/test_derive_tasks.py`<br>`tests/test_round_stall.py`<br>`tests/test_shadow_game.py`<br>`tests/test_paths.py` |
 | `report` | 14 | A/D | `labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json`<br>`labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.json`<br>`labs/lottery/studies/dlt/iterations/round07/scripts/t013_recalibrate.json`<br>`labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.json`<br>`labs/lottery/studies/dlt/iterations/round07/scripts/t015_external.json`<br>`labs/lottery/studies/dlt/iterations/round07/scripts/t016_holiday.json`<br>`labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.json`<br>`labs/lottery/studies/dlt/iterations/round09/scripts/t020_number_weight.json`<br>`labs/lottery/studies/dlt/iterations/round09/scripts/t046_r002_quantify.json`<br>`labs/lottery/studies/dlt/iterations/round10/scripts/t021_sales_endogeneity.json`<br>`labs/lottery/studies/dlt/iterations/round10/scripts/t022_illusion.json`<br>`labs/lottery/studies/dlt/iterations/round10/scripts/t028_recalibrate_r10.json`<br>`labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json`<br>`labs/lottery/studies/dlt/memory/facts/ACTIVE.md` |
 | `analysis_script` | 12 | D | `labs/lottery/studies/dlt/data/tools/_load.py`<br>`labs/lottery/studies/dlt/data/tools/acf_permutation_test.py`<br>`labs/lottery/studies/dlt/data/tools/changepoint_refine.py`<br>`labs/lottery/studies/dlt/data/tools/changepoint_scan.py`<br>`labs/lottery/studies/dlt/data/tools/consecutive_exact_check.py`<br>`labs/lottery/studies/dlt/data/tools/exact_tests.py`<br>`labs/lottery/studies/dlt/data/tools/overdispersion_and_hac.py`<br>`labs/lottery/studies/dlt/data/tools/validate_data.py`<br>`labs/lottery/studies/dlt/strategy/strategy_simulation.py`<br>`labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py`<br>`labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py`<br>`labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py` |
+| `framework_core` | 12 | B | `platform/core/__init__.py`<br>`platform/core/evaluate.py`<br>`platform/core/features.py`<br>`platform/core/game_util.py`<br>`platform/core/generate.py`<br>`platform/core/judge.py`<br>`platform/core/portfolio.py`<br>`platform/core/ticket.py`<br>`platform/ingest/__init__.py`<br>`platform/ingest/fetch.py`<br>`platform/ingest/normalize.py`<br>`platform/ingest/seal.py` |
 | `library` | 11 | B | `research_lib/__init__.py`<br>`research_lib/stability.py`<br>`research_lib/stats.py`<br>`src/__init__.py`<br>`src/spc/__init__.py`<br>`src/spc/api.py`<br>`src/spc/evidence.py`<br>`src/spc/game.py`<br>`src/spc/memory.py`<br>`src/spc/strategy.py`<br>`src/spc/versions.py` |
 | `journal` | 9 | A/B/C | `labs/lottery/studies/dlt/memory/journal/round02.md`<br>`labs/lottery/studies/dlt/memory/journal/round03.md`<br>`labs/lottery/studies/dlt/memory/journal/round05.md`<br>`labs/lottery/studies/dlt/memory/journal/round06.md`<br>`labs/lottery/studies/dlt/memory/journal/round07.md`<br>`labs/lottery/studies/dlt/memory/journal/round08.md`<br>`labs/lottery/studies/dlt/memory/journal/round09.md`<br>`labs/lottery/studies/dlt/memory/journal/round10.md`<br>`labs/lottery/studies/dlt/memory/journal/round11.md` |
 | `derived_data` | 8 | D | `labs/lottery/studies/dlt/data/derived/01_yearly_stats.csv`<br>`labs/lottery/studies/dlt/data/derived/02_front_number_frequency.csv`<br>`labs/lottery/studies/dlt/data/derived/03_back_number_frequency.csv`<br>`labs/lottery/studies/dlt/data/derived/04_structure_distribution_exact.json`<br>`labs/lottery/studies/dlt/data/derived/05_back_combo_66.csv`<br>`labs/lottery/studies/dlt/data/derived/06_acf_lag1to60.csv`<br>`labs/lottery/studies/dlt/data/derived/07_data_quality_report.json`<br>`labs/lottery/studies/dlt/data/derived/08_rules_epoch_summary.json` |
-| `framework_core` | 8 | B | `platform/core/__init__.py`<br>`platform/core/evaluate.py`<br>`platform/core/features.py`<br>`platform/core/game_util.py`<br>`platform/core/generate.py`<br>`platform/core/judge.py`<br>`platform/core/portfolio.py`<br>`platform/core/ticket.py` |
 | `iteration_manifest` | 8 | C | `labs/lottery/studies/dlt/iterations/round02/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round03/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round04/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round07/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round08/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round09/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round17/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round18/manifest.json` |
 | `manifest` | 8 | A/B/D | `labs/lottery/studies/dlt/iterations/round05/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round10/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round11/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round12/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round13/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round14/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round15/manifest.json`<br>`labs/lottery/studies/dlt/iterations/round16/manifest.json` |
 | `data` | 7 | D | `labs/lottery/studies/dlt/iterations/round12/scripts/t049_holdout.json`<br>`labs/lottery/studies/dlt/iterations/round13/scripts/t051_walkforward.json`<br>`labs/lottery/studies/dlt/iterations/round14/scripts/t053_shape_ratios.json`<br>`labs/lottery/studies/dlt/iterations/round14/scripts/t054_walkforward_ci.json`<br>`labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.json`<br>`labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.json`<br>`labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.json` |
@@ -459,6 +464,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `template` | 3 | B | `platform/protocol/templates/FINDINGS.template.md`<br>`platform/protocol/templates/HANDOFF.template.md`<br>`platform/protocol/templates/TASK_BRIEF.template.md` |
 | `test_fixture` | 3 | D | `tests/fixtures/shadow/game.yaml`<br>`tests/fixtures/shadow/data/raw/shadow.csv`<br>`tests/fixtures/shadow/strategy/strategy.json` |
 | `findings` | 2 | A/B | `labs/lottery/studies/dlt/iterations/round10/FINDINGS.md`<br>`labs/lottery/studies/dlt/iterations/round11/FINDINGS.md` |
+| `framework_tool` | 2 | B | `platform/tools/memory.py`<br>`platform/ingest/pipeline.py` |
 | `game_config` | 2 | C | `labs/lottery/studies/_template/game.yaml`<br>`labs/lottery/studies/dlt/game.yaml` |
 | `handoff` | 2 | A/B | `labs/lottery/studies/dlt/iterations/round10/HANDOFF.md`<br>`labs/lottery/studies/dlt/iterations/round11/HANDOFF.md` |
 | `library_doc` | 2 | B | `research_lib/README.md`<br>`labs/lottery/CAPABILITIES.md` |
@@ -474,7 +480,6 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `entry_point` | 1 | B | `AI_CONTEXT.md` |
 | `fact_index` | 1 | A | `labs/lottery/studies/dlt/memory/facts/INDEX.md` |
 | `facts` | 1 | A | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` |
-| `framework_tool` | 1 | B | `platform/tools/memory.py` |
 | `lesson_library` | 1 | A | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` |
 | `meta` | 1 | D | `.gitignore` |
 | `package_manifest` | 1 | C | `pyproject.toml` |

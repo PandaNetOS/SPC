@@ -517,16 +517,16 @@
       "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
       "level": "D",
       "kind": "raw_data",
-      "sha256": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
-      "note": "SHA256 为准，不做内容版本",
+      "sha256": "b4cb2494141ddefac1de7f75f65f86e180afcc003231234707360270cf923c9c",
+      "note": "r19: +26116 期（2026-10-12），经 CP-002 接入管道写入；2933 → 2934 期，新增三至七等奖列",
       "status": "active"
     },
     {
       "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl",
       "level": "D",
       "kind": "raw_data",
-      "sha256": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d",
-      "note": "SHA256 为准，不做内容版本",
+      "sha256": "69006d2171d56f7bcbddecd42346d6173f1299a03038f20b80227fda46479f8e",
+      "note": "r19: 随 CSV 同步 +26116 期",
       "status": "active"
     },
     {
@@ -583,7 +583,7 @@
       "kind": "game_config",
       "version_ref": "config_version",
       "ref_version": "2.3",
-      "note": "r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2",
+      "note": "r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2 ｜ r19: +data_source 段（CP-002 声明式数据源）",
       "status": "active",
       "iteration": "r14",
       "updated_at": "2026-10-11"
@@ -3222,6 +3222,46 @@
       "updated_at": "2026-10-13",
       "status": "active",
       "note": "r19: v1.3 P0 已实现 —— validate.py 三道闸门（数据需求清单完整性/可满足性 + 数据新鲜度），历史轮次 r19 基准豁免；P1-P3（接入管道）待做"
+    },
+    {
+      "path": "platform/ingest/__init__.py",
+      "level": "B",
+      "kind": "framework_core",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "数据接入管道（CP-002 P1/P2）入口"
+    },
+    {
+      "path": "platform/ingest/fetch.py",
+      "level": "B",
+      "kind": "framework_core",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "HTTP 拉取（标准库 urllib，彩种无关）"
+    },
+    {
+      "path": "platform/ingest/normalize.py",
+      "level": "B",
+      "kind": "framework_core",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "声明式字段映射归一（含奖级索引与号码切分）"
+    },
+    {
+      "path": "platform/ingest/seal.py",
+      "level": "B",
+      "kind": "framework_core",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "封版：SHA256 + 原子写 + 区间报告"
+    },
+    {
+      "path": "platform/ingest/pipeline.py",
+      "level": "B",
+      "kind": "framework_tool",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "管道编排与 CLI（fetch→normalize→merge→seal）"
     }
   ],
   "history": [

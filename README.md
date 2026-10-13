@@ -290,6 +290,12 @@ python cli/main.py new-game <game_id>
 │   │   ├── portfolio.py  —         ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
 │   │   ├── stats.py  —
 │   │   └── ticket.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── ingest/
+│   │   ├── __init__.py  —         ← 数据接入管道（CP-002 P1/P2）入口
+│   │   ├── fetch.py  —         ← HTTP 拉取（标准库 urllib，彩种无关）
+│   │   ├── normalize.py  —         ← 声明式字段映射归一（含奖级索引与号码切分）
+│   │   ├── pipeline.py  —         ← 管道编排与 CLI（fetch→normalize→merge→sea…
+│   │   └── seal.py  —         ← 封版：SHA256 + 原子写 + 区间报告
 │   ├── memory/
 │   │   └── spec/
 │   │       └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…

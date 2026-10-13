@@ -46,6 +46,11 @@
 - `platform/core/portfolio.py` — ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross
 - `platform/core/stats.py`
 - `platform/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/ingest/__init__.py` — 数据接入管道（CP-002 P1/P2）入口
+- `platform/ingest/fetch.py` — HTTP 拉取（标准库 urllib，彩种无关）
+- `platform/ingest/normalize.py` — 声明式字段映射归一（含奖级索引与号码切分）
+- `platform/ingest/pipeline.py` — 管道编排与 CLI（fetch→normalize→merge→seal）
+- `platform/ingest/seal.py` — 封版：SHA256 + 原子写 + 区间报告
 - `platform/memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `platform/methodology/CAUSAL_INFERENCE.md`
 - `platform/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
@@ -69,7 +74,7 @@
 - `labs/lottery/studies/dlt/strategy/strategy_simulation.py` — r10.1：docstring 一等奖概率口径
 
 ## 彩种
-- `labs/lottery/studies/dlt/game.yaml` — r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2
+- `labs/lottery/studies/dlt/game.yaml` — r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.…
 - `labs/lottery/studies/dlt/iterations/round02/FINDINGS.md` — 整理入库轮发现
 - `labs/lottery/studies/dlt/iterations/round02/HANDOFF.md` — r02→r03 交接
 - `labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md`

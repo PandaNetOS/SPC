@@ -29,12 +29,17 @@
       "pattern": "^[0-9]+\\.[0-9]+$"
     },
     "owner": {
-      "type": ["string", "null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "machine": {
       "type": "object",
       "description": "玩法结构。这是『概率不可变』结论的分母来源，必须准确。",
-      "required": ["zones"],
+      "required": [
+        "zones"
+      ],
       "additionalProperties": false,
       "properties": {
         "zones": {
@@ -42,7 +47,11 @@
           "minItems": 1,
           "items": {
             "type": "object",
-            "required": ["key", "pool_size", "pick"],
+            "required": [
+              "key",
+              "pool_size",
+              "pick"
+            ],
             "additionalProperties": false,
             "properties": {
               "key": {
@@ -50,20 +59,44 @@
                 "pattern": "^[a-z][a-z0-9_]*$",
                 "description": "区标识，如 front / back。"
               },
-              "label": {"type": "string"},
-              "pool_size": {"type": "integer", "minimum": 2},
-              "pick": {"type": "integer", "minimum": 1},
-              "ordered": {"type": "boolean", "default": false},
-              "min_value": {"type": "integer", "default": 1}
+              "label": {
+                "type": "string"
+              },
+              "pool_size": {
+                "type": "integer",
+                "minimum": 2
+              },
+              "pick": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "ordered": {
+                "type": "boolean",
+                "default": false
+              },
+              "min_value": {
+                "type": "integer",
+                "default": 1
+              }
             }
           }
         },
         "draw_days": {
           "type": "array",
-          "items": {"type": "integer", "minimum": 1, "maximum": 7},
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
           "description": "开奖星期（ISO：1=周一 … 7=周日）。"
         },
-        "draw_time": {"type": ["string", "null"], "pattern": "^[0-9]{2}:[0-9]{2}$"}
+        "draw_time": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{2}:[0-9]{2}$"
+        }
       }
     },
     "features": {
@@ -72,22 +105,43 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["key", "label", "type", "formula"],
+        "required": [
+          "key",
+          "label",
+          "type",
+          "formula"
+        ],
         "additionalProperties": false,
         "properties": {
-          "key": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-          "label": {"type": "string"},
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "label": {
+            "type": "string"
+          },
           "type": {
             "type": "string",
-            "enum": ["integer", "number", "boolean", "category"]
+            "enum": [
+              "integer",
+              "number",
+              "boolean",
+              "category"
+            ]
           },
           "primitive": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "pattern": "^[a-z][a-z0-9_]*$",
             "description": "框架可执行的原语名，取自 platform/core/features.py 的 PRIMITIVES。有 primitive 则该特征可被 evaluate() 求值、可被 predicate 引用；没有则本特征只是注释，框架无法求值。"
           },
           "args": {
-            "type": ["object", "null"],
+            "type": [
+              "object",
+              "null"
+            ],
             "description": "原语参数。zone 指定对哪个区求值（须为 machine.zones 已声明的 key）；其余参数名由原语决定。",
             "additionalProperties": true
           },
@@ -97,23 +151,39 @@
           },
           "scope": {
             "type": "string",
-            "enum": ["single", "cross"],
+            "enum": [
+              "single",
+              "cross"
+            ],
             "default": "single",
             "description": "★ config_version 2.1 新增。single=可从一注号码算出（默认）；cross=**跨注**特征，需一整组注才能算出，由 platform/core/portfolio.py 求值。scope 必须与 primitive 所属的原语表一致，否则校验器报错（单注原语不得用于 cross 特征，反之亦然）。"
           },
           "range": {
-            "type": ["array", "null"],
-            "items": {"type": "number"},
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "number"
+            },
             "minItems": 2,
             "maxItems": 2
           },
           "values": {
-            "type": ["array", "null"],
-            "items": {"type": "string"},
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
             "description": "type=category 时的取值域。"
           },
           "note": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "补充说明，如该特征的精确理论值、或改动它会影响哪些策略。"
           }
         }
@@ -122,101 +192,326 @@
     "prize_model": {
       "type": "object",
       "description": "奖金结构。规则变更频繁，必须带 epoch 划分；跨 epoch 不可直接比较金额。",
-      "required": ["current_epoch", "epochs"],
+      "required": [
+        "current_epoch",
+        "epochs"
+      ],
       "additionalProperties": false,
       "properties": {
-        "current_epoch": {"type": "string"},
-        "return_rate": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "current_epoch": {
+          "type": "string"
+        },
+        "return_rate": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
         "epochs": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "object",
-            "required": ["id", "effective_from", "prize_levels"],
+            "required": [
+              "id",
+              "effective_from",
+              "prize_levels"
+            ],
             "additionalProperties": false,
             "properties": {
-              "id": {"type": "string"},
-              "effective_from": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-              "effective_to": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-              "first_draw_num": {"type": ["string", "null"]},
-              "prize_levels": {"type": "integer", "minimum": 1},
+              "id": {
+                "type": "string"
+              },
+              "effective_from": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "effective_to": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              },
+              "first_draw_num": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "prize_levels": {
+                "type": "integer",
+                "minimum": 1
+              },
               "sum_affects_numbers": {
                 "const": false,
                 "description": "红线：奖金规则变更不影响号码分布，恒为 false。"
               },
-              "notes": {"type": "string"}
+              "notes": {
+                "type": "string"
+              }
             }
           }
         },
         "cap_rules": {
-          "type": ["array", "null"],
-          "items": {"type": "object", "additionalProperties": true}
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
         }
       }
     },
     "data": {
       "type": "object",
-      "required": ["raw", "derived"],
+      "required": [
+        "raw",
+        "derived"
+      ],
       "additionalProperties": false,
       "properties": {
         "raw": {
           "type": "object",
-          "required": ["path", "n_draws", "first_draw_num", "last_draw_num", "sha256"],
+          "required": [
+            "path",
+            "n_draws",
+            "first_draw_num",
+            "last_draw_num",
+            "sha256"
+          ],
           "additionalProperties": true,
           "properties": {
-            "path": {"type": "string"},
-            "format": {"type": "string", "enum": ["csv", "jsonl", "json", "parquet"]},
-            "encoding": {"type": "string", "default": "utf-8-sig"},
-            "n_draws": {"type": "integer", "minimum": 1},
-            "first_draw_num": {"type": "string"},
-            "last_draw_num": {"type": "string"},
-            "date_range": {"type": "array", "items": {"type": "string"}, "minItems": 2, "maxItems": 2},
-            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            "path": {
+              "type": "string"
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "jsonl",
+                "json",
+                "parquet"
+              ]
+            },
+            "encoding": {
+              "type": "string",
+              "default": "utf-8-sig"
+            },
+            "n_draws": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "first_draw_num": {
+              "type": "string"
+            },
+            "last_draw_num": {
+              "type": "string"
+            },
+            "date_range": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
           }
         },
         "derived": {
           "type": "object",
-          "required": ["path"],
+          "required": [
+            "path"
+          ],
           "additionalProperties": true,
           "properties": {
-            "path": {"type": "string"},
-            "rebuild_script": {"type": ["string", "null"]},
-            "files": {"type": "array", "items": {"type": "string"}}
+            "path": {
+              "type": "string"
+            },
+            "rebuild_script": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         },
         "columns": {
-          "type": ["object", "null"],
+          "type": [
+            "object",
+            "null"
+          ],
           "additionalProperties": true,
           "description": "字段口径字典：字段名 → 类型/含义/陷阱。"
         },
         "caveats": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "iterations": {
-      "type": ["array", "null"],
+      "type": [
+        "array",
+        "null"
+      ],
       "items": {
         "type": "object",
-        "required": ["round", "status"],
+        "required": [
+          "round",
+          "status"
+        ],
         "additionalProperties": true,
         "properties": {
-          "round": {"type": "string", "pattern": "^round[0-9]{2}$"},
-          "status": {"type": "string", "enum": ["planned", "in_progress", "delivered", "archived"]},
-          "title": {"type": "string"},
-          "date": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
-          "note": {"type": "string"}
+          "round": {
+            "type": "string",
+            "pattern": "^round[0-9]{2}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "in_progress",
+              "delivered",
+              "archived"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
     },
     "strategy_output": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": true,
       "properties": {
-        "schema": {"type": "string"},
-        "path": {"type": "string"},
-        "version": {"type": "string"}
+        "schema": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "data_source": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "★ CP-002 声明式数据源：驱动 platform/ingest 管道（fetch/normalize/merge/seal）。换彩种只改本段，不改 platform/。",
+      "additionalProperties": true,
+      "properties": {
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "url"
+            ],
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "parser": {
+                "type": "string",
+                "enum": [
+                  "json",
+                  "csv",
+                  "html"
+                ]
+              }
+            }
+          }
+        },
+        "params": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "page_param": {
+          "type": "string"
+        },
+        "size_param": {
+          "type": "string"
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_pages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "total_field": {
+          "type": "string"
+        },
+        "list_path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prizes_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prize_index_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "draw_result_field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "zones": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object"
+          }
+        },
+        "field_map": {
+          "type": "object"
+        }
       }
     }
   }
