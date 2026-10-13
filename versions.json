@@ -3,7 +3,7 @@
   "repo": "PandaNetOS/SPC",
   "generated_at": "2026-10-12",
   "current_iteration": "r19",
-  "framework_version": "1.1",
+  "framework_version": "1.2",
   "project_version": "0.1.0",
   "levels": {
     "A": {
@@ -299,11 +299,11 @@
       "path": "platform/protocol/ITERATION_PROTOCOL.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.3",
+      "content_version": "1.4",
       "iteration": "r19",
       "updated_at": "2026-10-13",
       "status": "active",
-      "note": "r19: §0 适用范围收窄到研究组层；新增 §9 跨层契约 + §10 供给方出口；P4 取消（框架改动走 CHANGE_PROTOCOL）"
+      "note": "r19: 新增 §2.4 数据需求前置契约（开轮前必填数据需求清单 + 新鲜度闸门）；§2.1 加必填项；§7 加数据缺口红线"
     },
     {
       "path": "platform/protocol/MEMORY_PROTOCOL.md",
@@ -347,10 +347,11 @@
       "path": "platform/protocol/templates/TASK_BRIEF.template.md",
       "level": "B",
       "kind": "template",
-      "content_version": "1.0",
+      "content_version": "1.1",
       "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19：新增 §3.0 数据需求清单（CP-002 数据需求前置契约，开轮前必填）"
     },
     {
       "path": "platform/tools/compress_memory.py",
@@ -2661,7 +2662,7 @@
       "level": "B",
       "kind": "code",
       "content_version": null,
-      "note": "r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteration vs 最新已收尾轮）+ ★T 已落地任务必须勾选；轮号推导改由 delivered_round_dirs（判据=含 manifest.json）",
+      "note": "r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteration vs 最新已收尾轮）+ ★T 已落地任务必须勾选；轮号推导改由 delivered_round_dirs（判据=含 manifest.json） ｜ r19: +CP-002 §2.4 P0 三道闸门（_check_data_requirement_contract 完整性/可满足性 + _check_data_freshness 新鲜度；历史轮次按 r19 基准豁免）",
       "iteration": "r15",
       "status": "active",
       "updated_at": "2026-10-12"
@@ -3196,11 +3197,11 @@
       "path": "proposals/PROPOSALS.md",
       "level": "B",
       "kind": "index",
-      "content_version": "1.0",
+      "content_version": "1.1",
       "iteration": "r19",
       "updated_at": "2026-10-13",
       "status": "active",
-      "note": "r19 新增：框架层/实验室层变更提案台账（CHANGE_PROTOCOL §2.1 规定的状态登记处）"
+      "note": "r19: 台账补 CP-002 行（accepted，framework_version 计划 1.1→1.2）"
     },
     {
       "path": "labs/lottery/CAPABILITIES.md",
@@ -3211,6 +3212,16 @@
       "updated_at": "2026-10-13",
       "status": "active",
       "note": "r19 新增：彩票域实验室层能力里程碑台账（CHANGE_PROTOCOL §3.3 字段台账；domain_version 初建 0.1）"
+    },
+    {
+      "path": "proposals/CP-002.md",
+      "level": "B",
+      "kind": "proposal",
+      "content_version": "1.3",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19: v1.3 P0 已实现 —— validate.py 三道闸门（数据需求清单完整性/可满足性 + 数据新鲜度），历史轮次 r19 基准豁免；P1-P3（接入管道）待做"
     }
   ],
   "history": [
@@ -3267,6 +3278,18 @@
       "date": "2026-10-13",
       "scope": "框架层 / 实验室层（proposal 与 capability 制度落地）",
       "change": "r19 补充三层迭代制度的配套范本：新增 proposals/CP-001.md（变更提案范本，回写三层架构迁移）、proposals/PROPOSALS.md（提案台账）、labs/lottery/CAPABILITIES.md（实验室能力里程碑台账）。domain_version 已为 0.1（r19 初建）。framework_version 维持 1.1（纯增量，未改既有契约签名）。"
+    },
+    {
+      "version": "r19",
+      "date": "2026-10-13",
+      "scope": "框架层（数据自备能力提案）",
+      "change": "新增 proposals/CP-002.md：回应『每项新研究必须能自备数据』的能力缺口。框架层零抓取能力导致 DLT 低奖级数据缺口（Q-016/T-025）卡死。提案设计声明式数据接入管道（platform/ingest/ + spec/data_source.schema.json + game.yaml data_source 段），分 P0/P1/P2 落地。状态 review，framework_version 计划 1.1→1.2（非破坏性）。"
+    },
+    {
+      "version": "1.2",
+      "date": "2026-10-13",
+      "scope": "框架层（protocol/）",
+      "change": "r19: framework_version 1.1 → 1.2（CP-002 数据自备能力落地协议部分，非破坏性 minor）。ITERATION_PROTOCOL v1.4 新增 §2.4 数据需求前置契约（开轮前必填数据需求清单：字段/用途/状态/来源/fallback，三条硬规则 + 新鲜度闸门）；§2.1 增必填项、§7 增数据缺口红线。TASK_BRIEF.template.md v1.1 新增 §3.0 数据需求清单段。新增 proposals/CP-002.md（accepted）与 labs/lottery/CAPABILITIES.md。contract_tests：validate --all 118 项全绿 0 error。"
     }
   ],
   "domain_version": "0.1"

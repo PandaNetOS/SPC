@@ -52,7 +52,7 @@
 - `platform/methodology/SIMULATION_FRAMEWORK.md`
 - `platform/methodology/STATISTICAL_DISCIPLINE.md`
 - `platform/protocol/CHANGE_PROTOCOL.md` — r19 新增：框架层(变更提案制)与实验室层(能力里程碑制)的迭代协议 + 跨层契约闸门
-- `platform/protocol/ITERATION_PROTOCOL.md` — r19: §0 适用范围收窄到研究组层；新增 §9 跨层契约 + §10 供给方出口；P4 取消（框架改动走 CHAN…
+- `platform/protocol/ITERATION_PROTOCOL.md` — r19: 新增 §2.4 数据需求前置契约（开轮前必填数据需求清单 + 新鲜度闸门）；§2.1 加必填项；§7 加数据…
 - `platform/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
 - `platform/protocol/README.md` — r19: 新增 CHANGE_PROTOCOL.md 索引与三层迭代分工（框架/实验室/研究组）
 - `platform/tools/compress_memory.py` — 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + 到期清单（IterResearch 依据）

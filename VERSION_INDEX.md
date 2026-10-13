@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`2.1` ｜ **框架版本**：`1.1` ｜ **实验室版本**：`0.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r19` ｜ **生成日期**：2026-10-12
+**索引版本**：`2.1` ｜ **框架版本**：`1.2` ｜ **实验室版本**：`0.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r19` ｜ **生成日期**：2026-10-12
 
 ---
 
@@ -47,7 +47,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 131 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 123 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 124 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 39 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 53 |
 
@@ -225,12 +225,12 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `platform/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `platform/methodology/MATH_BOUNDARY.md` | `1.1` | `r10` | active | r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定） |
 | `platform/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
-| `platform/protocol/ITERATION_PROTOCOL.md` | `1.3` | `r19` | active | r19: §0 适用范围收窄到研究组层；新增 §9 跨层契约 + §10 供给方出口；P4 取消（框架改动走 CHANGE_PROTOCOL） |
+| `platform/protocol/ITERATION_PROTOCOL.md` | `1.4` | `r19` | active | r19: 新增 §2.4 数据需求前置契约（开轮前必填数据需求清单 + 新鲜度闸门）；§2.1 加必填项；§7 加数据缺口红线 |
 | `platform/protocol/MEMORY_PROTOCOL.md` | `1.2` | `r03` | active | r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定 |
 | `platform/protocol/README.md` | `1.1` | `r19` | active | r19: 新增 CHANGE_PROTOCOL.md 索引与三层迭代分工（框架/实验室/研究组） |
 | `platform/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
 | `platform/protocol/templates/HANDOFF.template.md` | `1.0` | `r02` | active |  |
-| `platform/protocol/templates/TASK_BRIEF.template.md` | `1.0` | `r02` | active |  |
+| `platform/protocol/templates/TASK_BRIEF.template.md` | `1.1` | `r02` | active | r19：新增 §3.0 数据需求清单（CP-002 数据需求前置契约，开轮前必填） |
 | `platform/tools/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame）；open_questions() 状态解析归一化（容忍 →/（）/+ 说明字符） |
 | `labs/lottery/INDEX.md` | `1.2` | `r04` | active | 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ / round05 计划中） |
 | `labs/lottery/studies/_template/README.md` | —（见备注） | `—` | active |  |
@@ -277,7 +277,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `src/spc/memory.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/strategy.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `src/spc/tree.py` | —（见备注） | `r06` | active | 目录树生成源（P1-2）：README 树 = 派生物 |
-| `src/spc/validate.py` | —（见备注） | `r15` | active | r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteration vs 最新已收尾轮）+ ★T 已落地任务必须勾选；轮号推导改由 delivered_round_dirs（判据=含 manifest.json） |
+| `src/spc/validate.py` | —（见备注） | `r15` | active | r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteration vs 最新已收尾轮）+ ★T 已落地任务必须勾选；轮号推导改由 delivered_round_dirs（判据=含 manifest.json） ｜ r19: +CP-002 §2.4 P0 三道闸门（_check_data_requirement_contract 完整性/可满足性 + _check_data_freshness 新鲜度；历史轮次按 r19 基准豁免） |
 | `src/spc/versions.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `tests/README.md` | `1.5` | `r06` | active | 测试说明（自举计数：合计 333，含 test_structure 8） |
 | `tests/test_ai_readability.py` | —（见备注） | `r15` | active | P1/P2/B/H/I 测试；★r15: 压缩到期夹具改为真收尾轮（含 manifest.json），对齐『轮号判据=已收尾』 |
@@ -323,8 +323,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `tests/test_paths.py` | —（见备注） | `—` | active |  |
 | `platform/protocol/CHANGE_PROTOCOL.md` | `1.0` | `r19` | active | r19 新增：框架层(变更提案制)与实验室层(能力里程碑制)的迭代协议 + 跨层契约闸门 |
 | `proposals/CP-001.md` | `1.0` | `r19` | active | r19 新增：框架层变更提案范本（三层迭代架构迁移回写为 CP，作为提案制书写模板） |
-| `proposals/PROPOSALS.md` | `1.0` | `r19` | active | r19 新增：框架层/实验室层变更提案台账（CHANGE_PROTOCOL §2.1 规定的状态登记处） |
+| `proposals/PROPOSALS.md` | `1.1` | `r19` | active | r19: 台账补 CP-002 行（accepted，framework_version 计划 1.1→1.2） |
 | `labs/lottery/CAPABILITIES.md` | `1.0` | `r19` | active | r19 新增：彩票域实验室层能力里程碑台账（CHANGE_PROTOCOL §3.3 字段台账；domain_version 初建 0.1） |
+| `proposals/CP-002.md` | `1.3` | `r19` | active | r19: v1.3 P0 已实现 —— validate.py 三道闸门（数据需求清单完整性/可满足性 + 数据新鲜度），历史轮次 r19 基准豁免；P1-P3（接入管道）待做 |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -462,6 +463,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `handoff` | 2 | A/B | `labs/lottery/studies/dlt/iterations/round10/HANDOFF.md`<br>`labs/lottery/studies/dlt/iterations/round11/HANDOFF.md` |
 | `library_doc` | 2 | B | `research_lib/README.md`<br>`labs/lottery/CAPABILITIES.md` |
 | `methodology` | 2 | B | `platform/methodology/MATH_BOUNDARY.md`<br>`platform/methodology/STATISTICAL_DISCIPLINE.md` |
+| `proposal` | 2 | B | `proposals/CP-001.md`<br>`proposals/CP-002.md` |
 | `raw_data` | 2 | D | `labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv`<br>`labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl` |
 | `research_output` | 2 | D | `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.json`<br>`labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.json` |
 | `research_script` | 2 | C | `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.py`<br>`labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.py` |
@@ -476,7 +478,6 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `lesson_library` | 1 | A | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` |
 | `meta` | 1 | D | `.gitignore` |
 | `package_manifest` | 1 | C | `pyproject.toml` |
-| `proposal` | 1 | B | `proposals/CP-001.md` |
 | `rules_history` | 1 | A | `labs/lottery/studies/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `labs/lottery/studies/dlt/manifest_v4_source.json` |
 | `strategy` | 1 | C | `labs/lottery/studies/_template/strategy/strategy.json` |
@@ -504,6 +505,8 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `1.0` | 2026-10-10 | platform/ | 单注层通用架构落地（platform/core/ 6 模块 / 21 原语），记为 framework_version 1.0。 |
 | `1.2` | 2026-10-11 | A/B 级内容（结论层与文档层） | r04 轮次更新：结论台账 18 → 25 条（新增 F-0019~F-0025，更新 F-0003/F-0004/F-0011）；LESSONS 1.1 → 1.2（新增 L13/L14）；OPEN_QUESTIONS 1.2 → 1.3；TODO 1.4 → 1.5；HYPOTHESES 1.0 → 1.1；STRATEGY_GUIDE 1.1 → 1.2（口径同步）；strategy.json content 1.1 → 1.2；AI_CONTEXT 1.3 → 1.4；README 1.11 → 1.12。framework_version 保持 1.1（本轮未改框架代码）。 |
 | `r19` | 2026-10-13 | 框架层 / 实验室层（proposal 与 capability 制度落地） | r19 补充三层迭代制度的配套范本：新增 proposals/CP-001.md（变更提案范本，回写三层架构迁移）、proposals/PROPOSALS.md（提案台账）、labs/lottery/CAPABILITIES.md（实验室能力里程碑台账）。domain_version 已为 0.1（r19 初建）。framework_version 维持 1.1（纯增量，未改既有契约签名）。 |
+| `r19` | 2026-10-13 | 框架层（数据自备能力提案） | 新增 proposals/CP-002.md：回应『每项新研究必须能自备数据』的能力缺口。框架层零抓取能力导致 DLT 低奖级数据缺口（Q-016/T-025）卡死。提案设计声明式数据接入管道（platform/ingest/ + spec/data_source.schema.json + game.yaml data_source 段），分 P0/P1/P2 落地。状态 review，framework_version 计划 1.1→1.2（非破坏性）。 |
+| `1.2` | 2026-10-13 | 框架层（protocol/） | r19: framework_version 1.1 → 1.2（CP-002 数据自备能力落地协议部分，非破坏性 minor）。ITERATION_PROTOCOL v1.4 新增 §2.4 数据需求前置契约（开轮前必填数据需求清单：字段/用途/状态/来源/fallback，三条硬规则 + 新鲜度闸门）；§2.1 增必填项、§7 增数据缺口红线。TASK_BRIEF.template.md v1.1 新增 §3.0 数据需求清单段。新增 proposals/CP-002.md（accepted）与 labs/lottery/CAPABILITIES.md。contract_tests：validate --all 118 项全绿 0 error。 |
 
 ---
 

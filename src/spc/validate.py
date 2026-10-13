@@ -2367,6 +2367,216 @@ def validate_incremental(root: str | None = None) -> ValidationReport:
 
 # ---------------------------------------------------------------- all
 
+# ---------------------------------------------------------------- 数据需求前置（CP-002 / ITERATION_PROTOCOL §2.4）
+#
+# 根因（2026-10-13）：研究做到一半才发现缺数据，已投入轮次全部沉没
+# （T-025 / Q-016 卡在"三至七等奖实发额"）；数据悄悄过期也无人察觉
+# （停在 26115 期而 validate --all 118 项全绿）。故开轮前把数据需求定成硬契约。
+
+
+def _dq_round_no(rnd: str) -> int:
+    """roundNN → N；解析失败返回 -1。"""
+    m = _DQ_ROUND_RE.match(rnd)
+    return int(m.group(1)) if m else -1
+
+
+def _dq_today() -> str:
+    """今天（本地日历日）。用于数据新鲜度推算。"""
+    import datetime
+    return datetime.date.today().isoformat()
+
+
+_DQ_ROUND_RE = re.compile(r"^round(\d+)$")
+
+# ★ 制度生效基准：CP-002 / ITERATION_PROTOCOL §2.4 于 r19 落地。
+# 早于基准的轮次不可能有 §3.0 清单，追溯它们只会制造历史噪声。
+# 例外：baseline 之后新建的轮次仍强制（无论 round 号大小）。
+_DQ_BASELINE_ROUND = 19  # 制度生效基准：CP-002 §2.4 于 r19 落地
+_DQ_TABLE_RE = re.compile(
+    r"^\s*\|\s*`([a-zA-Z0-9_]+)`\s*\|([^|]*)\|\s*`?(have|fetchable|missing)`?\s*\|"
+)
+
+
+def _dq_expected_draws(iso_today: str, draw_days: list[int], last_known: str) -> list[str]:
+    import datetime
+    """从 last_known 之后推到 iso_today，返回期间应开奖却未入库的日期列表。
+
+    只用标准库，避免时区坑：datetime.date 直接做日历算术，不经 toISOString()。
+    """
+    try:
+        today = datetime.date.fromisoformat(iso_today)
+        prev = datetime.date.fromisoformat(last_known)
+    except (ValueError, TypeError):
+        return []
+    if not draw_days or today <= prev:
+        return []
+    out: list[str] = []
+    cur = prev + datetime.timedelta(days=1)
+    while cur <= today:
+        # ISO weekday: Mon=1 … Sun=7
+        if cur.isoweekday() in set(draw_days):
+            out.append(cur.isoformat())
+        cur += datetime.timedelta(days=1)
+    return out
+
+
+def _check_data_requirement_contract(root: str, rep: ValidationReport) -> None:
+    """★ CP-002 §2.4 P0-1/2：任务书数据需求清单的完整性 + 可满足性。
+
+    闸门一（完整性）：已收轮的roundNN 任务书必须含 §3.0 数据需求清单。
+    闸门二（可满足性）：status=missing 的行必须写 fallback（拿不到怎么办）。
+
+    只对**已收轮**（有 HANDOFF.md）的轮次强制 —— 否则 r19 开轮时会误报。
+    """
+    base = os.path.join(root, "labs", "lottery", "studies")
+    if not os.path.isdir(base):
+        return
+
+    missing_sec: list[str] = []
+    no_fallback: list[str] = []
+
+    for game in sorted(os.listdir(base)):
+        gdir = os.path.join(base, game)
+        itdir = os.path.join(gdir, "iterations")
+        if not os.path.isdir(itdir):
+            continue
+        for rnd in sorted(os.listdir(itdir)):
+            if not _DQ_ROUND_RE.match(rnd):
+                continue
+            # ★ 豁免：早于制度生效基准的历史轮次不强制（r19 之前无 §3.0）
+            if _dq_round_no(rnd) < _DQ_BASELINE_ROUND:
+                continue
+            rdir = os.path.join(itdir, rnd)
+            tb = os.path.join(rdir, "TASK_BRIEF.md")
+            ho = os.path.join(rdir, "HANDOFF.md")
+            if not (os.path.exists(tb) and os.path.exists(ho)):
+                continue  # 未收轮的轮次不强制
+            text = open(tb, encoding="utf-8", errors="replace").read()
+
+            if "数据需求清单" not in text:
+                missing_sec.append(f"{game}/{rnd}")
+                continue
+
+            for line in text.split("\n"):
+                m = _DQ_TABLE_RE.match(line)
+                if not m:
+                    continue
+                field, purpose, status = m.group(1), m.group(2), m.group(3)
+                if not purpose.strip() or purpose.strip() in {"-", "—", "<", "〈"}:
+                    no_fallback.append(f"{game}/{rnd} 字段 {field}：用途为空")
+                if status == "missing":
+                    # 末列为 fallback：按列切分后取最后一列（去掉首尾空列）
+                    cols = [c.strip() for c in line.strip().strip("|").split("|")]
+                    fallback = cols[-1] if cols else ""
+                    if not fallback or fallback in {"-", "—", "<", "〈"}:
+                        no_fallback.append(
+                            f"{game}/{rnd} 字段 {field}：status=missing 但未写 fallback"
+                        )
+
+    if missing_sec:
+        for x in missing_sec[:8]:
+            rep.err(
+                f"数据需求契约: {x}/TASK_BRIEF.md 缺 §3.0 数据需求清单"
+                "——CP-002 / ITERATION_PROTOCOL §2.4 要求开轮前声明数据需求"
+            )
+    else:
+        rep.ok("数据需求契约: 已收轮任务书均含 §3.0 数据需求清单")
+
+    if no_fallback:
+        for x in no_fallback[:8]:
+            rep.err(f"数据需求契约: {x} —— 拿不到怎么办未定义，不许开轮")
+    elif not missing_sec:
+        rep.ok("数据需求契约: status=missing 行均已写 fallback")
+
+
+def _check_data_freshness(root: str, rep: ValidationReport) -> None:
+    """★ CP-002 §2.4 P0-3：数据新鲜度闸门 —— 数据过期必须被抓到，不能悄悄滞后。
+
+    对每个研究组：读 game.yaml 的 data.raw.path 与 machine.draw_days，
+    取 CSV/JSONL 里最后一期的开奖日期，与「按开奖日推算的应有期次」比较。
+    滞后 1..max_lag → WARN；> max_lag*3 → ERROR。
+    """
+    import csv as _csv
+
+    base = os.path.join(root, "labs", "lottery", "studies")
+    if not os.path.isdir(base):
+        return
+
+    max_lag = 1
+    stale_warn: list[str] = []
+    stale_err: list[str] = []
+    checked: list[str] = []
+
+    for game in sorted(os.listdir(base)):
+        gdir = os.path.join(base, game)
+        gy = os.path.join(gdir, "game.yaml")
+        if not os.path.isfile(gy):
+            continue
+        cfg_txt = open(gy, encoding="utf-8", errors="replace").read()
+
+        m = re.search(r"^\s*path:\s*(.+?)\s*$", cfg_txt, re.MULTILINE)
+        if not m:
+            continue
+        raw_rel = m.group(1).strip().strip("'\"")
+        raw_abs = os.path.join(root, raw_rel.replace("/", os.sep))
+        if not os.path.exists(raw_abs):
+            continue
+
+        dm = re.search(r"draw_days:\s*\[([^\]]*)\]", cfg_txt)
+        draw_days = (
+            [int(x) for x in re.findall(r"\d+", dm.group(1))] if dm else []
+        )
+        if not draw_days:
+            continue
+
+        # 读最后一期的开奖日期
+        last_date = None
+        try:
+            if raw_abs.endswith(".csv"):
+                with open(raw_abs, encoding="utf-8-sig", newline="") as f:
+                    rows = list(_csv.DictReader(f))
+                for r_ in reversed(rows):
+                    if r_.get("date"):
+                        last_date = r_["date"].strip()
+                        break
+            else:
+                with open(raw_abs, encoding="utf-8") as f:
+                    for line in reversed(f.readlines()):
+                        line = line.strip()
+                        if line:
+                            last_date = (json.loads(line) or {}).get("date")
+                            break
+        except Exception as e:  # noqa: BLE001
+            rep.warn(f"数据新鲜度: {game} 读 {raw_rel} 失败，跳过 —— {e}")
+            continue
+
+        if not last_date:
+            continue
+
+        missing_draws = _dq_expected_draws(_dq_today(), draw_days, last_date)
+        lag = len(missing_draws)
+        if lag == 0:
+            checked.append(f"{game}={last_date}")
+            continue
+
+        detail = (
+            f"{game}: 最新入库 {last_date}，缺 {lag} 期"
+            f"（应开奖未入库：{', '.join(missing_draws[-3:])}）"
+        )
+        if lag > max_lag * 3:
+            stale_err.append(detail)
+        else:
+            stale_warn.append(detail)
+
+    for d_ in stale_err[:5]:
+        rep.err(f"数据新鲜度: {d_} —— 严重滞后，请跑数据接入管道补齐")
+    for d_ in stale_warn[:5]:
+        rep.warn(f"数据新鲜度: {d_} —— 滞后未超硬阈值，但已过期")
+    if checked:
+        rep.ok(f"数据新鲜度: {len(checked)} 个研究组数据新鲜（{'; '.join(checked)}）")
+
+
+
 def validate_all(repo_root: str | None = None, verbose: bool = False) -> ValidationReport:
     """全量校验。"""
     root = repo_root or _ROOT
@@ -2413,6 +2623,8 @@ def validate_all(repo_root: str | None = None, verbose: bool = False) -> Validat
     _check_strategy_sync(root, rep)          # S 策略文档随轮同步（r11 根治）
     _check_iteration_counter_sync(root, rep)  # R 轮次号双源对账（r15）
     _check_todo_landed_sync(root, rep)        # T 已落地任务必须勾选（r15）
+    _check_data_requirement_contract(root, rep)  # CP-002 §2.4 P0-1/2 数据需求清单
+    _check_data_freshness(root, rep)            # CP-002 §2.4 P0-3 数据新鲜度闸门
 
     # 协议文档存在性（软检查）
     docs = [
