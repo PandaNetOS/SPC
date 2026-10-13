@@ -25,6 +25,11 @@
       "pattern": "^r[0-9]{2}$",
       "description": "当前正在进行的轮次。跨轮次新增条目的 iteration 默认取此值。"
     },
+    "domain_version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "★ 实验室层（labs/<domain>/）的独立版本。领域能力里程碑达成时提升。与研究组 current_iteration 解耦。"
+    },
     "framework_version": {
       "type": ["string", "null"],
       "pattern": "^[0-9]+\\.[0-9]+$",

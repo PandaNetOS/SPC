@@ -299,11 +299,11 @@
       "path": "platform/protocol/ITERATION_PROTOCOL.md",
       "level": "B",
       "kind": "doc",
-      "content_version": "1.2",
-      "iteration": "r12",
-      "updated_at": "2026-10-11",
+      "content_version": "1.3",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
       "status": "active",
-      "note": "r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏"
+      "note": "r19: §0 适用范围收窄到研究组层；新增 §9 跨层契约 + §10 供给方出口；P4 取消（框架改动走 CHANGE_PROTOCOL）"
     },
     {
       "path": "platform/protocol/MEMORY_PROTOCOL.md",
@@ -319,10 +319,11 @@
       "path": "platform/protocol/README.md",
       "level": "B",
       "kind": "protocol",
-      "content_version": "1.0",
-      "iteration": "r02",
-      "updated_at": "2026-10-11",
-      "status": "active"
+      "content_version": "1.1",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19: 新增 CHANGE_PROTOCOL.md 索引与三层迭代分工（框架/实验室/研究组）"
     },
     {
       "path": "platform/protocol/templates/FINDINGS.template.md",
@@ -3170,9 +3171,55 @@
       "level": "B",
       "kind": "test",
       "status": "active"
+    },
+    {
+      "path": "platform/protocol/CHANGE_PROTOCOL.md",
+      "level": "B",
+      "kind": "protocol",
+      "content_version": "1.0",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19 新增：框架层(变更提案制)与实验室层(能力里程碑制)的迭代协议 + 跨层契约闸门"
+    },
+    {
+      "path": "proposals/CP-001.md",
+      "level": "B",
+      "kind": "proposal",
+      "content_version": "1.0",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19 新增：框架层变更提案范本（三层迭代架构迁移回写为 CP，作为提案制书写模板）"
+    },
+    {
+      "path": "proposals/PROPOSALS.md",
+      "level": "B",
+      "kind": "index",
+      "content_version": "1.0",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19 新增：框架层/实验室层变更提案台账（CHANGE_PROTOCOL §2.1 规定的状态登记处）"
+    },
+    {
+      "path": "labs/lottery/CAPABILITIES.md",
+      "level": "B",
+      "kind": "library_doc",
+      "content_version": "1.0",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
+      "status": "active",
+      "note": "r19 新增：彩票域实验室层能力里程碑台账（CHANGE_PROTOCOL §3.3 字段台账；domain_version 初建 0.1）"
     }
   ],
   "history": [
+    {
+      "version": "1.0",
+      "date": "2026-10-13",
+      "scope": "three-layer iteration design",
+      "change": "新增 domain_version 顶层字段（实验室层版本轴），与 framework_version / project_version / current_iteration 三轴解耦；框架/实验室迭代改走 CHANGE_PROTOCOL.md 提案制/里程碑制。"
+    },
     {
       "version": "1.7",
       "date": "2026-10-11",
@@ -3214,6 +3261,13 @@
       "date": "2026-10-11",
       "scope": "A/B 级内容（结论层与文档层）",
       "change": "r04 轮次更新：结论台账 18 → 25 条（新增 F-0019~F-0025，更新 F-0003/F-0004/F-0011）；LESSONS 1.1 → 1.2（新增 L13/L14）；OPEN_QUESTIONS 1.2 → 1.3；TODO 1.4 → 1.5；HYPOTHESES 1.0 → 1.1；STRATEGY_GUIDE 1.1 → 1.2（口径同步）；strategy.json content 1.1 → 1.2；AI_CONTEXT 1.3 → 1.4；README 1.11 → 1.12。framework_version 保持 1.1（本轮未改框架代码）。"
+    },
+    {
+      "version": "r19",
+      "date": "2026-10-13",
+      "scope": "框架层 / 实验室层（proposal 与 capability 制度落地）",
+      "change": "r19 补充三层迭代制度的配套范本：新增 proposals/CP-001.md（变更提案范本，回写三层架构迁移）、proposals/PROPOSALS.md（提案台账）、labs/lottery/CAPABILITIES.md（实验室能力里程碑台账）。domain_version 已为 0.1（r19 初建）。framework_version 维持 1.1（纯增量，未改既有契约签名）。"
     }
-  ]
+  ],
+  "domain_version": "0.1"
 }

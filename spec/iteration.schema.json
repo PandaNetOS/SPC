@@ -116,6 +116,16 @@
       "description": "仅当 status = \"planned\" 时使用：预计产出（形状同 outputs）。",
       "additionalProperties": true
     },
+    "uses_framework_version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "★ 本轮依赖的框架层版本，必须 ≤ versions.json.framework_version（跨层版本契约，见 CHANGE_PROTOCOL §4）。"
+    },
+    "uses_domain_version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "★ 本轮依赖的实验室层版本，必须 ≤ versions.json.domain_version（跨层版本契约，见 CHANGE_PROTOCOL §4）。"
+    },
     "framework_revision": {
       "type": ["object", "null"],
       "description": "本轮对『研究框架本身』提出的改进（自我迭代的核心产出）。",

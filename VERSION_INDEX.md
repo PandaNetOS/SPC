@@ -3,7 +3,7 @@
 > **本文件由 `python tools/render_version_index.py --write` 从 `versions.json` 自动生成。请勿手工编辑。**
 > 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。
 
-**索引版本**：`2.1` ｜ **框架版本**：`1.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r19` ｜ **生成日期**：2026-10-12
+**索引版本**：`2.1` ｜ **框架版本**：`1.1` ｜ **实验室版本**：`0.1` ｜ **顶层版本（release）**：`0.1.0` ｜ **当前轮次**：`r19` ｜ **生成日期**：2026-10-12
 
 ---
 
@@ -47,7 +47,7 @@
 | 级别 | 名称 | 版本化 | 字段 | 判定理由 | 数量 |
 |---|---|---|---|---|---|
 | **A** | 结论性内容 | ✅ | `content_version` | 随轮次演化、重复写错代价最高。文件内版本行 + 索引登记。 | 131 |
-| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 119 |
+| **B** | 结构性文档 / 框架与库代码 | ✅ | `content_version` | 随框架演进但无『结论』性质。.md 加版本行；.py 只登记索引。 | 123 |
 | **C** | 机器契约 | ❌ | — | 已有 schema_version / config_version / data_version / version 字段，各答不同问题。索引镜像其值，不重复加版本。 | 39 |
 | **D** | 纯数据 / 分析脚本 | ❌ | — | raw 数据用 SHA256（比版本号更强的保证）；分析脚本随结论归档，不单独版本化。 | 53 |
 
@@ -225,9 +225,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `platform/core/ticket.py` | —（见备注） | `r02` | active | 代码文件：不写文件内版本行（用 git blame） |
 | `platform/methodology/MATH_BOUNDARY.md` | `1.1` | `r10` | active | r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定） |
 | `platform/methodology/STATISTICAL_DISCIPLINE.md` | `1.0` | `r02` | active |  |
-| `platform/protocol/ITERATION_PROTOCOL.md` | `1.2` | `r12` | active | r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏 |
+| `platform/protocol/ITERATION_PROTOCOL.md` | `1.3` | `r19` | active | r19: §0 适用范围收窄到研究组层；新增 §9 跨层契约 + §10 供给方出口；P4 取消（框架改动走 CHANGE_PROTOCOL） |
 | `platform/protocol/MEMORY_PROTOCOL.md` | `1.2` | `r03` | active | r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定 |
-| `platform/protocol/README.md` | `1.0` | `r02` | active |  |
+| `platform/protocol/README.md` | `1.1` | `r19` | active | r19: 新增 CHANGE_PROTOCOL.md 索引与三层迭代分工（框架/实验室/研究组） |
 | `platform/protocol/templates/FINDINGS.template.md` | `1.0` | `r02` | active |  |
 | `platform/protocol/templates/HANDOFF.template.md` | `1.0` | `r02` | active |  |
 | `platform/protocol/templates/TASK_BRIEF.template.md` | `1.0` | `r02` | active |  |
@@ -321,6 +321,10 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `tools/finalize_round.ps1` | —（见备注） | `—` | active |  |
 | `docs/SOP_OVERVIEW.md` | `1.0` | `r17` | active |  |
 | `tests/test_paths.py` | —（见备注） | `—` | active |  |
+| `platform/protocol/CHANGE_PROTOCOL.md` | `1.0` | `r19` | active | r19 新增：框架层(变更提案制)与实验室层(能力里程碑制)的迭代协议 + 跨层契约闸门 |
+| `proposals/CP-001.md` | `1.0` | `r19` | active | r19 新增：框架层变更提案范本（三层迭代架构迁移回写为 CP，作为提案制书写模板） |
+| `proposals/PROPOSALS.md` | `1.0` | `r19` | active | r19 新增：框架层/实验室层变更提案台账（CHANGE_PROTOCOL §2.1 规定的状态登记处） |
+| `labs/lottery/CAPABILITIES.md` | `1.0` | `r19` | active | r19 新增：彩票域实验室层能力里程碑台账（CHANGE_PROTOCOL §3.3 字段台账；domain_version 初建 0.1） |
 
 ### C 级 · 机器契约（用自身既有版本字段）
 
@@ -447,16 +451,17 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `schema` | 6 | C | `spec/fact.schema.json`<br>`spec/game_config.schema.json`<br>`spec/iteration.schema.json`<br>`spec/strategy.schema.json`<br>`spec/version_index.schema.json`<br>`spec/study_config.schema.json` |
 | `template_game` | 6 | B | `labs/lottery/studies/_template/README.md`<br>`labs/lottery/studies/_template/data/build_scripts/README.md`<br>`labs/lottery/studies/_template/data/derived/README.md`<br>`labs/lottery/studies/_template/data/raw/README.md`<br>`labs/lottery/studies/_template/data/tools/README.md`<br>`labs/lottery/studies/_template/iterations/round01/TASK_BRIEF.md` |
 | `analysis_output` | 4 | D | `labs/lottery/studies/dlt/strategy/simulation_results.json`<br>`labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json`<br>`labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json`<br>`labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json` |
+| `index` | 4 | A/B | `platform/INDEX.md`<br>`labs/lottery/INDEX.md`<br>`memory/INDEX.md`<br>`proposals/PROPOSALS.md` |
 | `repo_tool` | 4 | B | `tools/build_versions.py`<br>`tools/bump_iteration.py`<br>`tools/inject_version_lines.py`<br>`tools/render_version_index.py` |
 | `build_script` | 3 | D | `labs/lottery/studies/dlt/data/build_scripts/build_derived_v4.py`<br>`labs/lottery/studies/dlt/data/build_scripts/hash_and_list.py`<br>`labs/lottery/studies/dlt/data/build_scripts/validate_package_v4.py` |
-| `index` | 3 | A/B | `platform/INDEX.md`<br>`labs/lottery/INDEX.md`<br>`memory/INDEX.md` |
+| `protocol` | 3 | B | `platform/protocol/MEMORY_PROTOCOL.md`<br>`platform/protocol/README.md`<br>`platform/protocol/CHANGE_PROTOCOL.md` |
 | `template` | 3 | B | `platform/protocol/templates/FINDINGS.template.md`<br>`platform/protocol/templates/HANDOFF.template.md`<br>`platform/protocol/templates/TASK_BRIEF.template.md` |
 | `test_fixture` | 3 | D | `tests/fixtures/shadow/game.yaml`<br>`tests/fixtures/shadow/data/raw/shadow.csv`<br>`tests/fixtures/shadow/strategy/strategy.json` |
 | `findings` | 2 | A/B | `labs/lottery/studies/dlt/iterations/round10/FINDINGS.md`<br>`labs/lottery/studies/dlt/iterations/round11/FINDINGS.md` |
 | `game_config` | 2 | C | `labs/lottery/studies/_template/game.yaml`<br>`labs/lottery/studies/dlt/game.yaml` |
 | `handoff` | 2 | A/B | `labs/lottery/studies/dlt/iterations/round10/HANDOFF.md`<br>`labs/lottery/studies/dlt/iterations/round11/HANDOFF.md` |
+| `library_doc` | 2 | B | `research_lib/README.md`<br>`labs/lottery/CAPABILITIES.md` |
 | `methodology` | 2 | B | `platform/methodology/MATH_BOUNDARY.md`<br>`platform/methodology/STATISTICAL_DISCIPLINE.md` |
-| `protocol` | 2 | B | `platform/protocol/MEMORY_PROTOCOL.md`<br>`platform/protocol/README.md` |
 | `raw_data` | 2 | D | `labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv`<br>`labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl` |
 | `research_output` | 2 | D | `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.json`<br>`labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.json` |
 | `research_script` | 2 | C | `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.py`<br>`labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.py` |
@@ -469,9 +474,9 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `facts` | 1 | A | `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` |
 | `framework_tool` | 1 | B | `platform/tools/memory.py` |
 | `lesson_library` | 1 | A | `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` |
-| `library_doc` | 1 | B | `research_lib/README.md` |
 | `meta` | 1 | D | `.gitignore` |
 | `package_manifest` | 1 | C | `pyproject.toml` |
+| `proposal` | 1 | B | `proposals/CP-001.md` |
 | `rules_history` | 1 | A | `labs/lottery/studies/dlt/rules_history.md` |
 | `source_manifest` | 1 | D | `labs/lottery/studies/dlt/manifest_v4_source.json` |
 | `strategy` | 1 | C | `labs/lottery/studies/_template/strategy/strategy.json` |
@@ -490,6 +495,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 
 | 版本 | 日期 | 范围 | 变更 |
 |---|---|---|---|
+| `1.0` | 2026-10-13 | three-layer iteration design | 新增 domain_version 顶层字段（实验室层版本轴），与 framework_version / project_version / current_iteration 三轴解耦；框架/实验室迭代改走 CHANGE_PROTOCOL.md 提案制/里程碑制。 |
 | `1.7` | 2026-10-11 | r07 修复（续） | STRATEGY_GUIDE consumes 补 F-0033/F-0034；登记 tests/test_consumes_completeness.py。 |
 | `1.6` | 2026-10-11 | r07 修复 | 下游声明完整性修复：STRATEGY_GUIDE consumes 补齐 F-0002/F-0026~F-0029 并升 1.5；validate 新增逆向检查（正文引用未声明即拦截）；SOP 收尾清单新增第 8 步。 |
 | `1.5` | 2026-10-11 | round07 | 登记 r07 研究轮 13 个产物；FACTS 32→35（+F-0033/34/35，F-0032 superseded）；F-0004/F-0005 重校准维持。 |
@@ -497,6 +503,7 @@ SHA256 能告诉你「**具体哪里**变了」。给数据加版本号是双重
 | `1.0` | 2026-10-11 | 全仓库 | 建立版本体系：引入 content_version（内容版本）与 framework_version（框架版本），与既有 schema_version / config_version / data_version 并存分区；登记 A/B/C/D 四级共 124 个文件。 |
 | `1.0` | 2026-10-10 | platform/ | 单注层通用架构落地（platform/core/ 6 模块 / 21 原语），记为 framework_version 1.0。 |
 | `1.2` | 2026-10-11 | A/B 级内容（结论层与文档层） | r04 轮次更新：结论台账 18 → 25 条（新增 F-0019~F-0025，更新 F-0003/F-0004/F-0011）；LESSONS 1.1 → 1.2（新增 L13/L14）；OPEN_QUESTIONS 1.2 → 1.3；TODO 1.4 → 1.5；HYPOTHESES 1.0 → 1.1；STRATEGY_GUIDE 1.1 → 1.2（口径同步）；strategy.json content 1.1 → 1.2；AI_CONTEXT 1.3 → 1.4；README 1.11 → 1.12。framework_version 保持 1.1（本轮未改框架代码）。 |
+| `r19` | 2026-10-13 | 框架层 / 实验室层（proposal 与 capability 制度落地） | r19 补充三层迭代制度的配套范本：新增 proposals/CP-001.md（变更提案范本，回写三层架构迁移）、proposals/PROPOSALS.md（提案台账）、labs/lottery/CAPABILITIES.md（实验室能力里程碑台账）。domain_version 已为 0.1（r19 初建）。framework_version 维持 1.1（纯增量，未改既有契约签名）。 |
 
 ---
 

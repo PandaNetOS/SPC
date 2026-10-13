@@ -1,6 +1,6 @@
-﻿# ITERATION_PROTOCOL.md — 迭代协议
+# ITERATION_PROTOCOL.md — 迭代协议
 
-> **版本**：`1.2` ｜ 轮次 `r12` ｜ 更新 2026-10-11 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.3` ｜ 轮次 `r19` ｜ 更新 2026-10-13 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件定义"一轮研究"的完整生命周期。**
@@ -12,9 +12,14 @@
 
 ---
 
-## 0. 一轮的定义
+## 0. 一轮的定义（仅研究组层）
 
-**一轮 = 一个 `games/<game>/iterations/roundNN/` 目录的完整生命周期。**
+**一轮 = 一个 `studies/<game>/iterations/roundNN/` 目录的完整生命周期。**
+
+> ⚠️ **适用范围收窄**：本协议的「一轮」**只属于研究组层**（单一彩种实例）。
+> 框架层（`platform/`）与实验室层（`labs/<domain>/`）各有独立生命周期，
+> 见 **`CHANGE_PROTOCOL.md`**（变更提案制 / 能力里程碑制）。
+> **研究组轮次不得直接修改供给方（框架/实验室）的契约或代码**——发现缺口应向上提提案。
 
 一轮可以做的事：
 
@@ -24,7 +29,8 @@
 | 复核已有结论 | 补做分期稳健性 | ✅ |
 | 整理/重构（无新证据） | 如 `round02`（v4 素材结构化入库） | ✅ 但必须标明 `性质：整理入库轮` |
 | 只写文档不跑数据 | | ⚠️ 需在 HANDOFF 说明为何 |
-| 修改框架本身 | 改 schema / 协议 | ✅ 属 P4，**必须单独记录评审** |
+| 引用框架/实验室新能力 | 引用已发布的 `CP-XXX` / 实验室能力 | ✅ 须在 `manifest.uses_framework_version` / `uses_domain_version` 声明，且 ≤ 已发布版本 |
+| 修改框架本身 | 改 `platform/` 的 schema / 协议 | ❌ **禁止在 round 内做**；改到 `CHANGE_PROTOCOL.md` 走提案制（P4 已取消，见 §10） |
 
 ---
 
@@ -147,7 +153,8 @@
 - `inputs.upstream_fact_ids` —— 本轮消费了哪些既有结论
 - `outputs.new_fact_ids` / `superseded_fact_ids` / `refuted_fact_ids`
 - `open_questions` —— 遗留问题 id
-- `framework_revision` —— 对框架的改进提案
+- `framework_revision` —— **只引用、不实现**上层提案：`proposed/accepted/rejected` 列表填已发布的 `CP-XXX` / 实验室能力名（详见 `CHANGE_PROTOCOL.md` §5）。**禁止**在此内含对 `platform/` 或 `labs/<domain>/` 的代码 diff。
+- `uses_framework_version` / `uses_domain_version`（新增，可选）—— 本轮依赖的框架/实验室版本，必须 ≤ `versions.json` 中已发布值（§9 跨层契约检查会校验）。
 
 ### 4.3 必须自动生成下一轮 TASK_BRIEF
 
@@ -249,6 +256,9 @@ r11/r12 新增的机械护栏（validate --all 已内置，勿手写白名单）
 | 跳过分期稳健性（当结论支持时段性判断时） | L3 教训 |
 | 用模拟"验证"解析事实 | L8 教训 |
 | 跨规则 epoch 比较奖金 | L9 教训 |
+| **研究组 round 直接修改 `platform/` 或 `labs/<domain>/`** | 破坏性变更不该挂在某彩种 roundNN 上；缺口提 `CHANGE_PROTOCOL.md` 的提案（见 §0、§10） |
+| **`framework_revision` 内含对供给方的代码 diff** | 该字段只许引用已 `accepted` 的 `CP-XXX` / 能力名，实现归框架/实验室层 |
+| **`uses_framework_version` / `uses_domain_version` 超出现有发布值** | 跨层版本契约（§9）会 FAIL |
 | 声称提高中奖概率 | 红线 |
 | 在 `TASK_BRIEF` 里写期望结论（独立复核场景） | 反锚定失效 |
 | 收轮不生成下轮 `TASK_BRIEF` | **迭代链断裂** |
@@ -273,7 +283,35 @@ r11/r12 新增的机械护栏（validate --all 已内置，勿手写白名单）
 
 ---
 
-## 9. 给执行者的最后提醒
+## 9. 跨层契约（与研究组/框架/实验室的边界）
+
+> 本仓库三层（框架 / 实验室 / 研究组）各有独立生命周期（详见 `CHANGE_PROTOCOL.md`）。
+> 研究组是**消费方**，框架/实验室是**供给方**。本节规定研究组与供给方之间的硬契约。
+
+| 契约 | 研究组侧要求 | 校验（接 `validate --all`） |
+|---|---|---|
+| **版本上限** | `manifest.uses_framework_version` / `uses_domain_version` ≤ `versions.json` 对应已发布值 | 超出即 FAIL（新增 `_check_cross_layer_contract`） |
+| **只引用不实现** | `framework_revision` 只列 `CP-XXX` / 能力名，不含供给方代码 diff | 含 diff 即 FAIL |
+| **无越界修改** | round 内不得改 `platform/` 或 `labs/<domain>/` | 该路径变更应由框架/实验室层提案触发 |
+| **影子彩种零交集**（供给方改动后） | 引用新框架能力时，须确认 `tests/test_shadow_game.py` 铁律扫描仍绿 | 扫描器自检须表明非空绿 |
+
+> 判据同 ★R 风格：**不是「有没有 warning」，而是「每个跨层引用都有契约背书」**。
+
+## 10. 供给方迭代出口（发现框架/实验室缺口时）
+
+研究组在轮次中发现框架或实验室不够用，**不要顺手改**，而是：
+
+1. 在本轮 `HANDOFF.md` 的「框架改进建议」节写明缺口与动机；
+2. 在 `manifest.framework_revision.proposed` 提交一条引用型提案（`CP-XXX` 占位名）；
+3. 由框架/实验室层按 `CHANGE_PROTOCOL.md` 走提案制 / 能力里程碑制：评审 → 实现 → 跨研究组契约测试 → 升 `framework_version` / `domain_version` → 登记 `versions.json`；
+4. 研究组**下一轮**才能把 `uses_framework_version` 升到新值并引用新能力。
+
+> 这把旧协议里 P4「修改框架本身，必须单独记录评审」的黑盒，变成了一条
+> **可评审、可回滚、有契约测试**的供给链。P4 类别从研究组轮次中取消。
+
+---
+
+## 11. 给执行者的最后提醒
 
 > 本仓库的价值**不在结论的数量，而在结论的可追溯性**。
 >

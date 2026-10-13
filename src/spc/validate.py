@@ -849,6 +849,60 @@ def validate_strategy(game: str, repo_root: str | None = None,
 
 # ---------------------------------------------------------------- iteration
 
+def _check_cross_layer_contract(root: str, game: str, rep: ValidationReport) -> None:
+    """★ 跨层版本契约（r19 三层迭代设计，见 CHANGE_PROTOCOL.md §4）：
+    研究组 manifest 只引用、不实现框架/实验室层提案；
+    声明的 uses_framework_version / uses_domain_version 不得超出现有发布值。
+    """
+    it_dir = os.path.join(root, "labs", "lottery", "studies", game, "iterations")
+    if not os.path.isdir(it_dir):
+        return
+    fw_pub = dom_pub = None
+    vj = os.path.join(root, "versions.json")
+    if os.path.isfile(vj):
+        try:
+            with open(vj, encoding="utf-8") as f:
+                vdata = json.load(f)
+            fw_pub = vdata.get("framework_version")
+            dom_pub = vdata.get("domain_version")
+        except (json.JSONDecodeError, OSError):
+            fw_pub = dom_pub = None
+    for name in sorted(os.listdir(it_dir)):
+        mf = os.path.join(it_dir, name, "manifest.json")
+        if not os.path.isfile(mf):
+            continue
+        with open(mf, encoding="utf-8") as f:
+            try:
+                m = json.load(f)
+            except json.JSONDecodeError:
+                continue
+        for field, published in (("uses_framework_version", fw_pub),
+                                ("uses_domain_version", dom_pub)):
+            v = m.get(field)
+            if v is None or published is None:
+                continue
+            try:
+                if tuple(map(int, v.split("."))) > tuple(map(int, published.split("."))):
+                    rep.err(
+                        f"{name}/manifest.json: {field}={v} 超出已发布值 {published}"
+                    )
+            except ValueError:
+                rep.warn(f"{name}/manifest.json: {field}={v} 无法解析为版本号")
+        fr = m.get("framework_revision") or {}
+        for bucket in ("proposed", "accepted", "rejected"):
+            for item in (fr.get(bucket) or []):
+                if not isinstance(item, str):
+                    continue
+                low = item.lower()
+                if low.startswith("platform/") or ("/platform/" in low) or low.startswith("labs/"):
+                    rep.err(
+                        f"{name}/manifest.json: framework_revision.{bucket} 含供给方代码路径 {item} "
+                        "—— 该字段只许引用已 accepted 的 CP-XXX / 能力名，实现归框架/实验室层"
+                    )
+    if fw_pub is not None or dom_pub is not None:
+        rep.ok("跨层版本契约检查完成（uses_framework/domain ≤ 已发布值；framework_revision 只引用不实现）")
+
+
 def validate_iterations(game: str, repo_root: str | None = None,
                         rep: ValidationReport | None = None) -> ValidationReport:
     """校验各轮 manifest.json。"""
@@ -893,6 +947,9 @@ def validate_iterations(game: str, repo_root: str | None = None,
 
     if n:
         rep.ok(f"iterations: 检查了 {n} 个 manifest.json")
+
+    # 跨层版本契约（r19 三层迭代设计）
+    _check_cross_layer_contract(root, game, rep)
 
     # 护栏：目录最大轮次 vs versions.json current_iteration
     # 防止"做了一轮但没收尾（不更新 current_iteration）"

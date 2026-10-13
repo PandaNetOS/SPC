@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """render_version_index.py — 从 versions.json 生成 VERSION_INDEX.md
 
 用法：
@@ -42,6 +42,7 @@ def gen() -> str:
     out.append("> 权威源是 `versions.json`（受 `spec/version_index.schema.json` 约束）。")
     out.append("")
     out.append(f"**索引版本**：`{d['index_version']}` ｜ **框架版本**：`{d['framework_version']}` ｜ "
+               f"**实验室版本**：`{d.get('domain_version')}` ｜ "
                f"**顶层版本（release）**：`{d.get('project_version')}` ｜ "
                f"**当前轮次**：`{d['current_iteration']}` ｜ **生成日期**：{d['generated_at']}")
     out.append("")
