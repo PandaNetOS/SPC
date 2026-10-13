@@ -10,6 +10,23 @@ import os
 import tempfile
 
 
+def _sort_key(row: dict, key: str):
+    """排序键：优先按 date（ISO 字符串天然可比），其次按 key 的数值。
+
+    ★ 踩过的坑：draw_num 是**变长**期号（07001..26116），按字符串排会把
+    "9153" 排到 "26116" 之后，导致全量重拉后顺序错乱、重复计数。
+    故排序以 date 为主键，key 仅作数值兜底。
+    """
+    d = str(row.get("date", "") or "")
+    if d:
+        return (0, d, 0.0)
+    k = str(row.get(key, "") or "")
+    try:
+        return (1, "", float(k))
+    except ValueError:
+        return (2, k, 0.0)
+
+
 def sha256_file(path: str) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -35,7 +52,17 @@ def merge_csv(base_path: str, new_rows: list[dict], *, encoding: str = "utf-8-si
                     existing[str(r[key])] = r
     for r in new_rows:
         k = str(r.get(key, "")).strip()
-        if k:
+        if not k:
+            continue
+        if k in existing:
+            # ★ 合并而非覆盖：源缺字段（None/空）时保留已有值。
+            #   早期期官方源不返奖级，全量重拉若直接覆盖会把历史奖金抹成空。
+            merged = dict(existing[k])
+            for col, val in r.items():
+                if val is not None and val != "":
+                    merged[col] = val
+            existing[k] = merged
+        else:
             existing[k] = r
 
     cols = list(header) or sorted({k for r in existing.values() for k in r})
@@ -44,7 +71,7 @@ def merge_csv(base_path: str, new_rows: list[dict], *, encoding: str = "utf-8-si
             if k not in cols:
                 cols.append(k)
 
-    rows = sorted(existing.values(), key=lambda r: str(r.get(key, "")))
+    rows = sorted(existing.values(), key=lambda r: _sort_key(r, key))
     buf = io.StringIO()
     w = csv.DictWriter(buf, fieldnames=cols, extrasaction="ignore")
     w.writeheader()
@@ -71,7 +98,7 @@ def merge_jsonl(base_path: str, new_rows: list[dict], *, key: str = "draw_num") 
         k = str(r.get(key, "")).strip()
         if k:
             existing[k] = r
-    rows = sorted(existing.values(), key=lambda r: str(r.get(key, "")))
+    rows = sorted(existing.values(), key=lambda r: _sort_key(r, key))
     text = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
     _atomic_write_text(base_path, text, "utf-8")
     return len(new_rows), len(rows)

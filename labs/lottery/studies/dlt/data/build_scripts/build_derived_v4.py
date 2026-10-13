@@ -1,9 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
-"""build_derived_v4.py — 从 raw/dlt_full_2933.csv 机械重建 derived/ 全部派生数据集。
+"""build_derived_v4.py — 从 raw/dlt_full_*.csv 机械重建 derived/ 全部派生数据集。
 
 与 v3 的差异：
-  1. 数据源改为 2933 期（含最新 26115 期，2026-10-10）
+  1. 数据源随接入管道（CP-002）自动更新，当前 2934 期（含 26116 期，2026-10-12）
   2. 新增 08_rules_epoch_summary.json：按规则变更断点分段统计
+  ★ 统计函数优先用 scipy，缺失时自动降级到 _stat_compat（纯标准库等价实现）
   3. 07_data_quality_report.json 哈希按新数据重算
 
 所有文件纯 ASCII 命名，UTF-8 with BOM 输出（与 v3 一致）。
@@ -15,11 +16,39 @@ import numpy as np
 import pandas as pd
 from math import comb
 
+# ---- 统计函数层：有 scipy 用 scipy，无 scipy 用等价纯实现（_stat_compat）----
+try:
+    from scipy.stats import chi2 as _scipy_chi2, norm as _scipy_norm
+    def chi2_sf(x, k):
+        return float(1 - _scipy_chi2.cdf(x, k))
+    def norm_sf(x):
+        return float(1 - _scipy_norm.cdf(x))
+    _STAT_BACKEND = "scipy"
+except ImportError:                       # scipy 不可用 → 本地等价实现
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from _stat_compat import chi2_sf, norm_sf
+    _STAT_BACKEND = "stat_compat"
+print(f"[stat] 统计后端 = {_STAT_BACKEND}")
+
 HERE = os.path.dirname(os.path.abspath(__file__))          # labs/lottery/studies/dlt/data/build_scripts/
 PKG = os.path.dirname(HERE)                                # labs/lottery/studies/dlt/data/
 RAW = os.path.join(PKG, 'raw')
 OUT = os.path.join(PKG, 'derived')
-DATA = os.path.join(RAW, 'dlt_full_2933.csv')
+GAME_YAML = os.path.join(os.path.dirname(PKG), "game.yaml")
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(GAME_YAML), "..", "..", "..", ".."))
+def _data_file() -> str:
+    """数据文件路径以 game.yaml 的 data.raw.path 为准（CP-002 接入管道会让期数变）。"""
+    try:
+        import yaml
+        with open(GAME_YAML, encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+        rel = ((cfg or {}).get("data") or {}).get("raw", {}).get("path")
+        if rel:
+            return os.path.join(_REPO_ROOT, rel.replace("/", os.sep))
+    except Exception as e:
+        print(f"[warn] 读 game.yaml 失败（{e}），回退默认文件名")
+    return os.path.join(RAW, "dlt_full_2933.csv")
+DATA = _data_file()
 os.makedirs(OUT, exist_ok=True)
 
 print(f'[load] {DATA}')
@@ -69,8 +98,7 @@ for y in sorted(set(years)):
     obs = fc[1:]
     exp = sub.shape[0] * 5 / 35
     chi2 = float(((obs - exp) ** 2 / exp).sum())
-    from scipy.stats import chi2 as chi2dist
-    p = float(1 - chi2dist.cdf(chi2, 34))
+    p = chi2_sf(chi2, 34)
     high_zone = np.mean([sum(1 for v in F[i] if v >= 29) / 5
                          for i in np.where(years == y)[0]])
     consec = np.mean([run_count(F[i]) >= 2 for i in np.where(years == y)[0]])
@@ -132,10 +160,9 @@ for r in B:
     for v in r:
         bfreq[v] += 1
 exp_b = n * 2 / 12
-from scipy.stats import chi2 as chi2d
 obs_b = bfreq[1:]
 chi2_b = float(((obs_b - exp_b) ** 2 / exp_b).sum())
-p_b = float(1 - chi2d.cdf(chi2_b, 11))
+p_b = chi2_sf(chi2_b, 11)
 rows = [{'number': i, 'count': int(bfreq[i]), 'expected': round(exp_b, 2),
          'ratio': round(bfreq[i] / exp_b, 4), 'chi2_p_uniform': round(p_b, 4)}
         for i in range(1, 13)]
@@ -224,8 +251,7 @@ for sname, s in series.items():
     for lag in range(1, 61):
         r = acf(s, lag)
         z = r * np.sqrt(n)
-        from scipy.stats import norm
-        p = float(2 * (1 - norm.cdf(abs(z))))
+        p = 2.0 * norm_sf(abs(z))
         rows.append({'series': sname, 'lag': lag, 'acf': round(r, 5),
                      'z_naive': round(float(z), 3), 'p_naive': p})
 pd.DataFrame(rows).to_csv(os.path.join(OUT, '06_acf_lag1to60.csv'),

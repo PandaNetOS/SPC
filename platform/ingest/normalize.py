@@ -65,6 +65,7 @@ def normalize_draw(
     prize_index_key: str | None = None,
     draw_result_field: str | None = None,
     zones: list | None = None,
+    zone_big_threshold: int | None = None,
     derived: bool = True,
 ) -> dict:
     """把一条源记录映射成 SPC 标准行。
@@ -105,22 +106,28 @@ def normalize_draw(
                     row[f"{pfx}_{i + 1}"] = _as_number(raw_nums[pos])
 
     if derived:
-        row = _derive(row)
+        row = _derive(row, zone_big_threshold=zone_big_threshold)
     return row
 
 
-def _derive(row: dict) -> dict:
-    """派生纯计算列（与 study 无关的通用派生）。"""
+def _derive(row: dict, *, zone_big_threshold: int | None = None) -> dict:
+    """派生纯计算列。
+
+    zone_big_threshold 是彩种特定的「多大算大号」阈值，由 game.yaml 的
+    data_source.zone_big_threshold 提供 —— 框架层不猜（35 选 5 的大号起点是 18，
+    但这是彩票规则，不是通用公式）。未提供时只算 sum/odd/span。
+    """
     def ints(prefix: str) -> list[int]:
         return [int(row[f"{prefix}_{i}"]) for i in range(1, 6)
                 if row.get(f"{prefix}_{i}") is not None]
 
     front = ints("front")
     back = ints("back")
+    thr = zone_big_threshold if zone_big_threshold is not None else 10 ** 9
     if front:
         row["front_sum"] = sum(front)
         row["front_odd"] = sum(1 for v in front if v % 2)
-        row["front_big"] = sum(1 for v in front if v > len(set(front)) // 2 + 2)
+        row["front_big"] = sum(1 for v in front if v >= thr)
         row["front_span"] = max(front) - min(front)
     if back:
         row["back_span"] = max(back) - min(back)

@@ -1,14 +1,14 @@
 {
- "n_draws": 2933,
+ "n_draws": 2934,
  "date_range": [
   "2007-05-30",
-  "2026-10-10"
+  "2026-10-12"
  ],
  "draw_num_range": [
   "07001",
-  "26115"
+  "26116"
  ],
- "null_cells": 0,
+ "null_cells": 29333,
  "date_monotonic": true,
  "front_strictly_ascending": true,
  "back_strictly_ascending": true,
@@ -21,12 +21,12 @@
   "span": 0
  },
  "front_duplicate_combos": 18,
- "back_duplicate_combos": 2867,
+ "back_duplicate_combos": 2868,
  "verified_pdf_draws": 1001,
  "verified_api_draws": 801,
  "no_draw_num_gaps": true,
  "sha256": {
-  "dlt_full_2933.csv": "9e92848e184c77154786bc376057f572333292010d3d3fba71ee53dd14706bb7",
-  "dlt_full_2933.jsonl": "11a1714e9c850a7d4304cde0082868051118bcd58f48c43aa536770466c94d0d"
+  "dlt_full_2933.csv": "c429b713886ede348d04e11edb04289817f992ba09570333e9a88374f651149d",
+  "dlt_full_2933.jsonl": "0ff49c1e9be4e3953f749fea68a7ff0842da3a99342b512e876dcdc59810b761"
  }
 }

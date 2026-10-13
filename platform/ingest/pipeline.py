@@ -92,7 +92,8 @@ def run_pipeline(root: str, game: str, *, full: bool = False,
     rows = [normalize_draw(r, fmap, prizes_key=prizes_key,
                            prize_index_key=prize_idx,
                            draw_result_field=ds.get("draw_result_field"),
-                           zones=ds.get("zones")) for r in records]
+                           zones=ds.get("zones"),
+                           zone_big_threshold=ds.get("zone_big_threshold")) for r in records]
 
     # 增量过滤：按开奖日期（而非期号字符串）判断新旧 —— 期号位数可变，
     # 字符串比较会把 2009 年的 "9153" 误判为比 "26115" 新。

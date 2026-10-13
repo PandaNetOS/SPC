@@ -506,6 +506,8 @@ data_source:
   zones:
     - { prefix: front, start: 0, count: 5 }
     - { prefix: back,  start: 5, count: 2 }
+  # 大号阈值（35 选 5 → 18~35 为大号）。彩种规则，由配置提供，框架不猜。
+  zone_big_threshold: 18
 
   field_map:
     draw_num:           lotteryDrawNum
@@ -537,7 +539,7 @@ data:
     first_draw_num: "07001"
     last_draw_num: "26116"
     date_range: ["2007-05-30", "2026-10-12"]
-    sha256: "b4cb2494141ddefac1de7f75f65f86e180afcc003231234707360270cf923c9c"
+    sha256: "c429b713886ede348d04e11edb04289817f992ba09570333e9a88374f651149d"
 
   derived:
     path: labs/lottery/studies/dlt/data/derived

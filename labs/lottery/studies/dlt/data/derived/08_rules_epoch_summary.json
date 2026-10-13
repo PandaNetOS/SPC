@@ -1,5 +1,5 @@
 {
- "note": "按 06_RULES_HISTORY.md 的规则变更断点分段。跨断点的奖金金额不可直接比较。",
+ "note": "按 labs/lottery/studies/dlt/rules_history.md 的规则变更断点分段。跨断点的奖金金额不可直接比较。",
  "epochs": [
   {
    "epoch": "E0 原始规则(8奖级)",
@@ -108,17 +108,17 @@
    "from": "2026-02-02",
    "to": "2100-01-01",
    "prize_levels": 7,
-   "n_draws": 102,
+   "n_draws": 103,
    "draw_num_range": [
     "26014",
-    "26115"
+    "26116"
    ],
-   "sale_mean_yuan": 318105604.5,
-   "pool_mean_yuan": 786893494.9,
-   "prize1_winners_mean": 6.451,
+   "sale_mean_yuan": 317867444.6,
+   "pool_mean_yuan": 786830726.3,
+   "prize1_winners_mean": 6.4078,
    "prize1_winners_median": 6.0,
-   "prize1_amount_mean_yuan": 7900661.3,
-   "prize1_amount_cap500w_ratio": 0.9706
+   "prize1_amount_mean_yuan": 7921043.2,
+   "prize1_amount_cap500w_ratio": 0.9709
   }
  ]
 }

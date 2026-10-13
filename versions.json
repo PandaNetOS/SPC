@@ -517,7 +517,7 @@
       "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.csv",
       "level": "D",
       "kind": "raw_data",
-      "sha256": "b4cb2494141ddefac1de7f75f65f86e180afcc003231234707360270cf923c9c",
+      "sha256": "c429b713886ede348d04e11edb04289817f992ba09570333e9a88374f651149d",
       "note": "r19: +26116 期（2026-10-12），经 CP-002 接入管道写入；2933 → 2934 期，新增三至七等奖列",
       "status": "active"
     },
@@ -525,7 +525,7 @@
       "path": "labs/lottery/studies/dlt/data/raw/dlt_full_2933.jsonl",
       "level": "D",
       "kind": "raw_data",
-      "sha256": "69006d2171d56f7bcbddecd42346d6173f1299a03038f20b80227fda46479f8e",
+      "sha256": "0ff49c1e9be4e3953f749fea68a7ff0842da3a99342b512e876dcdc59810b761",
       "note": "r19: 随 CSV 同步 +26116 期",
       "status": "active"
     },
@@ -3262,6 +3262,14 @@
       "status": "active",
       "updated_at": "2026-10-13",
       "note": "管道编排与 CLI（fetch→normalize→merge→seal）"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/data/build_scripts/_stat_compat.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active",
+      "updated_at": "2026-10-13",
+      "note": "scipy 不可用时的等价纯实现（chi2_sf/norm_sf），build_derived 自动降级"
     }
   ],
   "history": [
