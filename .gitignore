@@ -40,6 +40,11 @@ scratch/
 *.log
 *.tmp
 
+# ⚠️ 环境垃圾：Windows 会向仓库根写入 %SystemDrive% 系统缓存目录（ProgramData/...），
+#    非项目文件、体积大且会反复再生，必须忽略，否则会被 structure 校验误判为未登记。
+%SystemDrive%/
+ProgramData/
+
 # ⚠️ 数据不要整体忽略。
 # games/<id>/data/raw/           —— 必须进 git（结论可复现的前提，体积小）
 # games/<id>/data/derived/       —— 可重建；体积大时可忽略，但必须登记在 game.yaml 的 data.derived

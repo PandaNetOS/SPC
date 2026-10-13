@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """tools/derive_tasks.py — 待办池任务源派生（r16，★源自救）
 
 ## 为什么要有这个工具
@@ -42,6 +42,11 @@ import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
+for _p in (_ROOT, os.path.join(_ROOT, "src")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from spc import paths  # noqa: E402 路径单一权威（待办池已随记忆下沉到研究组）
 
 # reconfigure 而非重新包装：重新包装会让原 wrapper 失去引用后被 GC 析构，
 # 连带关掉底层 buffer —— 本模块被测试 import 时会导致后续 print 全部失败。
@@ -50,10 +55,32 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-TODO = os.path.join(_ROOT, "memory", "workbench", "TODO.md")
-QUESTIONS = os.path.join(_ROOT, "memory", "workbench", "OPEN_QUESTIONS.md")
-HYPOTHESES = os.path.join(_ROOT, "memory", "workbench", "HYPOTHESES.md")
+_STUDY = paths.first_study(root=_ROOT) or "dlt"
+_WB = paths.workbench_dir(_STUDY, root=_ROOT)
+TODO = os.path.join(_WB, "TODO.md")
+QUESTIONS = os.path.join(_WB, "OPEN_QUESTIONS.md")
+HYPOTHESES = os.path.join(_WB, "HYPOTHESES.md")
 SECTION = "## 派生候选（由 tools/derive_tasks.py 生成，勿手改条目内容）"
+
+
+def _wb(root: str | None = None, study: str | None = None) -> str:
+    """workbench 目录。
+
+    ★ 为什么要函数而不只用模块常量：模块常量在 import 时绑定到**真实仓库**，
+    于是测试/外部工具想把这个模块指向别处时，只能 monkeypatch 三个变量
+    （漏一个就静默读到真仓库 —— 用错数据比报错危险）。
+    本函数按 root/study 现算；模块常量保留是为向后兼容既有 monkeypatch 用法。
+    """
+    return paths.workbench_dir(study or paths.first_study(root=root or _ROOT) or "dlt",
+                               root=root or _ROOT)
+
+
+def _paths_for(root: str | None = None, study: str | None = None) -> tuple[str, str, str]:
+    """(TODO, QUESTIONS, HYPOTHESES) —— 三者必须同源，禁止各算各的。"""
+    wb = _wb(root, study)
+    return (os.path.join(wb, "TODO.md"),
+            os.path.join(wb, "OPEN_QUESTIONS.md"),
+            os.path.join(wb, "HYPOTHESES.md"))
 
 _Q_SEC = re.compile(r"^## (Q-\d{3}) — (.+?)(?:\s*✅.*)?$", re.M)
 _H_SEC = re.compile(r"^## (H-\d{3}) — (.+)$", re.M)
@@ -69,10 +96,13 @@ _WARN_RULES = [
 ]
 
 
-def _q_candidates() -> list[dict]:
-    if not os.path.isfile(QUESTIONS):
+def _q_candidates(root: str | None = None, study: str | None = None) -> list[dict]:
+    todo_p, questions_p, _ = _paths_for(root, study)
+    # 模块常量被 monkeypatch 时优先用它（向后兼容既有测试用法）
+    q_p = QUESTIONS if QUESTIONS != _paths_for(_ROOT, _STUDY)[1] else questions_p
+    if not os.path.isfile(q_p):
         return []
-    txt = open(QUESTIONS, encoding="utf-8").read()
+    txt = open(q_p, encoding="utf-8").read()
     out = []
     for m in _Q_SEC.finditer(txt):
         qid, title = m.group(1), m.group(2).strip()
@@ -95,10 +125,12 @@ def _q_candidates() -> list[dict]:
     return out
 
 
-def _h_candidates() -> list[dict]:
-    if not os.path.isfile(HYPOTHESES):
+def _h_candidates(root: str | None = None, study: str | None = None) -> list[dict]:
+    _, _, hypotheses_p = _paths_for(root, study)
+    h_p = HYPOTHESES if HYPOTHESES != _paths_for(_ROOT, _STUDY)[2] else hypotheses_p
+    if not os.path.isfile(h_p):
         return []
-    txt = open(HYPOTHESES, encoding="utf-8").read()
+    txt = open(h_p, encoding="utf-8").read()
     out = []
     for m in _H_SEC.finditer(txt):
         hid, title = m.group(1), m.group(2).strip()
@@ -124,13 +156,14 @@ def _h_candidates() -> list[dict]:
     return out
 
 
-def _warn_candidates() -> list[dict]:
+def _warn_candidates(root: str | None = None) -> list[dict]:
     """跑一次 validate --all，按类别归并告警。失败/超时不致命 —— 只跳过。"""
+    r_root = root or _ROOT
     try:
         r = subprocess.run([sys.executable, "-X", "utf8",
-                            os.path.join(_ROOT, "cli", "main.py"),
+                            os.path.join(r_root, "cli", "main.py"),
                             "validate", "--all"],
-                           cwd=_ROOT, capture_output=True, text=True, timeout=600)
+                           cwd=r_root, capture_output=True, text=True, timeout=600)
     except Exception:
         return []
     text = (r.stdout or "") + (r.stderr or "")
@@ -162,15 +195,45 @@ def _next_tid(todo: str) -> int:
     return (max(ids) if ids else 0) + 1
 
 
-def main() -> int:
+def _guard_write(path: str, new_text: str) -> None:
+    """写前护栏：内容不得比原文件少 20% 以上（防分割逻辑吃掉正文）。
+
+    触发即抛 RuntimeError 并留下 .bak —— 调用方不会写盘，数据不丢。
+    """
+    import shutil
+
+    if not os.path.isfile(path):
+        return
+    old_lines = len(open(path, encoding="utf-8-sig").read().splitlines())
+    new_lines = len(new_text.splitlines())
+    if old_lines >= 10 and new_lines < old_lines * 0.8:
+        bak = path + ".guard.bak"
+        shutil.copy2(path, bak)
+        raise RuntimeError(
+            f"拒绝写入 {path}：新内容 {new_lines} 行 < 原有 {old_lines} 行的 80% "
+            f"（派生应是追加操作，内容骤降说明逻辑吃掉了正文）。\n"
+            f"  原文件已备份到 {bak}，请检查 SECTION 分割逻辑后重试。"
+        )
+
+
+def main(root: str | None = None, study: str | None = None) -> int:
+    """派生候选任务。root/study 省略时用真实仓库（模块常量）。
+
+    ★ 传 root 时全部路径同源重算 —— 不会出现「TODO 指向临时仓库、
+    QUESTIONS 还指向真仓库」的半迁移状态。
+    """
     write = "--write" in sys.argv
-    cands = _q_candidates() + _h_candidates() + _warn_candidates()
-    todo = open(TODO, encoding="utf-8").read() if os.path.isfile(TODO) else ""
+    todo_p, _, _ = _paths_for(root, study)
+    # 向后兼容：模块常量被 monkeypatch 过就用它
+    if TODO != _paths_for(_ROOT, _STUDY)[0]:
+        todo_p = TODO
+    cands = _q_candidates(root, study) + _h_candidates(root, study) + _warn_candidates(root)
+    todo = open(todo_p, encoding="utf-8").read() if os.path.isfile(todo_p) else ""
     known = _existing_sources(todo)
     fresh = [c for c in cands if c["src"] not in known]
 
-    print(f"派生源扫描：Q {len(_q_candidates())} / H {len(_h_candidates())}"
-          f" / 告警 {len(_warn_candidates())}")
+    print(f"派生源扫描：Q {len(_q_candidates(root, study))} / H {len(_h_candidates(root, study))}"
+          f" / 告警 {len(_warn_candidates(root))}")
     print(f"已在池：{len(cands) - len(fresh)}　新增：{len(fresh)}")
     if not fresh:
         print("（无新增候选，待办池已是最新）")
@@ -194,6 +257,11 @@ def main() -> int:
         return 0
 
     block = "\n".join(lines)
+    # ★ 写前护栏：派生是**追加**操作。若新内容行数远少于原内容，
+    #   说明分割/替换逻辑吃掉了正文 —— 那是一次静默的数据丢失。
+    #   宁可拒绝写入并保留备份，也不能把 44 条待办变成 5 条。
+    #   （2026-10-13 实测过一次：TODO.md 251 行被写成 5 行，只能从 git 恢复。）
+    _guard_write(todo_p, todo)
     if SECTION in todo:
         head, rest = todo.split(SECTION, 1)
         nxt = re.search(r"^## ", rest, re.M)
@@ -204,7 +272,7 @@ def main() -> int:
             todo = head + SECTION + rest.rstrip() + "\n\n" + block
     else:
         todo = todo.rstrip() + f"\n\n---\n\n{SECTION}\n\n{block}"
-    open(TODO, "w", encoding="utf-8").write(todo)
+    open(todo_p, "w", encoding="utf-8").write(todo)
     print(f"✓ 已向 TODO.md 追加 {len(fresh)} 条派生候选（标记 [derive:…] 保证幂等）")
     return 0
 

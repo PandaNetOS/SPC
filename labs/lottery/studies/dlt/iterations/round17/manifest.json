@@ -9,12 +9,20 @@
   "supersedes_round": null,
   "inputs": {
     "data_version": "dlt_full_2933",
-    "upstream_fact_ids": ["F-0003", "F-0025", "F-0038", "F-0041", "F-0048"],
+    "upstream_fact_ids": [
+      "F-0003",
+      "F-0025",
+      "F-0038",
+      "F-0041",
+      "F-0048"
+    ],
     "previous_handoff": "labs/lottery/studies/dlt/iterations/round16/HANDOFF.md",
     "task_brief": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md"
   },
   "outputs": {
-    "new_fact_ids": ["F-0049"],
+    "new_fact_ids": [
+      "F-0049"
+    ],
     "superseded_fact_ids": [],
     "refuted_fact_ids": [],
     "strategy_updated": false,
@@ -38,14 +46,41 @@
     }
   },
   "deliverables": [
-    {"path": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md", "kind": "task_brief"},
-    {"path": "labs/lottery/studies/dlt/iterations/round17/FINDINGS.md", "kind": "findings"},
-    {"path": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md", "kind": "handoff"},
-    {"path": "labs/lottery/studies/dlt/iterations/round17/manifest.json", "kind": "manifest"},
-    {"path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py", "kind": "script"},
-    {"path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json", "kind": "data"},
-    {"path": "platform/core/features.py", "kind": "code"},
-    {"path": "labs/lottery/studies/dlt/game.yaml", "kind": "config"},
-    {"path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl", "kind": "data"}
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/manifest.json",
+      "kind": "manifest"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json",
+      "kind": "data"
+    },
+    {
+      "path": "platform/core/features.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/game.yaml",
+      "kind": "report"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
+      "kind": "data"
+    }
   ]
 }

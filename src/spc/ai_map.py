@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """spc.ai_map — AI_MAP.md 生成源（AI 可读性升级 P1，llms.txt 式机器地图）。
 
 README 目录树（spc.tree）解决的是「文件在哪」；AI_MAP 解决的是
@@ -17,6 +17,13 @@ from __future__ import annotations
 
 import json
 import os
+import sys
+
+_SRC = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
+
+from spc import paths  # noqa: E402 路径单一权威
 
 _EXCLUDE_DIR_PREFIXES = (
     "tests/fixtures/",
@@ -73,25 +80,26 @@ def _note(entry: dict) -> str:
 
 
 def _first_game(root: str) -> str | None:
-    gd = os.path.join(root, "games")
-    if not os.path.isdir(gd):
-        return None
-    for name in sorted(os.listdir(gd)):
-        if os.path.isfile(os.path.join(gd, name, "game.yaml")):
-            return name
-    return None
+    """发现第一个研究组（库代码不硬编码彩种名，新旧布局由 paths 探测）。"""
+    return paths.first_study(root=root)
 
 
-def _sections_for(game: str) -> list[tuple[str, str]]:
-    """按彩种目录名生成分区前缀（库代码不硬编码彩种名）。"""
+def _sections_for(game: str, root: str | None = None) -> list[tuple[str, str]]:
+    """按研究组目录名生成分区前缀（库代码不硬编码彩种名）。
+
+    前缀一律经 paths.rel_study 取**相对仓库根**的正斜杠路径 ——
+    迁移后 games/<id>/ 已变为 labs/<lab>/studies/<id>/。
+    """
+    rel = paths.rel_study(game, root=root) if game else ""
+    base = rel + "/" if rel else ""
     return [
         ("入口（先读）", ""),
         ("契约", "spec/"),
         ("框架", "platform/"),
         ("记忆", "memory/"),
-        ("策略输出", f"games/{game}/strategy/"),
-        ("彩种", f"games/{game}/"),
-        ("迭代史", f"games/{game}/iterations/"),
+        ("策略输出", base + "strategy/"),
+        ("彩种", base),
+        ("迭代史", base + "iterations/"),
         ("工具与 CLI", "tools/"),
         ("工具与 CLI", "cli/"),
         ("测试", "tests/"),
@@ -129,7 +137,7 @@ def _render_section(title: str, entries: list[dict]) -> str:
 def render_ai_map(entries: list[dict], root: str | None = None) -> str:
     """生成 AI_MAP.md 正文（不含 ``` 包裹；含派生物注记与摘要）。"""
     game = _first_game(root) if root else None
-    sections = _sections_for(game or "g") if game else _BASE_SECTIONS
+    sections = _sections_for(game, root) if game else _BASE_SECTIONS
     by_section: dict[str, list[dict]] = {}
     for e in entries:
         p = e.get("path") or ""

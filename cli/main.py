@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """cli/main.py — spc 命令行入口
 
@@ -39,6 +39,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402 路径单一权威
 from spc import __version__  # noqa: E402
 from spc.api import SmartPick  # noqa: E402
 from spc.memory import Memory  # noqa: E402
@@ -52,7 +53,9 @@ from spc.validate import (  # noqa: E402
 )
 
 # platform/core 是彩种无关的计算核心，不在 src/ 包内
-sys.path.insert(0, os.path.join(_ROOT, "framework"))
+#   ★ 2026-10-12 架构升级：framework/ → platform/；此处曾硬编码 "framework"，
+#   导致 core 导入失败 → validate 报「读不到 game.yaml，跳过 predicate 作用域检查」。
+sys.path.insert(0, paths.platform_dir(_ROOT))
 from core import Ticket  # noqa: E402
 
 STARS = lambda c: "★" * c + "☆" * (5 - c)
@@ -145,7 +148,7 @@ def cmd_rehash(args) -> int:
 
     strategy_changed = False
     if args.strategy:
-        st_path = os.path.join(_ROOT, "games", args.game, "strategy", "strategy.json")
+        st_path = paths.strategy_json_path(args.game, root=_ROOT)
         if not os.path.exists(st_path):
             print(f"✗ strategy.json 不存在: {st_path}")
             return 1
@@ -173,7 +176,7 @@ def cmd_rehash(args) -> int:
         return 0
 
     if changed:
-        p = os.path.join(_ROOT, "memory", "facts", "FACTS.jsonl")
+        p = paths.facts_path(paths.first_study(root=_ROOT) or "dlt", root=_ROOT)
         with open(p, "w", encoding="utf-8", newline="\n") as f:
             for ft in facts:
                 f.write(json.dumps(ft, ensure_ascii=False) + "\n")
@@ -252,13 +255,13 @@ def cmd_strategy(args) -> int:
     text = json.dumps(st, ensure_ascii=False, indent=2) + "\n"
 
     if args.dry_run:
-        print(f"--- dry-run：将写入 games/{args.game}/strategy/strategy.json ---")
+        print(f"--- dry-run：将写入 {paths.rel_study(args.game, root=_ROOT)}/strategy/strategy.json ---")
         print(text[:3000])
         if len(text) > 3000:
             print(f"...（共 {len(text)} 字符，已截断）")
         return 0
 
-    p = os.path.join(_ROOT, "games", args.game, "strategy", "strategy.json")
+    p = paths.strategy_json_path(args.game, root=_ROOT)
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
@@ -284,7 +287,7 @@ def cmd_strategy(args) -> int:
 def cmd_games(args) -> int:
     games = SmartPick.games(_ROOT)
     if not games:
-        print("（games/ 下未发现彩种）")
+        print(f"（{paths.rel_study("_x", root=_ROOT).rsplit('/', 1)[0]}/ 下未发现研究组）")
         return 0
     print(f"{'id':10s}  {'T（单注组合数）':>15s}  {'一等奖概率':>12s}  "
           f"{'返奖率':>6s}  {'结论':>4s}  {'规则':>4s}")
@@ -417,8 +420,8 @@ def cmd_info(args) -> int:
 def cmd_new_game(args) -> int:
     import shutil
 
-    src = os.path.join(_ROOT, "games", "_template")
-    dst = os.path.join(_ROOT, "games", args.game_id)
+    src = os.path.join(paths.studies_dir(root=_ROOT), "_template")
+    dst = paths.study_dir(args.game_id, root=_ROOT)
 
     if not os.path.isdir(src):
         print(f"✗ 模板不存在: {os.path.relpath(src, _ROOT)}")
@@ -432,9 +435,10 @@ def cmd_new_game(args) -> int:
     print(f"✓ 已创建 {os.path.relpath(dst, _ROOT)}")
     print()
     print("下一步：")
-    print(f"  1. 编辑 games/{args.game_id}/game.yaml（machine / features / prize_model / data）")
-    print(f"  2. 放置数据到 games/{args.game_id}/data/raw/ 并算 SHA256")
-    print(f"  3. 建 games/{args.game_id}/iterations/round01/TASK_BRIEF.md")
+    rel = paths.rel_study(args.game_id, root=_ROOT)
+    print(f"  1. 编辑 {rel}/game.yaml（machine / features / prize_model / data）")
+    print(f"  2. 放置数据到 {rel}/data/raw/ 并算 SHA256")
+    print(f"  3. 建 {rel}/iterations/round01/TASK_BRIEF.md")
     print(f"  4. python cli/main.py validate --game {args.game_id}")
     print()
     print("⚠️ 不要修改 platform/ 与 src/ 的任何一行 —— 若需要改，说明框架分离没做好。")

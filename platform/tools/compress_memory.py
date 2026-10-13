@@ -26,10 +26,15 @@ import sys
 from collections import Counter
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_SRC = os.path.join(ROOT, "src")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
+
+from spc import paths  # noqa: E402 路径单一权威
 
 
 def load_facts(root: str = ROOT) -> list[dict]:
-    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    p = paths.facts_path("dlt", root=root)
     if not os.path.exists(p):
         return []
     out = []
@@ -47,16 +52,14 @@ def load_facts(root: str = ROOT) -> list[dict]:
 
 def current_round(root: str = ROOT) -> int:
     best = 0
-    gd = os.path.join(root, "games")
-    if os.path.isdir(gd):
-        for g in os.listdir(gd):
-            d = os.path.join(gd, g, "iterations")
-            if not os.path.isdir(d):
-                continue
-            for name in os.listdir(d):
-                m = re.match(r"^round(\d{2})$", name)
-                if m:
-                    best = max(best, int(m.group(1)))
+    for g in paths.list_studies(root=root):
+        d = paths.iterations_dir(g, root=root)
+        if not os.path.isdir(d):
+            continue
+        for name in os.listdir(d):
+            m = re.match(r"^round(\d{2})$", name)
+            if m:
+                best = max(best, int(m.group(1)))
     return best
 
 

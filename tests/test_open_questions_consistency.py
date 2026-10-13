@@ -29,7 +29,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
-sys.path.insert(0, os.path.join(_ROOT, "framework", "tools"))
+sys.path.insert(0, os.path.join(_ROOT, "platform", "tools"))
 
 from spc import validate as V  # noqa: E402
 from spc.memory import Memory  # noqa: E402

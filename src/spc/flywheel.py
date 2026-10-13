@@ -20,13 +20,27 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 
 _ROOT_HINT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_SRC = os.path.join(_ROOT_HINT, "src")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
+
+from spc import paths  # noqa: E402 路径单一权威（飞轮不得自己拼记忆路径）
 
 
-def load_facts(root: str | None = None) -> list[dict]:
+def load_facts(root: str | None = None, study: str | None = None) -> list[dict]:
+    """读 FACTS.jsonl（权威源）。
+
+    study 省略时自动发现第一个研究组 —— 飞轮不硬编码彩种名。
+    路径一律经 spc.paths，避免架构迁移后仪表盘空转（2026-10-12 事故）。
+    """
     root = root or _ROOT_HINT
-    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    study = study or paths.first_study(root=root)
+    if not study:
+        return []
+    p = paths.facts_path(study, root=root)
     facts: list[dict] = []
     if not os.path.exists(p):
         return facts

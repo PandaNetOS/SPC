@@ -1,6 +1,7 @@
-# SOP_OVERVIEW.md — SPC 标准操作流程总览
+﻿# SOP_OVERVIEW.md — SPC 标准操作流程总览
 
-> **版本**：1.0 ｜ 更新 2026-10-12 ｜ 适用范围：整个 SPC 项目
+> **版本**：`1.0` ｜ 轮次 `r17` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 ---
 

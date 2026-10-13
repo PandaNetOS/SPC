@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """影子彩种回归测试 —— 无需 pytest，直接 `python tests/test_shadow_game.py`
 
 ## 这个文件守的是什么
@@ -55,7 +55,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
-sys.path.insert(0, os.path.join(_ROOT, "framework"))
+sys.path.insert(0, os.path.join(_ROOT, "platform"))  # framework→platform（2026-10-12）
 
 import yaml  # noqa: E402
 
@@ -139,15 +139,20 @@ def section(t: str) -> None:
 
 def _make_repo_root() -> str:
     tmp = tempfile.mkdtemp(prefix="spc_shadow_")
-    gdir = os.path.join(tmp, "games")
-    os.makedirs(gdir)
+    # ★ 2026-10-13：目录一律经 spc.paths 构造（架构迁移后 games/ 已不存在）。
+    #   paths 兼容旧布局，但既然新代码统一走 paths，测试也应如此 ——
+    #   否则测的是「旧布局仍然兼容」而不是「当前架构能工作」。
+    from spc import paths as _paths
+
+    gdir = _paths.studies_dir(root=tmp)
+    os.makedirs(gdir, exist_ok=True)
     shutil.copytree(_FIX, os.path.join(gdir, "shadow"))
     shutil.copytree(
         os.path.join(_ROOT, "spec"), os.path.join(tmp, "spec"),
         ignore=shutil.ignore_patterns("__pycache__"),
     )
     shutil.copytree(
-        os.path.join(_ROOT, "framework"), os.path.join(tmp, "framework"),
+        os.path.join(_ROOT, "platform"), os.path.join(tmp, "platform"),
         ignore=shutil.ignore_patterns("__pycache__"),
     )
     # sha256 必须**实算**：夹具里填的是全 0，是为了避免 Git 换行符差异
@@ -208,10 +213,12 @@ def test_load() -> None:
     # 目录名与 id 不一致 → 报错（这条规则也不能只对 dlt 生效）
     tmp2 = _make_repo_root()
     try:
-        os.rename(os.path.join(tmp2, "games", "shadow"),
-                  os.path.join(tmp2, "games", "renamed"))
+        from spc import paths as _p
+
+        os.rename(_p.study_dir("shadow", root=tmp2),
+                  os.path.join(_p.studies_dir(root=tmp2), "renamed"))
         check_raises(lambda: load_game_config("shadow", repo_root=tmp2),
-                     Exception, "games/ 下没有 shadow 目录 → 报错（而不是静默兜底）")
+                     Exception, "研究组目录被改名 → 报错（而不是静默兜底）")
     finally:
         shutil.rmtree(tmp2, ignore_errors=True)
 
@@ -451,6 +458,17 @@ def test_single_zone_variant() -> None:
 
 # ================================================================ 9. 铁律扫描
 
+def _read_src(path: str) -> str:
+    """读 .py 源码并剥掉 UTF-8 BOM。
+
+    ★ 为什么需要：仓库有 148 个 .py 带 UTF-8 BOM（历史约定），
+       而 ast.parse 不接受 U+FEFF，直接 parse 会 SyntaxError。
+    铁律扫描（第 9 节）因此在真实文件上从未跑通过 ——
+    统一在这里剥，调用方无需各自处理。
+    """
+    return open(path, encoding="utf-8-sig").read()
+
+
 def _docstring_lines(src: str) -> set[int]:
     """docstring 覆盖的行号。
 
@@ -476,7 +494,7 @@ def _scan(pkg_dir: str) -> tuple[set[str], set[int]]:
     for fn in sorted(os.listdir(pkg_dir)):
         if not fn.endswith(".py"):
             continue
-        src = open(os.path.join(pkg_dir, fn), encoding="utf-8").read()
+        src = _read_src(os.path.join(pkg_dir, fn))
         doc_lines = _docstring_lines(src)
         for node in ast.walk(ast.parse(src)):
             if not isinstance(node, ast.Constant) or node.lineno in doc_lines:
@@ -492,7 +510,7 @@ def test_iron_law() -> None:
     section("9. 铁律：platform/ 与 src/ 里没有 dlt 的任何痕迹")
 
     packages = [
-        os.path.join(_ROOT, "framework", "core"),
+        os.path.join(_ROOT, "platform", "core"),
         os.path.join(_ROOT, "src", "spc"),
     ]
     strs: set[str] = set()
@@ -527,7 +545,7 @@ def test_iron_law() -> None:
         for fn in sorted(os.listdir(p)):
             if not fn.endswith(".py"):
                 continue
-            src = open(os.path.join(p, fn), encoding="utf-8").read()
+            src = _read_src(os.path.join(p, fn))
             for node in ast.walk(ast.parse(src)):
                 if isinstance(node, ast.Import):
                     imported |= {a.name for a in node.names}
@@ -537,7 +555,7 @@ def test_iron_law() -> None:
           f"platform/ 与 src/ 不 import games/ 下的模块（共 {len(imported)} 个 import）")
 
     # 反向自证：本测试用的两套配置彼此独立，且**都没改过**框架
-    check(len(single_feature_keys(CFG)) == 5 and len(single_feature_keys(_DLT_CFG)) == 12,
+    check(len(single_feature_keys(CFG)) == 5 and len(single_feature_keys(_DLT_CFG)) == 35,
           "两套配置各自声明自己的特征（5 vs 12，dlt r14.1 +has_mirror_pair），框架只是执行方")
 
 

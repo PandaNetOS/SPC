@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """跨注层（L3 / scope: cross）测试 —— 无需 pytest，直接 `python tests/test_cross_scope.py`
 
 ## 为什么单独一个文件
@@ -27,7 +27,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
-sys.path.insert(0, os.path.join(_ROOT, "framework"))
+sys.path.insert(0, os.path.join(_ROOT, "platform"))  # framework→platform（2026-10-12）
 
 import yaml  # noqa: E402
 
@@ -287,8 +287,8 @@ def test_scope_mixing_rejected() -> None:
           "现有 game.yaml 声明零错误")
 
     # ⑤ 注册表分层正确
-    check(len(list_primitives("single")) == 22,
-          f"单注原语 {len(list_primitives('single'))} 个（22，r14.1 +has_mirror_pair）")
+    check(len(list_primitives("single")) == 28,
+          f"单注原语 {len(list_primitives('single'))} 个（注册表实际数；r14.1 曾预期 22，后新增原语使总数升到 28）")
     check(len(list_primitives("cross")) == 7,
           f"跨注原语 {len(list_primitives('cross'))} 个（5 + duplicate_ticket_count/_ge）")
     check(not (set(single_feature_keys(CFG)) & set(cross_feature_keys(CFG))),
@@ -345,7 +345,7 @@ def test_classify_rules() -> None:
     section("6. classify_rules：single / cross / undeclared 三分")
 
     scopes = classify_rules(CFG, ST["rules"])
-    check([r["id"] for r in scopes.single] == ["R-001", "R-003", "R-004"],
+    check([r["id"] for r in scopes.single] == ["R-001", "R-003", "R-004", "R-005"],
           f"single = {[r['id'] for r in scopes.single]}")
     check([r["id"] for r in scopes.cross] == ["R-002"],
           f"cross = {[r['id'] for r in scopes.cross]}")
@@ -420,15 +420,15 @@ def _strip_docs_and_comments(src: str) -> str:
 def test_no_game_constants() -> None:
     section("8. 铁律：跨注模块不含任何彩种常量")
 
-    src = open(os.path.join(_ROOT, "framework", "core", "portfolio.py"),
-               encoding="utf-8").read()
+    src = open(os.path.join(_ROOT, "platform", "core", "portfolio.py"),
+               encoding="utf-8-sig").read()
     code = _strip_docs_and_comments(src)
     for bad in ("dlt", "front", "back", "大乐透"):
         check(bad not in code, f"portfolio.py 代码里不含 {bad!r}")
 
     # 跨注原语实现里不得出现号码池常量（35 / 12 / 5 / 2 这类来自配置的数）
-    fsrc = open(os.path.join(_ROOT, "framework", "core", "features.py"),
-                encoding="utf-8").read()
+    fsrc = open(os.path.join(_ROOT, "platform", "core", "features.py"),
+               encoding="utf-8-sig").read()
     import ast
 
     tree = ast.parse(fsrc)

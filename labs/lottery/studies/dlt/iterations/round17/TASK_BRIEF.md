@@ -1,5 +1,8 @@
 ﻿# TASK_BRIEF.md — round17 · 全形态撞号比穷举筛选
 
+> **版本**：`1.0` ｜ 轮次 `r17` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 | 项 | 内容 |
 |---|---|
 | **轮次** | `round17` |

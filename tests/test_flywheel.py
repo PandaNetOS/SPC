@@ -18,12 +18,18 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402
 from spc.flywheel import collect_metrics, render_health, calibration_text  # noqa: E402
 from spc.depmap import render_dependency_map  # noqa: E402
 
+
+def _facts_path() -> str:
+    """FACTS.jsonl 路径一律走 paths（迁移后记忆已下沉到研究组）。"""
+    return paths.facts_path(paths.first_study(root=_ROOT) or "dlt", root=_ROOT)
+
 # framework 非包（无 __init__.py），用 importlib 直接加载 ingate 模块
 _spec = importlib.util.spec_from_file_location(
-    "ingate", os.path.join(_ROOT, "framework", "tools", "ingate.py"))
+    "ingate", os.path.join(_ROOT, "platform", "tools", "ingate.py"))
 _ingate = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_ingate)  # type: ignore[union-attr]
 _semantic_conflict = _ingate._semantic_conflict  # noqa: E402
@@ -50,8 +56,7 @@ def test_flywheel_metrics() -> None:
     m = collect_metrics(_ROOT)
     # ★ r16：总数字写死 47 会在 F-0048 入库后立刻误报 —— 改由 FACTS.jsonl 实读推导，
     #   只保留「被推翻 3 条」这个不随新增变化的判据。
-    with open(os.path.join(_ROOT, "memory", "facts", "FACTS.jsonl"),
-              encoding="utf-8") as f:
+    with open(_facts_path(), encoding="utf-8") as f:
         n = sum(1 for ln in f if ln.strip())
     alive = n - m["dead"]
     check(m["total"] == n, f"K: FACTS 台账统计 {n} 条结论（与 FACTS.jsonl 实读一致）")

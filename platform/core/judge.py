@@ -135,18 +135,23 @@ def parse_predicate(text: str) -> ParsedPredicate:
             f"predicate 不支持括号（DSL 故意做弱以保静态可验证性）：{text!r}"
         )
 
-    has_and = re.search(r"\s+and\s+", s) is not None
-    has_or = re.search(r"\s+or\s+", s) is not None
+    # ★ 连接词大小写不敏感（AND/And/and 等价）——2026-10-13 修：
+    #   R-005 的 predicate 用了大写 OR，解析器只认小写，于是整串被当成
+    #   单个 term → 匹配失败 → **策略发布了却执行不了**（r03「契约缺一层」
+    #   事故的同型复发：发布物与消费者对 DSL 的理解不一致）。
+    #   归一化到小写后再判定，混用检测同样大小写不敏感。
+    has_and = re.search(r"\s+and\s+", s, re.IGNORECASE) is not None
+    has_or = re.search(r"\s+or\s+", s, re.IGNORECASE) is not None
     if has_and and has_or:
         raise PredicateError(
             f"predicate 不允许混用 and / or（无法静态判定优先级）：{text!r}"
         )
 
     if has_and:
-        parts = re.split(r"\s+and\s+", s)
+        parts = re.split(r"\s+and\s+", s, flags=re.IGNORECASE)
         connector = "and"
     elif has_or:
-        parts = re.split(r"\s+or\s+", s)
+        parts = re.split(r"\s+or\s+", s, flags=re.IGNORECASE)
         connector = "or"
     else:
         parts = [s]

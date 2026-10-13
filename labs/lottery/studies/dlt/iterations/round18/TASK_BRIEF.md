@@ -1,5 +1,8 @@
 ﻿# TASK_BRIEF —— round18 任务书
 
+> **版本**：`1.0` ｜ 轮次 `r18` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
+
 > 本任务书由 `tools/render_task_brief.py` 从 TODO 待办池按价值评分生成
 > （派生物草稿，人工确认后可改）。本轮必做 **1** 个（`--top 3` 可调）。
 > 评分依据：TODO 条目 value / P 级 / ★首推。

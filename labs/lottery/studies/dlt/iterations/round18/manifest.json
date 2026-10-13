@@ -9,13 +9,20 @@
   "supersedes_round": null,
   "inputs": {
     "data_version": "dlt_full_2933",
-    "upstream_fact_ids": ["F-0049", "F-0038", "F-0041", "F-0048"],
+    "upstream_fact_ids": [
+      "F-0049",
+      "F-0038",
+      "F-0041",
+      "F-0048"
+    ],
     "previous_handoff": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md",
     "task_brief": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md"
   },
   "outputs": {
     "new_fact_ids": [],
-    "updated_fact_ids": ["F-0049"],
+    "updated_fact_ids": [
+      "F-0049"
+    ],
     "refuted_fact_ids": [],
     "strategy_updated": true,
     "strategy_landed": [
@@ -38,15 +45,45 @@
     }
   },
   "deliverables": [
-    {"path": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md", "kind": "task_brief"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/FINDINGS.md", "kind": "findings"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/HANDOFF.md", "kind": "handoff"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/manifest.json", "kind": "manifest"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py", "kind": "script"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json", "kind": "data"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py", "kind": "script"},
-    {"path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json", "kind": "data"},
-    {"path": "labs/lottery/studies/dlt/strategy/strategy.json", "kind": "config"},
-    {"path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl", "kind": "data"}
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md",
+      "kind": "task_brief"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/FINDINGS.md",
+      "kind": "findings"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/HANDOFF.md",
+      "kind": "handoff"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/manifest.json",
+      "kind": "manifest"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json",
+      "kind": "data"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py",
+      "kind": "script"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json",
+      "kind": "data"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/strategy/strategy.json",
+      "kind": "report"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/memory/facts/FACTS.jsonl",
+      "kind": "data"
+    }
   ]
 }

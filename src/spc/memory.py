@@ -47,7 +47,7 @@ __all__ = [
 class Memory(_Memory):
     """绑定到本仓库的 Memory。
 
-    repo_root 省略时自动定位（向上查找含 spec/ 与 games/ 的目录）。
+    repo_root 省略时自动定位（向上查找含 spec/ 与 labs/ 的目录）。
     """
 
     def __init__(self, repo_root: str | None = None):

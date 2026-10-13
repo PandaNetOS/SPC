@@ -19,6 +19,8 @@ from __future__ import annotations
 import json
 import os
 
+from . import paths
+
 _ROOT_HINT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
@@ -34,14 +36,8 @@ def _load_json(root: str, rel: str) -> dict | list | None:
 
 
 def _first_game(root: str) -> str | None:
-    """发现第一个含 game.yaml 的彩种目录（库代码不硬编码彩种名）。"""
-    gd = os.path.join(root, "games")
-    if not os.path.isdir(gd):
-        return None
-    for name in sorted(os.listdir(gd)):
-        if os.path.isfile(os.path.join(gd, name, "game.yaml")):
-            return name
-    return None
+    """发现第一个含 game.yaml 的研究组（库代码不硬编码彩种名）。"""
+    return paths.first_study(root=root)
 
 
 def build_dependencies(root: str | None = None,
@@ -50,7 +46,8 @@ def build_dependencies(root: str | None = None,
     root = root or _ROOT_HINT
     game = game or _first_game(root)
     deps: list[tuple[str, str, str]] = []
-    gprefix = f"games/{game}/" if game else ""
+    # 研究组目录相对仓库根的路径（新旧布局由 paths 探测，勿在此拼 "games/"）
+    gprefix = paths.rel_study(game, root) + "/" if game else ""
 
     # 1. 策略 → 结论
     st = _load_json(root, f"{gprefix}strategy/strategy.json")
@@ -69,7 +66,8 @@ def build_dependencies(root: str | None = None,
                          "FACTS.jsonl（规范视图摘要）"))
 
     # 2. 结论 → 证据文件（source / script 锚定链）
-    fp = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    fp = paths.facts_path(game, root=root) if game else os.path.join(
+        root, "memory", "facts", "FACTS.jsonl")
     if os.path.exists(fp):
         with open(fp, encoding="utf-8") as f:
             for line in f:
@@ -92,7 +90,7 @@ def build_dependencies(root: str | None = None,
                     deps.append((f"FACTS:{fid}", "sha256锚→", src or "?"))
 
     # 3. 彩种特征 → 原语（game.yaml features → platform/core/features.py）
-    gy = os.path.join(root, gprefix, "game.yaml")
+    gy = paths.game_yaml_path(game, root=root) if game else ""
     if os.path.exists(gy):
         try:
             import yaml  # type: ignore

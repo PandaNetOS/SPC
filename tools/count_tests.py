@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """测试通过计数的**自举**来源。
 
 ## 为什么需要它
@@ -45,6 +45,7 @@ TEST_FILES = [
     "tests/test_round_stall.py",
     "tests/test_round_counter_sync.py",
     "tests/test_derive_tasks.py",
+    "tests/test_paths.py",
 ]
 
 # 覆盖说明（tests/README.md 表格的权威来源；--inject 时用此重建表格）
@@ -64,6 +65,7 @@ TEST_COVERAGE = {
     "tests/test_round_stall.py": "★ 轮次停滞（r14.2）：同源自洽陷阱必须被识破 / 已对齐与未声明活文档不误伤 / bump_iteration 能修复",
     "tests/test_round_counter_sync.py": "★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次号只认已收尾轮 / 双源不一致必报 / 已落地任务未勾选必报且提及不误报",
     "tests/test_derive_tasks.py": "★ 任务源派生（r16 ★源自救）：open Q 必派生 / 已答不派生；H unverified+partial 派生、refuted 不派生；resource 标记保留；幂等（跑两次不重复）；dry-run 不落盘；派生条目可被任务书解析",
+    "tests/test_paths.py": "★ 统一路径层（架构迁移根治）：显式 root 必须被尊重（不向上探测到真仓库）/ 新旧布局双场景 / 彩种无关（换 study id 不改代码）/ 消费方（validate·flywheel·derive_tasks）在临时仓库不断链",
 }
 
 _LINE_RE = re.compile(r"通过\s+(\d+)\s+失败\s+(\d+)")

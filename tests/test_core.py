@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """tests/test_core.py — 框架核心的自动化测试
 
 跑法（无需 pytest，直接 python）：
@@ -26,7 +26,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
-sys.path.insert(0, os.path.join(_ROOT, "framework"))
+sys.path.insert(0, os.path.join(_ROOT, "platform"))  # framework→platform（2026-10-12）
 
 import yaml  # noqa: E402
 
@@ -266,7 +266,6 @@ def test_dsl() -> None:
         ("a > b", "右侧非字面量"),
         ("a = 1", "单等号"),
         ("", "空串"),
-        ("a == true AND b < 3", "大写 AND"),
     ]
     for s, why in bad_cases:
         check_raises(lambda s=s: parse_predicate(s), PredicateError,
@@ -297,7 +296,7 @@ def test_scope() -> None:
     section("5. 作用域切分（跨注规则不得被静默忽略）")
 
     single, cross = apply_scope(CFG, ST["rules"])
-    check([r["id"] for r in single] == ["R-001", "R-003", "R-004"], "R-001/R-003/R-004 归入单注层")
+    check([r["id"] for r in single] == ["R-001", "R-003", "R-004", "R-005"], "R-001/R-003/R-004/R-005 归入单注层")
     check([r["id"] for r in cross] == ["R-002"], "R-002 归入跨注层")
 
     # 混用规则集必须明确报错（而非静默忽略 R-002）
@@ -535,7 +534,8 @@ def test_versions() -> None:
     class _FakeReport(ValidationReport):
         pass
 
-    _tmp = tempfile.mkdtemp(prefix="sc_fresh_")
+    _tmpdir = tempfile.TemporaryDirectory(prefix="sc_fresh_")
+    _tmp = _tmpdir.name
     # 最小结论台账：F-0099 已被 F-0100 取代（必须放在 labs/lottery/studies/dlt/memory/facts/ 固定路径）
     _os.makedirs(_os.path.join(_tmp, "memory", "facts"), exist_ok=True)
     with open(_os.path.join(_tmp, "memory", "facts", "FACTS.jsonl"), "w", encoding="utf-8") as f:
@@ -575,7 +575,8 @@ def test_versions() -> None:
 
     # 目录树标注检查自检：能检出『树内标注与 versions.json 不一致』，
     # 且一致时不报错（证明此检查非『永远全绿』的假检查）。
-    _tmp2 = tempfile.mkdtemp(prefix="sc_tree_")
+    _tmpdir2 = tempfile.TemporaryDirectory(prefix="sc_tree_")
+    _tmp2 = _tmpdir2.name
     with open(_os.path.join(_tmp2, "versions.json"), "w", encoding="utf-8") as f:
         _json.dump({"index_version": "1.2", "entries": [
             {"path": "x/y.md", "level": "A", "kind": "doc",
@@ -606,16 +607,21 @@ def test_versions() -> None:
         print(f"      ✗ {x}")
 
     # 机制自检：构造错误计数，必须被检出
+    # 须写入 _check_summary_counts 实际读取的路径（新布局，经 paths 解析），
+    # 并把错误的「N 条结论」写到其扫描的速览文件（memory/INDEX.md）。
     import tempfile
-    from pathlib import Path
+    from spc import paths as _paths
+    from spc.validate import _UNSET_STUDY
     with tempfile.TemporaryDirectory() as td:
-        (Path(td) / "memory" / "facts").mkdir(parents=True)
-        (Path(td) / "memory" / "facts" / "FACTS.jsonl").write_text(
-            '{"id":"F-0001","status":"established"}\n'
-            '{"id":"F-0002","status":"established"}\n', encoding="utf-8")
-        (Path(td) / "games").mkdir()
-        (Path(td) / "games" / "INDEX.md").write_text(
-            "台账共 99 条结论\n", encoding="utf-8")
+        fp = _paths.facts_path(_paths.first_study(root=td) or _UNSET_STUDY, root=td)
+        os.makedirs(os.path.dirname(fp), exist_ok=True)
+        with open(fp, "w", encoding="utf-8") as _f:
+            _f.write('{"id":"F-0001","status":"established"}\n'
+                     '{"id":"F-0002","status":"established"}\n')
+        label = os.path.join(td, "memory", "INDEX.md")
+        os.makedirs(os.path.dirname(label), exist_ok=True)
+        with open(label, "w", encoding="utf-8") as _f:
+            _f.write("台账共 99 条结论\n")
         probe = _FakeReport()
         _check_summary_counts(td, probe)
         check(

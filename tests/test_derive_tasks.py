@@ -149,10 +149,37 @@ def main() -> int:
               "dry-run 不写盘")
 
         run(["derive_tasks.py", "--write"])
+        n_after_first = len(re.findall(r"\[derive:",
+                                       open(mod.TODO, encoding="utf-8").read()))
         run(["derive_tasks.py", "--write"])   # 再跑一次：幂等
         todo = open(mod.TODO, encoding="utf-8").read()
         n_derive = len(re.findall(r"\[derive:", todo))
-        check(n_derive == 5, f"--write 跑两次仍只新增 5 条（幂等），实际 {n_derive}")
+        # ★ 不写死条数：夹具里有几个「未入池」的源就会派生几条。
+        #   写死绝对值的判据会在夹具增删一个 open Q/H 时立刻误报
+        #   （r16 同型教训：写死计数必误报）。
+        #   真正的判据是「第二次跑不增长」+「首跑确实写入了东西」。
+        check(n_after_first > 0, f"--write 确实写入了派生条目（{n_after_first} 条）")
+        check(n_derive == n_after_first,
+              f"第二次 --write 不增长（幂等）：{n_after_first} → {n_derive}")
+
+        # ★ 写前护栏：内容骤降必须被拒绝（2026-10-13 实测过一次 251 行 → 5 行
+        #   的静默数据丢失，只能从 git 恢复；派生是**追加**操作，不该变少）
+        print("写前护栏（防静默数据丢失）")
+        guard_tmp = os.path.join(tmp, "guard", "TODO.md")
+        _w(guard_tmp, "\n".join(f"- [ ] **T-{i:03d}** x" for i in range(1, 51)))
+        raised = False
+        try:
+            mod._guard_write(guard_tmp, "- [ ] **T-001** only")
+        except RuntimeError:
+            raised = True
+        check(raised, "内容降到 80% 以下 → 拒绝写入并抛错")
+        check(os.path.isfile(guard_tmp + ".guard.bak"),
+              "拒绝时留下 .guard.bak（数据不丢）")
+        check(len(open(guard_tmp, encoding="utf-8").read().splitlines()) == 50,
+              "原文件未被改动（50 行原样保留）")
+        mod._guard_write(guard_tmp, open(guard_tmp, encoding="utf-8").read()
+                         + "\n- [ ] **T-999** new")
+        check(True, "正常追加不误报（护栏只拦骤降）")
 
     print("与任务书解析器的衔接")
     from spc import __name__  # noqa: F401  确保 src 在 path 上
@@ -164,12 +191,29 @@ def main() -> int:
     rtb._ROOT = _ROOT
     items = rtb._parse_todo(_ROOT)
     derived = [it for it in items if "derive:" in it["line"]]
-    # 注：_parse_todo 只收 - [ ] 未勾选项，已完成的派生条目（如 T-064）会退出此集合，
-    # 因此下界按「当前未勾选派生数」写，不写死绝对值。
-    check(len(derived) >= 3,
-          f"真实仓库里的派生条目能被 _parse_todo 解析（{len(derived)} 条）")
-    check(all(it["resource"] in (None, "external-data", "unverifiable")
-              for it in derived), "派生条目的 resource 取值合法")
+    # 注：TODO 的派生条目一旦被完成勾选，就可能被收轮脚本移出「未完成」集合，
+    # 因此这里**不断言条数**——只断言「只要存在，就必须可解析且 resource 合法」。
+    # 完全没有派生条目时，用一次 dry-run 证明链路仍然通（派生 → 解析）。
+    if derived:
+        check(all(it["resource"] in (None, "external-data", "unverifiable")
+                  for it in derived), "派生条目的 resource 取值合法")
+    else:
+        check(True, "真实仓库当前无未勾选派生条目（已被收轮勾选）—— 不断言条数")
+    # 链路仍然通的证明：在**真实仓库**上跑一次 dry-run，
+    # 候选非空即说明「源文件可读 + 解析器工作」。
+    #   注意必须在 with 块内或重新加载模块 —— 上面的 monkeypatch 已把
+    #   mod.QUESTIONS/HYPOTHESES 指向已删除的 tmp 目录。
+    spec2 = importlib.util.spec_from_file_location(
+        "derive_tasks_real", os.path.join(_ROOT, "tools", "derive_tasks.py"))
+    mod2 = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(mod2)
+    sys.stdout = _ORIG_STDOUT
+    cands = mod2._q_candidates() + mod2._h_candidates()
+    check(len(cands) > 0,
+          f"真实仓库派生源仍能产出候选（{len(cands)} 条）—— 链路未断")
+    if cands:
+        # 每个候选都必须带 [derive:src] 形式的来源标记（幂等的依据）
+        check(all(c.get("src") for c in cands), "每个候选都带来源标记 src（幂等依据）")
 
     print()
     print(f"通过 {_PASS}  失败 {_FAIL}")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """spc.game — 彩种配置装载与号码空间计算
 
-**本模块不含任何具体彩种参数。** 一切从 games/<id>/game.yaml 读取。
+**本模块不含任何具体彩种参数。** 一切从 labs/<lab>/studies/<id>/game.yaml 读取。
 
 核心职责：
   1. `load_game_config()` —— 读并做最小结构校验
@@ -13,6 +13,8 @@ from __future__ import annotations
 import os
 from math import comb
 from typing import Any
+
+from . import paths
 
 __all__ = [
     "GameConfigError",
@@ -38,7 +40,7 @@ def load_game_config(game: str, repo_root: str | None = None) -> dict[str, Any]:
     它只做"能不能用"的结构检查，给出更易读的错误信息。
     """
     root = repo_root or _ROOT
-    path = os.path.join(root, "games", game, "game.yaml")
+    path = paths.game_yaml_path(game, root=root)
     if not os.path.exists(path):
         raise GameConfigError(
             f"彩种配置不存在: {path}\n"
@@ -114,18 +116,11 @@ def load_game_config(game: str, repo_root: str | None = None) -> dict[str, Any]:
 
 
 def list_games(repo_root: str | None = None) -> list[str]:
-    """列出 games/ 下含 game.yaml 的彩种 id（排除 _template 与隐藏目录）。"""
-    root = repo_root or _ROOT
-    d = os.path.join(root, "games")
-    if not os.path.isdir(d):
-        return []
-    out = []
-    for name in sorted(os.listdir(d)):
-        if name.startswith("_") or name.startswith("."):
-            continue
-        if os.path.isfile(os.path.join(d, name, "game.yaml")):
-            out.append(name)
-    return out
+    """列出研究组中含 game.yaml 的彩种 id（排除 _template 与隐藏目录）。
+
+    实现委托 `spc.paths.list_studies`（新旧布局兼容，彩种无关）。
+    """
+    return paths.list_studies(root=repo_root)
 
 
 # ---------------------------------------------------------------- 号码空间

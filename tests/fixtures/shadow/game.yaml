@@ -1,153 +1,135 @@
-﻿# game.yaml — 影子彩种（shadow）
-#
-# ⚠️ 这不是一个真实彩种，而是 **框架通用性的回归测试夹具**。
-#    它存在的唯一目的：证明「接入第二个彩种不需要改 platform/ 或 src/ 一行代码」。
-#
-#    刻意做成与 dlt **处处不同**，否则测不出硬编码：
-#      · 区名不同：red / blue（不是 front / back）
-#      · 号码池不同：9 选 3 + 5 选 2（不是 35 选 5 + 12 选 2）
-#      · min_value 不同：red 区从 **0** 开始（不是 1）—— 验证上下界真的从配置读
-#      · 只有一个 epoch（不追求真实规则史）
-#
-#    装载方式见 tests/test_shadow_game.py：本目录会被复制到一个临时仓库根的
-#    games/shadow/ 下，再走真实的 load_game_config() / validate_game() 路径。
-#
-# 受 spec/game_config.schema.json 约束（与 dlt 用的是同一个 schema）。
-
-id: shadow
+﻿id: shadow
 name: 影子彩种（框架通用性测试夹具）
-config_version: "2.1"
+config_version: '2.1'
 owner: PandaNetOS
-
 machine:
   zones:
-    - key: red
-      label: 红区
-      pool_size: 9
-      pick: 3
-      ordered: false
-      min_value: 0          # ★ 故意从 0 起 —— 硬编码 1 会在这里暴露
-    - key: blue
-      label: 蓝区
-      pool_size: 5
-      pick: 2
-      ordered: false
-      min_value: 1
-  draw_days: [2, 5]
-  draw_time: "20:30"
-
-# ---------------------------------------------------------------- 特征
-# 与 dlt 的 features[] **没有任何一个 key 相同** —— 特征名是彩种声明的，
-# 框架不得认识任何一个具体特征名。
+  - key: red
+    label: 红区
+    pool_size: 9
+    pick: 3
+    ordered: false
+    min_value: 0
+  - key: blue
+    label: 蓝区
+    pool_size: 5
+    pick: 2
+    ordered: false
+    min_value: 1
+  draw_days:
+  - 2
+  - 5
+  draw_time: '20:30'
 features:
-  - key: red_sum
-    label: 红区和值
-    type: integer
-    primitive: sum
-    args: {zone: red}
-    formula: "sum(red)"
-    range: [3, 21]
-
-  - key: red_span
-    label: 红区跨度 = max(red) - min(red)
-    type: integer
-    primitive: span
-    args: {zone: red}
-    formula: "max(red) - min(red)"
-    range: [2, 8]
-
-  - key: red_odd
-    label: 红区奇数个数
-    type: integer
-    primitive: count_odd
-    args: {zone: red}
-    formula: "count(red, odd)"
-    range: [0, 3]
-
-  - key: has_pair
-    label: 红区是否含相邻号对
-    type: boolean
-    primitive: adjacent_pair_count_ge
-    args: {zone: red, threshold: 1}
-    formula: "adjacent_pair_count(red) >= 1"
-    note: "影子彩种的『单注层判定量』，对应 dlt 的 has_run_ge2（阈值取 1 而非 2，因为红区只选 3 个号）。"
-
-  - key: blue_sum
-    label: 蓝区和值
-    type: integer
-    primitive: sum
-    args: {zone: blue}
-    formula: "sum(blue)"
-    range: [3, 9]
-
-# 跨注特征（scope: cross）—— 与 dlt 同样走 portfolio.evaluate_cross()
-  - key: red_dup_struct
-    label: 组内红区结构同构的注数
-    type: integer
-    scope: cross
-    primitive: duplicate_structure_count
-    args: {zone: red}
-    formula: "count(t in tickets: gap_vector(red_t) 在组内出现 >= 2 次)"
-
-  - key: has_dup_struct
-    label: 组内是否存在红区结构同构的注
-    type: boolean
-    scope: cross
-    primitive: duplicate_structure_count_ge
-    args: {zone: red, threshold: 1}
-    formula: "red_dup_struct >= 1"
-    note: "★ R-102 的判定量。跨注层，单注算不出来。"
-
-# ---------------------------------------------------------------- 奖金模型
-# 夹具只保留红线所必需的最小结构：一个 epoch，sum_affects_numbers: false。
+- key: red_sum
+  label: 红区和值
+  type: integer
+  primitive: sum
+  args:
+    zone: red
+  formula: sum(red)
+  range:
+  - 3
+  - 21
+- key: red_span
+  label: 红区跨度 = max(red) - min(red)
+  type: integer
+  primitive: span
+  args:
+    zone: red
+  formula: max(red) - min(red)
+  range:
+  - 2
+  - 8
+- key: red_odd
+  label: 红区奇数个数
+  type: integer
+  primitive: count_odd
+  args:
+    zone: red
+  formula: count(red, odd)
+  range:
+  - 0
+  - 3
+- key: has_pair
+  label: 红区是否含相邻号对
+  type: boolean
+  primitive: adjacent_pair_count_ge
+  args:
+    zone: red
+    threshold: 1
+  formula: adjacent_pair_count(red) >= 1
+  note: 影子彩种的『单注层判定量』，对应 dlt 的 has_run_ge2（阈值取 1 而非 2，因为红区只选 3 个号）。
+- key: blue_sum
+  label: 蓝区和值
+  type: integer
+  primitive: sum
+  args:
+    zone: blue
+  formula: sum(blue)
+  range:
+  - 3
+  - 9
+- key: red_dup_struct
+  label: 组内红区结构同构的注数
+  type: integer
+  scope: cross
+  primitive: duplicate_structure_count
+  args:
+    zone: red
+  formula: 'count(t in tickets: gap_vector(red_t) 在组内出现 >= 2 次)'
+- key: has_dup_struct
+  label: 组内是否存在红区结构同构的注
+  type: boolean
+  scope: cross
+  primitive: duplicate_structure_count_ge
+  args:
+    zone: red
+    threshold: 1
+  formula: red_dup_struct >= 1
+  note: ★ R-102 的判定量。跨注层，单注算不出来。
 prize_model:
   current_epoch: S1
-  return_rate: 0.50
+  return_rate: 0.5
   epochs:
-    - id: S1
-      effective_from: "2026-01-01"
-      effective_to: null
-      prize_levels: 3
-      sum_affects_numbers: false
-      notes: 影子彩种只有一个 epoch（测试夹具，不追求真实规则史）
-
-# ---------------------------------------------------------------- 数据
-# 3 期虚构数据，仅供 validate_game() 检查路径与 SHA256 是否真的在工作。
-# ⚠️ sha256 在测试运行时按文件实际内容重写（见 test_shadow_game.py），
-#    这里填全 0 是为了避免换行符差异导致夹具自带哈希失效。
+  - id: S1
+    effective_from: '2026-01-01'
+    effective_to: null
+    prize_levels: 3
+    sum_affects_numbers: false
+    notes: 影子彩种只有一个 epoch（测试夹具，不追求真实规则史）
 data:
   raw:
-    path: games/shadow/data/raw/shadow.csv
+    path: labs/lottery/studies/shadow/data/raw/shadow.csv
     format: csv
     encoding: utf-8
     n_draws: 3
-    first_draw_num: "001"
-    last_draw_num: "003"
-    date_range: ["2026-01-01", "2026-01-08"]
-    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    first_draw_num: '001'
+    last_draw_num: '003'
+    date_range:
+    - '2026-01-01'
+    - '2026-01-08'
+    sha256: '0000000000000000000000000000000000000000000000000000000000000000'
   derived:
-    path: games/shadow/data/derived
+    path: labs/lottery/studies/shadow/data/derived
   columns:
     draw_num:
       type: string
-      note: "3 位期号，带前导零"
+      note: 3 位期号，带前导零
     red_1..red_3:
       type: integer
-      note: "严格升序，0-8（★ 下界是 0 不是 1）"
+      note: 严格升序，0-8（★ 下界是 0 不是 1）
     blue_1..blue_2:
       type: integer
-      note: "严格升序，1-5"
+      note: 严格升序，1-5
   caveats:
-    - "虚构数据：本文件只用于验证框架通用性，不得用于任何分析结论。"
-
-# ---------------------------------------------------------------- 轮次
+  - 虚构数据：本文件只用于验证框架通用性，不得用于任何分析结论。
 iterations:
-  - round: round01
-    status: planned
-    title: 影子彩种（仅用于框架通用性回归测试）
-    date: null
-
+- round: round01
+  status: planned
+  title: 影子彩种（仅用于框架通用性回归测试）
+  date: null
 strategy_output:
   schema: spec/strategy.schema.json
-  path: games/shadow/strategy/strategy.json
-  version: "1.1"
+  path: labs/lottery/studies/shadow/strategy/strategy.json
+  version: '1.1'

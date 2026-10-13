@@ -1,6 +1,7 @@
-# CAUSAL_INFERENCE.md — 因果推断方法模板
+﻿# CAUSAL_INFERENCE.md — 因果推断方法模板
 
-> **版本**：`1.0` ｜ 轮次 `r19` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r17` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是"从相关到因果"的方法工具箱。**
 > 观察性数据只能给相关，要下因果结论必须用准实验设计。

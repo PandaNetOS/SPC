@@ -1,7 +1,7 @@
-﻿# DEPENDENCY_MAP —— 跨文件依赖图
+# DEPENDENCY_MAP —— 跨文件依赖图
 
 
-> **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r19` ｜ 更新 2026-10-13 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_dependency_map.py` 从 strategy.json /
@@ -249,8 +249,48 @@
 - sha256锚→ `labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py`
 - source→ `labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py`
 
+## FACTS:F-0049
+- script→ `labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py + labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py + labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py`
+- sha256锚→ `labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py`
+- source→ `labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py`
+
 ## game.yaml:?
 - primitive→ `features.py:sum`
+- primitive→ `features.py:count_odd`
+- primitive→ `features.py:count_ge`
+- primitive→ `features.py:span`
+- primitive→ `features.py:adjacent_pair_count`
+- primitive→ `features.py:has_consecutive`
+- primitive→ `features.py:adjacent_pair_count_ge`
+- primitive→ `features.py:max`
+- primitive→ `features.py:all_le`
+- primitive→ `features.py:has_mirror_pair`
+- primitive→ `features.py:min`
+- primitive→ `features.py:count_even`
+- primitive→ `features.py:count_le`
+- primitive→ `features.py:count_in_range`
+- primitive→ `features.py:all_ge`
+- primitive→ `features.py:any_le`
+- primitive→ `features.py:any_ge`
+- primitive→ `features.py:max_gap`
+- primitive→ `features.py:min_gap`
+- primitive→ `features.py:max_run_length`
+- primitive→ `features.py:count_same_tail`
+- primitive→ `features.py:has_tail_cluster`
+- primitive→ `features.py:arithmetic_triplet_count`
+- primitive→ `features.py:count_in_set`
+- primitive→ `features.py:center_deviation`
+- primitive→ `features.py:duplicate_structure_count`
+- primitive→ `features.py:duplicate_structure_count_ge`
+- primitive→ `features.py:distinct_structure_count`
+- primitive→ `features.py:duplicate_ticket_count`
+- primitive→ `features.py:duplicate_ticket_count_ge`
 
 ## game.yaml:prize_model
 - epoch→ `epochs:E0`
+- epoch→ `epochs:E1`
+- epoch→ `epochs:E2`
+- epoch→ `epochs:E3`
+- epoch→ `epochs:E4`
+- epoch→ `epochs:E5`
+- epoch→ `epochs:E6`

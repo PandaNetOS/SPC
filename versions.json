@@ -53,8 +53,8 @@
       "level": "B",
       "kind": "entry_point",
       "content_version": "1.5",
-      "iteration": "r16",
-      "updated_at": "2026-10-12",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
       "status": "active",
       "note": "FACTS 计数 38→43",
       "follows_current": true
@@ -64,9 +64,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "机器地图（派生物，render_ai_map 生成）",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "generated",
       "follows_current": true
     },
@@ -75,9 +75,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "跨文件依赖图（派生物，render_dependency_map 生成）",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "generated",
       "follows_current": true
     },
@@ -86,9 +86,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.0",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "飞轮健康度仪表盘（派生物，render_flywheel_health 生成）",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "generated",
       "follows_current": true
     },
@@ -97,10 +97,10 @@
       "level": "B",
       "kind": "doc",
       "content_version": "1.16",
-      "iteration": "r16",
-      "updated_at": "2026-10-12",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
       "status": "active",
-      "note": "← 速览区 48 条结论 / open 1 / r12 彩种行",
+      "note": "← 速览区 49 条结论 / open 1 / r12 彩种行",
       "follows_current": true
     },
     {
@@ -108,8 +108,8 @@
       "level": "B",
       "kind": "version_index_doc",
       "content_version": "1.0",
-      "iteration": "r16",
-      "updated_at": "2026-10-12",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
       "status": "active",
       "note": "版本索引（人读），权威源是 versions.json",
       "follows_current": true
@@ -580,7 +580,7 @@
       "level": "C",
       "kind": "game_config",
       "version_ref": "config_version",
-      "ref_version": "2.2",
+      "ref_version": "2.3",
       "note": "r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2",
       "status": "active",
       "iteration": "r14",
@@ -2135,7 +2135,7 @@
       "content_version": "2.0",
       "iteration": "r19",
       "note": "r18: R-005 修正（移除 back_all_even、置换检验 p=0.22）",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "active",
       "consumes": [
         "F-0001",
@@ -2204,7 +2204,7 @@
         "F-0024",
         "F-0025"
       ],
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "follows_current": true
     },
     {
@@ -2240,9 +2240,9 @@
       "level": "A",
       "kind": "facts",
       "content_version": "1.5",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "active",
       "follows_current": true
     },
@@ -2439,9 +2439,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "1.7",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "r12: Q-008 → answered（open 3→2：Q-006/Q-016）",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "active",
       "follows_current": true
     },
@@ -2450,9 +2450,9 @@
       "level": "A",
       "kind": "doc",
       "content_version": "2.2",
-      "iteration": "r16",
+      "iteration": "r19",
       "note": "r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08 记 done 但无产出记录、Q-006 仍 open），勾选状态未改待裁定",
-      "updated_at": "2026-10-12",
+      "updated_at": "2026-10-13",
       "status": "active",
       "follows_current": true
     },
@@ -2949,10 +2949,227 @@
       "level": "B",
       "kind": "version_index",
       "content_version": "1.0",
-      "iteration": "r16",
-      "updated_at": "2026-10-12",
+      "iteration": "r19",
+      "updated_at": "2026-10-13",
       "status": "generated",
       "follows_current": true
+    },
+    {
+      "path": "src/spc/paths.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "platform/PLUGIN_GUIDE.md",
+      "level": "B",
+      "kind": "doc",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "platform/core/stats.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "platform/methodology/CAUSAL_INFERENCE.md",
+      "level": "B",
+      "kind": "doc",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "platform/methodology/SIMULATION_FRAMEWORK.md",
+      "level": "B",
+      "kind": "doc",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "tools/cross_study_meta.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "tools/data_version.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "tools/new_study.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "tools/report_generator.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "tools/task_scheduler.py",
+      "level": "B",
+      "kind": "code",
+      "status": "active"
+    },
+    {
+      "path": "tools/finalize_round.ps1",
+      "level": "B",
+      "kind": "script",
+      "status": "active"
+    },
+    {
+      "path": "spec/study_config.schema.json",
+      "level": "C",
+      "kind": "schema",
+      "status": "active",
+      "ref_version": "1.0"
+    },
+    {
+      "path": "tests/fixtures/shadow/data/raw/shadow.csv",
+      "level": "D",
+      "kind": "test_fixture",
+      "status": "active"
+    },
+    {
+      "path": "tests/fixtures/shadow/strategy/strategy.json",
+      "level": "D",
+      "kind": "test_fixture",
+      "status": "active"
+    },
+    {
+      "path": "docs/SOP_OVERVIEW.md",
+      "level": "B",
+      "kind": "doc",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "docs/sop_flowchart.html",
+      "level": "D",
+      "kind": "doc",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/FINDINGS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/HANDOFF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r17",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json",
+      "level": "D",
+      "kind": "analysis_output",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r18",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/FINDINGS.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r18",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/HANDOFF.md",
+      "level": "A",
+      "kind": "iteration_artifact",
+      "status": "active",
+      "content_version": "1.0",
+      "iteration": "r18",
+      "updated_at": "2026-10-12"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/manifest.json",
+      "level": "C",
+      "kind": "iteration_manifest",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json",
+      "level": "D",
+      "kind": "analysis_output",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json",
+      "level": "D",
+      "kind": "analysis_output",
+      "status": "active"
+    },
+    {
+      "path": "labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py",
+      "level": "D",
+      "kind": "analysis_script",
+      "status": "active"
+    },
+    {
+      "path": "tests/test_paths.py",
+      "level": "B",
+      "kind": "test",
+      "status": "active"
     }
   ],
   "history": [

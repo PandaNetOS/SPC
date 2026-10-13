@@ -1,4 +1,7 @@
-# PLUGIN_GUIDE.md — 插件开发指南
+﻿# PLUGIN_GUIDE.md — 插件开发指南
+
+> **版本**：`1.0` ｜ 轮次 `r17` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > 新实验室类型只需实现以下接口，就能挂到底座平台上。
 

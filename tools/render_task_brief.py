@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """tools/render_task_brief.py — 下轮任务书生成器（B+G 升级）。
 
 从 labs/lottery/studies/dlt/memory/workbench/TODO.md 待办池按价值评分排序，生成候选 TOP-N 与
@@ -33,6 +33,8 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402 路径单一权威（勿在调用点拼 games/dlt/...）
+
 _BASE_BY_PRIORITY = {"P0": 100, "P1": 80, "P2": 60, "P3": 40, "P4": 20}
 _PRIORITY_RE = re.compile(r"^##\s*(P[0-4])")
 _ITEM_RE = re.compile(r"^-\s*\[\s\]\s*\*\*(T-\d{3})\*\*\s*(.*?)(?:\s*★\s*(.*))?$")
@@ -41,7 +43,7 @@ _DEFAULT_TOP = 3
 
 
 def _parse_todo(root: str) -> list[dict]:
-    p = os.path.join(root, "memory", "workbench", "TODO.md")
+    p = os.path.join(paths.workbench_dir("dlt", root=root), "TODO.md")
     if not os.path.exists(p):
         return []
     items: list[dict] = []
@@ -82,7 +84,7 @@ def _next_round(root: str) -> int:
     判据必须是**已收尾**（有 manifest），不能是**目录存在**。
     """
     best = 0
-    d = os.path.join(root, "games", "dlt", "iterations")
+    d = paths.iterations_dir("dlt", root=root)
     if os.path.isdir(d):
         for name in os.listdir(d):
             m = re.match(r"^round(\d{2})$", name)
@@ -218,14 +220,17 @@ def main() -> int:
         return 0
 
     brief = _render_brief(_ROOT, items, rnd, top_n)
-    out = os.path.join(_ROOT, "games", "dlt", "iterations", f"round{rnd:02d}", "TASK_BRIEF.md")
+    out = os.path.join(paths.iteration_dir("dlt", rnd, root=_ROOT), "TASK_BRIEF.md")
     # ★ r15 根治（A1）：makedirs 曾在本函数无条件执行（早于 --write 判断），
     # 于是 dry-run 也会建出 roundNN 空目录，进而经 _next_round 把轮号推高。
     # 派生物的产出目录只能在**真的要写**时创建。
     if "--write" in sys.argv:
         os.makedirs(os.path.dirname(out), exist_ok=True)
         open(out, "w", encoding="utf-8").write(brief)
-        print(f"✓ 已写 {os.path.relpath(out, _ROOT)}（必做 {top_n} 条，可执行优先）")
+        # 不用 os.path.relpath：跨盘（tmp 在 C:、仓库在 D:）会抛 ValueError
+        rel = os.path.join(paths.rel_study("dlt", root=_ROOT), "iterations",
+                            f"round{rnd:02d}", "TASK_BRIEF.md")
+        print(f"✓ 已写 {rel}（必做 {top_n} 条，可执行优先）")
         return 0
     print(brief)
     print(f"（dry-run，未写；加 --write 写入 round{rnd:02d}/TASK_BRIEF.md）")

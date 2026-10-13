@@ -6,9 +6,10 @@
   2. 外部工具（选号器 / 前端）—— 用 strategy 模块消费 strategy.json
 
 设计要点：
-  - 框架/彩种分离：本包不含任何具体彩种参数，一律从 games/<id>/game.yaml 读
+  - 框架/彩种分离：本包不含任何具体彩种参数，一律从 labs/<lab>/studies/<id>/game.yaml 读
   - 契约优先：输入输出都受 spec/*.schema.json 约束
   - 红线强制：affects_win_probability 恒为 False
+  - 路径单一权威：所有路径一律走 spc.paths，禁止在调用点拼装路径片段
 
 快速开始：
     from spc.api import SmartPick
@@ -34,19 +35,16 @@ import os
 
 
 def repo_root(start: str | None = None) -> str:
-    """向上查找仓库根（含 spec/ 与 games/ 的那一级）。"""
-    cur = os.path.abspath(start or os.path.dirname(__file__))
-    for _ in range(8):
-        if os.path.isdir(os.path.join(cur, "spec")) and os.path.isdir(
-            os.path.join(cur, "games")
-        ):
-            return cur
-        parent = os.path.dirname(cur)
-        if parent == cur:
-            break
-        cur = parent
-    # 兜底：src/spc/ → 仓库根
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    """向上查找仓库根（含 `spec/` 与 `labs/` 的那一级）。
+
+    实现委托给 `spc.paths.repo_root`（路径的单一权威来源）——
+    此处保留同名函数只为向后兼容既有调用点，**新代码请直接用 spc.paths**。
+    迁移后 `games/` 已删除，判据改为 `labs/`；旧 checkout 仍可通过
+    paths 的兼容探测回落。
+    """
+    from .paths import repo_root as _repo_root
+
+    return _repo_root(start)
 
 
 # 延迟导入，避免在无第三方依赖时报错

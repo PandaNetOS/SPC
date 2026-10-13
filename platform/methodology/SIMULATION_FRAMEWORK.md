@@ -1,6 +1,7 @@
 ﻿# SIMULATION_platform.md — 策略效果模拟验证框架
 
-> **版本**：`1.0` ｜ 轮次 `r19` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r17` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件定义"策略落地后，怎么验证预期效果是不是真的"。**
 

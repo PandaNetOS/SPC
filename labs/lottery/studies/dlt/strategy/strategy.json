@@ -212,7 +212,7 @@
       "machine_rule": {
         "predicate": "front_has_35 == true OR front_min_gap == 2 OR back_same_tail >= 1",
         "action": "prefer",
-        "weight": 1.2
+        "weight": 0.8
       },
       "evidence_refs": [
         "F-0038",
@@ -234,7 +234,7 @@
           "效应量级（均值比）：front_mingap_eq2=0.794、front_max_ge31=0.795、back_same_tail=0.619（n=50 功效有限）",
           "front_max_ge31 与 F-0038/F-0048 一致（35 号偏低、生日段更易撞号）；front_mingap_eq2 与 R-001 互补（连号拥挤 → 间隔=2 冷门）",
           "与 R-001~R-004 的关系：R-001~R-004 是 exclude（排除拥挤形态），R-005 是 prefer（偏向冷门形态），两者互补",
-          "prefer 权重 1.2 为初始拍定值，未经优化；实际组合搜索时应作为候选特征纳入搜索空间",
+          "prefer 权重 0.8 为初始拍定值，未经优化（已收敛到 judge 契约 (0,1]）；实际组合搜索时应作为候选特征纳入搜索空间",
           "只在中奖时兑现。中一等奖概率 4.67e-08 不变；中任意奖级概率 0.019572 同样与选号无关",
           "长期期望回报仍为负（净期望 −1.7275 元/2元注，全奖级口径），本规则不改变这一事实"
         ]

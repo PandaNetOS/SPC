@@ -39,6 +39,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402
 from spc.validate import (  # noqa: E402
     CLAIM_TYPES,
     ValidationReport,
@@ -66,7 +67,8 @@ def section(t: str) -> None:
     print(f"\n{'=' * 72}\n{t}\n{'=' * 72}")
 
 
-FACTS_PATH = os.path.join(_ROOT, "memory", "facts", "FACTS.jsonl")
+# 记忆已下沉到研究组：路径一律走 spc.paths（勿再拼 memory/facts）
+FACTS_PATH = paths.facts_path(paths.first_study(root=_ROOT) or "dlt", root=_ROOT)
 FACTS = [json.loads(l) for l in open(FACTS_PATH, encoding="utf-8") if l.strip()]
 BY_ID = {f["id"]: f for f in FACTS}
 

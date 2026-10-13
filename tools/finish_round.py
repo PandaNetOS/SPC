@@ -35,6 +35,10 @@ import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
+sys.path.insert(0, os.path.join(_ROOT, "src"))
+
+from spc import paths  # noqa: E402 路径单一权威（勿在调用点拼 games/dlt/...）
+
 _PY = sys.executable
 
 
@@ -55,7 +59,7 @@ def _run(script: str, args: list[str] | None = None, timeout: int = 600) -> int:
 
 def _latest_round(root: str) -> int:
     best = 0
-    d = os.path.join(root, "games", "dlt", "iterations")
+    d = paths.iterations_dir("dlt", root=root)
     if os.path.isdir(d):
         for name in os.listdir(d):
             m = re.match(r"^round(\d{2})$", name)
@@ -66,12 +70,13 @@ def _latest_round(root: str) -> int:
 
 def _check_four_pieces(root: str, rnd: int) -> list[str]:
     """检查四件套存在性。返回缺失清单（空 = 全齐）。"""
-    base = os.path.join(root, "games", "dlt", "iterations", f"round{rnd:02d}")
+    base = paths.iteration_dir("dlt", rnd, root=root)
     needed = {
         "FINDINGS.md": os.path.join(base, "FINDINGS.md"),
         "HANDOFF.md": os.path.join(base, "HANDOFF.md"),
         "manifest.json": os.path.join(base, "manifest.json"),
-        "journal": os.path.join(root, "memory", "journal", f"round{rnd:02d}.md"),
+        "journal": os.path.join(paths.study_memory_dir("dlt", root=root),
+                                "journal", f"round{rnd:02d}.md"),
     }
     return [k for k, p in needed.items() if not os.path.exists(p)]
 

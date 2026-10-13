@@ -63,18 +63,30 @@ class RedLineViolation(MemoryError):
 class Memory:
     """记忆层读写器。
 
-    repo_root: 仓库根目录（含 memory/ 的那一级）
+    repo_root: 仓库根目录（含 spec/ 与 labs/ 的那一级）
+    study:   研究组 id（默认自动发现第一个；记忆已下沉到研究组内）
+
+    路径一律经 spc.paths 解析（新旧布局兼容）—— 不在本类拼路径片段。
     """
 
-    def __init__(self, repo_root: str):
+    def __init__(self, repo_root: str, study: str | None = None):
+        import sys as _sys
+
         self.root = os.path.abspath(repo_root)
-        self.mem_dir = os.path.join(self.root, "memory")
+        _src = os.path.join(self.root, "src")
+        if _src not in _sys.path:
+            _sys.path.insert(0, _src)
+        from spc import paths  # 路径单一权威
+
+        self.paths = paths
+        self.study = study or paths.first_study(root=self.root) or "dlt"
+        self.mem_dir = paths.study_memory_dir(self.study, root=self.root)
         self.facts_path = os.path.join(self.mem_dir, "facts", "FACTS.jsonl")
         self.index_path = os.path.join(self.mem_dir, "facts", "INDEX.md")
         self.lessons_path = os.path.join(self.mem_dir, "lessons", "LESSONS.md")
         self.workbench_dir = os.path.join(self.mem_dir, "workbench")
         self.journal_dir = os.path.join(self.mem_dir, "journal")
-        self.games_dir = os.path.join(self.root, "games")
+        self.studies_dir = paths.studies_dir(root=self.root)
         self._facts: list[dict] | None = None
 
     # -------------------------------------------------- FACTS 读
@@ -615,20 +627,11 @@ class Memory:
     # -------------------------------------------------- 彩种
 
     def games(self) -> list[str]:
-        """列出 games/ 下的彩种 id（排除 _template）。"""
-        d = self.games_dir
-        if not os.path.isdir(d):
-            return []
-        out = []
-        for name in sorted(os.listdir(d)):
-            if name.startswith("_") or name.startswith("."):
-                continue
-            if os.path.isfile(os.path.join(d, name, "game.yaml")):
-                out.append(name)
-        return out
+        """列出研究组 id（排除 _template 与隐藏目录）。"""
+        return self.paths.list_studies(root=self.root)
 
     def game_dir(self, game: str) -> str:
-        return os.path.join(self.games_dir, game)
+        return self.paths.study_dir(game, root=self.root)
 
 
 # ---------------------------------------------------------------- 便捷函数
@@ -640,7 +643,14 @@ def load_game_config(repo_root: str, game: str) -> dict:
     本仓库的 game.yaml 只用「映射 / 序列 / 标量」，可被最小解析器处理；
     但正式用法仍建议安装 PyYAML。
     """
-    path = os.path.join(repo_root, "games", game, "game.yaml")
+    import sys as _sys
+
+    _src = os.path.join(os.path.abspath(repo_root), "src")
+    if _src not in _sys.path:
+        _sys.path.insert(0, _src)
+    from spc import paths
+
+    path = paths.game_yaml_path(game, root=repo_root)
     if not os.path.exists(path):
         raise MemoryError(f"game.yaml 不存在: {path}")
     try:

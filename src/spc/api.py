@@ -33,6 +33,7 @@ import os
 import sys
 from typing import Any
 
+from . import paths
 from .game import compute_space, feature_keys, list_games, load_game_config
 from .memory import Memory
 from .strategy import load_strategy
@@ -311,9 +312,7 @@ class SmartPick:
         """一行摘要，便于 CLI 打印。"""
         sp = compute_space(self.config)
         rr = (self.config.get("prize_model") or {}).get("return_rate", 0.51)
-        st_path = os.path.join(
-            self.root, "games", self.game, "strategy", "strategy.json"
-        )
+        st_path = paths.strategy_json_path(self.game, root=self.root)
         has_st = os.path.exists(st_path)
         n_rules = 0
         if has_st:

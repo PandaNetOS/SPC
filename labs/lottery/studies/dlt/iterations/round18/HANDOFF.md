@@ -1,4 +1,7 @@
-# HANDOFF.md — round18 交接
+﻿# HANDOFF.md — round18 交接
+
+> **版本**：`1.0` ｜ 轮次 `r18` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **日期**：2026-10-12 ｜ **下轮**：round19
 

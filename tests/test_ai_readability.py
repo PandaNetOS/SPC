@@ -146,8 +146,15 @@ def test_task_brief_top_n_and_resource() -> None:
 def test_handoff_structure() -> None:
     # 构造：有 manifest 但缺 HANDOFF → 报错
     tmp = tempfile.mkdtemp(prefix="sc_handoff_")
-    os.makedirs(os.path.join(tmp, "games", "dlt", "iterations", "round09"), exist_ok=True)
-    with open(os.path.join(tmp, "games", "dlt", "iterations", "round09", "manifest.json"),
+    # paths.list_studies 的判据是「含 game.yaml」—— 夹具必须造它
+    _it = os.path.join(tmp, "labs", "lottery", "studies", "dlt", "iterations")
+    os.makedirs(os.path.join(tmp, "labs", "lottery", "studies", "dlt"), exist_ok=True)
+    with open(os.path.join(tmp, "labs", "lottery", "studies", "dlt", "game.yaml"),
+              "w", encoding="utf-8") as f:
+        f.write('id: "dlt"\n')
+    os.makedirs(_it, exist_ok=True)
+    os.makedirs(os.path.join(_it, "round09"), exist_ok=True)
+    with open(os.path.join(_it, "round09", "manifest.json"),
               "w", encoding="utf-8") as f:
         f.write("{}\n")
     rep = V.ValidationReport()
@@ -155,14 +162,14 @@ def test_handoff_structure() -> None:
     check(bool(rep.errors) and "缺 HANDOFF.md" in rep.errors[0],
           "H: 已收尾轮有 manifest 无 HANDOFF → 报错")
     # 构造：有 HANDOFF 且含 4+ 段 → 通过（round09 之前缺 HANDOFF 的错误已补全）
-    with open(os.path.join(tmp, "games", "dlt", "iterations", "round09", "HANDOFF.md"),
+    with open(os.path.join(_it, "round09", "HANDOFF.md"),
               "w", encoding="utf-8") as f:
         f.write("## 1. 本轮结论清单\n## 2. 遗留问题\n## 3. 下轮建议\n## 4. 风险\n")
-    os.makedirs(os.path.join(tmp, "games", "dlt", "iterations", "round08"), exist_ok=True)
-    with open(os.path.join(tmp, "games", "dlt", "iterations", "round08", "manifest.json"),
+    os.makedirs(os.path.join(_it, "round08"), exist_ok=True)
+    with open(os.path.join(_it, "round08", "manifest.json"),
               "w", encoding="utf-8") as f:
         f.write("{}\n")
-    with open(os.path.join(tmp, "games", "dlt", "iterations", "round08", "HANDOFF.md"),
+    with open(os.path.join(_it, "round08", "HANDOFF.md"),
               "w", encoding="utf-8") as f:
         f.write("## 1. 本轮结论清单\n## 2. 遗留问题\n## 3. 下轮建议\n## 4. 风险\n")
     rep2 = V.ValidationReport()
@@ -172,26 +179,34 @@ def test_handoff_structure() -> None:
 
 def test_compression_freshness() -> None:
     tmp = tempfile.mkdtemp(prefix="sc_compress_")
-    os.makedirs(os.path.join(tmp, "memory", "facts"), exist_ok=True)
     # 当前轮 = 最大**已收尾**轮（round06）。
     # ★ r15：轮号判据已由「目录存在」改为「含 manifest.json」——空壳目录不再算一轮。
     # 夹具必须造一个真收尾轮，否则这里测的是过时的假设。
-    os.makedirs(os.path.join(tmp, "games", "dlt", "iterations", "round06"), exist_ok=True)
-    with open(os.path.join(tmp, "games", "dlt", "iterations", "round06", "manifest.json"),
+    # ★ 2026-10-13：路径一律走 spc.paths（架构迁移后 games/ 已不存在）；
+    #   list_studies 的判据是「含 game.yaml」，夹具必须造它。
+    from spc import paths as _p
+
+    os.makedirs(_p.study_dir("dlt", root=tmp), exist_ok=True)
+    with open(_p.game_yaml_path("dlt", root=tmp), "w", encoding="utf-8") as f:
+        f.write('id: "dlt"\n')
+    os.makedirs(_p.iteration_dir("dlt", 6, root=tmp), exist_ok=True)
+    with open(os.path.join(_p.iteration_dir("dlt", 6, root=tmp), "manifest.json"),
               "w", encoding="utf-8") as f:
         f.write('{"round": "r06", "status": "delivered", "outputs": {}}\n')
-    with open(os.path.join(tmp, "memory", "facts", "ACTIVE.md"), "w", encoding="utf-8") as f:
+    facts_dir = os.path.join(_p.study_memory_dir("dlt", root=tmp), "facts")
+    os.makedirs(facts_dir, exist_ok=True)
+    with open(os.path.join(facts_dir, "ACTIVE.md"), "w", encoding="utf-8") as f:
         f.write("由 compress_memory.py --write 生成 ｜ 当前轮 round06\n")
     rep = V.ValidationReport()
     V._check_compression_freshness(tmp, rep)
     check(not rep.warnings, "I: 距上次压缩 0 轮 → 无到期警告")
     # 过期场景：round01 → 差 5 轮 → 不警告（>5 才警告）；round00 → 差 6 轮 → 警告
-    with open(os.path.join(tmp, "memory", "facts", "ACTIVE.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(facts_dir, "ACTIVE.md"), "w", encoding="utf-8") as f:
         f.write("由 compress_memory.py --write 生成 ｜ 当前轮 round01\n")
     rep1 = V.ValidationReport()
     V._check_compression_freshness(tmp, rep1)
     check(not rep1.warnings, "I: 距上次压缩 5 轮 → 边界不警告（>5 才到期）")
-    with open(os.path.join(tmp, "memory", "facts", "ACTIVE.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(facts_dir, "ACTIVE.md"), "w", encoding="utf-8") as f:
         f.write("由 compress_memory.py --write 生成 ｜ 当前轮 round00\n")
     rep2 = V.ValidationReport()
     V._check_compression_freshness(tmp, rep2)

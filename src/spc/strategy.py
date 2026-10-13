@@ -29,6 +29,7 @@ from datetime import date
 from typing import Any
 
 from .game import compute_space, load_game_config
+from . import paths
 
 __all__ = [
     "StrategyError",
@@ -57,8 +58,8 @@ class StrategyError(Exception):
 # ---------------------------------------------------------------- 路径
 
 def strategy_path(game: str, repo_root: str | None = None) -> str:
-    root = repo_root or _ROOT
-    return os.path.join(root, "games", game, "strategy", "strategy.json")
+    """strategy.json 路径 —— 一律走 spc.paths（新旧布局兼容）。"""
+    return paths.strategy_json_path(game, root=repo_root)
 
 
 # ---------------------------------------------------------------- 消费

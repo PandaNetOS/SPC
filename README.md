@@ -1,6 +1,6 @@
 ﻿# SPC
 
-> **版本**：`1.17` ｜ 轮次 `r19` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.16` ｜ 轮次 `r19` ｜ 更新 2026-10-13 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > PandaNetOS 智能选号核心（Smart Pick Core）
@@ -41,7 +41,7 @@
 
 ### 👉 [**超级大乐透 · 策略说明书（人话版）**](labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md) &nbsp;`v2.0`
 
-> 路径：`labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v2.0`（轮次 `r19`，更新 2026-10-12）— 不需要任何背景知识
+> 路径：`labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md` — 版本 `v2.0`（轮次 `r19`，更新 2026-10-13）— 不需要任何背景知识
 
 它讲清了四件事：策略说了什么、为什么可能有用、
 **什么时候它没用（四个减损项，其中 1 亿封顶已真实触发过）**、以及绝对不要做的事。
@@ -94,7 +94,7 @@ python cli/main.py new-game <game_id>
 ├── AI_CONTEXT.md  v1.5      ← FACTS 计数 38→43
 ├── VERSION_INDEX.md  v1.0      ← 版本索引（人读），权威源是 versions.json
 ├── versions.json  v1.0
-├── README.md  v1.16     ← ← 速览区 48 条结论 / open 1 / r12 彩种行
+├── README.md  v1.16     ← ← 速览区 49 条结论 / open 1 / r12 彩种行
 ├── AGENTS.md  v1.0      ← 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
 ├── AI_MAP.md  v1.0      ← 机器地图（派生物，render_ai_map 生成）
 ├── DEPENDENCY_MAP.md  v1.0      ← 跨文件依赖图（派生物，render_dependency_map 生成）
@@ -107,9 +107,176 @@ python cli/main.py new-game <game_id>
 │   ├── ITERATION_GUIDE.md  v1.0
 │   ├── METHODOLOGY.md  v1.0
 │   ├── PROPOSAL_SINGLE_TICKET_CORE.md  v1.1
-│   └── VERSIONING_DOCS.md  v1.5      ← r15: §6.2 追加『manifest 先于 bump』顺序约束；…
+│   ├── SOP_OVERVIEW.md  v1.0
+│   ├── VERSIONING_DOCS.md  v1.5      ← r15: §6.2 追加『manifest 先于 bump』顺序约束；…
+│   └── sop_flowchart.html  —
+├── labs/
+│   └── lottery/
+│       ├── INDEX.md  v1.2      ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
+│       └── studies/
+│           ├── _template/
+│           │   ├── README.md  —
+│           │   ├── game.yaml  v2.0      ← 2026-10-11 与 dlt 同步升至 2.0（features …
+│           │   ├── iterations/
+│           │   │   └── round01/
+│           │   │       └── TASK_BRIEF.md  —
+│           │   └── strategy/
+│           │       └── strategy.json  v2.0      ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
+│           └── dlt/
+│               ├── game.yaml  v2.3      ← r14.1: +has_mirror_pair 特征（R-004 判定…
+│               ├── iterations/
+│               │   ├── round02/
+│               │   │   ├── FINDINGS.md  v1.0      ← 整理入库轮发现
+│               │   │   ├── HANDOFF.md  v1.0      ← r02→r03 交接
+│               │   │   ├── PRIORITY_TASKS.md  v1.0
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
+│               │   │   ├── known_errors.md  v1.0      ← E1~E9 避坑手册
+│               │   │   ├── legacy_findings/
+│               │   │   │   ├── README.md  v1.0      ← 归档，设使用门槛
+│               │   │   │   ├── _round3_reference/
+│               │   │   │   │   └── round3_independent_review.html  v1.0      ← 历史归档，设使用门槛（防锚定）
+│               │   │   │   ├── round2_deep_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
+│               │   │   │   ├── round2_glm_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
+│               │   │   │   ├── round2_main_report.md  v1.0      ← 历史归档，设使用门槛（防锚定）
+│               │   │   │   └── round2_verify_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
+│               │   │   └── manifest.json  vdlt_full_2933
+│               │   ├── round03/
+│               │   │   ├── FINDINGS.md  v1.0      ← 复核轮发现（含自我纠错）
+│               │   │   ├── HANDOFF.md  v1.0      ← r03→r04 交接
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
+│               │   │   ├── manifest.json  vdlt_full_2933
+│               │   │   └── scripts/  ← 轮次脚本（8 个）
+│               │   ├── round04/
+│               │   │   ├── FINDINGS.md  v1.0
+│               │   │   ├── HANDOFF.md  v1.0
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round04 执行完毕）
+│               │   │   ├── manifest.json  —
+│               │   │   └── scripts/  ← 轮次脚本（8 个）
+│               │   ├── round05/
+│               │   │   ├── FINDINGS.md  v1.0      ← 投注方式数学层 + R-002 量化 + 时间因素证伪
+│               │   │   ├── HANDOFF.md  v1.0      ← r05→r06 交接；策略变更待用户批准
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
+│               │   │   ├── manifest.json  v1.0
+│               │   │   └── scripts/  ← 轮次脚本（7 个）
+│               │   ├── round06/
+│               │   │   ├── FINDINGS.md  v1.0      ← r06 元层轮发现（策略落地+飞轮升级）
+│               │   │   ├── HANDOFF.md  v1.0      ← r06→r07 交接（结论/遗留/下轮建议）
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
+│               │   │   ├── manifest.json  v1.0      ← r06 机器登记
+│               │   │   ├── research/
+│               │   │   │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
+│               │   │   │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
+│               │   │   └── scripts/  ← 轮次脚本（13 个）
+│               │   ├── round07/
+│               │   │   ├── FINDINGS.md  v1.0      ← 前段取证+外部核对+节假日验证+锚点重校准
+│               │   │   ├── HANDOFF.md  v1.0      ← r07→r08 交接
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
+│               │   │   ├── manifest.json  vdlt_full_2933  ← r07 机器登记
+│               │   │   └── scripts/  ← 轮次脚本（9 个）
+│               │   ├── round08/
+│               │   │   ├── FINDINGS.md  v1.0      ← 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四…
+│               │   │   ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
+│               │   │   ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
+│               │   │   └── scripts/  ← 轮次脚本（2 个）
+│               │   ├── round09/
+│               │   │   ├── FINDINGS.md  v1.0      ← 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 /…
+│               │   │   ├── HANDOFF.md  v1.0      ← r09→r10 交接（F-0037/38；遗留 T-021/22/23…
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
+│               │   │   ├── manifest.json  —         ← 策略量化轮清单
+│               │   │   └── scripts/  ← 轮次脚本（7 个）
+│               │   ├── round10/
+│               │   │   ├── FINDINGS.md  v1.1      ← r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATE…
+│               │   │   ├── HANDOFF.md  v1.1      ← r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派…
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
+│               │   │   ├── manifest.json  v1.0      ← r10 轮清单
+│               │   │   └── scripts/  ← 轮次脚本（9 个）
+│               │   ├── round11/
+│               │   │   ├── FINDINGS.md  v1.0      ← r11 结论：F-0042 平台期 / F-0043 代理可观测 / …
+│               │   │   ├── HANDOFF.md  v1.0      ← r11→r12 交接：T-048b 首推 + T-025 仍 bloc…
+│               │   │   ├── T048_HOLDOUT_DESIGN.md  v1.0      ← T-048 L3 组合优化预备：时序 hold-out 评测设计（切分…
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
+│               │   │   ├── manifest.json  —         ← r11 deliverables（根级）
+│               │   │   └── scripts/  ← 轮次脚本（5 个）
+│               │   ├── round12/
+│               │   │   ├── FINDINGS.md  v1.0      ← r12 研究结论
+│               │   │   ├── HANDOFF.md  v1.0      ← r12→r13 交接
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r12 任务书（T-049/T-030/T-040）
+│               │   │   ├── manifest.json  —         ← r12 manifest
+│               │   │   └── scripts/  ← 轮次脚本（3 个）
+│               │   ├── round13/
+│               │   │   ├── FINDINGS.md  v1.0      ← r13 研究结论
+│               │   │   ├── HANDOFF.md  v1.0      ← r13 交接
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r13 任务书（T-051/T-044/T-045）
+│               │   │   ├── manifest.json  —         ← r13 manifest
+│               │   │   └── scripts/  ← 轮次脚本（2 个）
+│               │   ├── round14/
+│               │   │   ├── FINDINGS.md  v1.0      ← r14 研究结论
+│               │   │   ├── HANDOFF.md  v1.0      ← r14 交接
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r14 任务书（T-052 待批准/T-053/T-054）
+│               │   │   ├── manifest.json  —         ← r14 manifest
+│               │   │   └── scripts/  ← 轮次脚本（4 个）
+│               │   ├── round15/
+│               │   │   ├── FINDINGS.md  v1.0      ← r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 …
+│               │   │   ├── HANDOFF.md  v1.0      ← r15 交接（含 T-020 未决裁定项）
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地…
+│               │   │   └── manifest.json  —         ← r15 manifest
+│               │   ├── round16/
+│               │   │   ├── FINDINGS.md  v1.0      ← r16 结论（B1 重校准钥匙=established_in；B2 证…
+│               │   │   ├── HANDOFF.md  v1.0      ← r16 交接（validate 首次 0 警告；F-0048 策略用途…
+│               │   │   ├── TASK_BRIEF.md  v1.0      ← r16 任务书（首次含派生候选：必做 1 个 = T-063 [der…
+│               │   │   ├── manifest.json  —         ← r16 manifest
+│               │   │   └── scripts/  ← 轮次脚本（9 个）
+│               │   ├── round17/
+│               │   │   ├── FINDINGS.md  v1.0
+│               │   │   ├── HANDOFF.md  v1.0
+│               │   │   ├── TASK_BRIEF.md  v1.0
+│               │   │   ├── manifest.json  —
+│               │   │   └── scripts/  ← 轮次脚本（2 个）
+│               │   └── round18/
+│               │       ├── FINDINGS.md  v1.0
+│               │       ├── HANDOFF.md  v1.0
+│               │       ├── TASK_BRIEF.md  v1.0
+│               │       ├── manifest.json  —
+│               │       └── scripts/  ← 轮次脚本（4 个）
+│               ├── manifest_v4_source.json  —
+│               ├── memory/
+│               │   ├── facts/
+│               │   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
+│               │   │   ├── FACTS.jsonl  v1.5      ← r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/…
+│               │   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
+│               │   ├── journal/
+│               │   │   ├── round02.md  v1.0      ← 整理入库轮
+│               │   │   ├── round03.md  v1.0      ← 复核轮（含 1 次自我纠错）
+│               │   │   ├── round04.md  v1.0
+│               │   │   ├── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
+│               │   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
+│               │   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
+│               │   │   ├── round08.md  v1.0      ← 体系升级批执行日志
+│               │   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
+│               │   │   ├── round10.md  v1.0      ← r10 执行日志
+│               │   │   ├── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
+│               │   │   ├── round12.md  v1.0      ← r12 执行日志
+│               │   │   ├── round13.md  v1.0      ← r13 执行日志
+│               │   │   ├── round14.md  v1.0      ← r14 执行日志
+│               │   │   ├── round15.md  v1.0      ← r15 执行日志（治理轮）
+│               │   │   └── round16.md  v1.0      ← r16 执行日志（告警清零 + 任务源机制轮）
+│               │   ├── lessons/
+│               │   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
+│               │   └── workbench/
+│               │       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
+│               │       ├── OPEN_QUESTIONS.md  v1.7      ← r12: Q-008 → answered（open 3→2：Q-00…
+│               │       └── TODO.md  v2.2      ← r15: T-052 → done（r14.1 已落地，此前漏勾；新增…
+│               ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
+│               └── strategy/
+│                   ├── STRATEGY_GUIDE.md  v2.0      ← r18: R-005 修正（移除 back_all_even、置换检验…
+│                   ├── simulation_results.json  —
+│                   ├── strategy.json  v1.6      ← r18: R-005 修正（predicate 移除 back_eve…
+│                   └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
+├── memory/
+│   └── INDEX.md  v1.0      ← 记忆层说明
 ├── platform/
 │   ├── INDEX.md  v1.1
+│   ├── PLUGIN_GUIDE.md  v1.0
 │   ├── README.md  v1.0
 │   ├── core/
 │   │   ├── README.md  v1.1
@@ -120,9 +287,15 @@ python cli/main.py new-game <game_id>
 │   │   ├── generate.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   │   ├── judge.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │   │   ├── portfolio.py  —         ← ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 +…
+│   │   ├── stats.py  —
 │   │   └── ticket.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│   ├── memory/
+│   │   └── spec/
+│   │       └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
 │   ├── methodology/
+│   │   ├── CAUSAL_INFERENCE.md  v1.0
 │   │   ├── MATH_BOUNDARY.md  v1.1      ← r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
+│   │   ├── SIMULATION_FRAMEWORK.md  v1.0
 │   │   └── STATISTICAL_DISCIPLINE.md  v1.0
 │   ├── protocol/
 │   │   ├── ITERATION_PROTOCOL.md  v1.2      ← r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条…
@@ -132,157 +305,6 @@ python cli/main.py new-game <game_id>
 │       ├── compress_memory.py  v1.0      ← 记忆压缩（每 5 轮）：ACTIVE.md + merge 候选 + …
 │       ├── ingate.py  v1.1      ← 新增 _evidence_tier 分档校验
 │       └── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）；open_que…
-├── games/
-│   ├── INDEX.md  v1.2      ← 彩种索引（r04：结论数 18 → 25；轮次 round04 ✅ /…
-│   ├── _template/
-│   │   ├── README.md  —
-│   │   ├── game.yaml  v2.0      ← 2026-10-11 与 dlt 同步升至 2.0（features …
-│   │   ├── iterations/
-│   │   │   └── round01/
-│   │   │       └── TASK_BRIEF.md  —
-│   │   └── strategy/
-│   │       └── strategy.json  v2.0      ← 模板策略，2026-10-11 随 game.yaml 同步至 2.0
-│   └── dlt/
-│       ├── game.yaml  v2.2      ← r14.1: +has_mirror_pair 特征（R-004 判定…
-│       ├── iterations/
-│       │   ├── round02/
-│       │   │   ├── FINDINGS.md  v1.0      ← 整理入库轮发现
-│       │   │   ├── HANDOFF.md  v1.0      ← r02→r03 交接
-│       │   │   ├── PRIORITY_TASKS.md  v1.0
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
-│       │   │   ├── known_errors.md  v1.0      ← E1~E9 避坑手册
-│       │   │   ├── legacy_findings/
-│       │   │   │   ├── README.md  v1.0      ← 归档，设使用门槛
-│       │   │   │   ├── _round3_reference/
-│       │   │   │   │   └── round3_independent_review.html  v1.0      ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_deep_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_glm_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   ├── round2_main_report.md  v1.0      ← 历史归档，设使用门槛（防锚定）
-│       │   │   │   └── round2_verify_analysis.txt  v1.0      ← 历史归档，设使用门槛（防锚定）
-│       │   │   └── manifest.json  vdlt_full_2933
-│       │   ├── round03/
-│       │   │   ├── FINDINGS.md  v1.0      ← 复核轮发现（含自我纠错）
-│       │   │   ├── HANDOFF.md  v1.0      ← r03→r04 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付
-│       │   │   ├── manifest.json  vdlt_full_2933
-│       │   │   └── scripts/  ← 轮次脚本（8 个）
-│       │   ├── round04/
-│       │   │   ├── FINDINGS.md  v1.0
-│       │   │   ├── HANDOFF.md  v1.0
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round04 执行完毕）
-│       │   │   ├── manifest.json  —
-│       │   │   └── scripts/  ← 轮次脚本（8 个）
-│       │   ├── round05/
-│       │   │   ├── FINDINGS.md  v1.0      ← 投注方式数学层 + R-002 量化 + 时间因素证伪
-│       │   │   ├── HANDOFF.md  v1.0      ← r05→r06 交接；策略变更待用户批准
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 …
-│       │   │   ├── manifest.json  v1.0
-│       │   │   └── scripts/  ← 轮次脚本（7 个）
-│       │   ├── round06/
-│       │   │   ├── FINDINGS.md  v1.0      ← r06 元层轮发现（策略落地+飞轮升级）
-│       │   │   ├── HANDOFF.md  v1.0      ← r06→r07 交接（结论/遗留/下轮建议）
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 由 round05 HANDOFF 转写（planned；T-201 …
-│       │   │   ├── manifest.json  v1.0      ← r06 机器登记
-│       │   │   ├── research/
-│       │   │   │   ├── ai_readability_proposal.md  v1.0      ← AI 可读性升级方案稿（P0/P1/P2，待批准）
-│       │   │   │   └── flywheel_upgrade_plan.md  v1.0      ← 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
-│       │   │   └── scripts/  ← 轮次脚本（13 个）
-│       │   ├── round07/
-│       │   │   ├── FINDINGS.md  v1.0      ← 前段取证+外部核对+节假日验证+锚点重校准
-│       │   │   ├── HANDOFF.md  v1.0      ← r07→r08 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r07 任务书（render_task_brief 生成，T-014 …
-│       │   │   ├── manifest.json  vdlt_full_2933  ← r07 机器登记
-│       │   │   └── scripts/  ← 轮次脚本（9 个）
-│       │   ├── round08/
-│       │   │   ├── FINDINGS.md  v1.0      ← 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四…
-│       │   │   ├── HANDOFF.md  v1.0      ← r08→r09 交接（P0：动态锚点重校准 + T-046/T-047…
-│       │   │   ├── manifest.json  —         ← 体系升级批清单（C+X+Y+Z）
-│       │   │   └── scripts/  ← 轮次脚本（2 个）
-│       │   ├── round09/
-│       │   │   ├── FINDINGS.md  v1.0      ← 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 /…
-│       │   │   ├── HANDOFF.md  v1.0      ← r09→r10 交接（F-0037/38；遗留 T-021/22/23…
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-046/T-047/T-020 + 并行建议（X）
-│       │   │   ├── manifest.json  —         ← 策略量化轮清单
-│       │   │   └── scripts/  ← 轮次脚本（7 个）
-│       │   ├── round10/
-│       │   │   ├── FINDINGS.md  v1.1      ← r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATE…
-│       │   │   ├── HANDOFF.md  v1.1      ← r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派…
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← 任务书：T-050/T-021/T-022（T-050 概率口径根治，…
-│       │   │   ├── manifest.json  v1.0      ← r10 轮清单
-│       │   │   └── scripts/  ← 轮次脚本（9 个）
-│       │   ├── round11/
-│       │   │   ├── FINDINGS.md  v1.0      ← r11 结论：F-0042 平台期 / F-0043 代理可观测 / …
-│       │   │   ├── HANDOFF.md  v1.0      ← r11→r12 交接：T-048b 首推 + T-025 仍 bloc…
-│       │   │   ├── T048_HOLDOUT_DESIGN.md  v1.0      ← T-048 L3 组合优化预备：时序 hold-out 评测设计（切分…
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r11 任务书：T-023/T-024/T-048（render_ta…
-│       │   │   ├── manifest.json  —         ← r11 deliverables（根级）
-│       │   │   └── scripts/  ← 轮次脚本（5 个）
-│       │   ├── round12/
-│       │   │   ├── FINDINGS.md  v1.0      ← r12 研究结论
-│       │   │   ├── HANDOFF.md  v1.0      ← r12→r13 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r12 任务书（T-049/T-030/T-040）
-│       │   │   ├── manifest.json  —         ← r12 manifest
-│       │   │   └── scripts/  ← 轮次脚本（3 个）
-│       │   ├── round13/
-│       │   │   ├── FINDINGS.md  v1.0      ← r13 研究结论
-│       │   │   ├── HANDOFF.md  v1.0      ← r13 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r13 任务书（T-051/T-044/T-045）
-│       │   │   ├── manifest.json  —         ← r13 manifest
-│       │   │   └── scripts/  ← 轮次脚本（2 个）
-│       │   ├── round14/
-│       │   │   ├── FINDINGS.md  v1.0      ← r14 研究结论
-│       │   │   ├── HANDOFF.md  v1.0      ← r14 交接
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r14 任务书（T-052 待批准/T-053/T-054）
-│       │   │   ├── manifest.json  —         ← r14 manifest
-│       │   │   └── scripts/  ← 轮次脚本（4 个）
-│       │   ├── round15/
-│       │   │   ├── FINDINGS.md  v1.0      ← r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 …
-│       │   │   ├── HANDOFF.md  v1.0      ← r15 交接（含 T-020 未决裁定项）
-│       │   │   ├── TASK_BRIEF.md  v1.0      ← r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地…
-│       │   │   └── manifest.json  —         ← r15 manifest
-│       │   └── round16/
-│       │       ├── FINDINGS.md  v1.0      ← r16 结论（B1 重校准钥匙=established_in；B2 证…
-│       │       ├── HANDOFF.md  v1.0      ← r16 交接（validate 首次 0 警告；F-0048 策略用途…
-│       │       ├── TASK_BRIEF.md  v1.0      ← r16 任务书（首次含派生候选：必做 1 个 = T-063 [der…
-│       │       ├── manifest.json  —         ← r16 manifest
-│       │       └── scripts/  ← 轮次脚本（9 个）
-│       ├── manifest_v4_source.json  —
-│       ├── rules_history.md  v1.1      ← E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03…
-│       └── strategy/
-│           ├── STRATEGY_GUIDE.md  v1.9      ← r14.1: R-004 小节 + 三档表 B 档行（v1.8→1.9）
-│           ├── simulation_results.json  —
-│           ├── strategy.json  v1.5      ← r14.1: R-004 落地（用户批准 T-052）；schema …
-│           └── strategy_simulation.py  —         ← r10.1：docstring 一等奖概率口径
-├── memory/
-│   ├── INDEX.md  v1.0      ← 记忆层说明
-│   ├── facts/
-│   │   ├── ACTIVE.md  —         ← 当前有效结论清单（与台账分离，compress_memory 生成）
-│   │   ├── FACTS.jsonl  v1.5      ← r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/…
-│   │   └── INDEX.md  v1.5      ← 派生物，由 cli index 生成（32 条）
-│   ├── journal/
-│   │   ├── round02.md  v1.0      ← 整理入库轮
-│   │   ├── round03.md  v1.0      ← 复核轮（含 1 次自我纠错）
-│   │   ├── round04.md  v1.0
-│   │   ├── round05.md  v1.0      ← 叙事：R-002 量化不成立 + H-005 证伪
-│   │   ├── round06.md  v1.0      ← r06 叙事（元层轮）
-│   │   ├── round07.md  v1.0      ← r07 叙事（研究轮）
-│   │   ├── round08.md  v1.0      ← 体系升级批执行日志
-│   │   ├── round09.md  v1.0      ← 策略量化轮执行日志
-│   │   ├── round10.md  v1.0      ← r10 执行日志
-│   │   ├── round11.md  v1.0      ← r11 执行日志（含 schema 踩坑序列与 BOM 根治）
-│   │   ├── round12.md  v1.0      ← r12 执行日志
-│   │   ├── round13.md  v1.0      ← r13 执行日志
-│   │   ├── round14.md  v1.0      ← r14 执行日志
-│   │   ├── round15.md  v1.0      ← r15 执行日志（治理轮）
-│   │   └── round16.md  v1.0      ← r16 执行日志（告警清零 + 任务源机制轮）
-│   ├── lessons/
-│   │   └── LESSONS.md  v1.3      ← L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 +…
-│   ├── spec/
-│   │   └── ITERATION_SOP_v2.md  v1.3      ← 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 f…
-│   └── workbench/
-│       ├── HYPOTHESES.md  v1.2      ← H-001~H-006（H-006 refuted）
-│       ├── OPEN_QUESTIONS.md  v1.7      ← r12: Q-008 → answered（open 3→2：Q-00…
-│       └── TODO.md  v2.2      ← r15: T-052 → done（r14.1 已落地，此前漏勾；新增…
 ├── research_lib/
 │   ├── README.md  —         ← 原语→来源脚本→历史结论映射表 + 使用纪律
 │   ├── __init__.py  —         ← 研究资本化（Y）：彩种无关统计原语出口
@@ -295,6 +317,7 @@ python cli/main.py new-game <game_id>
 │   ├── game_config.schema.json  —         ← schema 自身无版本；约束 game_config.config_…
 │   ├── iteration.schema.json  —         ← schema 自身无版本；约束 iteration 结构
 │   ├── strategy.schema.json  —         ← metric enum 同步为 expected_bonus_give…
+│   ├── study_config.schema.json  —
 │   └── version_index.schema.json  —         ← schema 自身无版本；约束 versions.index_vers…
 ├── src/
 │   ├── __init__.py  —         ← 代码文件：不写文件内版本行（用 git blame）
@@ -307,6 +330,7 @@ python cli/main.py new-game <game_id>
 │       ├── flywheel.py  —         ← 飞轮健康度统计 + 置信度校准（K/D1）
 │       ├── game.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── memory.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+│       ├── paths.py  —
 │       ├── strategy.py  —         ← 代码文件：不写文件内版本行（用 git blame）
 │       ├── tree.py  —         ← 目录树生成源（P1-2）：README 树 = 派生物
 │       ├── validate.py  —         ← r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R …
@@ -323,6 +347,7 @@ python cli/main.py new-game <game_id>
 │   ├── test_flywheel.py  —         ← K/D1/D2/C/F 测试（无需 pytest）
 │   ├── test_meta_variables.py  —         ← schema 1.3 元数据（convenience/experien…
 │   ├── test_open_questions_consistency.py  —         ← Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表act…
+│   ├── test_paths.py  —
 │   ├── test_research_lib.py  —         ← research_lib 原语测试（已知分布验证可复现/正确性/样本不…
 │   ├── test_round_counter_sync.py  v1.0      ← ★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次…
 │   ├── test_round_stall.py  —         ← 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不…
@@ -332,9 +357,13 @@ python cli/main.py new-game <game_id>
     ├── build_versions.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r13 T-04…
     ├── bump_iteration.py  —         ← 代码文件：不写文件内版本行（用 git blame）；r14.2 新增…
     ├── count_tests.py  —         ← 登记测试文件 + --inject（T-045：tests/READM…
+    ├── cross_study_meta.py  —
+    ├── data_version.py  —
     ├── derive_tasks.py  —         ← ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(…
+    ├── finalize_round.ps1  —
     ├── finish_round.py  —         ← 收尾自动化（C1）：rehash→count_tests--injec…
     ├── inject_version_lines.py  —         ← 代码文件：不写文件内版本行（用 git blame）
+    ├── new_study.py  —
     ├── register_r06_upgrade.py  —         ← r06 批量实施登记脚本（一次性，登记含自身）
     ├── render_ai_map.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
     ├── render_dependency_map.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
@@ -342,7 +371,9 @@ python cli/main.py new-game <game_id>
     ├── render_readme_tree.py  —         ← r11：读取改 utf-8-sig（修 BOM 叠加 bug）
     ├── render_task_brief.py  —         ← 任务书生成器（B+G/X）：--top N 控制必做数；resourc…
     ├── render_version_index.py  —         ← 代码文件：不写文件内版本行（用 git blame）
-    └── report_calibration.py  —         ← 置信度校准报告（D1）
+    ├── report_calibration.py  —         ← 置信度校准报告（D1）
+    ├── report_generator.py  —
+    └── task_scheduler.py  —
 ```
 
 > **目录树为派生物**：由 `tools/render_readme_tree.py` 从 versions.json 生成；新增文件登记 versions.json 后运行 `--write` 同步，勿手改。

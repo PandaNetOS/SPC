@@ -47,6 +47,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402
 from spc.validate import (  # noqa: E402
     ValidationReport,
     _check_iteration_counter_sync,
@@ -93,14 +94,17 @@ def _mkrepo(root: str, todo_t052: str = " ") -> None:
     """构造最小仓库：round14 已收尾（T-052 落地）+ 一个空的 round15 目录。"""
     _w(os.path.join(root, "versions.json"),
        json.dumps({"current_iteration": "r14", "entries": []}, ensure_ascii=False))
-    it = os.path.join(root, "games", "dlt", "iterations")
+    # paths.list_studies 的判据是「该目录含 game.yaml」—— 夹具必须造它，
+    # 否则研究组根本不会被发现（这是 paths 的既定契约，不是缺陷）。
+    _w(paths.game_yaml_path("dlt", root=root), 'id: "dlt"\nname: "fixture"\n')
+    it = paths.iterations_dir("dlt", root=root)
     _w(os.path.join(it, "round14", "manifest.json"),
        _manifest(14,
                  strategy_landed=["r14.1 用户批准 T-052：R-004 落地"],
                  # 提及而非完成 —— 窄扫描不得误报
                  actual_updates=["T-099 external-data 前置降备选"]))
     os.makedirs(os.path.join(it, "round15"), exist_ok=True)   # 空壳
-    _w(os.path.join(root, "memory", "workbench", "TODO.md"),
+    _w(os.path.join(paths.workbench_dir("dlt", root=root), "TODO.md"),
        f"- [x] **T-051** 已完成的\n\n"
        f"- [{todo_t052}] **T-052** value: 40 ★ r14 候选：R_new 落地为 R-004\n")
 
@@ -134,9 +138,9 @@ def main() -> int:
         finally:
             sys.stdout = saved_out
             sys.argv = saved_argv
-        check(not os.path.isdir(os.path.join(tmp, "games", "dlt", "iterations", "round16")),
+        check(not os.path.isdir(os.path.join(tmp, "labs", "lottery", "studies", "dlt", "iterations", "round16")),
               "dry-run 未新建任何 roundNN 目录")
-        check(os.path.isdir(os.path.join(tmp, "games", "dlt", "iterations", "round15")),
+        check(os.path.isdir(os.path.join(tmp, "labs", "lottery", "studies", "dlt", "iterations", "round15")),
               "dry-run 也未『补写』已存在的空壳 round15")
 
         sink2 = io.TextIOWrapper(io.BytesIO(), encoding="utf-8")
@@ -148,7 +152,7 @@ def main() -> int:
             sys.stdout = saved_out
             sys.argv = saved_argv
         check(os.path.isfile(
-            os.path.join(tmp, "games", "dlt", "iterations", "round15", "TASK_BRIEF.md")),
+            os.path.join(tmp, "labs", "lottery", "studies", "dlt", "iterations", "round15", "TASK_BRIEF.md")),
             "--write 时才创建目录并写入 TASK_BRIEF.md")
 
     print("A3 — 轮次号双源对账")

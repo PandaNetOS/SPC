@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """spc.validate — 契约校验器
 
 校验四类对象（受 spec/*.schema.json 约束）：
@@ -27,6 +27,7 @@ import os
 import re
 from typing import Any
 
+from . import paths
 from .tree import load_versions, render_tree
 
 __all__ = [
@@ -290,11 +291,8 @@ def delivered_round_dirs(root: str) -> list[tuple[str, int]]:
     收尾轮的唯一判据是 manifest.json —— 它由 finish_round 在收尾时写入。
     """
     out: list[tuple[str, int]] = []
-    it_dir = os.path.join(root, "games")
-    if not os.path.isdir(it_dir):
-        return out
-    for g in sorted(os.listdir(it_dir)):
-        d = os.path.join(it_dir, g, "iterations")
+    for g in paths.list_studies(root=root):
+        d = paths.iterations_dir(g, root=root)
         if not os.path.isdir(d):
             continue
         for name in sorted(os.listdir(d)):
@@ -480,7 +478,7 @@ def validate_facts(repo_root: str | None = None,
     """校验 FACTS.jsonl：schema + 红线 + 外键 + 双向取代 + caveats + claim_type + 证据锚定。"""
     rep = rep or ValidationReport()
     root = repo_root or _ROOT
-    facts_path = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+    facts_path = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
     if not os.path.exists(facts_path):
         rep.err(f"FACTS.jsonl 不存在: {facts_path}")
         return rep
@@ -526,10 +524,15 @@ def validate_facts(repo_root: str | None = None,
             rep.err(f"FACT {fid}: source 不存在: {src}")
 
         # evidence.script 存在
+        #   ★ 复合串：一条结论可由多个脚本共同支撑（如 r17 宽筛 + r18 置换检验 +
+        #   稳健复核），以 " + " 连接。逐段检查，任一不存在即报错。
         ev = ft.get("evidence") or {}
         scr = ev.get("script")
-        if scr and not os.path.exists(os.path.join(root, scr)):
-            rep.err(f"FACT {fid}: evidence.script 不存在: {scr}")
+        if scr:
+            for seg in str(scr).split(" + "):
+                seg = seg.strip()
+                if seg and not os.path.exists(os.path.join(root, seg)):
+                    rep.err(f"FACT {fid}: evidence.script 不存在: {seg}")
 
         # ★ 证据锚定：source 内容漂移检测
         #   路径还在 ≠ 内容没变。若 source 被改，结论里那串数字就失去了担保。
@@ -596,7 +599,7 @@ def validate_facts(repo_root: str | None = None,
 
 def load_fact_ids(repo_root: str | None = None) -> set[str]:
     root = repo_root or _ROOT
-    p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+    p = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
     ids: set[str] = set()
     if not os.path.exists(p):
         return ids
@@ -758,7 +761,7 @@ def validate_strategy(game: str, repo_root: str | None = None,
         rep.warn(f"strategy[{game}]: 无法加载 platform/core 做 predicate 检查（{e}）")
         return rep
 
-    cfg_path = os.path.join(root, "labs", "lottery", "studies", game, "game.yaml")
+    cfg_path = paths.game_yaml_path(game, root=root)
     cfg: dict[str, Any] | None = None
     if os.path.exists(cfg_path):
         try:
@@ -1027,7 +1030,7 @@ def _load_superseded_facts(root: str) -> dict[str, str]:
     只关心『已被推翻』的结论 —— 下游若仍引用且未更新，即为沉默。
     """
     out: dict[str, str] = {}
-    p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+    p = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
     if not os.path.exists(p):
         return out
     with open(p, encoding="utf-8") as f:
@@ -1315,7 +1318,7 @@ _COUNT_PATTERNS = (
 
 def _check_summary_counts(root: str, rep: ValidationReport) -> None:
     """校验速览表里的「N 条结论」是否与台账实际条数一致。"""
-    fp = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+    fp = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
     if not os.path.exists(fp):
         return
     total = 0
@@ -1499,9 +1502,10 @@ def _check_open_questions_consistency(root: str, rep: ValidationReport) -> None:
     （曾发生：Q-012/013/014 内容状态已 answered，但头部统计、标题 ✅、
     优先级总览未同步 → CLI 显示错误）。任一不一致 → error（FAIL）。
     """
-    p = os.path.join(root, "memory", "workbench", "OPEN_QUESTIONS.md")
+    p = os.path.join(paths.workbench_dir(paths.first_study(root=root) or _UNSET_STUDY,
+                                                 root=root), "OPEN_QUESTIONS.md")
     if not os.path.exists(p):
-        rep.err("开放问题一致性: OPEN_QUESTIONS.md 缺失")
+        rep.err(f"开放问题一致性: OPEN_QUESTIONS.md 缺失（{p}）")
         return
     txt = open(p, encoding="utf-8").read()
 
@@ -1594,9 +1598,18 @@ _MANAGED_PREFIXES = (
     "docs/",
     "labs/lottery/studies/dlt/",
 )
+# 研究组缺省占位：无研究组时回落到空串，调用方按「文件不存在」早退。
+# 绝不写死 dlt：框架通用性扫描会把写死的彩种名报成 dlt 专有字符串。
+_UNSET_STUDY = ""
+
 _STRUCT_EXCLUDE_DIRS = {
     ".git", "__pycache__", ".idea", ".workbuddy", ".github",
     "data", "fixtures", "templates", "legacy_findings",
+    ".venv", "venv",
+    # Windows 环境垃圾：系统会向仓库根写入 %SystemDrive%\...（程序数据缓存），
+    # 它不属项目、体积大且反复再生；既已加入 .gitignore，也在此排除，避免其
+    # 任何残留被结构完整性校验误判为“未登记受管文件”。
+    "%SystemDrive%", "ProgramData",
 }
 _STRUCT_EXCLUDE_FILES = {".gitignore"}
 
@@ -1621,11 +1634,20 @@ def _check_structure_completeness(root: str, rep: ValidationReport) -> None:
 
     unregistered: list[str] = []
     seen: set[str] = set()
+    real_root = os.path.realpath(root)
     for pfx in _MANAGED_PREFIXES:
         base = os.path.join(root, pfx)
         if not os.path.isdir(base):
             continue
         for dirpath, dirnames, filenames in os.walk(base):
+            # ★ 防越界：绝不让遍历越过仓库根。os.walk 在 Windows 上会跟随目录
+            #   连接（junction/symlink），若不拦截会把连接目标（仓库根之外）的文件当成
+            #   受管文件报“未登记”，并存在误删风险。因此跳过任何 realpath 落在仓库根
+            #   之外的目录，只校验仓库内部。
+            rp_dir = os.path.realpath(dirpath)
+            if rp_dir != real_root and not rp_dir.startswith(real_root + os.sep):
+                dirnames[:] = []
+                continue
             dirnames[:] = [
                 d for d in dirnames
                 if d not in _STRUCT_EXCLUDE_DIRS
@@ -1752,7 +1774,7 @@ def _check_ai_entry_completeness(root: str, rep: ValidationReport) -> None:
             except Exception:  # noqa: BLE001
                 pass
         # 动态锚：game.yaml 的数据版本字面量
-        gp = os.path.join(root, "games", first_game, "game.yaml")
+        gp = paths.game_yaml_path(first_game, root=root)
         if os.path.exists(gp):
             try:
                 gtxt = open(gp, encoding="utf-8").read()
@@ -1803,12 +1825,9 @@ def _check_handoff_structure(root: str, rep: ValidationReport) -> None:
     依据：Anthropic Effective Harnesses —— 为下一会话留下 clear artifacts；
     DOLPHIN —— 反馈闭环需要结构化的交接物。
     """
-    it_dir = os.path.join(root, "games")
-    if not os.path.isdir(it_dir):
-        return
     it_dirs: list[str] = []
-    for g in sorted(os.listdir(it_dir)):
-        d = os.path.join(it_dir, g, "iterations")
+    for g in paths.list_studies(root=root):
+        d = paths.iterations_dir(g, root=root)
         if os.path.isdir(d):
             it_dirs.append(d)
     checked = 0
@@ -1840,13 +1859,10 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
     FINDINGS.md / TASK_BRIEF.md / deliverables 声明的文件实际存在。
     只检查最近 3 轮（历史轮次豁免，避免旧文档卡校验）。
     """
-    it_root = os.path.join(root, "games")
-    if not os.path.isdir(it_root):
-        return
     # 收集所有已收尾轮
     all_rounds = []
-    for g in sorted(os.listdir(it_root)):
-        it_dir = os.path.join(it_root, g, "iterations")
+    for g in paths.list_studies(root=root):
+        it_dir = paths.iterations_dir(g, root=root)
         if not os.path.isdir(it_dir):
             continue
         for name in sorted(os.listdir(it_dir)):
@@ -1895,7 +1911,7 @@ def _check_round_sop(root: str, rep: ValidationReport) -> None:
                 if not os.path.exists(full):
                     rep.err(f"收轮SOP: {name} manifest 声明 deliverable 不存在: {p}")
             # 3b. upstream_fact_ids 必须在 FACTS.jsonl 里存在
-            facts_p = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+            facts_p = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
             if os.path.isfile(facts_p):
                 valid_ids = set()
                 with open(facts_p, encoding="utf-8") as ff:
@@ -1922,9 +1938,6 @@ r19 修复两个漏洞：
 2. follows_current=true 的条目原交给"轮次停滞检查"，但该检查空转（统计值 None）
    → 本函数内联动态检查：follows_current=true 的条目 iteration 必须 == current_iteration。
     """
-    it_root = os.path.join(root, "games")
-    if not os.path.isdir(it_root):
-        return
     vp = os.path.join(root, "versions.json")
     if not os.path.isfile(vp):
         return
@@ -1936,7 +1949,10 @@ r19 修复两个漏洞：
     current_iter = v.get("current_iteration", "")
 
     # ---- 检查 1：follows_current=true 的条目轮次必须对齐 current_iteration ----
-    re_target = re.compile(r"^games/([^/]+)/strategy/(STRATEGY_GUIDE\.md|strategy\.json)$")
+    re_target = re.compile(
+        r"^(?:games/([^/]+)|labs/[^/]+/studies/([^/]+))/strategy/"
+        r"(STRATEGY_GUIDE\.md|strategy\.json)$"
+    )
     for e in entries:
         if not e.get("follows_current"):
             continue
@@ -1953,8 +1969,8 @@ r19 修复两个漏洞：
             )
 
     # ---- 检查 2：mtime 对比 —— strategy.json 比 STRATEGY_GUIDE.md 新则报警 ----
-    for g in sorted(os.listdir(it_root)):
-        strat_dir = os.path.join(it_root, g, "strategy")
+    for g in paths.list_studies(root=root):
+        strat_dir = paths.strategy_dir(g, root=root)
         if not os.path.isdir(strat_dir):
             continue
         sj = os.path.join(strat_dir, "strategy.json")
@@ -1966,14 +1982,14 @@ r19 修复两个漏洞：
         # strategy.json 比 STRATEGY_GUIDE.md 新超过 60 秒 → 可能漏更新
         if sj_mtime > sg_mtime + 60:
             rep.err(
-                f"策略同步: games/{g}/strategy/strategy.json 比 STRATEGY_GUIDE.md 新 "
+                f"策略同步: {paths.rel_study(g, root=root)}/strategy/strategy.json 比 STRATEGY_GUIDE.md 新 "
                 f"（mtime 差 {int(sj_mtime - sg_mtime)}s）—— 策略契约已改但说明书未同步"
             )
 
     # ---- 检查 3（保留原有）：manifest strategy_updated 标记触发的轮次对齐 ----
     latest_by_game: dict[str, int] = {}
-    for g in sorted(os.listdir(it_root)):
-        it_dir = os.path.join(it_root, g, "iterations")
+    for g in paths.list_studies(root=root):
+        it_dir = paths.iterations_dir(g, root=root)
         if not os.path.isdir(it_dir):
             continue
         for name in sorted(os.listdir(it_dir)):
@@ -1997,7 +2013,7 @@ r19 修复两个漏洞：
     for g, latest in sorted(latest_by_game.items()):
         for fn, label in (("STRATEGY_GUIDE.md", "策略说明书 STRATEGY_GUIDE.md"),
                           ("strategy.json", "策略契约 strategy.json")):
-            path = f"games/{g}/strategy/{fn}"
+            path = f"{paths.rel_study(g, root=root)}/strategy/{fn}"
             if path not in by_path:
                 rep.err(f"策略同步: {label}（{path}）未登记 versions.json，无法核对轮次")
         want = f"r{latest:02d}"
@@ -2006,7 +2022,7 @@ r19 修复两个漏洞：
             m = re_target.match(path)
             if not m:
                 continue
-            if m.group(1) != g:
+            if (m.group(1) or m.group(2)) != g:
                 continue
             if e.get("follows_current"):
                 continue  # 已由检查 1 覆盖
@@ -2076,7 +2092,10 @@ def _check_todo_landed_sync(root: str, rep: ValidationReport) -> None:
     （那里既有完成记录也有「T-025 external-data 前置降备选」这类提及，
     泛化扫描会误报）。护栏宁可窄而准，不要宽而噪。
     """
-    todo_p = os.path.join(root, "memory", "workbench", "TODO.md")
+    todo_p = os.path.join(
+        paths.workbench_dir(paths.first_study(root=root) or _UNSET_STUDY, root=root),
+        "TODO.md",
+    )
     if not os.path.isfile(todo_p):
         return
     todo = open(todo_p, encoding="utf-8").read()
@@ -2124,7 +2143,11 @@ def _check_compression_freshness(root: str, rep: ValidationReport) -> None:
     依据：战略遗忘（IterResearch/MEM1）、SAGE（Ebbinghaus 遗忘曲线）——
     记忆膨胀降信噪比，到期不压缩必须被看见。
     """
-    ap = os.path.join(root, "memory", "facts", "ACTIVE.md")
+    # ACTIVE.md 由 compress_memory 生成，路径走 paths（研究组记忆已下沉）
+    ap = os.path.join(
+        paths.study_memory_dir(paths.first_study(root=root) or _UNSET_STUDY, root=root),
+        "facts", "ACTIVE.md",
+    )
     if not os.path.exists(ap):
         return
     text = open(ap, encoding="utf-8").read()
@@ -2227,7 +2250,7 @@ def _check_critical_numbers(root: str, rep: ValidationReport) -> None:
     依据：tests/README「结论数字与 game.yaml 重算结果一致」暂缓项 ——
     4.667e-08 出现在 FACTS/文档多处，一处改错现有校验不报警。
     """
-    fp = os.path.join(root, "labs", "lottery", "studies", "dlt", "memory", "facts", "FACTS.jsonl")
+    fp = paths.facts_path(paths.first_study(root=root) or _UNSET_STUDY, root=root)
     if not os.path.exists(fp):
         return
     claim = ""

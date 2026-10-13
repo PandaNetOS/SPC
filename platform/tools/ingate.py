@@ -34,6 +34,11 @@ import sys
 from typing import Any
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_SRC = os.path.join(ROOT, "src")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
+
+from spc import paths  # noqa: E402 路径单一权威
 
 VALID_CLAIM_TYPES = {"analytic", "empirical", "simulation", "documentary", "methodological"}
 MUTEX_PAIRS = [
@@ -317,7 +322,7 @@ def gate_manager(fact: dict, active: list[dict], root: str = ROOT) -> list[str]:
     kw = _kw(fact.get("claim", ""))
     if not kw:
         return ["[Manager] claim 过短，无法评估策略影响面"]
-    st_path = os.path.join(root, "games", "dlt", "strategy", "strategy.json")
+    st_path = paths.strategy_json_path("dlt", root=root)
     if os.path.exists(st_path):
         try:
             with open(st_path, encoding="utf-8") as f:

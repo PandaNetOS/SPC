@@ -1,7 +1,7 @@
-﻿# AI_MAP —— SPC 机器可读地图
+# AI_MAP —— SPC 机器可读地图
 
 
-> **版本**：`1.0` ｜ 轮次 `r16` ｜ 更新 2026-10-12 ｜ 权威源 `VERSION_INDEX.md`
+> **版本**：`1.0` ｜ 轮次 `r19` ｜ 更新 2026-10-13 ｜ 权威源 `VERSION_INDEX.md`
 > 版本规则见 `docs/VERSIONING_DOCS.md`
 
 > **本文件是派生物**：由 `tools/render_ai_map.py` 从 versions.json 生成；
@@ -14,7 +14,7 @@
 ## 入口（先读）
 - `AI_CONTEXT.md` — FACTS 计数 38→43
 - `AGENTS.md` — 给 AI 的操作规则极简入口（六域，指向 AI_CONTEXT）
-- `README.md` — ← 速览区 48 条结论 / open 1 / r12 彩种行
+- `README.md` — ← 速览区 49 条结论 / open 1 / r12 彩种行
 - `VERSION_INDEX.md` — 版本索引（人读），权威源是 versions.json
 - `versions.json`
 - `pyproject.toml` — 包版本
@@ -29,10 +29,12 @@
 - `spec/game_config.schema.json` — schema 自身无版本；约束 game_config.config_version
 - `spec/iteration.schema.json` — schema 自身无版本；约束 iteration 结构
 - `spec/strategy.schema.json` — metric enum 同步为 expected_bonus_given_win
+- `spec/study_config.schema.json`
 - `spec/version_index.schema.json` — schema 自身无版本；约束 versions.index_version
 
 ## 框架
 - `platform/INDEX.md`
+- `platform/PLUGIN_GUIDE.md`
 - `platform/README.md`
 - `platform/core/README.md`
 - `platform/core/__init__.py` — 代码文件：不写文件内版本行（用 git blame）
@@ -42,8 +44,12 @@
 - `platform/core/generate.py` — 代码文件：不写文件内版本行（用 git blame）
 - `platform/core/judge.py` — 代码文件：不写文件内版本行（用 git blame）
 - `platform/core/portfolio.py` — ★ 跨注层（L3）核心：Portfolio 一等公民 + 跨注求值 + judge_cross
+- `platform/core/stats.py`
 - `platform/core/ticket.py` — 代码文件：不写文件内版本行（用 git blame）
+- `platform/memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
+- `platform/methodology/CAUSAL_INFERENCE.md`
 - `platform/methodology/MATH_BOUNDARY.md` — r10.1：红线表格 P=1/T 加一等奖限定（各奖级恒定）
+- `platform/methodology/SIMULATION_FRAMEWORK.md`
 - `platform/methodology/STATISTICAL_DISCIPLINE.md`
 - `platform/protocol/ITERATION_PROTOCOL.md` — r12: T-040 回写 §6 校验扩展 + §7 禁止事项 5 条护栏
 - `platform/protocol/MEMORY_PROTOCOL.md` — r03 框架迭代：新增 §1.7 claim_type 证据类型 + §1.8 证据锚定
@@ -54,6 +60,186 @@
 
 ## 记忆
 - `memory/INDEX.md` — 记忆层说明
+
+## 策略输出
+- `labs/lottery/studies/dlt/strategy/STRATEGY_GUIDE.md` — r18: R-005 修正（移除 back_all_even、置换检验 p=0.22）
+- `labs/lottery/studies/dlt/strategy/simulation_results.json`
+- `labs/lottery/studies/dlt/strategy/strategy.json` — r18: R-005 修正（predicate 移除 back_even_count==2、evidence_refs…
+- `labs/lottery/studies/dlt/strategy/strategy_simulation.py` — r10.1：docstring 一等奖概率口径
+
+## 彩种
+- `labs/lottery/studies/dlt/game.yaml` — r14.1: +has_mirror_pair 特征（R-004 判定量）；config_version 2.1→2.2
+- `labs/lottery/studies/dlt/iterations/round02/FINDINGS.md` — 整理入库轮发现
+- `labs/lottery/studies/dlt/iterations/round02/HANDOFF.md` — r02→r03 交接
+- `labs/lottery/studies/dlt/iterations/round02/PRIORITY_TASKS.md`
+- `labs/lottery/studies/dlt/iterations/round02/TASK_BRIEF.md` — 已交付
+- `labs/lottery/studies/dlt/iterations/round02/known_errors.md` — E1~E9 避坑手册
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/README.md` — 归档，设使用门槛
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/_round3_reference/round3_independent_review.html` — 历史归档，设使用门槛（防锚定）
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_deep_analysis.txt` — 历史归档，设使用门槛（防锚定）
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_glm_analysis.txt` — 历史归档，设使用门槛（防锚定）
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_main_report.md` — 历史归档，设使用门槛（防锚定）
+- `labs/lottery/studies/dlt/iterations/round02/legacy_findings/round2_verify_analysis.txt` — 历史归档，设使用门槛（防锚定）
+- `labs/lottery/studies/dlt/iterations/round02/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round03/FINDINGS.md` — 复核轮发现（含自我纠错）
+- `labs/lottery/studies/dlt/iterations/round03/HANDOFF.md` — r03→r04 交接
+- `labs/lottery/studies/dlt/iterations/round03/TASK_BRIEF.md` — 已交付
+- `labs/lottery/studies/dlt/iterations/round03/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_facts.py`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/apply_r03_strategy.py`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/b2_robust_estimators.json`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/b2_robust_estimators.py`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/b2_split_stability.json`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/b2_split_stability.py`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.json`
+- `labs/lottery/studies/dlt/iterations/round03/scripts/cap_adjusted_uplift.py`
+- `labs/lottery/studies/dlt/iterations/round04/FINDINGS.md`
+- `labs/lottery/studies/dlt/iterations/round04/HANDOFF.md`
+- `labs/lottery/studies/dlt/iterations/round04/TASK_BRIEF.md` — 已交付（round04 执行完毕）
+- `labs/lottery/studies/dlt/iterations/round04/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_facts.py`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/apply_r04_strategy.py`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.json`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/back_collision.py`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.json`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/decay_cause.py`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.json`
+- `labs/lottery/studies/dlt/iterations/round04/scripts/prize_mechanism_tobit.py`
+- `labs/lottery/studies/dlt/iterations/round05/FINDINGS.md` — 投注方式数学层 + R-002 量化 + 时间因素证伪
+- `labs/lottery/studies/dlt/iterations/round05/HANDOFF.md` — r05→r06 交接；策略变更待用户批准
+- `labs/lottery/studies/dlt/iterations/round05/TASK_BRIEF.md` — 已交付（round05 执行完毕；用户点名方向优先，T-201 顺延 r06）
+- `labs/lottery/studies/dlt/iterations/round05/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round05/scripts/apply_r05_facts.py` — F-0026~F-0032 落地
+- `labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.json`
+- `labs/lottery/studies/dlt/iterations/round05/scripts/bet_structure.py` — 投注方式 + R-002 量化 + R-003 候选模拟
+- `labs/lottery/studies/dlt/iterations/round05/scripts/fix_r05_housekeeping.py` — 收轮维护（tags/versions/计数）
+- `labs/lottery/studies/dlt/iterations/round05/scripts/sync_r05_versions.py`
+- `labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.json`
+- `labs/lottery/studies/dlt/iterations/round05/scripts/timing_weekday.py` — 星期/奖池时序/节假日窗口
+- `labs/lottery/studies/dlt/iterations/round06/FINDINGS.md` — r06 元层轮发现（策略落地+飞轮升级）
+- `labs/lottery/studies/dlt/iterations/round06/HANDOFF.md` — r06→r07 交接（结论/遗留/下轮建议）
+- `labs/lottery/studies/dlt/iterations/round06/TASK_BRIEF.md` — 由 round05 HANDOFF 转写（planned；T-201 前段取证首推）
+- `labs/lottery/studies/dlt/iterations/round06/manifest.json` — r06 机器登记
+- `labs/lottery/studies/dlt/iterations/round06/research/ai_readability_proposal.md` — AI 可读性升级方案稿（P0/P1/P2，待批准）
+- `labs/lottery/studies/dlt/iterations/round06/research/flywheel_upgrade_plan.md` — 迭代飞轮全局升级计划（A-K 环节链路 + 分批）
+- `labs/lottery/studies/dlt/iterations/round06/scripts/add_v2_fields.py` — FACTS v2.0 字段迁移（grade/change_type/有效期）
+- `labs/lottery/studies/dlt/iterations/round06/scripts/apply_r06_strategy.py` — 用户批准三项策略变更落地
+- `labs/lottery/studies/dlt/iterations/round06/scripts/fix_rename_remainder.py` — 改名残余引用修正（路径/import/标识）
+- `labs/lottery/studies/dlt/iterations/round06/scripts/probe_r06.py` — 探查原语与结论原文
+- `labs/lottery/studies/dlt/iterations/round06/scripts/probe_v2.py` — v2.0 实施前的 FACTS/结构探查
+- `labs/lottery/studies/dlt/iterations/round06/scripts/rename_spc.py` — 全链路改名：git mv src→spc + 包/品牌替换
+- `labs/lottery/studies/dlt/iterations/round06/scripts/smoke_ingate.py` — 三闸门自测（缺陷→拒绝 / 合法→入库）
+- `labs/lottery/studies/dlt/iterations/round06/scripts/smoke_r06.py` — 新原语 + R-002/R-003 可执行性冒烟
+- `labs/lottery/studies/dlt/iterations/round06/scripts/sync_guide_v14.py` — STRATEGY_GUIDE v1.4 同步
+- `labs/lottery/studies/dlt/iterations/round06/scripts/sync_structure_registration.py` — 结构完整性补登记 + 目录树写回（P1-2）
+- `labs/lottery/studies/dlt/iterations/round06/scripts/sync_v2_final.py` — v2.0 收尾：版本登记 + README 计数同步
+- `labs/lottery/studies/dlt/iterations/round06/scripts/sync_v2_versions.py` — v2.0 版本登记与 README 同步
+- `labs/lottery/studies/dlt/iterations/round06/scripts/versions_r06_strategy.py` — r06 策略落地的版本登记
+- `labs/lottery/studies/dlt/iterations/round07/FINDINGS.md` — 前段取证+外部核对+节假日验证+锚点重校准
+- `labs/lottery/studies/dlt/iterations/round07/HANDOFF.md` — r07→r08 交接
+- `labs/lottery/studies/dlt/iterations/round07/TASK_BRIEF.md` — r07 任务书（render_task_brief 生成，T-014 评分居首）
+- `labs/lottery/studies/dlt/iterations/round07/manifest.json` — r07 机器登记
+- `labs/lottery/studies/dlt/iterations/round07/scripts/apply_r07_facts.py` — r07 结论入库
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t013_recalibrate.json` — 重校准结果
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t013_recalibrate.py` — F-0004/F-0005 重校准
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.json` — T-014 结果
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t014_forensics.py` — T-014 前段取证（F-0033）
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t015_external.json` — T-015 结果
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t015_external.py` — T-015 外部核对（F-0034）
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t016_holiday.json` — T-016 结果
+- `labs/lottery/studies/dlt/iterations/round07/scripts/t016_holiday.py` — T-016 节假日验证（F-0035）
+- `labs/lottery/studies/dlt/iterations/round08/FINDINGS.md` — 体系升级轮发现（C1 注入器自愈 / Y 方法库 / X 协议 / 四件套补齐）
+- `labs/lottery/studies/dlt/iterations/round08/HANDOFF.md` — r08→r09 交接（P0：动态锚点重校准 + T-046/T-047；新工具用法）
+- `labs/lottery/studies/dlt/iterations/round08/manifest.json` — 体系升级批清单（C+X+Y+Z）
+- `labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.json` — 全奖级口径输出（F-0036 的派生产物）
+- `labs/lottery/studies/dlt/iterations/round08/scripts/all_tiers_expectation.py` — 全奖级口径期望分解（r08 T-049，各奖级精确枚举 + 封顶饱和 L5 双口径）
+- `labs/lottery/studies/dlt/iterations/round09/FINDINGS.md` — 策略量化轮发现（R-002 量化 / NOOP 实战 / 逐号偏好 / 四锚点维持）
+- `labs/lottery/studies/dlt/iterations/round09/HANDOFF.md` — r09→r10 交接（F-0037/38；遗留 T-021/22/23/48 + F-0004 系数细化）
+- `labs/lottery/studies/dlt/iterations/round09/TASK_BRIEF.md` — 任务书：T-046/T-047/T-020 + 并行建议（X）
+- `labs/lottery/studies/dlt/iterations/round09/manifest.json` — 策略量化轮清单
+- `labs/lottery/studies/dlt/iterations/round09/scripts/apply_r09_facts.py` — r09 入库：F-0037/F-0038 + NOOP + R-002 magnitude_pct
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.json` — 全部维持（recalibrated）
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t013_recalibrate_r09.py` — 四锚点重校准（F-0016/17/22/23）+ NOOP
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t020_number_weight.json` — 逐号结构存在；生日段不显著
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t020_number_weight.py` — 逐号偏好权重建模（Q-006/H-002）
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t046_r002_quantify.json` — R-002 量化结果：K2/5/10 增益 PASS
+- `labs/lottery/studies/dlt/iterations/round09/scripts/t046_r002_quantify.py` — R-002 magnitude_pct 实证量化（m 经验分布 + bootstrap）
+- `labs/lottery/studies/dlt/iterations/round10/FINDINGS.md` — r10 结论 + r10.1 漏网根治补记（自动派生挖出 STRATEGY_GUIDE/api.py/MATH_BOU…
+- `labs/lottery/studies/dlt/iterations/round10/HANDOFF.md` — r10→r11 交接 + r10.1 概率口径护栏升级（扫描范围自动派生）
+- `labs/lottery/studies/dlt/iterations/round10/TASK_BRIEF.md` — 任务书：T-050/T-021/T-022（T-050 概率口径根治，用户指出）
+- `labs/lottery/studies/dlt/iterations/round10/manifest.json` — r10 轮清单
+- `labs/lottery/studies/dlt/iterations/round10/scripts/apply_r10_facts.py` — r10 结论入库（F-0039/40/41 + 锚点重校准 + 工作台同步）
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t021_sales_endogeneity.json` — 销量不驱动注数（pool→sale 显著、sale→w1 无）
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t021_sales_endogeneity.py` — T-021 销量内生性（Granger+VAR+模型对比）
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t022_illusion.json` — 仅等差1三连显著；H-001 部分支持
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t022_illusion.py` — T-022 随机性错觉形态撞号（H-001）
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t028_recalibrate_r10.json` — 3 条锚点复现/复核成立
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t028_recalibrate_r10.py` — F-0028/29/31 重校准（维持+NOOP）
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.json` — 一等奖 1/21425712；任一奖级 1/15；命中清单
+- `labs/lottery/studies/dlt/iterations/round10/scripts/t050_calibration.py` — T-050 各奖级概率表 + 口径检索
+- `labs/lottery/studies/dlt/iterations/round11/FINDINGS.md` — r11 结论：F-0042 平台期 / F-0043 代理可观测 / T-048 设计 + 2 项顺带根治
+- `labs/lottery/studies/dlt/iterations/round11/HANDOFF.md` — r11→r12 交接：T-048b 首推 + T-025 仍 blocked + 编码护栏建议
+- `labs/lottery/studies/dlt/iterations/round11/T048_HOLDOUT_DESIGN.md` — T-048 L3 组合优化预备：时序 hold-out 评测设计（切分/指标/防泄漏/组合搜索边界/验收护栏，不落 L…
+- `labs/lottery/studies/dlt/iterations/round11/TASK_BRIEF.md` — r11 任务书：T-023/T-024/T-048（render_task_brief --round 11 --to…
+- `labs/lottery/studies/dlt/iterations/round11/manifest.json` — r11 deliverables（根级）
+- `labs/lottery/studies/dlt/iterations/round11/scripts/apply_r11_facts.py` — r11 入库：F-0042/F-0043 新增 + F-0021 caveats 更新 + Q-011/Q-015 a…
+- `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.json` — T-023 复验结果（34/30 窗序列 + 趋势检验 + 节假日分段）
+- `labs/lottery/studies/dlt/iterations/round11/scripts/t023_roll_decay.py` — T-023 效应弱化滚动复验（W=300/500 滚动窗口 + 节假日分时段；→ F-0042）
+- `labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.json` — T-024 代理序列 + 变点 + 相关结果
+- `labs/lottery/studies/dlt/iterations/round11/scripts/t024_proxy.py` — T-024 机选占比代理变量（P1 低号注数比 / P2 连号注数比 / P3 偏好基尼 + 变点扫描；→ F-004…
+- `labs/lottery/studies/dlt/iterations/round12/FINDINGS.md` — r12 研究结论
+- `labs/lottery/studies/dlt/iterations/round12/HANDOFF.md` — r12→r13 交接
+- `labs/lottery/studies/dlt/iterations/round12/TASK_BRIEF.md` — r12 任务书（T-049/T-030/T-040）
+- `labs/lottery/studies/dlt/iterations/round12/manifest.json` — r12 manifest
+- `labs/lottery/studies/dlt/iterations/round12/scripts/t030_effectiveness.py` — T-030 三档标准写入
+- `labs/lottery/studies/dlt/iterations/round12/scripts/t049_holdout.json` — T-049 结果
+- `labs/lottery/studies/dlt/iterations/round12/scripts/t049_holdout.py` — T-049 hold-out 评测
+- `labs/lottery/studies/dlt/iterations/round13/FINDINGS.md` — r13 研究结论
+- `labs/lottery/studies/dlt/iterations/round13/HANDOFF.md` — r13 交接
+- `labs/lottery/studies/dlt/iterations/round13/TASK_BRIEF.md` — r13 任务书（T-051/T-044/T-045）
+- `labs/lottery/studies/dlt/iterations/round13/manifest.json` — r13 manifest
+- `labs/lottery/studies/dlt/iterations/round13/scripts/t051_walkforward.json` — T-051 结果
+- `labs/lottery/studies/dlt/iterations/round13/scripts/t051_walkforward.py` — T-051 walk-forward 评测
+- `labs/lottery/studies/dlt/iterations/round14/FINDINGS.md` — r14 研究结论
+- `labs/lottery/studies/dlt/iterations/round14/HANDOFF.md` — r14 交接
+- `labs/lottery/studies/dlt/iterations/round14/TASK_BRIEF.md` — r14 任务书（T-052 待批准/T-053/T-054）
+- `labs/lottery/studies/dlt/iterations/round14/manifest.json` — r14 manifest
+- `labs/lottery/studies/dlt/iterations/round14/scripts/t053_shape_ratios.json` — T-053 结果
+- `labs/lottery/studies/dlt/iterations/round14/scripts/t053_shape_ratios.py` — T-053 形态撞号比复验
+- `labs/lottery/studies/dlt/iterations/round14/scripts/t054_walkforward_ci.json` — T-054 结果
+- `labs/lottery/studies/dlt/iterations/round14/scripts/t054_walkforward_ci.py` — T-054 walk-forward 每步 CI
+- `labs/lottery/studies/dlt/iterations/round15/FINDINGS.md` — r15 治理结论（D1~D5 五处缺陷及其与 r11.1/r14.2 的同源关系）
+- `labs/lottery/studies/dlt/iterations/round15/HANDOFF.md` — r15 交接（含 T-020 未决裁定项）
+- `labs/lottery/studies/dlt/iterations/round15/TASK_BRIEF.md` — r15 任务书（必做 0 个：待办池仅剩资源缺口型；T-052 已落地漏勾）
+- `labs/lottery/studies/dlt/iterations/round15/manifest.json` — r15 manifest
+- `labs/lottery/studies/dlt/iterations/round16/FINDINGS.md` — r16 结论（B1 重校准钥匙=established_in；B2 证据索引还债；F-0048 H-002 parti…
+- `labs/lottery/studies/dlt/iterations/round16/HANDOFF.md` — r16 交接（validate 首次 0 警告；F-0048 策略用途待用户批准）
+- `labs/lottery/studies/dlt/iterations/round16/TASK_BRIEF.md` — r16 任务书（首次含派生候选：必做 1 个 = T-063 [derive:H-001]）
+- `labs/lottery/studies/dlt/iterations/round16/manifest.json` — r16 manifest
+- `labs/lottery/studies/dlt/iterations/round16/scripts/apply_r16_facts.py` — T-066/T-069：7 条动态锚点 NOOP 重记 + established_in→round16；Q-006→…
+- `labs/lottery/studies/dlt/iterations/round16/scripts/b2_fill_evidence_index.py` — T-067：补 strategy.json evidence_index（F-0044~47）与 STRATEGY_G…
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.json` — T-066 复现产物：F-0016/17/22/23 重校准数值快照
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t013_recalibrate_r09.py` — T-066 复现副本（不覆盖 r09 历史产物）：F-0016/17/22/23 重校准
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t020_number_weight.py` — T-069 复算副本：逐号相对撞号强度 S_j（F-0038 原始脚本，用于核实 T-020 产出确实存在）
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.json` — T-066 复现产物：F-0028/29/31 重校准数值快照
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t028_recalibrate_r10.py` — T-066 复现副本（不覆盖 r10 历史产物）：F-0028/29/31 重校准
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.json` — T-064 产物：三段均值/sd、bootstrap CI、置换检验 p 值（F-0048 证据）
+- `labs/lottery/studies/dlt/iterations/round16/scripts/t064_h002_segment.py` — T-064：H-002 三段单调 bootstrap CI + 序型置换检验（p=0.2103）→ F-0048
+- `labs/lottery/studies/dlt/iterations/round17/FINDINGS.md`
+- `labs/lottery/studies/dlt/iterations/round17/HANDOFF.md`
+- `labs/lottery/studies/dlt/iterations/round17/TASK_BRIEF.md`
+- `labs/lottery/studies/dlt/iterations/round17/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.json`
+- `labs/lottery/studies/dlt/iterations/round17/scripts/t070_feature_screen.py`
+- `labs/lottery/studies/dlt/iterations/round18/FINDINGS.md`
+- `labs/lottery/studies/dlt/iterations/round18/HANDOFF.md`
+- `labs/lottery/studies/dlt/iterations/round18/TASK_BRIEF.md`
+- `labs/lottery/studies/dlt/iterations/round18/manifest.json`
+- `labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.json`
+- `labs/lottery/studies/dlt/iterations/round18/scripts/t071_permutation_test.py`
+- `labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.json`
+- `labs/lottery/studies/dlt/iterations/round18/scripts/t072_robust_check.py`
+- `labs/lottery/studies/dlt/manifest_v4_source.json`
 - `labs/lottery/studies/dlt/memory/facts/ACTIVE.md` — 当前有效结论清单（与台账分离，compress_memory 生成）
 - `labs/lottery/studies/dlt/memory/facts/FACTS.jsonl` — r14: +F-0046（高区撞号<1）/F-0047（单步显著 1/5）；FACTS 45→47
 - `labs/lottery/studies/dlt/memory/facts/INDEX.md` — 派生物，由 cli index 生成（32 条）
@@ -73,27 +259,23 @@
 - `labs/lottery/studies/dlt/memory/journal/round15.md` — r15 执行日志（治理轮）
 - `labs/lottery/studies/dlt/memory/journal/round16.md` — r16 执行日志（告警清零 + 任务源机制轮）
 - `labs/lottery/studies/dlt/memory/lessons/LESSONS.md` — L1–L15，只增不删（r10.1 新增 L15：命中清单全量核对 + 校验器禁手写白名单）
-- `platform/memory/spec/ITERATION_SOP_v2.md` — 证据门控式迭代规范 v2（C+X 协议已并入）：收尾清单第10步引 finish_round.py；新增§9 并行研究…
 - `labs/lottery/studies/dlt/memory/workbench/HYPOTHESES.md` — H-001~H-006（H-006 refuted）
 - `labs/lottery/studies/dlt/memory/workbench/OPEN_QUESTIONS.md` — r12: Q-008 → answered（open 3→2：Q-006/Q-016）
 - `labs/lottery/studies/dlt/memory/workbench/TODO.md` — r15: T-052 → done（r14.1 已落地，此前漏勾；新增 ★T 护栏捕获）；T-020 标注存疑（r08…
-
-## 策略输出
-- `labs/lottery/studies/_template/strategy/strategy.json` — 模板策略，2026-10-11 随 game.yaml 同步至 2.0
-
-## 彩种
-- `labs/lottery/studies/_template/README.md`
-- `labs/lottery/studies/_template/game.yaml` — 2026-10-11 与 dlt 同步升至 2.0（features 原语化）
-- `labs/lottery/studies/_template/iterations/round01/TASK_BRIEF.md`
+- `labs/lottery/studies/dlt/rules_history.md` — E0~E6 共 7 段（§3.3 措辞存疑；第 6 次实证已加 r03 更正标记）
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
+- `tools/cross_study_meta.py`
+- `tools/data_version.py`
 - `tools/derive_tasks.py` — ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(open) / HYPOTHESES(unver…
+- `tools/finalize_round.ps1`
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
+- `tools/new_study.py`
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
@@ -102,15 +284,21 @@
 - `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；★r15: dry-run …
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
+- `tools/report_generator.py`
+- `tools/task_scheduler.py`
 
 ## 工具与 CLI
 - `cli/main.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/build_versions.py` — 代码文件：不写文件内版本行（用 git blame）；r13 T-044 降级为参考实现，--write 禁用
 - `tools/bump_iteration.py` — 代码文件：不写文件内版本行（用 git blame）；r14.2 新增：活文档轮次对齐（防登记停滞），必须在 rend…
 - `tools/count_tests.py` — 登记测试文件 + --inject（T-045：tests/README 计数自举注入）；r15: 新增 test_r…
+- `tools/cross_study_meta.py`
+- `tools/data_version.py`
 - `tools/derive_tasks.py` — ★ 任务源派生（r16 ★源自救）：从 OPEN_QUESTIONS(open) / HYPOTHESES(unver…
+- `tools/finalize_round.ps1`
 - `tools/finish_round.py` — 收尾自动化（C1）：rehash→count_tests--inject→bump_iteration→渲染+inje…
 - `tools/inject_version_lines.py` — 代码文件：不写文件内版本行（用 git blame）
+- `tools/new_study.py`
 - `tools/register_r06_upgrade.py` — r06 批量实施登记脚本（一次性，登记含自身）
 - `tools/render_ai_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
 - `tools/render_dependency_map.py` — r11：读取改 utf-8-sig（修 BOM 叠加 bug）
@@ -119,6 +307,8 @@
 - `tools/render_task_brief.py` — 任务书生成器（B+G/X）：--top N 控制必做数；resource 资源前置（Z）；★r15: dry-run …
 - `tools/render_version_index.py` — 代码文件：不写文件内版本行（用 git blame）
 - `tools/report_calibration.py` — 置信度校准报告（D1）
+- `tools/report_generator.py`
+- `tools/task_scheduler.py`
 
 ## 测试
 - `tests/README.md` — 测试说明（自举计数：合计 333，含 test_structure 8）
@@ -132,6 +322,7 @@
 - `tests/test_flywheel.py` — K/D1/D2/C/F 测试（无需 pytest）
 - `tests/test_meta_variables.py` — schema 1.3 元数据（convenience/experience/psychology）结构+红线+CLI …
 - `tests/test_open_questions_consistency.py` — Q 状态一致性回归：解析归一化/头部计数滞后/标题缺✅/优先级表active含已清偿/状态词非法
+- `tests/test_paths.py`
 - `tests/test_research_lib.py` — research_lib 原语测试（已知分布验证可复现/正确性/样本不足不硬报）
 - `tests/test_round_counter_sync.py` — ★ 轮次号与待办双源对账（r15）：dry-run 无副作用 / 轮次号只认已收尾轮 / 双源不一致必报 / 已落地未…
 - `tests/test_round_stall.py` — 轮次停滞检查（r14.2）：同源自洽陷阱必须被识破 / 未声明活文档不误伤 / bump_iteration 能修复；…
@@ -148,6 +339,7 @@
 - `src/spc/flywheel.py` — 飞轮健康度统计 + 置信度校准（K/D1）
 - `src/spc/game.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/memory.py` — 代码文件：不写文件内版本行（用 git blame）
+- `src/spc/paths.py`
 - `src/spc/strategy.py` — 代码文件：不写文件内版本行（用 git blame）
 - `src/spc/tree.py` — 目录树生成源（P1-2）：README 树 = 派生物
 - `src/spc/validate.py` — r12: 策略同步 ★S 已内置（r11 起）。r15: 新增 ★R 轮次号双源对账（current_iteratio…
@@ -159,4 +351,6 @@
 - `docs/ITERATION_GUIDE.md`
 - `docs/METHODOLOGY.md`
 - `docs/PROPOSAL_SINGLE_TICKET_CORE.md`
+- `docs/SOP_OVERVIEW.md`
 - `docs/VERSIONING_DOCS.md` — r15: §6.2 追加『manifest 先于 bump』顺序约束；新增 §6.7 轮次号唯一判据
+- `docs/sop_flowchart.html`

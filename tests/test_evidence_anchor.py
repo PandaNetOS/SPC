@@ -30,6 +30,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "src"))
 
+from spc import paths  # noqa: E402
 from spc.evidence import (  # noqa: E402
     ANCHOR_FIELDS,
     evidence_digest,
@@ -66,7 +67,7 @@ def section(t: str) -> None:
 
 FACTS = load_facts(_ROOT)
 BY_ID = {f["id"]: f for f in FACTS}
-STRATEGY_PATH = os.path.join(_ROOT, "games", "dlt", "strategy", "strategy.json")
+STRATEGY_PATH = paths.strategy_json_path("dlt", root=_ROOT)
 STRATEGY = json.load(open(STRATEGY_PATH, encoding="utf-8"))
 
 
@@ -96,7 +97,7 @@ def test_primitives() -> None:
     check(sha256_text("") == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           "sha256_text('') 等于已知的 SHA256 空串值")
 
-    p = os.path.join(_ROOT, "games", "dlt", "game.yaml")
+    p = paths.game_yaml_path("dlt", root=_ROOT)
     a, b = sha256_file(p), sha256_file(p)
     check(a == b, "sha256_file 对同一文件两次调用结果一致")
     check(len(a) == 64 and all(c in "0123456789abcdef" for c in a),

@@ -113,12 +113,20 @@ def evidence_digest(facts: Iterable[dict], ids: Iterable[str] | None = None) -> 
     return sha256_text(canonical)
 
 
-def load_facts(repo_root: str | None = None) -> list[dict]:
-    """读 FACTS.jsonl。与 validate.load_fact_ids 分开，避免循环导入。"""
+def load_facts(repo_root: str | None = None, study: str | None = None) -> list[dict]:
+    """读 FACTS.jsonl。与 validate.load_fact_ids 分开，避免循环导入。
+
+    路径一律经 spc.paths（研究组记忆已从仓库根 memory/ 下沉）。
+    """
     root = repo_root or os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..", "..")
     )
-    p = os.path.join(root, "memory", "facts", "FACTS.jsonl")
+    from . import paths  # 延迟导入避免环
+
+    study = study or paths.first_study(root=root)
+    if not study:
+        return []
+    p = paths.facts_path(study, root=root)
     if not os.path.exists(p):
         return []
     out: list[dict] = []
